@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 04/09/2012 11:32:15 by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="Clases.Personales" table="Personales" catalog="asistencia">
+        <id name="nroRegistro" type="string">
+            <column name="Nro_Registro" length="8" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="colegios" class="Clases.Colegios" fetch="select">
+            <column name="id_Colegio" />
+        </many-to-one>
+        <property name="dni" type="string">
+            <column name="DNI" length="8" />
+        </property>
+        <property name="apellido" type="string">
+            <column name="Apellido" length="30" />
+        </property>
+        <property name="nombre" type="string">
+            <column name="Nombre" length="30" />
+        </property>
+        <property name="cuil" type="string">
+            <column name="CUIL" length="13" />
+        </property>
+        <property name="ciudad" type="string">
+            <column name="Ciudad" length="20" />
+        </property>
+        <property name="direccion" type="string">
+            <column name="Direccion" length="30" />
+        </property>
+        <property name="pais" type="string">
+            <column name="Pais" length="15" />
+        </property>
+        <property name="provincia" type="string">
+            <column name="Provincia" length="15" />
+        </property>
+        <property name="correoElectronico" type="string">
+            <column name="CorreoElectronico" length="30" />
+        </property>
+        <property name="sexo" type="string">
+            <column name="Sexo" length="10" />
+        </property>
+        <property name="departamento" type="string">
+            <column name="Departamento" length="30" />
+        </property>
+        <property name="estadoCivil" type="string">
+            <column name="EstadoCivil" length="15" />
+        </property>
+        <set name="personalAdministrativoses" inverse="true">
+            <key>
+                <column name="Nro_Registro" length="8" not-null="true" unique="true" />
+            </key>
+            <one-to-many class="Clases.PersonalAdministrativos" />
+        </set>
+        <set name="personalDocenteses" inverse="true">
+            <key>
+                <column name="Nro_Registro" length="8" not-null="true" unique="true" />
+            </key>
+            <one-to-many class="Clases.PersonalDocentes" />
+        </set>
+        <set name="tareases" inverse="true">
+            <key>
+                <column name="nro_Registro" length="8" />
+            </key>
+            <one-to-many class="Clases.Tareas" />
+        </set>
+        <set name="asistenciases" inverse="true">
+            <key>
+                <column name="Nro_Registro" length="8" />
+            </key>
+            <one-to-many class="Clases.Asistencias" />
+        </set>
+        <set name="personalMaestranzases" inverse="true">
+            <key>
+                <column name="Nro_Registro" length="8" not-null="true" unique="true" />
+            </key>
+            <one-to-many class="Clases.PersonalMaestranzas" />
+        </set>
+    </class>
+</hibernate-mapping>
