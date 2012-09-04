@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 04/09/2012 11:32:15 by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="Clases.Asistencias" table="Asistencias" catalog="asistencia">
+        <id name="idAsistencia" type="java.lang.Integer">
+            <column name="Id_Asistencia" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="tareas" class="Clases.Tareas" fetch="select">
+            <column name="Nro_Tarea" />
+        </many-to-one>
+        <many-to-one name="personales" class="Clases.Personales" fetch="select">
+            <column name="Nro_Registro" length="8" />
+        </many-to-one>
+        <property name="estado" type="string">
+            <column name="Estado" length="8" />
+        </property>
+    </class>
+</hibernate-mapping>

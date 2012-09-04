@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 04/09/2012 11:32:15 by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="Clases.Colegios" table="Colegios" catalog="asistencia">
+        <id name="idColegio" type="java.lang.Integer">
+            <column name="id_Colegio" />
+            <generator class="identity" />
+        </id>
+        <property name="nombre" type="string">
+            <column name="Nombre" length="30" />
+        </property>
+        <property name="direccion" type="string">
+            <column name="Direccion" length="50" />
+        </property>
+        <set name="personaleses" inverse="true">
+            <key>
+                <column name="id_Colegio" />
+            </key>
+            <one-to-many class="Clases.Personales" />
+        </set>
+        <set name="tareases" inverse="true">
+            <key>
+                <column name="id_Colegio" />
+            </key>
+            <one-to-many class="Clases.Tareas" />
+        </set>
+    </class>
+</hibernate-mapping>

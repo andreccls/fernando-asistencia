@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 04/09/2012 11:32:15 by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="Clases.PersonalMaestranzas" table="PersonalMaestranzas" catalog="asistencia">
+        <id name="nroRegistro" type="string">
+            <column name="Nro_Registro" length="8" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="personales" class="Clases.Personales" update="false" insert="false" fetch="select">
+            <column name="Nro_Registro" length="8" not-null="true" unique="true" />
+        </many-to-one>
+        <property name="idMaestranza" type="string">
+            <column name="IdMaestranza" length="8" not-null="true" />
+        </property>
+        <property name="tipodeactividad" type="string">
+            <column name="Tipodeactividad" length="8" />
+        </property>
+    </class>
+</hibernate-mapping>
