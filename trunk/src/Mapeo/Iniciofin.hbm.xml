@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 31/01/2013 23:17:21 by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+  <class catalog="asistencia" name="Clases.Iniciofin" table="iniciofin">
+    <id name="idIniciofin" type="java.lang.Integer">
+      <column name="Id_iniciofin"/>
+      <generator class="identity"/>
+    </id>
+    <many-to-one class="Clases.Dia" fetch="select" name="dia">
+      <column name="Id_dia" not-null="true"/>
+    </many-to-one>
+    <property name="inicio" type="time">
+      <column length="8" name="Inicio"/>
+    </property>
+    <property name="estadoInicio" type="java.lang.Boolean">
+      <column name="Estado_inicio"/>
+    </property>
+    <property name="fin" type="time">
+      <column length="8" name="Fin"/>
+    </property>
+    <property name="estadoFin" type="java.lang.Boolean">
+      <column name="Estado_fin"/>
+    </property>
+    <set inverse="true" name="asistencias">
+      <key>
+        <column name="Id_iniciofin" not-null="true"/>
+      </key>
+      <one-to-many class="Clases.Asistencia"/>
+    </set>
+  </class>
+</hibernate-mapping>

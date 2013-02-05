@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 31/01/2013 23:17:21 by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+  <class catalog="asistencia" name="Clases.Tareaotro" table="tareaotro">
+    <composite-id class="Clases.TareaotroId" name="id">
+      <key-property name="idTareaotro" type="int">
+        <column name="Id_tareaotro"/>
+      </key-property>
+      <key-property name="idTarea" type="int">
+        <column name="Id_tarea"/>
+      </key-property>
+    </composite-id>
+    <many-to-one class="Clases.Tarea" fetch="select" insert="false" name="tarea" update="false">
+      <column name="Id_tarea" not-null="true"/>
+    </many-to-one>
+    <property name="caracteristica" type="string">
+      <column length="45" name="Caracteristica"/>
+    </property>
+    <property name="diaInicio" type="timestamp">
+      <column length="19" name="Dia_inicio"/>
+    </property>
+    <property name="diaFin" type="timestamp">
+      <column length="19" name="Dia_fin"/>
+    </property>
+  </class>
+</hibernate-mapping>

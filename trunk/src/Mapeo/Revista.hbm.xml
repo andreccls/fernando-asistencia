@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 31/01/2013 23:17:21 by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+  <class catalog="asistencia" name="Clases.Revista" table="revista">
+    <id name="idRevista" type="java.lang.Integer">
+      <column name="Id_revista"/>
+      <generator class="identity"/>
+    </id>
+    <property name="nombre" type="string">
+      <column length="45" name="Nombre" not-null="true"/>
+    </property>
+    <set inverse="true" name="agendas">
+      <key>
+        <column name="Id_revista" not-null="true"/>
+      </key>
+      <one-to-many class="Clases.Agenda"/>
+    </set>
+  </class>
+</hibernate-mapping>

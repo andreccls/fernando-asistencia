@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 31/01/2013 23:17:21 by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+  <class catalog="asistencia" name="Clases.Nivel" table="nivel">
+    <id name="idNivel" type="java.lang.Integer">
+      <column name="Id_nivel"/>
+      <generator class="identity"/>
+    </id>
+    <many-to-one class="Clases.Tiponivel" fetch="select" name="tiponivel">
+      <column name="id_tiponivel" not-null="true"/>
+    </many-to-one>
+    <many-to-one class="Clases.Cargo" fetch="select" name="cargo">
+      <column name="Id_cargo" not-null="true"/>
+    </many-to-one>
+    <property name="horas" type="java.lang.Integer">
+      <column name="Horas"/>
+    </property>
+    <set inverse="true" name="activos">
+      <key>
+        <column name="Id_nivel" not-null="true"/>
+      </key>
+      <one-to-many class="Clases.Activo"/>
+    </set>
+    <set inverse="true" name="inactivos">
+      <key>
+        <column name="Id_nivel" not-null="true"/>
+      </key>
+      <one-to-many class="Clases.Inactivo"/>
+    </set>
+  </class>
+</hibernate-mapping>

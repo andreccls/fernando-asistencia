@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 31/01/2013 23:17:21 by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+  <class catalog="asistencia" name="Clases.PersonalFamiliar" table="personal_familiar">
+    <composite-id class="Clases.PersonalFamiliarId" name="id">
+      <key-property name="idPersonal" type="int">
+        <column name="Id_personal"/>
+      </key-property>
+      <key-property name="idFamiliar" type="int">
+        <column name="Id_familiar"/>
+      </key-property>
+    </composite-id>
+    <many-to-one class="Clases.Personal" fetch="select" insert="false" name="personalByIdPersonal" update="false">
+      <column name="Id_personal" not-null="true"/>
+    </many-to-one>
+    <many-to-one class="Clases.Personal" fetch="select" insert="false" name="personalByIdFamiliar" update="false">
+      <column name="Id_familiar" not-null="true"/>
+    </many-to-one>
+    <many-to-one class="Clases.Tiporelacion" fetch="select" name="tiporelacion">
+      <column name="Id_tiporelacion" not-null="true"/>
+    </many-to-one>
+    <property name="asignacionFamiliar" type="java.lang.Boolean">
+      <column name="Asignacion_familiar"/>
+    </property>
+  </class>
+</hibernate-mapping>
