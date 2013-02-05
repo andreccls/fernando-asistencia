@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 31/01/2013 23:17:21 by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+  <class catalog="asistencia" name="Clases.Actividad" table="actividad">
+    <id name="idActividad" type="java.lang.Integer">
+      <column name="Id_actividad"/>
+      <generator class="identity"/>
+    </id>
+    <property name="actividad" type="string">
+      <column length="45" name="Actividad" not-null="true"/>
+    </property>
+    <set inverse="true" name="personalnodocentes">
+      <key>
+        <column name="Id_actividad" not-null="true"/>
+      </key>
+      <one-to-many class="Clases.Personalnodocente"/>
+    </set>
+  </class>
+</hibernate-mapping>

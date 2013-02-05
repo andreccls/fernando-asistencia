@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 31/01/2013 23:17:21 by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+  <class catalog="asistencia" name="Clases.Personal" table="personal">
+    <id name="idPersonal" type="java.lang.Integer">
+      <column name="Id_personal"/>
+      <generator class="identity"/>
+    </id>
+    <many-to-one class="Clases.Tipodoc" fetch="select" name="tipodoc">
+      <column name="Id_tipodoc" not-null="true"/>
+    </many-to-one>
+    <many-to-one class="Clases.Establecimiento" fetch="select" name="establecimiento">
+      <column name="Id_establecimiento" not-null="true"/>
+    </many-to-one>
+    <property name="codigo" type="binary">
+      <column name="Codigo"/>
+    </property>
+    <property name="dni" type="string">
+      <column length="8" name="DNI" not-null="true" unique="true"/>
+    </property>
+    <property name="apellido" type="string">
+      <column length="45" name="Apellido" not-null="true"/>
+    </property>
+    <property name="nombre" type="string">
+      <column length="45" name="Nombre" not-null="true"/>
+    </property>
+    <property name="cuil" type="string">
+      <column length="14" name="CUIL"/>
+    </property>
+    <property name="calle" type="string">
+      <column length="20" name="Calle"/>
+    </property>
+    <property name="altura" type="java.lang.Integer">
+      <column name="Altura"/>
+    </property>
+    <property name="piso" type="string">
+      <column length="3" name="Piso"/>
+    </property>
+    <property name="depto" type="string">
+      <column length="3" name="Depto"/>
+    </property>
+    <property name="correoElectronico" type="string">
+      <column length="45" name="CorreoElectronico"/>
+    </property>
+    <property name="sexo" type="string">
+      <column length="15" name="Sexo"/>
+    </property>
+    <property name="estadoCivil" type="string">
+      <column length="15" name="EstadoCivil"/>
+    </property>
+    <property name="ingreso" type="date">
+      <column length="10" name="Ingreso"/>
+    </property>
+    <property name="estado" type="java.lang.Boolean">
+      <column name="Estado"/>
+    </property>
+    <property name="familiar" type="java.lang.Boolean">
+      <column name="Familiar"/>
+    </property>
+    <property name="fechaNac" type="date">
+      <column length="10" name="Fecha_nac"/>
+    </property>
+    <set inverse="true" name="personalDepartamentos">
+      <key>
+        <column name="Id_personal" not-null="true"/>
+      </key>
+      <one-to-many class="Clases.PersonalDepartamento"/>
+    </set>
+    <set inverse="true" name="declaracionjuradas">
+      <key>
+        <column name="Id_personal" not-null="true" unique="true"/>
+      </key>
+      <one-to-many class="Clases.Declaracionjurada"/>
+    </set>
+    <set inverse="true" name="personalnodocentes">
+      <key>
+        <column name="Id_personal" not-null="true"/>
+      </key>
+      <one-to-many class="Clases.Personalnodocente"/>
+    </set>
+    <set inverse="true" name="personalFamiliarsForIdPersonal">
+      <key>
+        <column name="Id_personal" not-null="true"/>
+      </key>
+      <one-to-many class="Clases.PersonalFamiliar"/>
+    </set>
+    <set inverse="true" name="personalFamiliarsForIdFamiliar">
+      <key>
+        <column name="Id_familiar" not-null="true"/>
+      </key>
+      <one-to-many class="Clases.PersonalFamiliar"/>
+    </set>
+    <set inverse="true" name="personaldocentes">
+      <key>
+        <column name="Id_personal" not-null="true"/>
+      </key>
+      <one-to-many class="Clases.Personaldocente"/>
+    </set>
+    <set inverse="true" name="agendas">
+      <key>
+        <column name="Id_personal" not-null="true"/>
+      </key>
+      <one-to-many class="Clases.Agenda"/>
+    </set>
+    <set inverse="true" name="telefonos">
+      <key>
+        <column name="Id_personal" not-null="true"/>
+      </key>
+      <one-to-many class="Clases.Telefono"/>
+    </set>
+  </class>
+</hibernate-mapping>

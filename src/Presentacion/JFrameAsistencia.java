@@ -10,8 +10,44 @@
  */
 package Presentacion;
 
+import Clases.Agenda;
+import Clases.Asistencia;
 import Clases.Controlador;
+import Clases.Dia;
+import Clases.Establecimiento;
+import Clases.Iniciofin;
+import Clases.Personal;
+import TareasProgramadas.ControladorTarea;
+import com.digitalpersona.onetouch.DPFPDataPurpose;
+import com.digitalpersona.onetouch.DPFPFeatureSet;
+import com.digitalpersona.onetouch.DPFPGlobal;
+import com.digitalpersona.onetouch.DPFPSample;
+import com.digitalpersona.onetouch.DPFPTemplate;
+import com.digitalpersona.onetouch.capture.DPFPCapture;
+import com.digitalpersona.onetouch.capture.event.DPFPDataAdapter;
+import com.digitalpersona.onetouch.capture.event.DPFPDataEvent;
+import com.digitalpersona.onetouch.capture.event.DPFPErrorAdapter;
+import com.digitalpersona.onetouch.capture.event.DPFPErrorEvent;
+import com.digitalpersona.onetouch.capture.event.DPFPReaderStatusAdapter;
+import com.digitalpersona.onetouch.capture.event.DPFPReaderStatusEvent;
+import com.digitalpersona.onetouch.capture.event.DPFPSensorAdapter;
+import com.digitalpersona.onetouch.capture.event.DPFPSensorEvent;
+import com.digitalpersona.onetouch.processing.DPFPEnrollment;
+import com.digitalpersona.onetouch.processing.DPFPFeatureExtraction;
+import com.digitalpersona.onetouch.processing.DPFPImageQualityException;
+import com.digitalpersona.onetouch.verification.DPFPVerification;
+import com.digitalpersona.onetouch.verification.DPFPVerificationResult;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.sql.Time;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -20,13 +56,25 @@ import javax.swing.*;
 public class JFrameAsistencia extends javax.swing.JFrame {
 
     public Controlador Drive;
+    public ControladorTarea Drive2;
+    public Personal per;
 
     /**
      * Creates new form JFrameAsistencia
      */
-    public JFrameAsistencia(Controlador unDrive) {
-        this.Drive = unDrive;
+    public JFrameAsistencia(/*Controlador unDrive*/) {
+        //this.Drive = unDrive;
+        try{
+            JFrame.setDefaultLookAndFeelDecorated( true );
+            UIManager.setLookAndFeel( new com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel() );
+        }catch( Exception e ){ e.printStackTrace(); }
         initComponents();
+        Controlador auxDrive = new Controlador();
+        auxDrive.getPrimerEstablecimiento();
+        Drive = auxDrive;
+        jButton3.setEnabled(false);
+        jButton1.setEnabled(false);
+
     }
 
     /**
@@ -41,12 +89,25 @@ public class JFrameAsistencia extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
+        jButton3 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("SISTEMA DE ASISTENCIA DEL PERSONAL");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowActivated(java.awt.event.WindowEvent evt) {
+                formWindowActivated(evt);
+            }
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+            public void windowDeactivated(java.awt.event.WindowEvent evt) {
+                formWindowDeactivated(evt);
+            }
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel1.setText("BIENVENIDOS AL SISTEMA DE ASISTENCIA DEL PERSONAL");
@@ -54,7 +115,14 @@ public class JFrameAsistencia extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel2.setText("REGISTRESE Y PRESIONE ACEPTAR");
 
-        jButton1.setText("Aceptar");
+        jButton3.setText("Registrar");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        jButton1.setText("Actividades");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -66,80 +134,339 @@ public class JFrameAsistencia extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGap(31, 31, 31)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(44, 44, 44)
-                        .addComponent(jLabel1))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(105, 105, 105)
-                        .addComponent(jLabel2))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                .addGap(224, 224, 224)
-                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1)))
-                .addContainerGap(43, Short.MAX_VALUE))
+                        .addGap(137, 137, 137)
+                        .addComponent(jButton3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
+                        .addComponent(jButton1))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGap(81, 81, 81)
+                            .addComponent(jLabel2)
+                            .addGap(43, 43, 43))))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(65, 65, 65)
+                .addGap(112, 112, 112)
                 .addComponent(jLabel1)
-                .addGap(44, 44, 44)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 82, Short.MAX_VALUE)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 123, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton3)
                     .addComponent(jButton1))
-                .addGap(20, 20, 20))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private DPFPCapture Lector = DPFPGlobal.getCaptureFactory().createCapture();
+    private DPFPEnrollment Reclutador = DPFPGlobal.getEnrollmentFactory().createEnrollment();
+    private DPFPVerification Verificador = DPFPGlobal.getVerificationFactory().createVerification();
+    private DPFPTemplate template;
+    public static String TEMPLATE_PROPERTY = "template";
+    public DPFPFeatureSet featuresinscripcion;
+    public DPFPFeatureSet featuresverificacion;
+
+    protected void Iniciar(){
+        Lector.addDataListener(new DPFPDataAdapter() {
+            @Override public void dataAcquired(final DPFPDataEvent e){
+                SwingUtilities.invokeLater(new Runnable() {public void run() {
+//                        EnviarTexto("La Huella Digital ha sido Capturada"); 
+                        ProcesarCaptura(e.getSample()); 
+                }});}
+        });
+        
+        Lector.addReaderStatusListener(new DPFPReaderStatusAdapter() {
+            @Override public void readerConnected(final DPFPReaderStatusEvent e) {
+                SwingUtilities.invokeLater(new Runnable() {    public void run() {
+//                    EnviarTexto("El Sensor de Huella Digital esta Activado o Conectado");
+                }});
+            }
+            @Override public void readerDisconnected(final DPFPReaderStatusEvent e) {
+                SwingUtilities.invokeLater(new Runnable() {    public void run() {
+//                    EnviarTexto("El Sensor de Huella Digital esta Desactivado o no Conecatado");
+                }});
+            }
+        });
+
+        Lector.addSensorListener(new DPFPSensorAdapter() {
+            @Override public void fingerTouched(final DPFPSensorEvent e) {
+                SwingUtilities.invokeLater(new Runnable() {    public void run() {
+//                    EnviarTexto("El dedo ha sido colocado sobre el Lector de Huella");
+                }});
+            }
+            @Override public void fingerGone(final DPFPSensorEvent e) {
+                SwingUtilities.invokeLater(new Runnable() {    public void run() {
+//                    EnviarTexto("El dedo ha sido quitado del Lector de Huella");
+                }});
+            }
+        });
+
+        Lector.addErrorListener(new DPFPErrorAdapter(){
+            public void errorReader(final DPFPErrorEvent e){
+                SwingUtilities.invokeLater(new Runnable() {  public void run() {
+//                    EnviarTexto("Error: "+e.getError());
+                }});
+            }
+        });
+
+        Lector.addErrorListener(new DPFPErrorAdapter(){
+            public void errorReader(final DPFPErrorEvent e){
+                SwingUtilities.invokeLater(new Runnable() {  public void run() {
+//                    EnviarTexto("Error: "+e.getError());
+                }});
+            }
+        });
+    }
+    
+    public  void ProcesarCaptura(DPFPSample sample){
+     featuresinscripcion = extraerCaracteristicas(sample, DPFPDataPurpose.DATA_PURPOSE_ENROLLMENT);
+     featuresverificacion = extraerCaracteristicas(sample, DPFPDataPurpose.DATA_PURPOSE_VERIFICATION);
+     if (featuresinscripcion != null){
+         try{
+             System.out.println("Las Caracteristicas de la Huella han sido creada");
+             Reclutador.addFeatures(featuresinscripcion);
+             jButton3.setEnabled(true);
+             jButton1.setEnabled(true);
+         }catch (DPFPImageQualityException ex) {
+             System.err.println("Error: "+ex.getMessage());
+         }finally {
+            switch(Reclutador.getTemplateStatus()){
+                case TEMPLATE_STATUS_READY:
+                stop();
+                setTemplate(Reclutador.getTemplate());
+                jButton3.setEnabled(false);
+                jButton1.setEnabled(false);
+                break;
+
+                case TEMPLATE_STATUS_FAILED:
+                Reclutador.clear();
+                stop();
+                setTemplate(null);
+                JOptionPane.showMessageDialog(JFrameAsistencia.this, "La Plantilla de la Huella no pudo ser creada, Repita el Proceso", "Inscripcion de Huellas Dactilares", JOptionPane.ERROR_MESSAGE);
+                start();
+                break;
+            }
+         }
+     }
+    }
+
+    public  DPFPFeatureSet extraerCaracteristicas(DPFPSample sample, DPFPDataPurpose purpose){
+     DPFPFeatureExtraction extractor = DPFPGlobal.getFeatureExtractionFactory().createFeatureExtraction();
+     try {
+      return extractor.createFeatureSet(sample, purpose);
+     } catch (DPFPImageQualityException e) {
+      return null;
+     }
+}
+    
+    public  void start(){
+        Lector.startCapture();
+//        EnviarTexto("Utilizando el Lector de Huella Dactilar ");
+    }
+
+    public  void stop(){
+        Lector.stopCapture();
+//        EnviarTexto("No se está usando el Lector de Huella Dactilar ");
+    }
+
+    public DPFPTemplate getTemplate() {
+        return template;
+    }
+
+    public void setTemplate(DPFPTemplate template) {
+        DPFPTemplate old = this.template;
+        this.template = template;
+        firePropertyChange(TEMPLATE_PROPERTY, old, template);
+    }
+    
+    public void identificarHuella() throws IOException{
+     try {
+         Establecimiento est=Drive.getPrimerEstablecimiento();
+         Iterator<Personal> it=est.getPersonals().iterator();
+         while(it.hasNext()){
+            Personal pp=it.next();
+            byte templateBuffer[] = pp.getCodigo();
+            DPFPTemplate referenceTemplate = DPFPGlobal.getTemplateFactory().createTemplate(templateBuffer);
+            setTemplate(referenceTemplate);
+            DPFPVerificationResult result = Verificador.verify(featuresverificacion, getTemplate());
+            if (result.isVerified()){
+                per=pp;
+                Date cal=Calendar.getInstance().getTime();
+                Iterator itt=pp.getAgendas().iterator();
+                while(itt.hasNext()){
+                    Agenda age=(Agenda)itt.next();
+                    Dia d=age.getDia();
+                    Iterator ittt=d.getIniciofins().iterator();
+                    while(ittt.hasNext()){
+                        Iniciofin cam=(Iniciofin)ittt.next();
+                        String s=new SimpleDateFormat("HH:mm").format(cal.getTime());
+                        SimpleDateFormat fo=new SimpleDateFormat("HH:mm");
+                        Date a=fo.parse(s);
+                        if(cam.getEstadoInicio()!=null){
+                            Calendar cel1=Calendar.getInstance();
+                            cel1.setTime(cam.getInicio());
+                            cel1.add(Calendar.MINUTE, -30);
+                            System.out.println(cam.getInicio());
+                            System.out.println(a);
+                            Calendar cel2=Calendar.getInstance();
+                            cel2.setTime(cam.getInicio());
+                            cel2.add(Calendar.MINUTE, 10);
+                            Calendar cel3=Calendar.getInstance();
+                            cel3.setTime(cam.getFin());
+                            cel3.add(Calendar.MINUTE, -10);
+                            if(cel1.getTime().compareTo(a) <=0 && cel2.getTime().compareTo(a)>=0){
+                                if(cam.getEstadoInicio()==false){
+                                    cam.setEstadoInicio(true);
+                                    cam.actualizarIniciofin(cam);
+                                }
+                            }else if(cel2.getTime().compareTo(a)<0 && cel3.getTime().compareTo(a)<=0){
+                                if(cam.getEstadoInicio()==false){
+                                    cam.setEstadoInicio(true);
+                                    cam.actualizarIniciofin(cam);
+                                    Asistencia asis=cam.getAsistencias().iterator().next();
+                                    asis.setEstado(true);
+                                    asis.setTardanza(true);
+                                    asis.setIniciofin(cam);
+                                    if(!Drive2.existeAsistencia(cam)){
+                                        asis.guardarAsistencia(asis);
+                                    }else{
+                                        asis.ActualizarAsistencia(asis);
+                                    }
+                                }
+                            }
+                        }
+                        if(cam.getEstadoFin()!=null){
+                            Calendar cel=Calendar.getInstance();
+                            cel.setTime(cam.getFin());
+                            cel.add(Calendar.MINUTE, 30);
+                            System.out.println(cam.getFin());
+                            System.out.println(a);
+                            Calendar cel2=Calendar.getInstance();
+                            cel2.setTime(cam.getInicio());
+                            cel2.add(Calendar.MINUTE, -10);
+                            if(cel.getTime().compareTo(a) >=0 && cel2.getTime().compareTo(a)<=0){
+                                if(cam.getEstadoFin()==false){
+                                    cam.setEstadoFin(true);
+                                    cam.actualizarIniciofin(cam);
+                                }
+                            }
+                        }
+                    }
+                    
+                }
+                JOptionPane.showMessageDialog(null, "Las huella capturada es de "+pp.toString(),"Verificacion de Huella", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+         }
+        JOptionPane.showMessageDialog(null, "No existe ningún registro que coincida con la huella", "Verificacion de Huella", JOptionPane.ERROR_MESSAGE);
+        setTemplate(null);
+       }catch (Exception e) {
+           System.err.println("Error al identificar huella dactilar."+e.getMessage());
+       }
+   }
+  
+    public void identificarHuella2() throws IOException{
+     try {
+         Establecimiento est=Drive.getPrimerEstablecimiento();
+         Iterator<Personal> it=est.getPersonals().iterator();
+         while(it.hasNext()){
+            Personal pp=it.next();
+            byte templateBuffer[] = pp.getCodigo();
+            DPFPTemplate referenceTemplate = DPFPGlobal.getTemplateFactory().createTemplate(templateBuffer);
+            setTemplate(referenceTemplate);
+            DPFPVerificationResult result = Verificador.verify(featuresverificacion, getTemplate());
+            if (result.isVerified()){
+                per=pp;
+                JOptionPane.showMessageDialog(null, "Las huella capturada es de "+pp.toString(),"Verificacion de Huella", JOptionPane.INFORMATION_MESSAGE);
+                JFrameActividades frame=new JFrameActividades(Drive,per);
+                this.hide();
+                frame.show();
+                return;
+            }
+         }
+        JOptionPane.showMessageDialog(null, "No existe ningún registro que coincida con la huella", "Verificacion de Huella", JOptionPane.ERROR_MESSAGE);
+        setTemplate(null);
+       }catch (Exception e) {
+           System.err.println("Error al identificar huella dactilar."+e.getMessage());
+       }
+   }
+    
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        try {
+            identificarHuella();
+            Reclutador.clear();
+        } catch (IOException ex) {
+            Logger.getLogger(jDigitalPersona.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        
+    }//GEN-LAST:event_formWindowOpened
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+                // TODO add your handling code here:
+    }//GEN-LAST:event_formWindowClosing
+
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
-            if (!jTextField1.getText().equals("") && !jTextField2.getText().equals("")) {
-                JFrameActividades vent2 = new JFrameActividades(Drive);
-                this.hide();
-                vent2.show();
-            } else if (jTextField1.getText().equals("")) {
-                JOptionPane.showMessageDialog(null, "El usuario no se encuentra registrado, dirigirse a la secretaría por favor", "¡ALERTA!", JOptionPane.ERROR_MESSAGE);
-            } else if (jTextField2.getText().equals("")) {
-                JOptionPane.showMessageDialog(null, "Usted no registra actividades en el día de la fecha");
-            }
-
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, "Ingrese correctamente los valores");
+            identificarHuella2();
+            Reclutador.clear();
+        } catch (IOException ex) {
+            Logger.getLogger(jDigitalPersona.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void formWindowDeactivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowDeactivated
+        stop();// TODO add your handling code here:
+    }//GEN-LAST:event_formWindowDeactivated
+
+    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+        Iniciar();
+	start();        // TODO add your handling code here:
+    }//GEN-LAST:event_formWindowActivated
     /**
      * @param args the command line arguments
      */
+     public static void main(String args[]) {
+        java.awt.EventQueue.invokeLater(new Runnable() {
+
+            public void run() {
+                new JFrameAsistencia().setVisible(true);
+            }
+        });
+    }
+     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
 }

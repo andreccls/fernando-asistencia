@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 31/01/2013 23:17:21 by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+  <class catalog="asistencia" name="Clases.Activo" table="activo">
+    <id name="idActivo" type="java.lang.Integer">
+      <column name="Id_activo"/>
+      <generator class="identity"/>
+    </id>
+    <many-to-one class="Clases.Nivel" fetch="select" name="nivel">
+      <column name="Id_nivel" not-null="true"/>
+    </many-to-one>
+    <property name="dia" type="string">
+      <column length="10" name="Dia"/>
+    </property>
+    <set inverse="true" name="activoIniciofins">
+      <key>
+        <column name="Id_activo" not-null="true"/>
+      </key>
+      <one-to-many class="Clases.ActivoIniciofin"/>
+    </set>
+  </class>
+</hibernate-mapping>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 31/01/2013 23:17:21 by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+  <class catalog="asistencia" name="Clases.Mes" table="mes">
+    <id name="idMes" type="java.lang.Integer">
+      <column name="Id_mes"/>
+      <generator class="identity"/>
+    </id>
+    <many-to-one class="Clases.Ano" fetch="select" name="ano">
+      <column name="Id_ano" not-null="true"/>
+    </many-to-one>
+    <property name="mes" type="java.lang.Integer">
+      <column name="Mes"/>
+    </property>
+    <set inverse="true" name="dias">
+      <key>
+        <column name="Id_mes" not-null="true"/>
+      </key>
+      <one-to-many class="Clases.Dia"/>
+    </set>
+  </class>
+</hibernate-mapping>

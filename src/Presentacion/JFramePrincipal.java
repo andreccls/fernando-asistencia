@@ -10,8 +10,22 @@
  */
 package Presentacion;
 
+import Clases.Agenda;
 import Clases.Controlador;
+import Clases.Declaracionjurada;
 import javax.swing.JOptionPane;
+import Clases.Personal;
+import Clases.Personaldocente;
+import Clases.Personalnodocente;
+import Clases.Telefono;
+import TareasProgramadas.Programacion;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Set;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+
+
 
 /**
  *
@@ -22,26 +36,27 @@ public class JFramePrincipal extends javax.swing.JFrame {
     /**
      * Creates new form JFramePrincipal
      */
+  
+    
     public JFramePrincipal() {
-
-        initComponents();
-        Inicio();
-
+    try {
+        this.setDefaultLookAndFeelDecorated( true );
+        UIManager.setLookAndFeel(new com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel());
+    }catch (Exception e){e.printStackTrace();}
+    initComponents();
+    Inicio();
+    new Programacion().iniciarTarea();
     }
     public Controlador Drive;
-
     private void Inicio() {
-
         Controlador auxDrive = new Controlador();
         try {
-
-            if (auxDrive.getColegio().equals(null)) {
+            if (auxDrive.getPrimerEstablecimiento()== null) {
                 JOptionPane.showMessageDialog(null, "Debe ingresar Colegio");
             } else {
-                auxDrive.getColegio();
+                auxDrive.getPrimerEstablecimiento();
                 Drive = auxDrive;
             }
-
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, ex.toString());
         }
@@ -64,9 +79,13 @@ public class JFramePrincipal extends javax.swing.JFrame {
         jMenu3 = new javax.swing.JMenu();
         jMenuItem5 = new javax.swing.JMenuItem();
         jMenuItem6 = new javax.swing.JMenuItem();
+        jMenuItem4 = new javax.swing.JMenuItem();
+        jMenuItem7 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
-        jMenuItem4 = new javax.swing.JMenuItem();
+        jMenuItem8 = new javax.swing.JMenuItem();
+        jMenuItem9 = new javax.swing.JMenuItem();
+        jMenuItem10 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("SISTEMA DE ASISTENCIA DEL PERSONAL");
@@ -89,7 +108,7 @@ public class JFramePrincipal extends javax.swing.JFrame {
             }
         });
 
-        jMenuItem1.setText("Docentes");
+        jMenuItem1.setText("Registrar");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem1ActionPerformed(evt);
@@ -97,7 +116,7 @@ public class JFramePrincipal extends javax.swing.JFrame {
         });
         jMenu1.add(jMenuItem1);
 
-        jMenuItem2.setText(" No docentes");
+        jMenuItem2.setText("Registrar Huella");
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem2ActionPerformed(evt);
@@ -125,20 +144,57 @@ public class JFramePrincipal extends javax.swing.JFrame {
         });
         jMenu3.add(jMenuItem6);
 
-        jMenuBar1.add(jMenu3);
-
-        jMenu2.setText("Consultar");
-
-        jMenuItem3.setText("Personal");
-        jMenu2.add(jMenuItem3);
-
-        jMenuItem4.setText("Actividades");
+        jMenuItem4.setText("Extracurricular");
         jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem4ActionPerformed(evt);
             }
         });
-        jMenu2.add(jMenuItem4);
+        jMenu3.add(jMenuItem4);
+
+        jMenuItem7.setText("Otros");
+        jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem7ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem7);
+
+        jMenuBar1.add(jMenu3);
+
+        jMenu2.setText("Consultar");
+
+        jMenuItem3.setText("Personal");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem3);
+
+        jMenuItem8.setText("Inasistencias");
+        jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem8ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem8);
+
+        jMenuItem9.setText("Actividades");
+        jMenuItem9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem9ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem9);
+
+        jMenuItem10.setText("Feriados");
+        jMenuItem10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem10ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem10);
 
         jMenuBar1.add(jMenu2);
 
@@ -163,36 +219,64 @@ public class JFramePrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenu1ActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-//       JFramePersonalDocente vent2 = new JFramePersonalDocente();
-//       this.hide();
-//       vent2.show();
-        JFrameActividades vent2 = new JFrameActividades(Drive);
-        this.hide();
-        vent2.show();
-        // TODO add your handling code here:
+       JFramePersonal vent2 = new JFramePersonal(Drive);
+       this.hide();
+       vent2.show();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        JFramePersonalNoDocente vent2 = new JFramePersonalNoDocente();
-        this.hide();
-        vent2.show();           // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
-
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
-        JFrameClase vent2 = new JFrameClase();
+        JFrameClase vent2 = new JFrameClase(Drive);
         this.hide();
-        vent2.show();           // TODO add your handling code here:
+        vent2.show();
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
-        JFrameReunion vent2 = new JFrameReunion();
+        JFrameReunion vent2 = new JFrameReunion(Drive);
         this.hide();
-        vent2.show();        // TODO add your handling code here:
+        vent2.show();
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        JFrameConsulta vent2 = new JFrameConsulta(Drive);
+        this.hide();
+        vent2.show();
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        jDigitalPersona vent2 = new jDigitalPersona(Drive);
+        this.hide();
+        vent2.show();        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        // TODO add your handling code here:
+        JFrameExtracurricular vent2 = new JFrameExtracurricular(Drive);
+        this.hide();
+        vent2.show();
     }//GEN-LAST:event_jMenuItem4ActionPerformed
+
+    private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
+        JFrameotro vent2 = new JFrameotro(Drive);
+        this.hide();
+        vent2.show();
+    }//GEN-LAST:event_jMenuItem7ActionPerformed
+
+    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
+        JFrameInasistencia vent2 = new JFrameInasistencia(Drive);
+        this.hide();
+        vent2.show();
+    }//GEN-LAST:event_jMenuItem8ActionPerformed
+
+    private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
+        JFrameConsultaActividades vent2 = new JFrameConsultaActividades(Drive);
+        this.hide();
+        vent2.show();
+    }//GEN-LAST:event_jMenuItem9ActionPerformed
+
+    private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
+        JFrameFeriados vent2 = new JFrameFeriados(Drive);
+        this.hide();
+        vent2.show();
+    }//GEN-LAST:event_jMenuItem10ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -211,11 +295,15 @@ public class JFramePrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
+    private javax.swing.JMenuItem jMenuItem7;
+    private javax.swing.JMenuItem jMenuItem8;
+    private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }

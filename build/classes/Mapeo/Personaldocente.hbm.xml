@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 31/01/2013 23:17:21 by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+  <class catalog="asistencia" name="Clases.Personaldocente" table="personaldocente">
+    <composite-id class="Clases.PersonaldocenteId" name="id">
+      <key-property name="idPersonal" type="int">
+        <column name="Id_personal"/>
+      </key-property>
+      <key-property name="idDocente" type="int">
+        <column name="Id_docente"/>
+      </key-property>
+    </composite-id>
+    <many-to-one class="Clases.Personal" fetch="select" insert="false" name="personal" update="false">
+      <column name="Id_personal" not-null="true"/>
+    </many-to-one>
+    <property name="cargohoras" type="int">
+      <column name="Cargohoras" not-null="true"/>
+    </property>
+    <property name="antiguedadDoc" type="int">
+      <column name="Antiguedad_doc" not-null="true"/>
+    </property>
+  </class>
+</hibernate-mapping>
