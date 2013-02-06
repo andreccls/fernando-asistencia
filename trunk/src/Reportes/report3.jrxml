@@ -4,19 +4,35 @@
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="45"/>
 	<queryString language="hql">
-		<![CDATA[from Establecimiento]]>
+		<![CDATA[from Personal]]>
 	</queryString>
+	<field name="agendas" class="java.util.Set"/>
 	<field name="altura" class="java.lang.Integer"/>
+	<field name="apellido" class="java.lang.String"/>
 	<field name="calle" class="java.lang.String"/>
+	<field name="correoElectronico" class="java.lang.String"/>
+	<field name="cuil" class="java.lang.String"/>
+	<field name="declaracionjurada" class="Clases.Declaracionjurada"/>
 	<field name="declaracionjuradas" class="java.util.Set"/>
-	<field name="departamentos" class="java.util.Set"/>
 	<field name="depto" class="java.lang.String"/>
-	<field name="detalleEstablecimientos" class="java.util.Set"/>
-	<field name="idEstablecimiento" class="java.lang.Integer"/>
+	<field name="dni" class="java.lang.String"/>
+	<field name="establecimiento" class="Clases.Establecimiento"/>
+	<field name="estado" class="java.lang.Boolean"/>
+	<field name="estadoCivil" class="java.lang.String"/>
+	<field name="familiar" class="java.lang.Boolean"/>
+	<field name="fechaNac" class="java.util.Date"/>
+	<field name="idPersonal" class="java.lang.Integer"/>
+	<field name="ingreso" class="java.util.Date"/>
 	<field name="nombre" class="java.lang.String"/>
-	<field name="personals" class="java.util.Set"/>
+	<field name="personalDepartamentos" class="java.util.Set"/>
+	<field name="personalFamiliarsForIdFamiliar" class="java.util.Set"/>
+	<field name="personalFamiliarsForIdPersonal" class="java.util.Set"/>
+	<field name="personaldocentes" class="java.util.Set"/>
+	<field name="personalnodocentes" class="java.util.Set"/>
 	<field name="piso" class="java.lang.String"/>
-	<field name="tareas" class="java.util.Set"/>
+	<field name="sexo" class="java.lang.String"/>
+	<field name="telefonos" class="java.util.Set"/>
+	<field name="tipodoc" class="Clases.Tipodoc"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
