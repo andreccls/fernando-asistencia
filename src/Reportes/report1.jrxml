@@ -4,35 +4,19 @@
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<queryString language="hql">
-		<![CDATA[from Personal]]>
+		<![CDATA[from Establecimiento]]>
 	</queryString>
-	<field name="agendas" class="java.util.Set"/>
 	<field name="altura" class="java.lang.Integer"/>
-	<field name="apellido" class="java.lang.String"/>
 	<field name="calle" class="java.lang.String"/>
-	<field name="correoElectronico" class="java.lang.String"/>
-	<field name="cuil" class="java.lang.String"/>
-	<field name="declaracionjurada" class="Clases.Declaracionjurada"/>
 	<field name="declaracionjuradas" class="java.util.Set"/>
+	<field name="departamentos" class="java.util.Set"/>
 	<field name="depto" class="java.lang.String"/>
-	<field name="dni" class="java.lang.String"/>
-	<field name="establecimiento" class="Clases.Establecimiento"/>
-	<field name="estado" class="java.lang.Boolean"/>
-	<field name="estadoCivil" class="java.lang.String"/>
-	<field name="familiar" class="java.lang.Boolean"/>
-	<field name="fechaNac" class="java.util.Date"/>
-	<field name="idPersonal" class="java.lang.Integer"/>
-	<field name="ingreso" class="java.util.Date"/>
+	<field name="detalleEstablecimientos" class="java.util.Set"/>
+	<field name="idEstablecimiento" class="java.lang.Integer"/>
 	<field name="nombre" class="java.lang.String"/>
-	<field name="personalDepartamentos" class="java.util.Set"/>
-	<field name="personalFamiliarsForIdFamiliar" class="java.util.Set"/>
-	<field name="personalFamiliarsForIdPersonal" class="java.util.Set"/>
-	<field name="personaldocentes" class="java.util.Set"/>
-	<field name="personalnodocentes" class="java.util.Set"/>
+	<field name="personals" class="java.util.Set"/>
 	<field name="piso" class="java.lang.String"/>
-	<field name="sexo" class="java.lang.String"/>
-	<field name="telefonos" class="java.util.Set"/>
-	<field name="tipodoc" class="Clases.Tipodoc"/>
+	<field name="tareas" class="java.util.Set"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -43,14 +27,20 @@
 		<band height="35" splitType="Stretch"/>
 	</pageHeader>
 	<columnHeader>
-		<band height="61" splitType="Stretch"/>
+		<band height="61" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="41" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[Apellido]]></text>
+			</staticText>
+		</band>
 	</columnHeader>
 	<detail>
 		<band height="26" splitType="Stretch">
 			<textField>
 				<reportElement mode="Transparent" x="0" y="0" width="100" height="20"/>
 				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{apellido}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{nombre}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

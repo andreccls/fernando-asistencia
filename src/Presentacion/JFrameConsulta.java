@@ -62,28 +62,28 @@ public class JFrameConsulta extends javax.swing.JFrame {
      * Creates new form JFrameConsulta
      */
     public Controlador Drive;
-    Personal per= new Personal();
-    StringBuffer buffer= new StringBuffer();
+    Personal per = new Personal();
+    StringBuffer buffer = new StringBuffer();
     HiloProgreso hilo;
     public static final String REPORTE_IMPORTE = "/Reportes/report1.jrxml";
-    
+
     public JFrameConsulta(Controlador unDrive) {
-        this.Drive=unDrive;
+        this.Drive = unDrive;
         initComponents();
         //Iniciamos el Hilo
         Controlador auxDrive = new Controlador();
         auxDrive.getPrimerEstablecimiento();
         Drive = auxDrive;
-        String buscar=(String) jComboBox1.getSelectedItem();
+        String buscar = (String) jComboBox1.getSelectedItem();
         Drive.CargarTablaFiltro(jTable1, buscar, jTextField1.getText());
         jTextField1.grabFocus();
-        int[] anchos1 = {40,150,75,80,80,150,100,80};
-        for(int i = 0; i < jTable1.getColumnCount(); i++) {
+        int[] anchos1 = {40, 150, 75, 80, 80, 150, 100, 80};
+        for (int i = 0; i < jTable1.getColumnCount(); i++) {
             jTable1.getColumnModel().getColumn(i).setPreferredWidth(anchos1[i]);
         }
         jTable1.getTableHeader().setDefaultRenderer(new HeaderRenderer(jTable1));
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -266,24 +266,24 @@ public class JFrameConsulta extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        int confirmado = JOptionPane.showConfirmDialog(null,"¿Desea volver al menú principal?","",JOptionPane.YES_NO_OPTION);
-        if (JOptionPane.OK_OPTION == confirmado){
+        int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea volver al menú principal?", "", JOptionPane.YES_NO_OPTION);
+        if (JOptionPane.OK_OPTION == confirmado) {
             this.dispose();
             vp.show();
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        Establecimiento col= Drive.getPrimerEstablecimiento();
+        Establecimiento col = Drive.getPrimerEstablecimiento();
         jTable1.getModel();
         int fila = Integer.parseInt(jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString());
-        if ((fila > -1)){
-            per=col.getPersonal(fila);
+        if ((fila > -1)) {
+            per = col.getPersonal(fila);
         }
         iniciarSplash();
-        hilo=new HiloProgreso(jProgressBar1,this,Drive,per);
+        hilo = new HiloProgreso(jProgressBar1, this, Drive, per);
         hilo.start();
-        hilo=null;
+        hilo = null;
     }//GEN-LAST:event_jButton4ActionPerformed
 
 //    public void HiloProgres(JProgressBar progreso1) {
@@ -307,17 +307,17 @@ public class JFrameConsulta extends javax.swing.JFrame {
 //    }catch(Exception e){}
 //}
     private void jTable1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseReleased
-        if(evt.getClickCount()==2){
-            Establecimiento col= Drive.getPrimerEstablecimiento();
+        if (evt.getClickCount() == 2) {
+            Establecimiento col = Drive.getPrimerEstablecimiento();
             jTable1.getModel();
             int fila = jTable1.rowAtPoint(evt.getPoint());
-            if ((fila > -1)){
-                per=col.getPersonal(Integer.parseInt(jTable1.getValueAt(fila,0).toString()));
+            if ((fila > -1)) {
+                per = col.getPersonal(Integer.parseInt(jTable1.getValueAt(fila, 0).toString()));
             }
             iniciarSplash();
-            hilo=new HiloProgreso(jProgressBar1,this,Drive,per);
+            hilo = new HiloProgreso(jProgressBar1, this, Drive, per);
             hilo.start();
-            hilo=null;
+            hilo = null;
         }
     }//GEN-LAST:event_jTable1MouseReleased
 
@@ -326,46 +326,45 @@ public class JFrameConsulta extends javax.swing.JFrame {
     }//GEN-LAST:event_jTable1MouseEntered
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
-
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        int confirmado = JOptionPane.showConfirmDialog(null,"¿Desea eliminar el personal y todas sus actividades?","",JOptionPane.YES_NO_OPTION);
-        if (JOptionPane.OK_OPTION == confirmado){
-            Establecimiento col= Drive.getPrimerEstablecimiento();
+        int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea eliminar el personal y todas sus actividades?", "", JOptionPane.YES_NO_OPTION);
+        if (JOptionPane.OK_OPTION == confirmado) {
+            Establecimiento col = Drive.getPrimerEstablecimiento();
             jTable1.getModel();
-            Personal per=col.getPersonal(Integer.parseInt(jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString()));
-            if(per.getEstado()==true){
+            Personal per = col.getPersonal(Integer.parseInt(jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString()));
+            if (per.getEstado() == true) {
                 per.setEstado(false);
                 per.actualizarPersonal(per);
             }
             Drive.LimpiarTabla(jTable1);
-            String buscar=(String) jComboBox1.getSelectedItem();
+            String buscar = (String) jComboBox1.getSelectedItem();
             Drive.CargarTablaFiltro(jTable1, buscar, jTextField1.getText().toUpperCase());
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         Drive.LimpiarTabla(jTable1);
-        String buscar=(String) jComboBox1.getSelectedItem();
+        String buscar = (String) jComboBox1.getSelectedItem();
         Drive.CargarTablaFiltro(jTable1, buscar, jTextField1.getText().toUpperCase());// TODO add your handling code here:
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTextField1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyTyped
         Drive.LimpiarTabla(jTable1);
-        char car=evt.getKeyChar();
-        int m= buffer.capacity();
-        if((car>='a' && car<='z') || (car>='A' && car<='Z')){
+        char car = evt.getKeyChar();
+        int m = buffer.capacity();
+        if ((car >= 'a' && car <= 'z') || (car >= 'A' && car <= 'Z')) {
             buffer.append(evt.getKeyChar());
-            String es=buffer.toString();
-            String buscar=(String) jComboBox1.getSelectedItem();
-            Drive.CargarTablaFiltro(jTable1,buscar, es.toUpperCase());
-        }else if(car==(char)KeyEvent.VK_BACK_SPACE){
-            buffer.deleteCharAt(buffer.length()-1);
-            String es=buffer.toString();
-            String buscar=(String) jComboBox1.getSelectedItem();
-            Drive.CargarTablaFiltro(jTable1,buscar, es.toUpperCase());
+            String es = buffer.toString();
+            String buscar = (String) jComboBox1.getSelectedItem();
+            Drive.CargarTablaFiltro(jTable1, buscar, es.toUpperCase());
+        } else if (car == (char) KeyEvent.VK_BACK_SPACE) {
+            buffer.deleteCharAt(buffer.length() - 1);
+            String es = buffer.toString();
+            String buscar = (String) jComboBox1.getSelectedItem();
+            Drive.CargarTablaFiltro(jTable1, buscar, es.toUpperCase());
         }
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField1KeyTyped
@@ -374,8 +373,8 @@ public class JFrameConsulta extends javax.swing.JFrame {
             String SO = System.getProperty("os.name");
             String master;
             if (SO.toUpperCase().equals("LINUX")) {
-                master = System.getProperty("user.dir") + "//src//Reportes//" + report + ".jasper";
-            }else{
+                master = System.getProperty("user.dir") + "/src/Reportes/" + report + ".jasper";
+            } else {
                 master = System.getProperty("user.dir") + "\\src\\Reportes\\" + report + ".jasper";
             }
             System.out.println("Dirección del Reporte en disco: " + master);
@@ -390,18 +389,17 @@ public class JFrameConsulta extends javax.swing.JFrame {
 
             } catch (JRException e) {
                 //javax.swing.JOptionPane msj=new javax.swing.JOptionPane() ;
-
                 JOptionPane.showMessageDialog(null, "Error al cargar el reporte", "Error", 2, null);
             }
             Map parametro = new HashMap();
             parametro = null;
             JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(Controlador.PERSISTENCIA.getPersonales());
-            //HibernateQueryResultDataSource ds = new HibernateQueryResultDataSource(usuarios,campos);
+//            HibernateQueryResultDataSource ds = new HibernateQueryResultDataSource(usuarios,campos);
             //Reporte diseñado y compilado con iReport
-            JasperPrint jasperPrint = JasperFillManager.fillReport(masterReport, parametro, ds);
+            JasperPrint jasperPrint = JasperFillManager.fillReport(masterReport, new HashMap(),ds);
             //Se lanza el Viewer de Jasper, no termina aplicación al salir
             JasperViewer jviewer = new JasperViewer(jasperPrint, false);
-            jviewer.setTitle("Reporte BD Alumnos");
+            jviewer.setTitle("Reporte");
             jviewer.setVisible(true);
             // CerrarConex();
         } catch (Exception j) {
@@ -468,11 +466,10 @@ public class JFrameConsulta extends javax.swing.JFrame {
 //        }
 //    }
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        
-        mostrarReporte("report1");
-    }//GEN-LAST:event_jButton5ActionPerformed
 
-    Frame vp=new JFramePrincipal(); 
+        mostrarReporte("report3");
+    }//GEN-LAST:event_jButton5ActionPerformed
+    Frame vp = new JFramePrincipal();
 
     /**
      * @return the jPanel3
@@ -480,18 +477,16 @@ public class JFrameConsulta extends javax.swing.JFrame {
     public javax.swing.JProgressBar getjProgressBar1() {
         return jProgressBar1;
     }
-    
+
     public final void iniciarSplash() {
-    this.getjProgressBar1().setBorderPainted(true);
-    this.getjProgressBar1().setForeground(new Color(50, 50, 153, 100));
-    this.getjProgressBar1().setStringPainted(true);
-}
+        this.getjProgressBar1().setBorderPainted(true);
+        this.getjProgressBar1().setForeground(new Color(50, 50, 153, 100));
+        this.getjProgressBar1().setStringPainted(true);
+    }
 
     /**
      * @return the jProgressBar1
      */
-    
-    
 //     public void Progress() {
 //  //super("Progress");
 //  
@@ -504,23 +499,23 @@ public class JFrameConsulta extends javax.swing.JFrame {
 //  pane.add(current);
 //  setContentPane(pane);
 //  }
-     
     private static class HeaderRenderer implements TableCellRenderer {
+
         DefaultTableCellRenderer renderer;
+
         public HeaderRenderer(JTable table) {
-            renderer = (DefaultTableCellRenderer)
-                table.getTableHeader().getDefaultRenderer();
+            renderer = (DefaultTableCellRenderer) table.getTableHeader().getDefaultRenderer();
             renderer.setHorizontalAlignment(JLabel.CENTER);
         }
+
         @Override
         public Component getTableCellRendererComponent(
-            JTable table, Object value, boolean isSelected,
-            boolean hasFocus, int row, int col) {
+                JTable table, Object value, boolean isSelected,
+                boolean hasFocus, int row, int col) {
             return renderer.getTableCellRendererComponent(
-                table, value, isSelected, hasFocus, row, col);
+                    table, value, isSelected, hasFocus, row, col);
         }
     }
-    
     /**
      * @param args the command line arguments
      */
@@ -570,5 +565,4 @@ public class JFrameConsulta extends javax.swing.JFrame {
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
-
 }
