@@ -12,9 +12,12 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Frame;
 import java.awt.event.KeyEvent;
+import java.util.Iterator;
+import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.DefaultTableCellRenderer;
 
@@ -70,6 +73,7 @@ public class JFrameConsultaActividades extends javax.swing.JFrame {
         jButton4 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jProgressBar1 = new javax.swing.JProgressBar();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -105,7 +109,7 @@ public class JFrameConsultaActividades extends javax.swing.JFrame {
                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jButton1)
-                .addContainerGap(49, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -164,6 +168,13 @@ public class JFrameConsultaActividades extends javax.swing.JFrame {
             }
         });
 
+        jButton2.setText("Imprimir");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -172,9 +183,11 @@ public class JFrameConsultaActividades extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 490, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jProgressBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton2)
                         .addGap(18, 18, 18)
                         .addComponent(jButton4)
                         .addGap(18, 18, 18)
@@ -192,7 +205,8 @@ public class JFrameConsultaActividades extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE, false)
                         .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton2))
                     .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
@@ -297,6 +311,40 @@ public class JFrameConsultaActividades extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        try{
+            JTextField salida = new JTextField();
+            String cadSalida;
+            salida.setText("");
+            salida.setSize(25, 25);
+            //" 'C' Clases,'E' Actividades estracurriculares,'R' Reuniones,'O' Otros,'T' Todos" +
+            JOptionPane.showMessageDialog(null,salida, "¿Que desea imprimir?", JOptionPane.INFORMATION_MESSAGE);
+            if(!salida.getText().isEmpty()){
+                cadSalida = salida.getText().toUpperCase();
+                if (cadSalida.equals("C")) {
+                    List consulta = Controlador.getPERSISTENCIA().getTareasClasesTrue(1);
+                    Drive.mostrarReporte("Clases", consulta, "Lista Clases");
+                } else if (cadSalida.equals("E")) {
+                    List consulta = Controlador.getPERSISTENCIA().getTareasExtracurricularTrue(1);
+                    Drive.mostrarReporte("ListaPersonal", consulta, "Lista Personal");
+                } else if (cadSalida.equals("R")) {
+                    List consulta = Controlador.getPERSISTENCIA().getTareasReunionTrue(1);
+                    Drive.mostrarReporte("ListaPersonal", consulta, "Lista Personal");
+                } else if (cadSalida.equals("O")) {
+                    List consulta = Controlador.getPERSISTENCIA().getTareasOtroTrue(1);
+                    Drive.mostrarReporte("ListaPersonal", consulta, "Lista Personal");
+                } else if (cadSalida.equals("T")) {
+                    List consulta = Controlador.getPERSISTENCIA().getTareasTrue(1);
+                    Drive.mostrarReporte("Actividades", consulta, "Lista Actividades");
+                }
+            }
+        }catch (Exception e){
+            JOptionPane.showMessageDialog(null,"Ingrese correctamente los datos");
+        }
+//        List consulta=Controlador.getPERSISTENCIA().getPersonalesTrue(1);
+//        Drive.mostrarReporte("ListaPersonal",consulta,"Lista Personal");
+    }//GEN-LAST:event_jButton2ActionPerformed
+
     private static class HeaderRenderer implements TableCellRenderer {
         DefaultTableCellRenderer renderer;
         public HeaderRenderer(JTable table) {
@@ -348,6 +396,7 @@ public class JFrameConsultaActividades extends javax.swing.JFrame {
 //    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JComboBox jComboBox1;

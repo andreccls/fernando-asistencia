@@ -192,11 +192,53 @@ public class JFrameotro extends javax.swing.JFrame {
 
     jLabel1.setText("Dia fin:");
 
-    jButton2.setText("Cancelar");
-    jButton2.addActionListener(new java.awt.event.ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent evt) {
-            jButton2ActionPerformed(evt);
-        }
+    dateChooserCombo2.setCurrentView(new datechooser.view.appearance.AppearancesList("Grey",
+        new datechooser.view.appearance.ViewAppearance("custom",
+            new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 11),
+                new java.awt.Color(0, 0, 0),
+                new java.awt.Color(0, 0, 255),
+                false,
+                true,
+                new datechooser.view.appearance.swing.ButtonPainter()),
+            new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 11),
+                new java.awt.Color(0, 0, 0),
+                new java.awt.Color(0, 0, 255),
+                true,
+                true,
+                new datechooser.view.appearance.swing.ButtonPainter()),
+            new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 11),
+                new java.awt.Color(0, 0, 255),
+                new java.awt.Color(0, 0, 255),
+                false,
+                true,
+                new datechooser.view.appearance.swing.ButtonPainter()),
+            new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 11),
+                new java.awt.Color(128, 128, 128),
+                new java.awt.Color(0, 0, 255),
+                false,
+                true,
+                new datechooser.view.appearance.swing.LabelPainter()),
+            new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 11),
+                new java.awt.Color(0, 0, 0),
+                new java.awt.Color(0, 0, 255),
+                false,
+                true,
+                new datechooser.view.appearance.swing.LabelPainter()),
+            new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 11),
+                new java.awt.Color(0, 0, 0),
+                new java.awt.Color(255, 0, 0),
+                false,
+                false,
+                new datechooser.view.appearance.swing.ButtonPainter()),
+            (datechooser.view.BackRenderer)null,
+            false,
+            true)));
+
+jButton2.setText("Cancelar");
+jButton2.addActionListener(new java.awt.event.ActionListener() {
+    public void actionPerformed(java.awt.event.ActionEvent evt) {
+        jButton2ActionPerformed(evt);
+    }
     });
 
     jButton1.setText("Aceptar");
@@ -411,65 +453,72 @@ public class JFrameotro extends javax.swing.JFrame {
                     while(jTable1.getRowCount()!=c){
                         if(modelo.getValueAt(c, 0).equals(true)){
                             Personal per=(Personal) modelo.getValueAt(c, 1);
-                            AgendaId ida=new AgendaId(per.getIdPersonal(),tar.getIdTarea());
-                            Agenda age=new Agenda();
-                            age.setId(ida);
-                            age.setPersonal(per);
-                            Revista rev=(Revista) Drive.PERSISTENCIA.getSitRevista().get(0);
-                            age.setRevista(rev);
-                            age.setTarea(tar);
-                            age.setComentario(null);
-                            age.guardarAgenda(age);
-                            ///Guarda el dia y hora de inicio
-                            Ano anio=new Ano();
-                            anio.setAgenda(age);
-                            anio.setAno(fecha_inicio.getYear()+1900);
-                            anio.guardarAno(anio);
-                            Mes mes=new Mes();
-                            mes.setAno(anio);
-                            mes.setMes(fecha_inicio.getMonth());
-                            mes.guardarMes(mes);
-                            Dia dia=new Dia();
-                            dia.setMes(mes);
-                            dia.setDia(fecha_inicio.getDate());
-                            dia.guardarDia(dia);
-                            Iniciofin in=new Iniciofin();
-                            in.setDia(dia);
-                            in.setInicio(inicio);
-    ////                        if(jRadioButton1.isSelected()){
-    ////                            in.setEstadoInicio(false);
-    ////                        }
-                            in.guardarIniciofin(in);
-                            ///Guarda el dia y hora de fin
-                            Ano anioo=new Ano();
-                            Mes mess=new Mes();
-                            Dia diaa=new Dia();
-                            if(fecha_inicio.getYear()!=fecha_fin.getYear()||fecha_inicio.getMonth()!=fecha_fin.getMonth()||fecha_inicio.getDate()!=fecha_fin.getDate()){
-                                if(fecha_inicio.getYear()!=fecha_fin.getYear()){
-                                    anioo.setAgenda(age);
-                                    anioo.setAno(fecha_fin.getYear()+1900);
-                                    anioo.guardarAno(anioo);
-                                }
-                                if(fecha_inicio.getMonth()!=fecha_fin.getMonth()){
-                                    mess.setAno(anioo);
-                                    mess.setMes(fecha_fin.getMonth());
-                                    mess.guardarMes(mess);
-                                }
-                                if(fecha_inicio.getDate()!=fecha_fin.getDate()){
-                                    diaa.setMes(mess);
-                                    diaa.setDia(fecha_fin.getDate());
-                                    diaa.guardarDia(diaa);
-                                    Iniciofin finn=new Iniciofin();
-                                    finn.setDia(diaa);
-                                    finn.setFin(fin);
-                                    finn.guardarIniciofin(finn);
-                                }
-                            }else{
-                                in.setFin(fin);
+                            Iniciofin aux=new Iniciofin();
+                            aux.setInicio(inicio);
+                            aux.setFin(fin);
+                            if(per.VerificarDisponibilidadExtraotro(fecha_inicio,  inicio,fin, fecha_fin)){
+                                AgendaId ida=new AgendaId(per.getIdPersonal(),tar.getIdTarea());
+                                Agenda age=new Agenda();
+                                age.setId(ida);
+                                age.setPersonal(per);
+                                Revista rev=(Revista) Drive.PERSISTENCIA.getSitRevista().get(0);
+                                age.setRevista(rev);
+                                age.setTarea(tar);
+                                age.setComentario(null);
+                                age.guardarAgenda(age);
+                                ///Guarda el dia y hora de inicio
+                                Ano anio=new Ano();
+                                anio.setAgenda(age);
+                                anio.setAno(fecha_inicio.getYear()+1900);
+                                anio.guardarAno(anio);
+                                Mes mes=new Mes();
+                                mes.setAno(anio);
+                                mes.setMes(fecha_inicio.getMonth());
+                                mes.guardarMes(mes);
+                                Dia dia=new Dia();
+                                dia.setMes(mes);
+                                dia.setDia(fecha_inicio.getDate());
+                                dia.guardarDia(dia);
+                                Iniciofin in=new Iniciofin();
+                                in.setDia(dia);
+                                in.setInicio(inicio);
+        ////                        if(jRadioButton1.isSelected()){
+        ////                            in.setEstadoInicio(false);
+        ////                        }
                                 in.guardarIniciofin(in);
+                                ///Guarda el dia y hora de fin
+                                Ano anioo=new Ano();
+                                Mes mess=new Mes();
+                                Dia diaa=new Dia();
+                                if(fecha_inicio.getYear()!=fecha_fin.getYear()||fecha_inicio.getMonth()!=fecha_fin.getMonth()||fecha_inicio.getDate()!=fecha_fin.getDate()){
+                                    if(fecha_inicio.getYear()!=fecha_fin.getYear()){
+                                        anioo.setAgenda(age);
+                                        anioo.setAno(fecha_fin.getYear()+1900);
+                                        anioo.guardarAno(anioo);
+                                    }
+                                    if(fecha_inicio.getMonth()!=fecha_fin.getMonth()){
+                                        mess.setAno(anioo);
+                                        mess.setMes(fecha_fin.getMonth());
+                                        mess.guardarMes(mess);
+                                    }
+                                    if(fecha_inicio.getDate()!=fecha_fin.getDate()){
+                                        diaa.setMes(mess);
+                                        diaa.setDia(fecha_fin.getDate());
+                                        diaa.guardarDia(diaa);
+                                        Iniciofin finn=new Iniciofin();
+                                        finn.setDia(diaa);
+                                        finn.setFin(fin);
+                                        finn.guardarIniciofin(finn);
+                                    }
+
+                                }else{
+                                    in.setFin(fin);
+                                    in.guardarIniciofin(in);
+                                }
                             }
 
                         }
+                        
                         c++;
                     }
                     jFormattedTextField1.setText("");

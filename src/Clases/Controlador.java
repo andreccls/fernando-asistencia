@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -23,7 +24,16 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JCheckBox;
 import javax.swing.JTextField;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -600,7 +610,7 @@ public class Controlador {
                                while(itd.hasNext()){
                                    Dia di=(Dia) itd.next();
                                    Iterator itini=di.getIniciofins().iterator();
-                                   while(itini.hasNext()){
+                                   while(itini.hasNext()){                                    
                                        Iniciofin ini=(Iniciofin)itini.next();
                                        Tareaclase tarcla=tar.getTareaclases().iterator().next();
                                        Date fecha=new Date();
@@ -666,56 +676,82 @@ public class Controlador {
                 }
             }else if(!tar.getTareaextracurriculars().isEmpty()){
                 if (tar.getEstado() == true) {
+                    Object fila[] = new Object[7];
                     Iterator it=tar.getAgendas().iterator();
                     while(it.hasNext()){
-                       Agenda age=(Agenda) it.next();
-                       Object fila[] = new Object[7];
-                       Tareaextracurricular tarreu=tar.getTareaextracurriculars().iterator().next();
-                       String vacio="";
-                       Date fechaini=new Date();
-                       Date fechafin=new Date();
-                       fechaini.setYear(tarreu.getDiaInicio().getYear()-1900);
-                       fechaini.setMonth(tarreu.getDiaInicio().getMonth());
-                       fechaini.setDate(tarreu.getDiaInicio().getDate());
-                       fechafin.setYear(tarreu.getDiaFin().getYear()-1900);
-                       fechafin.setMonth(tarreu.getDiaFin().getMonth());
-                       fechafin.setDate(tarreu.getDiaFin().getDate());
-                       fila[0] = age.getPersonal().toString();
-                       fila[1] = vacio;
-                       fila[2] = vacio;
-                       fila[3] = vacio;
-                       SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");                       
-                       fila[4] = formateador.format(fechaini);
-                       fila[5] = formateador.format(fechaini);
-                       fila[6] = formateador.format(fechafin);
-                        modelo.addRow(fila);
+                        Agenda age=(Agenda) it.next();
+                        Iterator ita=age.getAnos().iterator();
+                        while(ita.hasNext()){
+                           Ano an=(Ano) ita.next();
+                           Iterator itm=an.getMeses().iterator();
+                           while(itm.hasNext()){
+                               Mes me=(Mes) itm.next();
+                               Iterator itd=me.getDias().iterator();
+                               while(itd.hasNext()){
+                                   Dia di=(Dia) itd.next();
+                                   Iterator itini=di.getIniciofins().iterator();
+                                   while(itini.hasNext()){
+                                       Iniciofin ini=(Iniciofin)itini.next();
+                                       Tareaextracurricular tarreu=tar.getTareaextracurriculars().iterator().next();
+                                       Date fecha=new Date();
+                                       String vacio="";
+                                       fecha.setYear(an.getAno()-1900);
+                                       fecha.setMonth(me.getMes());
+                                       fecha.setDate(di.getDia());
+                                       fila[0] = age.getPersonal().toString();
+                                       fila[1] = tar.getComentario();
+                                       fila[2] = vacio;
+                                       SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+                                       SimpleDateFormat formateador2 = new SimpleDateFormat("HH:mm");
+                                       fila[3] = formateador.format(tarreu.getDiaFin());
+                                       fila[4] = formateador.format(fecha);
+                                       fila[5] = formateador2.format(ini.getInicio());
+                                       fila[6] = formateador2.format(ini.getFin());
+                                       modelo.addRow(fila);
+                                   }
+                               }
+                           }
+                        }
                     }
                 }
             }else if(!tar.getTareaotros().isEmpty()){
                 if (tar.getEstado() == true) {
+                    Object fila[] = new Object[7];
                     Iterator it=tar.getAgendas().iterator();
                     while(it.hasNext()){
-                       Agenda age=(Agenda) it.next();
-                       Object fila[] = new Object[7];
-                       Tareaotro tarotro=tar.getTareaotros().iterator().next();
-                       String vacio="";
-                       Date fechaini=new Date();
-                       Date fechafin=new Date();
-                       fechaini.setYear(tarotro.getDiaInicio().getYear()-1900);
-                       fechaini.setMonth(tarotro.getDiaInicio().getMonth());
-                       fechaini.setDate(tarotro.getDiaInicio().getDate());
-                       fechafin.setYear(tarotro.getDiaFin().getYear()-1900);
-                       fechafin.setMonth(tarotro.getDiaFin().getMonth());
-                       fechafin.setDate(tarotro.getDiaFin().getDate());
-                       fila[0] = age.getPersonal().toString();
-                       fila[1] = tarotro.getCaracteristica();
-                       fila[2] = vacio;
-                       fila[3] = vacio;
-                       SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
-                       fila[4] = formateador.format(fechaini);
-                       fila[5] = formateador.format(fechaini);
-                       fila[6] = formateador.format(fechafin);
-                       modelo.addRow(fila);
+                        Agenda age=(Agenda) it.next();
+                        Iterator ita=age.getAnos().iterator();
+                        while(ita.hasNext()){
+                           Ano an=(Ano) ita.next();
+                           Iterator itm=an.getMeses().iterator();
+                           while(itm.hasNext()){
+                               Mes me=(Mes) itm.next();
+                               Iterator itd=me.getDias().iterator();
+                               while(itd.hasNext()){
+                                   Dia di=(Dia) itd.next();
+                                   Iterator itini=di.getIniciofins().iterator();
+                                   while(itini.hasNext()){
+                                       Iniciofin ini=(Iniciofin)itini.next();
+                                       Tareaotro tarreu=tar.getTareaotros().iterator().next();
+                                       Date fecha=new Date();
+                                       String vacio="";
+                                       fecha.setYear(an.getAno()-1900);
+                                       fecha.setMonth(me.getMes());
+                                       fecha.setDate(di.getDia());
+                                       fila[0] = age.getPersonal().toString();
+                                       fila[1] = tar.getComentario();
+                                       fila[2] = vacio;
+                                       fila[3] = vacio;
+                                       SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+                                       SimpleDateFormat formateador2 = new SimpleDateFormat("HH:mm");
+                                       fila[4] = formateador.format(fecha);
+                                       fila[5] = formateador2.format(ini.getInicio());
+                                       fila[6] = formateador2.format(ini.getFin());
+                                       modelo.addRow(fila);
+                                   }
+                               }
+                           }
+                        }
                     }
                 }
             }
@@ -1015,7 +1051,49 @@ public class Controlador {
                 band=true;
                 break;
             }
+            c++;
         }
         return band;
+    }
+     
+     public void mostrarReporte(String report, List consulta,String titulo) {
+        try {
+            String SO = System.getProperty("os.name");
+            String master;
+            if (SO.toUpperCase().equals("LINUX")) {
+                master = System.getProperty("user.dir") + "/src/Reportes/" + report + ".jasper";
+            } else {
+                master = System.getProperty("user.dir") + "\\src\\Reportes\\" + report + ".jasper";
+            }
+            System.out.println("Dirección del Reporte en disco: " + master);
+            if (master == null) {
+                //javax.swing.JOptionPane msj=new javax.swing.JOptionPane() ;
+                JOptionPane.showMessageDialog(null, "No se encontro el Reporte", "Error", 2, null);
+            }
+            //--------------------------------------------------------------------------------------------------------
+            JasperReport masterReport = null;
+            try {
+                masterReport = (JasperReport) JRLoader.loadObject(master);
+
+            } catch (JRException e) {
+                //javax.swing.JOptionPane msj=new javax.swing.JOptionPane() ;
+                JOptionPane.showMessageDialog(null, "Error al cargar el reporte", "Error", 2, null);
+            }
+//            Map parametro = new HashMap();
+//            parametro = null;
+            JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(consulta);
+//            HibernateQueryResultDataSource ds = new HibernateQueryResultDataSource(usuarios,campos);
+            //Reporte diseñado y compilado con iReport
+            JasperPrint jasperPrint = JasperFillManager.fillReport(masterReport, new HashMap(),ds);
+            //Se lanza el Viewer de Jasper, no termina aplicación al salir
+            JasperViewer jviewer = new JasperViewer(jasperPrint, false);
+            jviewer.setTitle(titulo);
+            jviewer.setVisible(true);
+            // CerrarConex();
+        } catch (Exception j) {
+            //javax.swing.JOptionPane msj=new javax.swing.JOptionPane() ;
+            JOptionPane.showMessageDialog(null, "Error al cargar el reporte", "Error", 2, null);
+        }
+
     }
 }

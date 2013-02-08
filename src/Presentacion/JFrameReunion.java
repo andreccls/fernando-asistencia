@@ -441,6 +441,7 @@ public class JFrameReunion extends javax.swing.JFrame {
                     while(jTable1.getRowCount()!=c){
                         if(modelo.getValueAt(c, 0).equals(true)){
                             Personal per=(Personal) modelo.getValueAt(c, 1);
+                            
                             Iniciofin aux=new Iniciofin();
                             aux.setInicio(inicio);
                             aux.setFin(fin);
