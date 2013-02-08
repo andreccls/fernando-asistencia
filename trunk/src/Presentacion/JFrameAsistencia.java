@@ -37,6 +37,7 @@ import com.digitalpersona.onetouch.processing.DPFPFeatureExtraction;
 import com.digitalpersona.onetouch.processing.DPFPImageQualityException;
 import com.digitalpersona.onetouch.verification.DPFPVerification;
 import com.digitalpersona.onetouch.verification.DPFPVerificationResult;
+import java.awt.Image;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.sql.Time;
@@ -74,7 +75,10 @@ public class JFrameAsistencia extends javax.swing.JFrame {
         Drive = auxDrive;
         jButton3.setEnabled(false);
         jButton1.setEnabled(false);
-
+        ImageIcon fott = new ImageIcon("C:\\Users\\fer\\Desktop\\Tesis\\tesisanalista\\src\\imagenes\\gutenberg.png");
+        Icon icono4 = new ImageIcon(fott.getImage().getScaledInstance(jLabel1.getWidth(), jLabel1.getHeight(), Image.SCALE_DEFAULT));
+        jLabel1.setIcon(icono4);
+        jLabel1.repaint();
     }
 
     /**
@@ -88,9 +92,11 @@ public class JFrameAsistencia extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("SISTEMA DE ASISTENCIA DEL PERSONAL");
@@ -110,10 +116,11 @@ public class JFrameAsistencia extends javax.swing.JFrame {
         });
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel1.setText("BIENVENIDOS AL SISTEMA DE ASISTENCIA DEL PERSONAL");
-
-        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel2.setText("REGISTRESE Y PRESIONE ACEPTAR");
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jLabel1.setFocusable(false);
+        jLabel1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jLabel1.setOpaque(true);
 
         jButton3.setText("Registrar");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -129,34 +136,55 @@ public class JFrameAsistencia extends javax.swing.JFrame {
             }
         });
 
+        jLabel3.setFont(new java.awt.Font("Segoe Script", 3, 12)); // NOI18N
+        jLabel3.setText("Bienvenido al Sistema de Asistencia de Personal Educativo (S.A.P.E.)");
+
+        jLabel4.setText("Incorporado a la Enseñanza oficial N º441"); // NOI18N
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 3, 12)); // NOI18N
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("INSTITUTO \"GUTENBERG\"");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(31, 31, 31)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(137, 137, 137)
-                        .addComponent(jButton3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
-                        .addComponent(jButton1))
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addGap(81, 81, 81)
-                            .addComponent(jLabel2)
-                            .addGap(43, 43, 43))))
+                        .addGap(129, 129, 129)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jButton1)))))
                 .addContainerGap())
         );
+
+        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jLabel1, jLabel2, jLabel4});
+
+        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jButton1, jButton3});
+
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(112, 112, 112)
-                .addComponent(jLabel1)
-                .addGap(18, 18, 18)
+                .addContainerGap()
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 123, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton3)
                     .addComponent(jButton1))
@@ -167,10 +195,10 @@ public class JFrameAsistencia extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -306,8 +334,8 @@ public class JFrameAsistencia extends javax.swing.JFrame {
     
     public void identificarHuella() throws IOException{
      try {
-         Establecimiento est=Drive.getPrimerEstablecimiento();
-         Iterator<Personal> it=est.getPersonals().iterator();
+         //Establecimiento est=Drive.getPrimerEstablecimiento();
+         Iterator<Personal> it=Drive.PERSISTENCIA.getPersonalesTrue(1).iterator();
          while(it.hasNext()){
             Personal pp=it.next();
             byte templateBuffer[] = pp.getCodigo();
@@ -343,6 +371,7 @@ public class JFrameAsistencia extends javax.swing.JFrame {
                                 if(cam.getEstadoInicio()==false){
                                     cam.setEstadoInicio(true);
                                     cam.actualizarIniciofin(cam);
+                                    JOptionPane.showMessageDialog(null,"Usted se ha registrado satisfactoriamente");
                                 }
                             }else if(cel2.getTime().compareTo(a)<0 && cel3.getTime().compareTo(a)<=0){
                                 if(cam.getEstadoInicio()==false){
@@ -354,6 +383,7 @@ public class JFrameAsistencia extends javax.swing.JFrame {
                                     asis.setIniciofin(cam);
                                     if(!Drive2.existeAsistencia(cam)){
                                         asis.guardarAsistencia(asis);
+                                        JOptionPane.showMessageDialog(null,"Usted se ha registrado satisfactoriamente pero tiene tardanza");
                                     }else{
                                         asis.ActualizarAsistencia(asis);
                                     }
@@ -373,6 +403,7 @@ public class JFrameAsistencia extends javax.swing.JFrame {
                                 if(cam.getEstadoFin()==false){
                                     cam.setEstadoFin(true);
                                     cam.actualizarIniciofin(cam);
+                                    JOptionPane.showMessageDialog(null,"Usted se ha registrado satisfactoriamente");
                                 }
                             }
                         }
@@ -385,6 +416,7 @@ public class JFrameAsistencia extends javax.swing.JFrame {
          }
         JOptionPane.showMessageDialog(null, "No existe ningún registro que coincida con la huella", "Verificacion de Huella", JOptionPane.ERROR_MESSAGE);
         setTemplate(null);
+        
        }catch (Exception e) {
            System.err.println("Error al identificar huella dactilar."+e.getMessage());
        }
@@ -420,6 +452,8 @@ public class JFrameAsistencia extends javax.swing.JFrame {
         try {
             identificarHuella();
             Reclutador.clear();
+            jButton1.setEnabled(false);
+            jButton3.setEnabled(false);
         } catch (IOException ex) {
             Logger.getLogger(jDigitalPersona.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -437,6 +471,8 @@ public class JFrameAsistencia extends javax.swing.JFrame {
         try {
             identificarHuella2();
             Reclutador.clear();
+            jButton1.setEnabled(false);
+            jButton3.setEnabled(false);
         } catch (IOException ex) {
             Logger.getLogger(jDigitalPersona.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -467,6 +503,8 @@ public class JFrameAsistencia extends javax.swing.JFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }

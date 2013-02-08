@@ -9,12 +9,24 @@ import Clases.Personal;
 import Clases.Tarea;
 import java.awt.Component;
 import java.awt.Frame;
+import java.text.ParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultCellEditor;
+import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
+import javax.swing.text.DefaultFormatterFactory;
+import javax.swing.text.MaskFormatter;
 
 /**
  *
@@ -35,7 +47,6 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
         Drive.LimpiarTabla(jTable1);
         jTextField5.setText(Integer.toString(tarr.getIdTarea()));
         jTextField1.setText(tarr.getNombre());
-        jTextField4.setText(tarr.getComentario());
         jTextField3.setText(tarr.getLugar());
         int[] anchos1 = {170,90,90,90,80,80,80};
         for(int i = 0; i < jTable1.getColumnCount(); i++) {
@@ -48,6 +59,31 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
         jTable1.getColumnModel().getColumn(6).setCellRenderer(modelocentrar);
         
         jTable1.getTableHeader().setDefaultRenderer(new JFrameActualizarActividades.HeaderRenderer(jTable1));
+        if(tar.getComentario().equals("EXTRACURRICULAR")){
+            JTableHeader th = jTable1.getTableHeader();
+            TableColumnModel tcm = th.getColumnModel();
+            TableColumn tc = tcm.getColumn(2); //recordemos que las columnas inician a enumerarse desde cero
+            tc.setHeaderValue("Franco");
+            TableColumn tc1 = tcm.getColumn(3); //recordemos que las columnas inician a enumerarse desde cero
+            tc1.setHeaderValue("Fecha fin");
+            TableColumn tc2 = tcm.getColumn(4); //recordemos que las columnas inician a enumerarse desde cero
+            tc2.setHeaderValue("Fecha inicio");
+            th.repaint(); //actualizamos el header
+            TableColumn Column2 = jTable1.getColumnModel().getColumn(2);
+            try {
+                MaskFormatter campo=null;
+                campo = new MaskFormatter("dd/MM/yyyy");
+                JFormattedTextField text = new JFormattedTextField(campo);
+                MaskFormatter uppercase=null;
+                uppercase = new MaskFormatter("##/##/####");
+                DefaultFormatterFactory factory = new DefaultFormatterFactory(uppercase);
+                text.setFormatterFactory(factory);
+                Column2.setCellEditor(new DefaultCellEditor(text));
+                
+            } catch (ParseException ex) {
+                Logger.getLogger(JFrameActualizarActividades.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
         Drive.CargarTablaActividad(jTable1, tar);
     }
 
@@ -69,11 +105,9 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
         jTextField3 = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        jLabel12 = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
         jTextField5 = new javax.swing.JTextField();
         jButton3 = new javax.swing.JButton();
-        jTextField4 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -100,17 +134,15 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                true, true, false, false, false, false, false
+                false, false, true, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        jTable1.setEnabled(false);
+        jTable1.setRowHeight(25);
         jScrollPane2.setViewportView(jTable1);
-
-        jLabel12.setText("Comentario:");
 
         jLabel19.setText("Numero:");
 
@@ -140,14 +172,10 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane2)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel12))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField4))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 213, Short.MAX_VALUE)
+                        .addComponent(jLabel1)
+                        .addGap(28, 28, 28)
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 257, Short.MAX_VALUE)
                         .addComponent(jLabel2)
                         .addGap(18, 18, 18)
                         .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -167,8 +195,6 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jTextField1, jTextField4});
-
         jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jButton1, jButton2, jButton3});
 
         jPanel1Layout.setVerticalGroup(
@@ -185,12 +211,8 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel2)))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel12)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 215, Short.MAX_VALUE)
+                .addGap(56, 56, 56)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 186, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton2)
@@ -253,10 +275,9 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        if(!jTextField1.getText().equals(tar.getNombre())||!jTextField3.getText().equals(tar.getLugar())||!jTextField4.getText().equals(tar.getComentario())){
+        if(!jTextField1.getText().equals(tar.getNombre())||!jTextField3.getText().equals(tar.getLugar())){
             tar.setNombre(jTextField1.getText());
             tar.setLugar(jTextField3.getText());
-            tar.setComentario(jTextField4.getText());
             tar.ActualizarTarea(tar);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -300,7 +321,6 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
@@ -308,7 +328,6 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
     // End of variables declaration//GEN-END:variables
 }

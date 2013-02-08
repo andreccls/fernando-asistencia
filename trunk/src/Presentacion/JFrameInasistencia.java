@@ -18,6 +18,7 @@ import java.awt.Image;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Iterator;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultCellEditor;
@@ -164,7 +165,7 @@ public class JFrameInasistencia extends javax.swing.JFrame {
             }
         });
 
-        jButton3.setText("jButton3");
+        jButton3.setText("Imprimir");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -344,18 +345,8 @@ public class JFrameInasistencia extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel3MouseClicked
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-            try {
-                String s="ReporteInasistencia.jasper";
-                reporte = (JasperReport) JRLoader.loadObject(s);
-                JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, null);
-                JRExporter exporter = new JRPdfExporter();
-                exporter.setParameter(JRExporterParameter.JASPER_PRINT,jasperPrint); 
-                exporter.setParameter(JRExporterParameter.OUTPUT_FILE,new java.io.File("reportePDF.pdf"));
-                exporter.exportReport();  
-            } catch (JRException ex) {
-                JOptionPane.showMessageDialog(null,ex.toString());
-                Logger.getLogger(JFrameInasistencia.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        List consulta=Controlador.getPERSISTENCIA().getPersonalesTrue(1);
+        Drive.mostrarReporte("ListaPersonal",consulta,"Lista Personal");
     }//GEN-LAST:event_jButton3ActionPerformed
 
     /**

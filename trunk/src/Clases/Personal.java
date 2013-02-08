@@ -487,6 +487,61 @@ public class Personal  implements java.io.Serializable {
     return dia;
     }
     
+    public boolean VerificarDisponibilidadExtraotro (Date diaini, Date hini,Date hfin,Date diafin){
+        boolean band=true;
+        try{
+            if(!agendas.isEmpty()){
+                Iterator it=agendas.iterator();
+                while(it.hasNext()){
+                    Agenda age=(Agenda) it.next();
+                    Date diaaux=diaini;
+                    while(diaaux.compareTo(diafin)<=0){
+                        Dia di=age.getDia2(diaaux);
+                        if(di.getIdDia()!=null){
+                            Iterator itin=di.getIniciofins().iterator();
+                            while(itin.hasNext()){
+                                Iniciofin in=(Iniciofin) itin.next();
+                                if(in.getDia().getMes().getAno().getAgenda().getTarea().getEstado()==true && in.getDia().getMes().getAno().getAgenda().getPersonal().getEstado()==true ){
+                                //if(in.getInicio().compareTo(ini.getInicio())>0 && in.getInicio().compareTo(ini.getFin())<0 || in.getFin().compareTo(ini.getInicio())>0 && in.getFin().compareTo(ini.getFin())<0){
+                                    if(in.getInicio().compareTo(hini)>0 && in.getInicio().compareTo(hfin) <0 || in.getFin().compareTo(hini)>0 && in.getFin().compareTo(hfin)<0){
+                                        band=false;
+                                        JOptionPane.showMessageDialog(null,"no existe disponibilidad porque hay otra tarea a ese horario");
+                                        return band;
+                                    }
+                                }
+                            }
+                        }
+                        diaaux=Controlador.sumarFechasDias(diaaux, 1);
+                    }
+                }
+            }
+            
+            if(!declaracionjuradas.isEmpty()){
+                Date diaux=diaini;
+                while(diaux.compareTo(diafin)<=0) {
+                    String di= ObtenerDia(diaux.getDay());
+                    Iterator itact=declaracionjuradas.iterator().next().ObtenerActivos(di).iterator();
+                    while(itact.hasNext()){
+                        Activo act=(Activo) itact.next();
+                        Iterator itin=act.getActivoIniciofins().iterator();
+                        while(itin.hasNext()){
+                            ActivoIniciofin in=(ActivoIniciofin) itin.next();
+                            
+                                if(hini.compareTo(in.getFin())<0 || hfin.compareTo(in.getInicio())>0){
+                                    band=false;
+                                    JOptionPane.showMessageDialog(null,"no existe disponibilidad por parte de la declaración jurada a ese horario");
+                                    return band;
+                                }
+                            
+                        }
+                    }
+                    diaux=Controlador.sumarFechasDias(diaux, 1);
+                }
+            }
+        }catch(Exception ex){JOptionPane.showMessageDialog(null, ex.toString());}
+        return band;
+    }
+    
     public boolean VerificarDisponibilidadReunion (Date dia, Iniciofin ini){
         boolean band=true;
         try{
@@ -499,10 +554,12 @@ public class Personal  implements java.io.Serializable {
                         Iterator itin=di.getIniciofins().iterator();
                         while(itin.hasNext()){
                             Iniciofin in=(Iniciofin) itin.next();
-                            if(in.getInicio().compareTo(ini.getInicio())>0 && in.getInicio().compareTo(ini.getFin())<0 || in.getFin().compareTo(ini.getInicio())>0 && in.getFin().compareTo(ini.getFin())<0){
-                                band=false;
-                                JOptionPane.showMessageDialog(null,"no existe disponibilidad porque hay otra tarea a ese horario");
-                                return band;
+                            if(in.getDia().getMes().getAno().getAgenda().getTarea().getEstado()==true && in.getDia().getMes().getAno().getAgenda().getPersonal().getEstado()==true ){
+                                if(in.getInicio().compareTo(ini.getInicio())>0 && in.getInicio().compareTo(ini.getFin())<0 || in.getFin().compareTo(ini.getInicio())>0 && in.getFin().compareTo(ini.getFin())<0){
+                                    band=false;
+                                    JOptionPane.showMessageDialog(null,"no existe disponibilidad porque hay otra tarea a ese horario");
+                                    return band;
+                                }
                             }
                         }
                     }
@@ -544,12 +601,17 @@ public class Personal  implements java.io.Serializable {
         while(otro.compareTo(fin)<=0){
             if(!agendas.isEmpty()){
                 Iterator it=agendas.iterator();
-                while(it.hasNext()){Agenda age=(Agenda) it.next();
+                while(it.hasNext()){
+                    Agenda age=(Agenda) it.next();
                     Dia di=age.getDia2(otro);
-                    if(di.getIdDia()!=null){Iterator itin=di.getIniciofins().iterator();
-                        while(itin.hasNext()){Iniciofin in=(Iniciofin) itin.next();
-                            if(in.getInicio().compareTo(ini.getInicio())>0 && in.getInicio().compareTo(ini.getFin())<0 || in.getFin().compareTo(ini.getInicio())>0 && in.getFin().compareTo(ini.getFin())<0){
-                                a++;
+                    if(di.getIdDia()!=null){
+                        Iterator itin=di.getIniciofins().iterator();
+                        while(itin.hasNext()){
+                            Iniciofin in=(Iniciofin) itin.next();
+                            if(in.getDia().getMes().getAno().getAgenda().getTarea().getEstado()==true && in.getDia().getMes().getAno().getAgenda().getPersonal().getEstado()==true ){
+                                if(in.getInicio().compareTo(ini.getInicio())>0 && in.getInicio().compareTo(ini.getFin())<0 || in.getFin().compareTo(ini.getInicio())>0 && in.getFin().compareTo(ini.getFin())<0){
+                                    a++;
+                                }
                             }
                         }
                     }

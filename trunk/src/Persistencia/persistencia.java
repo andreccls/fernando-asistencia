@@ -151,6 +151,68 @@ public class persistencia {
         return items;
 
     }
+    
+    public List getPersonalesTrue(int i) throws ArrayStoreException {
+        String hql = "from Personal where estado="+i;
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
+
+    }
+    
+    public List getTareasTrue(int i) throws ArrayStoreException {
+        String hql = "from Tarea where estado="+i;
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
+
+    }
+    
+    public List getTareasClasesTrue(int i) throws ArrayStoreException {
+        String hql = "from Tarea,Tareaclase where comentario='CLASE' and estado="+i;
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
+    }
+    
+    public List getTareasReunionTrue(int i) throws ArrayStoreException {
+        String hql = "from Tarea,Tareareunion where tarea.id_tarea=tareareunion.id_tareaclase and tarea.estado="+i;
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
+    }
+    
+    public List getTareasExtracurricularTrue(int i) throws ArrayStoreException {
+        String hql = "from Tarea,Tareaextracurricular where tarea.id_tarea=tareaextracurricular.id_tareaclase and tarea.estado="+i;
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
+    }
+    
+    public List getTareasOtroTrue(int i) throws ArrayStoreException {
+        String hql = "from Tarea,Tareaotro where tarea.id_tarea=tareaotro.id_tareaclase and tarea.estado="+i;
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
+    }
 
     public List existePersonal(int tipodoc, String nrodoc) throws ArrayStoreException {
         String hql = "from Personal where id_tipodoc =" + tipodoc + " and dni='" + nrodoc + "'";

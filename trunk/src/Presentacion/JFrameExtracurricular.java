@@ -98,8 +98,6 @@ public class JFrameExtracurricular extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         jRadioButton1 = new javax.swing.JRadioButton();
         jRadioButton2 = new javax.swing.JRadioButton();
-        jLabel11 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
         jLabel14 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
@@ -196,11 +194,53 @@ public class JFrameExtracurricular extends javax.swing.JFrame {
 
     jLabel1.setText("Dia fin:");
 
-    jButton2.setText("Cancelar");
-    jButton2.addActionListener(new java.awt.event.ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent evt) {
-            jButton2ActionPerformed(evt);
-        }
+    dateChooserCombo2.setCurrentView(new datechooser.view.appearance.AppearancesList("Grey",
+        new datechooser.view.appearance.ViewAppearance("custom",
+            new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 11),
+                new java.awt.Color(0, 0, 0),
+                new java.awt.Color(0, 0, 255),
+                false,
+                true,
+                new datechooser.view.appearance.swing.ButtonPainter()),
+            new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 11),
+                new java.awt.Color(0, 0, 0),
+                new java.awt.Color(0, 0, 255),
+                true,
+                true,
+                new datechooser.view.appearance.swing.ButtonPainter()),
+            new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 11),
+                new java.awt.Color(0, 0, 255),
+                new java.awt.Color(0, 0, 255),
+                false,
+                true,
+                new datechooser.view.appearance.swing.ButtonPainter()),
+            new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 11),
+                new java.awt.Color(128, 128, 128),
+                new java.awt.Color(0, 0, 255),
+                false,
+                true,
+                new datechooser.view.appearance.swing.LabelPainter()),
+            new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 11),
+                new java.awt.Color(0, 0, 0),
+                new java.awt.Color(0, 0, 255),
+                false,
+                true,
+                new datechooser.view.appearance.swing.LabelPainter()),
+            new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 11),
+                new java.awt.Color(0, 0, 0),
+                new java.awt.Color(255, 0, 0),
+                false,
+                false,
+                new datechooser.view.appearance.swing.ButtonPainter()),
+            (datechooser.view.BackRenderer)null,
+            false,
+            true)));
+
+jButton2.setText("Cancelar");
+jButton2.addActionListener(new java.awt.event.ActionListener() {
+    public void actionPerformed(java.awt.event.ActionEvent evt) {
+        jButton2ActionPerformed(evt);
+    }
     });
 
     jButton1.setText("Aceptar");
@@ -228,8 +268,6 @@ public class JFrameExtracurricular extends javax.swing.JFrame {
 
     buttonGroup1.add(jRadioButton2);
     jRadioButton2.setText("No");
-
-    jLabel11.setText("Comentario:");
 
     jLabel14.setText("*");
 
@@ -274,11 +312,10 @@ public class JFrameExtracurricular extends javax.swing.JFrame {
                     .addComponent(jLabel14)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel11)
                         .addComponent(jLabel1)
                         .addComponent(jLabel6)
                         .addComponent(jLabel5))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addGap(27, 27, 27)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(jLabel9)
                         .addGroup(jPanel1Layout.createSequentialGroup()
@@ -286,12 +323,11 @@ public class JFrameExtracurricular extends javax.swing.JFrame {
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(jLabel16))
                         .addComponent(dateChooserCombo2, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jTextField4)
-                        .addComponent(jTextField1))))
+                        .addComponent(jTextField4))))
             .addContainerGap())
     );
 
-    jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {dateChooserCombo1, dateChooserCombo2, jTextField1, jTextField3, jTextField4});
+    jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {dateChooserCombo1, dateChooserCombo2, jTextField3, jTextField4});
 
     jPanel1Layout.setVerticalGroup(
         jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -338,11 +374,7 @@ public class JFrameExtracurricular extends javax.swing.JFrame {
                                 .addComponent(jFormattedTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jLabel16))
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jLabel9)))
-                    .addGap(18, 18, 18)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jLabel9)))))
             .addGap(11, 11, 11)
             .addComponent(jLabel4)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -393,7 +425,7 @@ public class JFrameExtracurricular extends javax.swing.JFrame {
     }
     
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        if(!jTextField3.getText().isEmpty()||!jTextField4.getText().isEmpty()||!jTextField1.getText().isEmpty()||!jFormattedTextField1.getText().isEmpty()||!jFormattedTextField2.getText().isEmpty()){
+        if(!jTextField3.getText().isEmpty()||!jTextField4.getText().isEmpty()||!jFormattedTextField1.getText().isEmpty()||!jFormattedTextField2.getText().isEmpty()){
             int confirmado = JOptionPane.showConfirmDialog(null,"¿Desea cancelar la tarea extracurricular?","",JOptionPane.YES_NO_OPTION);
             if (JOptionPane.OK_OPTION == confirmado){
                 this.dispose();
@@ -415,7 +447,7 @@ public class JFrameExtracurricular extends javax.swing.JFrame {
                     Establecimiento col= Drive.getPrimerEstablecimiento();
                     Date fecha_inicio = dateChooserCombo1.getSelectedDate().getTime();
                     Date fecha_fin = dateChooserCombo2.getSelectedDate().getTime();
-                    Tarea tar=col.crearTarea(col, jTextField3.getText().toUpperCase(), jTextField4.getText().toUpperCase(), jTextField1.getText().toUpperCase(), true, null, null, null, null, null);
+                    Tarea tar=col.crearTarea(col, jTextField3.getText().toUpperCase(), jTextField4.getText().toUpperCase(), "EXTRACURRICULAR".toUpperCase(), true, null, null, null, null, null);
                     TareaextracurricularId id=new TareaextracurricularId();
                     id.setIdTarea(tar.getIdTarea());
                     tar.crearTareaextracurricular(id, tar,fecha_inicio,fecha_fin);
@@ -424,70 +456,74 @@ public class JFrameExtracurricular extends javax.swing.JFrame {
                     while(jTable1.getRowCount()!=c){
                         if(modelo.getValueAt(c, 0).equals(true)){
                             Personal per=(Personal) modelo.getValueAt(c, 1);
-                            AgendaId ida=new AgendaId(per.getIdPersonal(),tar.getIdTarea());
-                            Agenda age=new Agenda();
-                            age.setId(ida);
-                            age.setPersonal(per);
-                            Revista rev=(Revista) Drive.PERSISTENCIA.getSitRevista().get(0);
-                            age.setRevista(rev);
-                            age.setTarea(tar);
-                            age.setComentario(null);
-                            age.guardarAgenda(age);
-                            ///Guarda el dia y hora de inicio
-                            Ano anio=new Ano();
-                            anio.setAgenda(age);
-                            anio.setAno(fecha_inicio.getYear()+1900);
-                            anio.guardarAno(anio);
-                            Mes mes=new Mes();
-                            mes.setAno(anio);
-                            mes.setMes(fecha_inicio.getMonth());
-                            mes.guardarMes(mes);
-                            Dia dia=new Dia();
-                            dia.setMes(mes);
-                            dia.setDia(fecha_inicio.getDate());
-                            dia.guardarDia(dia);
-                            
-                            Iniciofin in=new Iniciofin();
-                            in.setDia(dia);
-                            in.setInicio(inicio);
-                            if(jRadioButton1.isSelected()){
-                                in.setEstadoInicio(false);
-                            }
-                            in.guardarIniciofin(in);
-                            ///Guarda el dia y hora de fin
-                            Ano anioo=new Ano();
-                            Mes mess=new Mes();
-                            Dia diaa=new Dia();
-                            if(fecha_inicio.getYear()!=fecha_fin.getYear()||fecha_inicio.getMonth()!=fecha_fin.getMonth()||fecha_inicio.getDate()!=fecha_fin.getDate()){
-                                if(fecha_inicio.getYear()!=fecha_fin.getYear()){
-                                    anioo.setAgenda(age);
-                                    anioo.setAno(fecha_fin.getYear()+1900);
-                                    anioo.guardarAno(anioo);
+                            Iniciofin aux=new Iniciofin();
+                            aux.setInicio(inicio);
+                            aux.setFin(fin);
+                            if(per.VerificarDisponibilidadExtraotro(fecha_inicio, inicio,fin, fecha_fin)){
+                                AgendaId ida=new AgendaId(per.getIdPersonal(),tar.getIdTarea());
+                                Agenda age=new Agenda();
+                                age.setId(ida);
+                                age.setPersonal(per);
+                                Revista rev=(Revista) Drive.PERSISTENCIA.getSitRevista().get(0);
+                                age.setRevista(rev);
+                                age.setTarea(tar);
+                                age.setComentario(null);
+                                age.guardarAgenda(age);
+                                ///Guarda el dia y hora de inicio
+                                Ano anio=new Ano();
+                                anio.setAgenda(age);
+                                anio.setAno(fecha_inicio.getYear()+1900);
+                                anio.guardarAno(anio);
+                                Mes mes=new Mes();
+                                mes.setAno(anio);
+                                mes.setMes(fecha_inicio.getMonth());
+                                mes.guardarMes(mes);
+                                Dia dia=new Dia();
+                                dia.setMes(mes);
+                                dia.setDia(fecha_inicio.getDate());
+                                dia.guardarDia(dia);
+
+                                Iniciofin in=new Iniciofin();
+                                in.setDia(dia);
+                                in.setInicio(inicio);
+                                if(jRadioButton1.isSelected()){
+                                    in.setEstadoInicio(false);
                                 }
-                                if(fecha_inicio.getMonth()!=fecha_fin.getMonth()){
-                                    mess.setAno(anioo);
-                                    mess.setMes(fecha_fin.getMonth());
-                                    mess.guardarMes(mess);
-                                }
-                                if(fecha_inicio.getDate()!=fecha_fin.getDate()){
-                                    diaa.setMes(mess);
-                                    diaa.setDia(fecha_fin.getDate());
-                                    diaa.guardarDia(diaa);
-                                    Iniciofin finn=new Iniciofin();
-                                    finn.setDia(diaa);
-                                    finn.setFin(fin);
-                                    finn.guardarIniciofin(finn);
-                                }
-                            }else{
-                                in.setFin(fin);
                                 in.guardarIniciofin(in);
+                                ///Guarda el dia y hora de fin
+                                Ano anioo=new Ano();
+                                Mes mess=new Mes();
+                                Dia diaa=new Dia();
+                                if(fecha_inicio.getYear()!=fecha_fin.getYear()||fecha_inicio.getMonth()!=fecha_fin.getMonth()||fecha_inicio.getDate()!=fecha_fin.getDate()){
+                                    if(fecha_inicio.getYear()!=fecha_fin.getYear()){
+                                        anioo.setAgenda(age);
+                                        anioo.setAno(fecha_fin.getYear()+1900);
+                                        anioo.guardarAno(anioo);
+                                    }
+                                    if(fecha_inicio.getMonth()!=fecha_fin.getMonth()){
+                                        mess.setAno(anioo);
+                                        mess.setMes(fecha_fin.getMonth());
+                                        mess.guardarMes(mess);
+                                    }
+                                    if(fecha_inicio.getDate()!=fecha_fin.getDate()){
+                                        diaa.setMes(mess);
+                                        diaa.setDia(fecha_fin.getDate());
+                                        diaa.guardarDia(diaa);
+                                        Iniciofin finn=new Iniciofin();
+                                        finn.setDia(diaa);
+                                        finn.setFin(fin);
+                                        finn.guardarIniciofin(finn);
+                                    }
+                                }else{
+                                    in.setFin(fin);
+                                    in.guardarIniciofin(in);
+                                }
                             }
                         }
                         c++;
                     }
                     jFormattedTextField1.setText("");
                     jFormattedTextField2.setText("");
-                    jTextField1.setText("");
                     jTextField3.setText("");
                     jTextField4.setText("");
                     Drive.LimpiarTabla(jTable1);
@@ -544,7 +580,6 @@ public class JFrameExtracurricular extends javax.swing.JFrame {
     private javax.swing.JFormattedTextField jFormattedTextField2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
@@ -561,7 +596,6 @@ public class JFrameExtracurricular extends javax.swing.JFrame {
     private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
     // End of variables declaration//GEN-END:variables

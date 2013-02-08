@@ -4,54 +4,23 @@
  */
 package Presentacion;
 
+//<editor-fold defaultstate="collapsed" desc="import">
+
 import Clases.Controlador;
 import Clases.Establecimiento;
 import Clases.Personal;
-import Persistencia.persistencia;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.FlowLayout;
 import java.awt.Frame;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.io.OutputStream;
-import java.net.URL;
-import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JProgressBar;
 import javax.swing.JTable;
-import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JRExporter;
-import net.sf.jasperreports.engine.JRExporterParameter;
-import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.JasperRunManager;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import net.sf.jasperreports.engine.design.JRDesignQuery;
-import net.sf.jasperreports.engine.design.JasperDesign;
-import net.sf.jasperreports.engine.export.JRPdfExporter;
-import net.sf.jasperreports.engine.util.JRLoader;
-import net.sf.jasperreports.engine.xml.JRXmlLoader;
-import net.sf.jasperreports.view.JasperViewer;
-import org.hibernate.Session;
 
+//</editor-fold>
 /**
  *
  * @author fer
@@ -65,7 +34,6 @@ public class JFrameConsulta extends javax.swing.JFrame {
     Personal per = new Personal();
     StringBuffer buffer = new StringBuffer();
     HiloProgreso hilo;
-    public static final String REPORTE_IMPORTE = "/Reportes/report1.jrxml";
 
     public JFrameConsulta(Controlador unDrive) {
         this.Drive = unDrive;
@@ -366,108 +334,11 @@ public class JFrameConsulta extends javax.swing.JFrame {
             String buscar = (String) jComboBox1.getSelectedItem();
             Drive.CargarTablaFiltro(jTable1, buscar, es.toUpperCase());
         }
-        // TODO add your handling code here:
     }//GEN-LAST:event_jTextField1KeyTyped
-    public void mostrarReporte(String report) {
-        try {
-            String SO = System.getProperty("os.name");
-            String master;
-            if (SO.toUpperCase().equals("LINUX")) {
-                master = System.getProperty("user.dir") + "/src/Reportes/" + report + ".jasper";
-            } else {
-                master = System.getProperty("user.dir") + "\\src\\Reportes\\" + report + ".jasper";
-            }
-            System.out.println("Dirección del Reporte en disco: " + master);
-            if (master == null) {
-                //javax.swing.JOptionPane msj=new javax.swing.JOptionPane() ;
-                JOptionPane.showMessageDialog(null, "No se encontro el Reporte1", "Error", 2, null);
-            }
-            //--------------------------------------------------------------------------------------------------------
-            JasperReport masterReport = null;
-            try {
-                masterReport = (JasperReport) JRLoader.loadObject(master);
-
-            } catch (JRException e) {
-                //javax.swing.JOptionPane msj=new javax.swing.JOptionPane() ;
-                JOptionPane.showMessageDialog(null, "Error al cargar el reporte", "Error", 2, null);
-            }
-            Map parametro = new HashMap();
-            parametro = null;
-            JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(Controlador.PERSISTENCIA.getPersonales());
-//            HibernateQueryResultDataSource ds = new HibernateQueryResultDataSource(usuarios,campos);
-            //Reporte diseñado y compilado con iReport
-            JasperPrint jasperPrint = JasperFillManager.fillReport(masterReport, new HashMap(),ds);
-            //Se lanza el Viewer de Jasper, no termina aplicación al salir
-            JasperViewer jviewer = new JasperViewer(jasperPrint, false);
-            jviewer.setTitle("Reporte");
-            jviewer.setVisible(true);
-            // CerrarConex();
-        } catch (Exception j) {
-            //javax.swing.JOptionPane msj=new javax.swing.JOptionPane() ;
-            JOptionPane.showMessageDialog(null, "Error al cargar el reporte", "Error", 2, null);
-        }
-
-    }
-//public static byte[] sacarReporte(String tipoReporte) throws ClassNotFoundException,
-//        SQLException, JRException {
-//
-//        JasperDesign disenioReporte;
-//        JRDesignQuery queryReporte;
-////Ruta de Archivo Jasper
-//        persistencia reporte = new persistencia();
-//        String fileName;
-//        byte[] bytes = null;
-////hibernateUtil es una clase propia que me devuelve un SessionFactory 
-////        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-////        session.beginTransaction();
-////UsuarioBean es donde tengo los geter y seter, para esto si hay ejemplos
-////por lo que no me estiendo
-//        List usuarios = (List) Controlador.PERSISTENCIA.getPersonales();
-//        //fileName = Path(REPORTE_IMPORTE);
-//
-////cargamos el archivo
-//        disenioReporte = JRXmlLoader.load(REPORTE_IMPORTE);
-////lo compilamos
-//        JasperReport report = JasperCompileManager.compileReport(disenioReporte);
-////obtenmos de forma adecuada los valores de las select para incorporalos.
-//        JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(usuarios);
-////HibernateQueryResultDataSource ds = new HibernateQueryResultDataSource(usuarios,campos);
-//
-////obtenemos lo que vamos a sacar
-//        bytes = JasperRunManager.runReportToPdf(report, null, ds);
-//        return bytes;
-//    }
-//método para obtener el path del archivo
-//    public String Path(String tipoReporte) {
-//        URL url = this.getClass().getResource(tipoReporte);
-//        return url.getPath();    
-//}
-//Una vez obtenido esto lo saco mi metodo es.
-//    public void imprime(HttpServletResponse response, String tipoReporte)
-//        throws Exception {
-//        byte[] bytes = Reporte.sacarReporte(tipoReporte);
-//        if (bytes != null) {
-//
-//// Con esta sentencia hacemos que se pueda descargar el archivo y guardarlo pero sin extensión
-////response.setContentType("application/x-download");
-////convertimos el archivo en pdf y nos pregunta que queremos hacer y lo abrimos o lo guardamos en pdf
-//            response.setHeader("Content-Disposition", "attachment; filename=informe.pdf");
-////Si solo ponemos esta parte de código nos saldrá el archivo en pdf directamente
-//            response.setContentLength(bytes.length);
-//            OutputStream ouputStream = response.getOutputStream();
-//            ouputStream.write(bytes, 0, bytes.length);
-//            ouputStream.flush();
-//            ouputStream.close();
-//        }
-//        try {
-//            System.out.println("El reporte está escrito");
-//        } catch (Exception e) {
-//            System.out.println("error");
-//        }
-//    }
+    
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-
-        mostrarReporte("report3");
+        List consulta=Controlador.getPERSISTENCIA().getPersonalesTrue(1);
+        Drive.mostrarReporte("ListaPersonal",consulta,"Lista Personal");
     }//GEN-LAST:event_jButton5ActionPerformed
     Frame vp = new JFramePrincipal();
 
