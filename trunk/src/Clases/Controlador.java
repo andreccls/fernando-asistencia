@@ -596,7 +596,7 @@ public class Controlador {
             DefaultTableModel modelo = (DefaultTableModel) Tabla.getModel();
             if(!tar.getTareaclases().isEmpty()){
                 if (tar.getEstado() == true) {
-                    Object fila[] = new Object[7];
+                    Object fila[] = new Object[8];
                     Iterator it=tar.getAgendas().iterator();
                     while(it.hasNext()){
                         Agenda age=(Agenda) it.next();
@@ -617,15 +617,16 @@ public class Controlador {
                                        fecha.setYear(an.getAno()-1900);
                                        fecha.setMonth(me.getMes());
                                        fecha.setDate(di.getDia());
-                                       fila[0] = age.getPersonal().toString();
-                                       fila[1] = age.getRevista().getNombre();
-                                       fila[2] = tarcla.getAula();
-                                       fila[3] = tarcla.getNumero();
+                                       fila[0] = age.getPersonal().getIdPersonal();
+                                       fila[1] = age.getPersonal().toString();
+                                       fila[2] = age.getRevista().getNombre();
+                                       fila[3] = tarcla.getAula();
+                                       fila[4] = tarcla.getNumero();
                                        SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
                                        SimpleDateFormat formateador2 = new SimpleDateFormat("HH:mm");
-                                       fila[4] = formateador.format(fecha);
-                                       fila[5] = formateador2.format(ini.getInicio());
-                                       fila[6] = formateador2.format(ini.getFin());
+                                       fila[5] = formateador.format(fecha);
+                                       fila[6] = formateador2.format(ini.getInicio());
+                                       fila[7] = formateador2.format(ini.getFin());
                                        modelo.addRow(fila);
                                    }
                                }
@@ -636,7 +637,7 @@ public class Controlador {
                 }
             }else if(!tar.getTareareunions().isEmpty()){
                 if (tar.getEstado() == true) {
-                    Object fila[] = new Object[7];
+                    Object fila[] = new Object[8];
                     Iterator it=tar.getAgendas().iterator();
                     while(it.hasNext()){
                         Agenda age=(Agenda) it.next();
@@ -657,15 +658,16 @@ public class Controlador {
                                        fecha.setYear(an.getAno()-1900);
                                        fecha.setMonth(me.getMes());
                                        fecha.setDate(di.getDia());
-                                       fila[0] = age.getPersonal().toString();
-                                       fila[1] = age.getRevista().getNombre();
-                                       fila[2] = tarreu.getCaracter();
-                                       fila[3] = tarreu.getMotivo();
+                                       fila[0] = age.getPersonal().getIdPersonal();
+                                       fila[1] = age.getPersonal().toString();
+                                       fila[2] = tarreu.getMotivo();
+                                       fila[3] = tarreu.getCaracter();
+                                       //fila[4] = 
                                        SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
                                        SimpleDateFormat formateador2 = new SimpleDateFormat("HH:mm");
-                                       fila[4] = formateador.format(fecha);
-                                       fila[5] = formateador2.format(ini.getInicio());
-                                       fila[6] = formateador2.format(ini.getFin());
+                                       fila[5] = formateador.format(fecha);
+                                       fila[6] = formateador2.format(ini.getInicio());
+                                       fila[7] = formateador2.format(ini.getFin());
                                        modelo.addRow(fila);
                                    }
                                }
@@ -676,7 +678,7 @@ public class Controlador {
                 }
             }else if(!tar.getTareaextracurriculars().isEmpty()){
                 if (tar.getEstado() == true) {
-                    Object fila[] = new Object[7];
+                    Object fila[] = new Object[8];
                     Iterator it=tar.getAgendas().iterator();
                     while(it.hasNext()){
                         Agenda age=(Agenda) it.next();
@@ -698,15 +700,17 @@ public class Controlador {
                                        fecha.setYear(an.getAno()-1900);
                                        fecha.setMonth(me.getMes());
                                        fecha.setDate(di.getDia());
-                                       fila[0] = age.getPersonal().toString();
-                                       fila[1] = tar.getComentario();
-                                       fila[2] = vacio;
+                                       fila[0] = age.getPersonal().getIdPersonal();
+                                       fila[1] = age.getPersonal().toString();
+                                       fila[2] = tar.getComentario();
                                        SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
                                        SimpleDateFormat formateador2 = new SimpleDateFormat("HH:mm");
-                                       fila[3] = formateador.format(tarreu.getDiaFin());
-                                       fila[4] = formateador.format(fecha);
-                                       fila[5] = formateador2.format(ini.getInicio());
-                                       fila[6] = formateador2.format(ini.getFin());
+                                       Franco fran=age.getFranco(age);
+                                       if(fran.getIdFranco()!=null){fila[3] = formateador.format(fran.getDiaFranco());}
+                                       fila[4] = formateador.format(tarreu.getDiaFin());
+                                       fila[5] = formateador.format(fecha);
+                                       fila[6] = formateador2.format(ini.getInicio());
+                                       fila[7] = formateador2.format(ini.getFin());
                                        modelo.addRow(fila);
                                    }
                                }
@@ -716,7 +720,7 @@ public class Controlador {
                 }
             }else if(!tar.getTareaotros().isEmpty()){
                 if (tar.getEstado() == true) {
-                    Object fila[] = new Object[7];
+                    Object fila[] = new Object[8];
                     Iterator it=tar.getAgendas().iterator();
                     while(it.hasNext()){
                         Agenda age=(Agenda) it.next();
@@ -738,15 +742,16 @@ public class Controlador {
                                        fecha.setYear(an.getAno()-1900);
                                        fecha.setMonth(me.getMes());
                                        fecha.setDate(di.getDia());
-                                       fila[0] = age.getPersonal().toString();
-                                       fila[1] = tar.getComentario();
-                                       fila[2] = vacio;
-                                       fila[3] = vacio;
+                                       fila[0] = age.getPersonal().getIdPersonal();
+                                       fila[1] = age.getPersonal().toString();
+                                       fila[2] = tar.getComentario();
+                                       fila[3] = tarreu.getCaracteristica();
                                        SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
                                        SimpleDateFormat formateador2 = new SimpleDateFormat("HH:mm");
-                                       fila[4] = formateador.format(fecha);
-                                       fila[5] = formateador2.format(ini.getInicio());
-                                       fila[6] = formateador2.format(ini.getFin());
+                                       fila[4] = formateador.format(tarreu.getDiaFin());
+                                       fila[5] = formateador.format(fecha);
+                                       fila[6] = formateador2.format(ini.getInicio());
+                                       fila[7] = formateador2.format(ini.getFin());
                                        modelo.addRow(fila);
                                    }
                                }
@@ -760,6 +765,19 @@ public class Controlador {
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, ex.toString());
         }
+    }
+    
+    public Agenda getAgenda(Tarea tar,int per) {
+        Agenda band=new Agenda();
+        Iterator it= PERSISTENCIA.getAgendas().iterator();
+        while(it.hasNext()){
+            Agenda age=(Agenda) it.next();
+            if(age.getId().getIdTarea()==tar.getIdTarea()&& age.getId().getIdPersonal()==per){
+                band=age;
+                break;
+            }
+        }
+        return band;
     }
     
     public void CargarTablaInasistencias(JTable Tabla,String m,int ano) {

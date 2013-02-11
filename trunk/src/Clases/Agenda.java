@@ -235,6 +235,18 @@ public class Agenda  implements java.io.Serializable {
 //        
 //     }
 
+    public Franco getFranco(Agenda age) {
+        Franco band=new Franco();
+        Iterator it= francos.iterator();
+        while(it.hasNext()){
+            Franco fran=(Franco) it.next();
+            if(fran.getAgenda().getId().getIdTarea()==age.getId().getIdTarea()&&fran.getAgenda().getPersonal().getIdPersonal()==age.getId().getIdPersonal()){
+                band=fran;
+                break;
+            }
+        }
+        return band;
+    }
 
 }
 
