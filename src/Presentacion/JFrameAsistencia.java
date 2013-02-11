@@ -59,26 +59,45 @@ public class JFrameAsistencia extends javax.swing.JFrame {
     public Controlador Drive;
     public ControladorTarea Drive2;
     public Personal per;
+    private DPFPCapture Lector = DPFPGlobal.getCaptureFactory().createCapture();
+    private DPFPEnrollment Reclutador = DPFPGlobal.getEnrollmentFactory().createEnrollment();
+    private DPFPVerification Verificador = DPFPGlobal.getVerificationFactory().createVerification();
+    private DPFPTemplate template;
+    public static String TEMPLATE_PROPERTY = "template";
+    //public DPFPFeatureSet featuresinscripcion;
+    public DPFPFeatureSet featuresverificacion;
 
     /**
      * Creates new form JFrameAsistencia
      */
-    public JFrameAsistencia(/*Controlador unDrive*/) {
-        //this.Drive = unDrive;
+    public JFrameAsistencia() {
         try{
             JFrame.setDefaultLookAndFeelDecorated( true );
             UIManager.setLookAndFeel( new com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel() );
         }catch( Exception e ){ e.printStackTrace(); }
         initComponents();
+        Inicio();
+    }
+    private void Inicio() {
         Controlador auxDrive = new Controlador();
-        auxDrive.getPrimerEstablecimiento();
-        Drive = auxDrive;
-        jButton3.setEnabled(false);
-        jButton1.setEnabled(false);
-        ImageIcon fott = new ImageIcon("C:\\Users\\fer\\Desktop\\Tesis\\tesisanalista\\src\\imagenes\\gutenberg.png");
+        try {
+            if (auxDrive.getPrimerEstablecimiento()== null) {
+                JOptionPane.showMessageDialog(null, "Debe ingresar Colegio");
+            } else {
+                auxDrive.getPrimerEstablecimiento();
+                Drive = auxDrive;
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex.toString());
+        }
+       ImageIcon fott = new ImageIcon("C:\\Users\\fer\\Desktop\\Tesis\\tesisanalista\\src\\imagenes\\gutenberg.png");
         Icon icono4 = new ImageIcon(fott.getImage().getScaledInstance(jLabel1.getWidth(), jLabel1.getHeight(), Image.SCALE_DEFAULT));
         jLabel1.setIcon(icono4);
         jLabel1.repaint();
+        jButton3.setEnabled(false);
+        jButton1.setEnabled(false);
+        Iniciar();
+	start();
     }
 
     /**
@@ -211,14 +230,7 @@ public class JFrameAsistencia extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private DPFPCapture Lector = DPFPGlobal.getCaptureFactory().createCapture();
-    private DPFPEnrollment Reclutador = DPFPGlobal.getEnrollmentFactory().createEnrollment();
-    private DPFPVerification Verificador = DPFPGlobal.getVerificationFactory().createVerification();
-    private DPFPTemplate template;
-    public static String TEMPLATE_PROPERTY = "template";
-    public DPFPFeatureSet featuresinscripcion;
-    public DPFPFeatureSet featuresverificacion;
-
+    // <editor-fold defaultstate="collapsed" desc="Funciones"> 
     protected void Iniciar(){
         Lector.addDataListener(new DPFPDataAdapter() {
             @Override public void dataAcquired(final DPFPDataEvent e){
@@ -231,12 +243,12 @@ public class JFrameAsistencia extends javax.swing.JFrame {
         Lector.addReaderStatusListener(new DPFPReaderStatusAdapter() {
             @Override public void readerConnected(final DPFPReaderStatusEvent e) {
                 SwingUtilities.invokeLater(new Runnable() {    public void run() {
-//                    EnviarTexto("El Sensor de Huella Digital esta Activado o Conectado");
+//                    System.err.println("El Sensor de Huella Digital esta Activado o Conectado");
                 }});
             }
             @Override public void readerDisconnected(final DPFPReaderStatusEvent e) {
                 SwingUtilities.invokeLater(new Runnable() {    public void run() {
-//                    EnviarTexto("El Sensor de Huella Digital esta Desactivado o no Conecatado");
+//                    System.err.println("El Sensor de Huella Digital esta Desactivado o no Conecatado");
                 }});
             }
         });
@@ -244,12 +256,12 @@ public class JFrameAsistencia extends javax.swing.JFrame {
         Lector.addSensorListener(new DPFPSensorAdapter() {
             @Override public void fingerTouched(final DPFPSensorEvent e) {
                 SwingUtilities.invokeLater(new Runnable() {    public void run() {
-//                    EnviarTexto("El dedo ha sido colocado sobre el Lector de Huella");
+//                    System.err.println("El dedo ha sido colocado sobre el Lector de Huella");
                 }});
             }
             @Override public void fingerGone(final DPFPSensorEvent e) {
                 SwingUtilities.invokeLater(new Runnable() {    public void run() {
-//                    EnviarTexto("El dedo ha sido quitado del Lector de Huella");
+//                    System.err.println("El dedo ha sido quitado del Lector de Huella");
                 }});
             }
         });
@@ -257,7 +269,7 @@ public class JFrameAsistencia extends javax.swing.JFrame {
         Lector.addErrorListener(new DPFPErrorAdapter(){
             public void errorReader(final DPFPErrorEvent e){
                 SwingUtilities.invokeLater(new Runnable() {  public void run() {
-//                    EnviarTexto("Error: "+e.getError());
+                    System.err.println("Error: "+e.getError());
                 }});
             }
         });
@@ -265,19 +277,19 @@ public class JFrameAsistencia extends javax.swing.JFrame {
         Lector.addErrorListener(new DPFPErrorAdapter(){
             public void errorReader(final DPFPErrorEvent e){
                 SwingUtilities.invokeLater(new Runnable() {  public void run() {
-//                    EnviarTexto("Error: "+e.getError());
+                    System.err.println("Error: "+e.getError());
                 }});
             }
         });
     }
     
     public  void ProcesarCaptura(DPFPSample sample){
-     featuresinscripcion = extraerCaracteristicas(sample, DPFPDataPurpose.DATA_PURPOSE_ENROLLMENT);
+     //featuresinscripcion = extraerCaracteristicas(sample, DPFPDataPurpose.DATA_PURPOSE_ENROLLMENT);
      featuresverificacion = extraerCaracteristicas(sample, DPFPDataPurpose.DATA_PURPOSE_VERIFICATION);
-     if (featuresinscripcion != null){
+     if (featuresverificacion != null){
          try{
              System.out.println("Las Caracteristicas de la Huella han sido creada");
-             Reclutador.addFeatures(featuresinscripcion);
+             Reclutador.addFeatures(featuresverificacion);
              jButton3.setEnabled(true);
              jButton1.setEnabled(true);
          }catch (DPFPImageQualityException ex) {
@@ -287,15 +299,15 @@ public class JFrameAsistencia extends javax.swing.JFrame {
                 case TEMPLATE_STATUS_READY:
                 stop();
                 setTemplate(Reclutador.getTemplate());
-                jButton3.setEnabled(false);
-                jButton1.setEnabled(false);
+                jButton3.setEnabled(true);
+                jButton1.setEnabled(true);
                 break;
 
                 case TEMPLATE_STATUS_FAILED:
                 Reclutador.clear();
                 stop();
                 setTemplate(null);
-                JOptionPane.showMessageDialog(JFrameAsistencia.this, "La Plantilla de la Huella no pudo ser creada, Repita el Proceso", "Inscripcion de Huellas Dactilares", JOptionPane.ERROR_MESSAGE);
+                Iniciar();  
                 start();
                 break;
             }
@@ -331,7 +343,9 @@ public class JFrameAsistencia extends javax.swing.JFrame {
         this.template = template;
         firePropertyChange(TEMPLATE_PROPERTY, old, template);
     }
+     // </editor-fold>
     
+    // <editor-fold defaultstate="collapsed" desc="Identidicadores"> 
     public void identificarHuella() throws IOException{
      try {
          //Establecimiento est=Drive.getPrimerEstablecimiento();
@@ -409,23 +423,34 @@ public class JFrameAsistencia extends javax.swing.JFrame {
                         }
                     }
                     
-                }
-                JOptionPane.showMessageDialog(null, "Las huella capturada es de "+pp.toString(),"Verificacion de Huella", JOptionPane.INFORMATION_MESSAGE);
-                return;
-            }
+                 }
+                 JOptionPane.showMessageDialog(null, "Las huella capturada es de " + pp.toString(), "Verificacion de Huella", JOptionPane.INFORMATION_MESSAGE);
+                 setTemplate(null);
+                 stop();
+                 Iniciar();
+                 start();
+                 return;
+             }
          }
-        JOptionPane.showMessageDialog(null, "No existe ningún registro que coincida con la huella", "Verificacion de Huella", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(null, "La huella no coincide con ningun personal. Por favor dirigirse a secretaria", "Verificacion de Huella", JOptionPane.ERROR_MESSAGE);
         setTemplate(null);
-        
+         stop();
+         Iniciar();
+         start();
        }catch (Exception e) {
-           System.err.println("Error al identificar huella dactilar."+e.getMessage());
+         JOptionPane.showMessageDialog(null, "Hubo un problema con la identificación de la huella. Por favor intentelo nuevamente", "Verificacion de Huella", JOptionPane.ERROR_MESSAGE);
+         Reclutador.clear();
+         stop();
+         setTemplate(null);
+         Iniciar();
+         start();
        }
    }
   
     public void identificarHuella2() throws IOException{
      try {
-         Establecimiento est=Drive.getPrimerEstablecimiento();
-         Iterator<Personal> it=est.getPersonals().iterator();
+         //Establecimiento est=Drive.getPrimerEstablecimiento();
+         Iterator<Personal> it=Drive.PERSISTENCIA.getPersonalesTrue(1).iterator();
          while(it.hasNext()){
             Personal pp=it.next();
             byte templateBuffer[] = pp.getCodigo();
@@ -434,57 +459,62 @@ public class JFrameAsistencia extends javax.swing.JFrame {
             DPFPVerificationResult result = Verificador.verify(featuresverificacion, getTemplate());
             if (result.isVerified()){
                 per=pp;
-                JOptionPane.showMessageDialog(null, "Las huella capturada es de "+pp.toString(),"Verificacion de Huella", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "BIENVENIDO "+pp.toString(),"Verificacion de Huella", JOptionPane.INFORMATION_MESSAGE);
                 JFrameActividades frame=new JFrameActividades(Drive,per);
                 this.hide();
                 frame.show();
                 return;
             }
          }
-        JOptionPane.showMessageDialog(null, "No existe ningún registro que coincida con la huella", "Verificacion de Huella", JOptionPane.ERROR_MESSAGE);
-        setTemplate(null);
-       }catch (Exception e) {
-           System.err.println("Error al identificar huella dactilar."+e.getMessage());
+         JOptionPane.showMessageDialog(null, "La huella no coincide con ningun personal. Por favor dirigirse a secretaria", "Verificacion de Huella", JOptionPane.ERROR_MESSAGE);
+         setTemplate(null);
+         stop();
+         Iniciar();
+         start();
+     } catch (Exception e) {
+         JOptionPane.showMessageDialog(null, "Hubo un problema con la identificación de la huella. Por favor intentelo nuevamente", "Verificacion de Huella", JOptionPane.ERROR_MESSAGE);
+         Reclutador.clear();
+         stop();
+         setTemplate(null);
+         Iniciar();
+         start();
        }
    }
+    // </editor-fold>
     
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         try {
-            identificarHuella();
-            Reclutador.clear();
             jButton1.setEnabled(false);
             jButton3.setEnabled(false);
+            identificarHuella();
         } catch (IOException ex) {
-            Logger.getLogger(jDigitalPersona.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(JFrameAsistencia.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        
     }//GEN-LAST:event_formWindowOpened
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-                // TODO add your handling code here:
     }//GEN-LAST:event_formWindowClosing
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
-            identificarHuella2();
-            Reclutador.clear();
             jButton1.setEnabled(false);
             jButton3.setEnabled(false);
+            identificarHuella2();
         } catch (IOException ex) {
-            Logger.getLogger(jDigitalPersona.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(JFrameAsistencia.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void formWindowDeactivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowDeactivated
-        stop();// TODO add your handling code here:
+        stop();
     }//GEN-LAST:event_formWindowDeactivated
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
-        Iniciar();
-	start();        // TODO add your handling code here:
+//        Iniciar();
+//	start();
     }//GEN-LAST:event_formWindowActivated
     /**
      * @param args the command line arguments

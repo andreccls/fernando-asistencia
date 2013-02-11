@@ -395,7 +395,6 @@ public class persistencia {
         items = q.list();
         tx.commit();
         return items;
-
     }
 
     public List getAgendas() throws ArrayStoreException {

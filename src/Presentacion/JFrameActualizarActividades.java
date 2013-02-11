@@ -4,12 +4,17 @@
  */
 package Presentacion;
 
+import Clases.Agenda;
 import Clases.Controlador;
+import Clases.Franco;
 import Clases.Personal;
 import Clases.Tarea;
 import java.awt.Component;
 import java.awt.Frame;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultCellEditor;
@@ -48,28 +53,28 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
         jTextField5.setText(Integer.toString(tarr.getIdTarea()));
         jTextField1.setText(tarr.getNombre());
         jTextField3.setText(tarr.getLugar());
-        int[] anchos1 = {170,90,90,90,80,80,80};
+        int[] anchos1 = {30,170,120,90,80,80,80,80};
         for(int i = 0; i < jTable1.getColumnCount(); i++) {
             jTable1.getColumnModel().getColumn(i).setPreferredWidth(anchos1[i]);
         }
         DefaultTableCellRenderer modelocentrar = new DefaultTableCellRenderer();
         modelocentrar.setHorizontalAlignment(SwingConstants.CENTER);
-        jTable1.getColumnModel().getColumn(4).setCellRenderer(modelocentrar); 
-        jTable1.getColumnModel().getColumn(5).setCellRenderer(modelocentrar);
+        jTable1.getColumnModel().getColumn(5).setCellRenderer(modelocentrar); 
         jTable1.getColumnModel().getColumn(6).setCellRenderer(modelocentrar);
+        jTable1.getColumnModel().getColumn(7).setCellRenderer(modelocentrar);
         
         jTable1.getTableHeader().setDefaultRenderer(new JFrameActualizarActividades.HeaderRenderer(jTable1));
         if(tar.getComentario().equals("EXTRACURRICULAR")){
             JTableHeader th = jTable1.getTableHeader();
             TableColumnModel tcm = th.getColumnModel();
-            TableColumn tc = tcm.getColumn(2); //recordemos que las columnas inician a enumerarse desde cero
+            TableColumn tc = tcm.getColumn(3); //recordemos que las columnas inician a enumerarse desde cero
             tc.setHeaderValue("Franco");
-            TableColumn tc1 = tcm.getColumn(3); //recordemos que las columnas inician a enumerarse desde cero
+            TableColumn tc1 = tcm.getColumn(4); //recordemos que las columnas inician a enumerarse desde cero
             tc1.setHeaderValue("Fecha fin");
-            TableColumn tc2 = tcm.getColumn(4); //recordemos que las columnas inician a enumerarse desde cero
+            TableColumn tc2 = tcm.getColumn(5); //recordemos que las columnas inician a enumerarse desde cero
             tc2.setHeaderValue("Fecha inicio");
             th.repaint(); //actualizamos el header
-            TableColumn Column2 = jTable1.getColumnModel().getColumn(2);
+            TableColumn Column3 = jTable1.getColumnModel().getColumn(3);
             try {
                 MaskFormatter campo=null;
                 campo = new MaskFormatter("dd/MM/yyyy");
@@ -78,11 +83,46 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
                 uppercase = new MaskFormatter("##/##/####");
                 DefaultFormatterFactory factory = new DefaultFormatterFactory(uppercase);
                 text.setFormatterFactory(factory);
-                Column2.setCellEditor(new DefaultCellEditor(text));
+                Column3.setCellEditor(new DefaultCellEditor(text));
                 
             } catch (ParseException ex) {
                 Logger.getLogger(JFrameActualizarActividades.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }else if(tar.getComentario().equals("OTRO")){
+            JTableHeader th = jTable1.getTableHeader();
+            TableColumnModel tcm = th.getColumnModel();
+            TableColumn t = tcm.getColumn(2); //recordemos que las columnas inician a enumerarse desde cero
+            t.setHeaderValue("Descripción");
+            TableColumn tc = tcm.getColumn(3); //recordemos que las columnas inician a enumerarse desde cero
+            tc.setHeaderValue("Comentario");
+            TableColumn tc1 = tcm.getColumn(4);
+            tc1.setHeaderValue("Fecha fin");
+            TableColumn tc2 = tcm.getColumn(5);
+            tc2.setHeaderValue("Fecha inicio");
+            th.repaint();
+            jTable1.setEnabled(false);
+        }else if(tar.getComentario().equals("CLASE")){
+            JTableHeader th = jTable1.getTableHeader();
+            TableColumnModel tcm = th.getColumnModel();
+            TableColumn t = tcm.getColumn(2); //recordemos que las columnas inician a enumerarse desde cero
+            t.setHeaderValue("Sit. Revista");
+            TableColumn tc = tcm.getColumn(3); //recordemos que las columnas inician a enumerarse desde cero
+            tc.setHeaderValue("Aula");
+            TableColumn tc1 = tcm.getColumn(4);
+            tc1.setHeaderValue("Numero");
+            th.repaint();
+            jTable1.setEnabled(false);
+        }else if(tar.getComentario().equals("REUNION")){
+            JTableHeader th = jTable1.getTableHeader();
+            TableColumnModel tcm = th.getColumnModel();
+            TableColumn t = tcm.getColumn(2); //recordemos que las columnas inician a enumerarse desde cero
+            t.setHeaderValue("Motivo");
+            TableColumn tc = tcm.getColumn(3); //recordemos que las columnas inician a enumerarse desde cero
+            tc.setHeaderValue("Caracter");
+//            TableColumn tc1 = tcm.getColumn(4);
+//            tc1.setHeaderValue("Numero");
+            th.repaint();
+            jTable1.setEnabled(false);
         }
         Drive.CargarTablaActividad(jTable1, tar);
     }
@@ -130,11 +170,11 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Personal", "Descripción 1", "Descripción 2", "Descripción 3", "Fecha", "Inicio", "Fin"
+                "Nº", "Personal", "Descripción 1", "Descripción 2", "Descripción 3", "Fecha", "Inicio", "Fin"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, true, false, false, false, false
+                false, false, false, true, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -275,10 +315,39 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        if(!jTextField1.getText().equals(tar.getNombre())||!jTextField3.getText().equals(tar.getLugar())){
-            tar.setNombre(jTextField1.getText());
-            tar.setLugar(jTextField3.getText());
-            tar.ActualizarTarea(tar);
+        try {
+            if (!jTextField1.getText().equals(tar.getNombre()) || !jTextField3.getText().equals(tar.getLugar())) {
+                tar.setNombre(jTextField1.getText());
+                tar.setLugar(jTextField3.getText());
+                tar.ActualizarTarea(tar);
+            }
+            if(tar.getComentario().equals("EXTRACURRICULAR")){
+                DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+                int e = 0;
+                while (modelo.getRowCount() != e) {
+                    int id= Integer.parseInt(modelo.getValueAt(e, 0).toString());
+                    if(modelo.getValueAt(e, 3)!=null){
+                            SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+                            formateador.setLenient(false);
+                            Agenda age=Drive.getAgenda(tar, id);
+                            Franco fran=age.getFranco(age);
+                            fran.setDiaFranco(formateador.parse(modelo.getValueAt(e, 3).toString()));
+                            if(fran.getIdFranco()!=null){
+                                fran.actualizarFranco(fran);
+                            }else{
+
+                                fran.setAgenda(age);
+                                fran.guardarFranco(fran);
+                            }
+                    }
+                    e++;
+                }
+            }
+            JFrameConsultaActividades vpp=new JFrameConsultaActividades(Drive);
+            this.hide();
+            vpp.show();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Ingrese correctamente la fecha de franco");
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
