@@ -4,19 +4,19 @@
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="45"/>
 	<queryString language="hql">
-		<![CDATA[from Tarea,Tareaclase]]>
+		<![CDATA[select tar.nombre as nombre, tar.lugar as lugar, tarcla.aula as aula, tarcla.numero as numero from Clases.Tarea tar, Tareaclase tarcla where tar.idTarea=tarcla.tarea.idTarea]]>
 	</queryString>
 	<field name="nombre" class="java.lang.String">
-		<fieldDescription><![CDATA[nombre]]></fieldDescription>
+		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="lugar" class="java.lang.String">
-		<fieldDescription><![CDATA[lugar]]></fieldDescription>
-	</field>
-	<field name="numero" class="java.lang.Integer">
-		<fieldDescription><![CDATA[numero]]></fieldDescription>
+		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="aula" class="java.lang.String">
-		<fieldDescription><![CDATA[aula]]></fieldDescription>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="numero" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<background>
 		<band splitType="Stretch"/>
@@ -31,7 +31,7 @@
 				<text><![CDATA[Instituto "Gutenberg"]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="1" y="81" width="199" height="35"/>
+				<reportElement x="1" y="81" width="228" height="35"/>
 				<textElement/>
 				<text><![CDATA[Incorporado a la Enseñanza oficial N º441
 Entre Ríos 2245-67 3300 POSADAS-MNES
@@ -45,7 +45,7 @@ Entre Ríos 2245-67 3300 POSADAS-MNES
 				<text><![CDATA[Clases]]></text>
 			</staticText>
 			<line>
-				<reportElement mode="Transparent" x="0" y="114" width="511" height="1"/>
+				<reportElement mode="Transparent" x="0" y="118" width="511" height="1"/>
 				<graphicElement>
 					<pen lineWidth="3.0" lineStyle="Double"/>
 				</graphicElement>
@@ -56,22 +56,30 @@ Entre Ríos 2245-67 3300 POSADAS-MNES
 		<band height="20" splitType="Stretch">
 			<staticText>
 				<reportElement x="1" y="0" width="153" height="20"/>
-				<textElement textAlignment="Center"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
 				<text><![CDATA[Nombre]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="154" y="0" width="147" height="20"/>
-				<textElement textAlignment="Center"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
 				<text><![CDATA[Lugar]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="301" y="0" width="126" height="20"/>
-				<textElement textAlignment="Center"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
 				<text><![CDATA[Aula]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="427" y="0" width="83" height="20"/>
-				<textElement textAlignment="Center"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
 				<text><![CDATA[Numero]]></text>
 			</staticText>
 			<line>
@@ -92,25 +100,8 @@ Entre Ríos 2245-67 3300 POSADAS-MNES
 		<band height="21" splitType="Stretch">
 			<textField>
 				<reportElement mode="Transparent" x="1" y="0" width="153" height="20"/>
-				<textElement/>
+				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{nombre}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="154" y="0" width="147" height="20"/>
-				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{lugar}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="301" y="0" width="126" height="20"/>
-				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{aula}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="427" y="0" width="83" height="20"/>
-				<textElement>
-					<font isPdfEmbedded="true"/>
-				</textElement>
-				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{numero}]]></textFieldExpression>
 			</textField>
 			<line>
 				<reportElement x="0" y="0" width="511" height="1"/>
@@ -124,6 +115,21 @@ Entre Ríos 2245-67 3300 POSADAS-MNES
 			<line>
 				<reportElement x="426" y="0" width="1" height="21"/>
 			</line>
+			<textField>
+				<reportElement x="155" y="1" width="145" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{lugar}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="301" y="1" width="126" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{aula}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="427" y="1" width="83" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{numero}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<columnFooter>
