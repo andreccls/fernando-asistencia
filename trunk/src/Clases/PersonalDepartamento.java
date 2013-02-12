@@ -76,25 +76,25 @@ public class PersonalDepartamento  implements java.io.Serializable {
     public void guardarPersonalDepartamento(PersonalDepartamento unPersonaldepto){
         Controlador.getPERSISTENCIA().insert(this);
 
-        JOptionPane.showMessageDialog(null,"El personal Departamento "+ 
-                String.valueOf(unPersonaldepto.getId().getIdPersonal()) +
-                " se guardo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+//        JOptionPane.showMessageDialog(null,"El personal Departamento "+ 
+//                String.valueOf(unPersonaldepto.getId().getIdPersonal()) +
+//                " se guardo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
     }
 
     public void actualizarPersonalDepartamento(PersonalDepartamento unPersonaldepto){
         Controlador.getPERSISTENCIA().saveupdate(this);
 
-        JOptionPane.showMessageDialog(null,"El personal Departamento "+ 
-                String.valueOf(unPersonaldepto.getId().getIdPersonal()) +
-                " se actualizó correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+//        JOptionPane.showMessageDialog(null,"El personal Departamento "+ 
+//                String.valueOf(unPersonaldepto.getId().getIdPersonal()) +
+//                " se actualizó correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
     }
     
     public void eliminarPersonalDepartamento(PersonalDepartamento unPersonaldepto){
         Controlador.getPERSISTENCIA().delete(this);
 
-        JOptionPane.showMessageDialog(null,"El personal Departamento "+ 
-                String.valueOf(unPersonaldepto.getId().getIdPersonal()) +
-                " se eliminó correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+//        JOptionPane.showMessageDialog(null,"El personal Departamento "+ 
+//                String.valueOf(unPersonaldepto.getId().getIdPersonal()) +
+//                " se eliminó correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
     }
 
 }

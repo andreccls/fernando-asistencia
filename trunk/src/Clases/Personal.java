@@ -283,20 +283,13 @@ public class Personal  implements java.io.Serializable {
     
     public int guardarPersonal(Personal unPersonal){
         Controlador.getPERSISTENCIA().insertstring(this);
-        //Controlador.getPERSISTENCIA().update(this);
-
-        JOptionPane.showMessageDialog(null,"El personal "+ 
-                String.valueOf(unPersonal.getIdPersonal()) +
-                " se guardo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null,"El personal fue registrado correctamente","Registro de Personal",JOptionPane.INFORMATION_MESSAGE);
         return unPersonal.getIdPersonal();
     }
     
     public void actualizarPersonal(Personal unPersonal){
         Controlador.getPERSISTENCIA().update(this);
-
-        JOptionPane.showMessageDialog(null,"El personal "+ 
-                String.valueOf(unPersonal.getIdPersonal()) +
-                " se actualizó correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null,"El personal se actualizó correctamente","Actualización de Personal",JOptionPane.INFORMATION_MESSAGE);
     }
 
     public Personaldocente getPersonaldoc(int idperdoc) {
