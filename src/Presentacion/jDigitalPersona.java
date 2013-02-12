@@ -598,46 +598,41 @@ public class jDigitalPersona extends javax.swing.JFrame {
      featuresverificacion = extraerCaracteristicas(sample, DPFPDataPurpose.DATA_PURPOSE_VERIFICATION);
 
      // Comprobar la calidad de la muestra de la huella y lo añade a su reclutador si es bueno
-     if (featuresinscripcion != null){
-         try{
+     if (featuresinscripcion != null) {
+         try {
              System.out.println("Las Caracteristicas de la Huella han sido creada");
              Reclutador.addFeatures(featuresinscripcion);// Agregar las caracteristicas de la huella a la plantilla a crear
 
              // Dibuja la huella dactilar capturada.
-             Image image=CrearImagenHuella(sample);
+             Image image = CrearImagenHuella(sample);
              DibujarHuella(image);
-             
-         }catch (DPFPImageQualityException ex) {
-             System.err.println("Error: "+ex.getMessage());
+
+         } catch (DPFPImageQualityException ex) {
+             System.err.println("Error: " + ex.getMessage());
+         } finally {
+//             EstadoHuellas();
+             // Comprueba si la plantilla se ha creado.
+             switch (Reclutador.getTemplateStatus()) {
+                 case TEMPLATE_STATUS_READY:	// informe de éxito y detiene  la captura de huellas
+                     stop();
+                     setTemplate(Reclutador.getTemplate());
+                     EnviarTexto("La Plantilla de la Huella ha Sido Creada, ya puede Verificarla o Guardarla");
+                     break;
+                 case TEMPLATE_STATUS_FAILED: // informe de fallas y reiniciar la captura de huellas
+                     Reclutador.clear();
+                     stop();
+                     EstadoHuellas();
+                     setTemplate(null);
+                     JOptionPane.showMessageDialog(jDigitalPersona.this, "La Plantilla de la Huella no pudo ser creada, Repita el Proceso", "Inscripcion de Huellas Dactilares", JOptionPane.ERROR_MESSAGE);
+                     jLabel7.setIcon(null);
+                     jLabel8.setIcon(null);
+                     jLabel9.setIcon(null);
+                     jLabel10.setIcon(null);
+                     start();
+                     break;
+             }
          }
-     
-         finally {
-         EstadoHuellas();
-         // Comprueba si la plantilla se ha creado.
-            switch(Reclutador.getTemplateStatus())
-            {
-                case TEMPLATE_STATUS_READY:	// informe de éxito y detiene  la captura de huellas
-                stop();
-                setTemplate(Reclutador.getTemplate());
-                EnviarTexto("La Plantilla de la Huella ha Sido Creada, ya puede Verificarla o Identificarla");
-
-                break;
-
-                case TEMPLATE_STATUS_FAILED: // informe de fallas y reiniciar la captura de huellas
-                Reclutador.clear();
-                stop();
-                EstadoHuellas();
-                setTemplate(null);
-                JOptionPane.showMessageDialog(jDigitalPersona.this, "La Plantilla de la Huella no pudo ser creada, Repita el Proceso", "Inscripcion de Huellas Dactilares", JOptionPane.ERROR_MESSAGE);
-                jLabel7.setIcon(null);
-                jLabel8.setIcon(null);
-                jLabel9.setIcon(null);
-                jLabel10.setIcon(null);
-                start();
-                break;
-            }
-                 }
-        }
+     }
  }
 
  public  DPFPFeatureSet extraerCaracteristicas(DPFPSample sample, DPFPDataPurpose purpose){

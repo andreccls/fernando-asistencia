@@ -69,26 +69,26 @@ public class Telefono  implements java.io.Serializable {
     
     public void guardarTelefono(Telefono unTelefono){
         Controlador.getPERSISTENCIA().insert(this);
-
-        JOptionPane.showMessageDialog(null,"El Telefono "+ 
-                String.valueOf(unTelefono.getIdTelefono()) +
-                " se guardo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+//
+//        JOptionPane.showMessageDialog(null,"El Telefono "+ 
+//                String.valueOf(unTelefono.getIdTelefono()) +
+//                " se guardo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
     }
     
     public void actualizarTelefono(Telefono unTelefono){
         Controlador.getPERSISTENCIA().saveupdate(this);
-
-        JOptionPane.showMessageDialog(null,"El Telefono "+ 
-                String.valueOf(unTelefono.getIdTelefono()) +
-                " se actualizó correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+//
+//        JOptionPane.showMessageDialog(null,"El Telefono "+ 
+//                String.valueOf(unTelefono.getIdTelefono()) +
+//                " se actualizó correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
     }
     
     public void eliminarTelefono(Telefono unTelefono){
         Controlador.getPERSISTENCIA().delete(this);
-
-        JOptionPane.showMessageDialog(null,"El Telefono "+ 
-                String.valueOf(unTelefono.getIdTelefono()) +
-                " se eliminó correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+//
+//        JOptionPane.showMessageDialog(null,"El Telefono "+ 
+//                String.valueOf(unTelefono.getIdTelefono()) +
+//                " se eliminó correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
     }
 
 
