@@ -435,8 +435,24 @@ public class JFrameInasistencia extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel3MouseClicked
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        List consulta=Controlador.getPERSISTENCIA().getPersonalesTrue(1);
-        Drive.mostrarReporte("ListaPersonal",consulta,"Lista Personal");
+            JComboBox salida = new JComboBox();
+            String cadSalida;
+            salida.addItem("Asistencias");
+            salida.addItem("Tardanzas");
+            salida.addItem("Inasistencias");
+            salida.setSize(25, 25);
+            JOptionPane.showMessageDialog(null,salida, "¿Que desea imprimir?", JOptionPane.INFORMATION_MESSAGE);
+                cadSalida = salida.getSelectedItem().toString();
+                if (cadSalida.equals("Asistencias")) {
+                    List consulta = Controlador.getPERSISTENCIA().getTareasClasesTrue(1);
+                    Drive.mostrarReporte("Asistencias", consulta, "Lista de Asistencias");
+                } else if (cadSalida.equals("Tardanzas")) {
+                    List consulta = Controlador.getPERSISTENCIA().getTareasExtracurricularTrue(1);
+                    Drive.mostrarReporte("Asistencia y tardanza", consulta, "Lista de Tardanzas");
+                } else if (cadSalida.equals("Inasistencias")) {
+                    List consulta = Controlador.getPERSISTENCIA().getTareasReunionTrue(1);
+                    Drive.mostrarReporte("Inasistencia", consulta, "Lista de Inasistencias");
+                }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     /**

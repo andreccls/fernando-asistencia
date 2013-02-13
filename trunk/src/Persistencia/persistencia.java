@@ -136,6 +136,46 @@ public class persistencia {
         tx.commit();
         return items;
     }
+    
+    public List getTareasReuniones() throws ArrayStoreException {
+        String hql = "from Tareareunion";
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
+    }
+    
+    public List getTareasExtracurriculares() throws ArrayStoreException {
+        String hql = "from Tareaextracurricular";
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
+    }
+    
+    public List getTareasClases() throws ArrayStoreException {
+        String hql = "from Tareaclase";
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
+    }
+    
+    public List getTareasOtros() throws ArrayStoreException {
+        String hql = "from Tareaotro";
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
+    }
 
     public List getFeriados() throws ArrayStoreException {
         String hql = "from Feriado";
@@ -181,7 +221,7 @@ public class persistencia {
     }
     
     public List getTareasClasesTrue(int i) throws ArrayStoreException {
-        String hql = "from Tarea,Tareaclase where comentario='CLASE' and estado="+i;
+        String hql = "from Tarea as tar,Tareaclase as tarcla where tar.idTarea=tarcla.tarea.idTarea and estado="+i;
         List items = new ArrayList();
         Transaction tx = session.beginTransaction();
         Query q = session.createQuery(hql);
@@ -191,7 +231,7 @@ public class persistencia {
     }
     
     public List getTareasReunionTrue(int i) throws ArrayStoreException {
-        String hql = "from Tarea,Tareareunion where tarea.id_tarea=tareareunion.id_tareaclase and tarea.estado="+i;
+        String hql = "from Tarea as tar,Tareareunion as tarreu where tar.idTarea=tarreu.tarea.idTarea and estado="+i;
         List items = new ArrayList();
         Transaction tx = session.beginTransaction();
         Query q = session.createQuery(hql);
@@ -201,7 +241,7 @@ public class persistencia {
     }
     
     public List getTareasExtracurricularTrue(int i) throws ArrayStoreException {
-        String hql = "from Tarea,Tareaextracurricular where tarea.id_tarea=tareaextracurricular.id_tareaclase and tarea.estado="+i;
+        String hql = "from Tarea as tar,Tareaextracurricular as tarext where tar.idTarea=tarext.tarea.idTarea and estado="+i;
         List items = new ArrayList();
         Transaction tx = session.beginTransaction();
         Query q = session.createQuery(hql);
@@ -211,7 +251,7 @@ public class persistencia {
     }
     
     public List getTareasOtroTrue(int i) throws ArrayStoreException {
-        String hql = "from Tarea,Tareaotro where tarea.id_tarea=tareaotro.id_tareaclase and tarea.estado="+i;
+        String hql = "from Tarea as tar,Tareaotro as tarot where tar.idTarea=tarot.tarea.idTarea and estado="+i;
         List items = new ArrayList();
         Transaction tx = session.beginTransaction();
         Query q = session.createQuery(hql);
