@@ -78,11 +78,14 @@ public class JFrameActividades extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("SISTEMA DE ASISTENCIA DEL PERSONAL");
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("SISTEMA DE ASISTENCIA DE PERSONAL EDUCATIVO");
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowOpened(java.awt.event.WindowEvent evt) {
                 formWindowOpened(evt);
+            }
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
             }
         });
 
@@ -273,6 +276,11 @@ public class JFrameActividades extends javax.swing.JFrame {
         Calendar dia=dateChooserPanel1.getSelectedDate();
         Drive.CargarGrillaActividades(jTable2, per,dia.getTime());
     }//GEN-LAST:event_dateChooserPanel1OnSelectionChange
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        this.dispose();
+        vp.show();
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments

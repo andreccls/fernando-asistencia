@@ -27,6 +27,7 @@ import javax.swing.JTextField;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
+import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -1227,7 +1228,8 @@ public class Controlador {
             // CerrarConex();
         } catch (Exception j) {
             //javax.swing.JOptionPane msj=new javax.swing.JOptionPane() ;
-            JOptionPane.showMessageDialog(null, "Error al cargar el reporte", "Error", 2, null);
+            JOptionPane.showMessageDialog(null, j.toString(), "Error", 2, null);
+            System.out.println(j.toString());
         }
 
     }

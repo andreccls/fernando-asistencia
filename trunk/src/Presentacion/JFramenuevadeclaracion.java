@@ -102,7 +102,13 @@ public class JFramenuevadeclaracion extends javax.swing.JFrame{
         jLabel35 = new javax.swing.JLabel();
         jLabel36 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("SISTEMA DE ASISTENCIA DE PERSONAL EDUCATIVO");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Ingrese los datos de la declaración jurada"));
 
@@ -549,6 +555,12 @@ public class JFramenuevadeclaracion extends javax.swing.JFrame{
             Drive.CargarComboTiponivel(jComboBox3);
         }
     }//GEN-LAST:event_jLabel36MouseClicked
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        JFrameActualizarPersonal ventdec = new JFrameActualizarPersonal(Drive,pe);
+        this.dispose();
+        ventdec.show();
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments

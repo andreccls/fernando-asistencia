@@ -99,7 +99,7 @@ public class JFramePrincipal extends javax.swing.JFrame {
         jMenuItem10 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("SISTEMA DE ASISTENCIA DEL PERSONAL");
+        setTitle("SISTEMA DE ASISTENCIA DE PERSONAL EDUCATIVO");
 
         jLabel3.setFont(new java.awt.Font("Segoe Script", 3, 12)); // NOI18N
         jLabel3.setText("Bienvenido al Sistema de Asistencia de Personal Educativo (S.A.P.E.)");
