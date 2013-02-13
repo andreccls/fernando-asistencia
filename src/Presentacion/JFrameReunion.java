@@ -475,7 +475,7 @@ public class JFrameReunion extends javax.swing.JFrame {
                                 in.setEstadoInicio(false);
                                 in.setFin(fin);
                                 in.guardarIniciofin(in);
-                            }else{JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para: "+per.toString());}
+                            }else{JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para: "+per.toString(),"Registrar Reunión", JOptionPane.ERROR_MESSAGE);}
                         }
                         c++;
                     }
@@ -487,10 +487,10 @@ public class JFrameReunion extends javax.swing.JFrame {
                     Drive.LimpiarTabla(jTable1);
                     Drive.CargarTablacheck(jTable1);
                 }
-            }else{JOptionPane.showMessageDialog(null, "Todos los campos con '*' son obligatorios y los horarios no pueden contener espacios en blanco");}
-            }else{JOptionPane.showMessageDialog(null, "Debe seleccionar al menos un personal");}
+            }else{JOptionPane.showMessageDialog(null, "Todos los campos con '*' son obligatorios y los horarios no pueden contener espacios en blanco","Registrar Reunión", JOptionPane.ERROR_MESSAGE);}
+            }else{JOptionPane.showMessageDialog(null, "Debe seleccionar al menos un personal","Registrar Reunión", JOptionPane.ERROR_MESSAGE);}
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, "Ingrese correctamente los valores");
+            JOptionPane.showMessageDialog(null, "Ingrese correctamente los valores","Registrar Reunión", JOptionPane.ERROR_MESSAGE);
         }        // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 

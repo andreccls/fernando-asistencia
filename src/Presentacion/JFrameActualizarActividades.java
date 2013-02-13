@@ -347,7 +347,7 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
             this.hide();
             vpp.show();
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, "Ingrese correctamente la fecha de franco");
+            JOptionPane.showMessageDialog(null, "Ingrese correctamente la fecha de franco","Ingresar Franco", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 

@@ -377,7 +377,7 @@ public class JFramenuevadeclaracion extends javax.swing.JFrame{
                 while(it.hasNext()){
                     Establecimiento tip=(Establecimiento) it.next();
                     if(tip.getNombre().equals(cadSalida)){
-                        JOptionPane.showMessageDialog(null, "El establecimiento ya existe");
+                        JOptionPane.showMessageDialog(null, "El establecimiento ya existe","Registrar Establecimiento", JOptionPane.ERROR_MESSAGE);
                         w=true;
                     }
                 }
@@ -407,7 +407,7 @@ public class JFramenuevadeclaracion extends javax.swing.JFrame{
                 }
             }
         }catch (Exception e){
-            JOptionPane.showMessageDialog(null,"Ingrese correctamente los datos");
+            JOptionPane.showMessageDialog(null,"Ingrese correctamente los datos","Registrar Establecimiento", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jLabel1MouseClicked
 
@@ -424,7 +424,7 @@ public class JFramenuevadeclaracion extends javax.swing.JFrame{
             while(it.hasNext()){
                 Tipocargo tip=(Tipocargo) it.next();
                 if(tip.getNombre().equals(cadSalida)){
-                    JOptionPane.showMessageDialog(null, "El cargo ya existe");
+                    JOptionPane.showMessageDialog(null, "El cargo ya existe","Registrar Cargo", JOptionPane.ERROR_MESSAGE);
                     w=true;
                 }
             }
@@ -453,7 +453,7 @@ public class JFramenuevadeclaracion extends javax.swing.JFrame{
             while(it.hasNext()){
                 Tiponivel tip=(Tiponivel) it.next();
                 if(tip.getNombre().equals(cadSalida)){
-                    JOptionPane.showMessageDialog(null, "El nivel ya existe");
+                    JOptionPane.showMessageDialog(null, "El nivel ya existe","Registrar Nivel", JOptionPane.ERROR_MESSAGE);
                     w=true;
                 }
             }
@@ -516,7 +516,7 @@ public class JFramenuevadeclaracion extends javax.swing.JFrame{
             JFrameActualizarPersonal ventdec = new JFrameActualizarPersonal(Drive,pe);
             this.hide();
             ventdec.show();
-        }else{JOptionPane.showMessageDialog(null, "INGRESE LAS HORAS");
+        }else{JOptionPane.showMessageDialog(null, "INGRESE LAS HORAS","Registrar Declaración", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 

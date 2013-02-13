@@ -55,7 +55,7 @@ public class JFramePrincipal extends javax.swing.JFrame {
         Controlador auxDrive = new Controlador();
         try {
             if (auxDrive.getPrimerEstablecimiento()== null) {
-                JOptionPane.showMessageDialog(null, "Debe ingresar Colegio");
+                JOptionPane.showMessageDialog(null, "Debe ingresar Colegio","Colegio", JOptionPane.ERROR_MESSAGE);
             } else {
                 auxDrive.getPrimerEstablecimiento();
                 Drive = auxDrive;

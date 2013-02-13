@@ -620,8 +620,7 @@ public class JFramePersonal extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jButton1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(jButton4)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel19)
@@ -786,7 +785,7 @@ public class JFramePersonal extends javax.swing.JFrame {
                 }else if(pe.getIdPersonal()!=null){
                     pe.setEstado(true);
                     pe.actualizarPersonal(pe);
-                    JOptionPane.showMessageDialog(null, "EL PERSONAL YA EXISTE Y FUE DADO DE ALTA, PARA REALIZAR UN CAMBIO INGRESE A LA ACTUALIZAR PERSONAL");
+                    JOptionPane.showMessageDialog(null, "EL PERSONAL YA EXISTE Y FUE DADO DE ALTA, PARA REALIZAR UN CAMBIO INGRESE A LA ACTUALIZAR PERSONAL","Registrar Personal", JOptionPane.INFORMATION_MESSAGE);
                 }
                 jTextField1.setText("");
                 jTextField2.setText("");
@@ -806,17 +805,14 @@ public class JFramePersonal extends javax.swing.JFrame {
                 jRadioButton1.setSelected(false);
                 jRadioButton2.setSelected(false);
             }else{
-                JOptionPane.showMessageDialog(null,"Los campos con '*' son obligatorios y no pueden tener espacios en blanco en la fecha");
+                JOptionPane.showMessageDialog(null,"Los campos con '*' son obligatorios y no pueden tener espacios en blanco en la fecha","Registrar Personal", JOptionPane.ERROR_MESSAGE);
                 jFormattedTextField5.setText("");
                 jFormattedTextField2.setText("");
                 jFormattedTextField1.setText("");
             }
         }catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, ex.toString());
+            JOptionPane.showMessageDialog(null, ex.toString(),"Registrar Personal", JOptionPane.ERROR_MESSAGE);
         }
-            
-            
-                // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -889,7 +885,7 @@ public class JFramePersonal extends javax.swing.JFrame {
             if(matcher.matches()) {
                 isValidEmail = true;
             }
-            else {JOptionPane.showMessageDialog(null, "INGRESE CORRECTAMENTE LA DIRECCION DE CORREO ELECTRONICO");} // TODO add your handling code here:
+            else {JOptionPane.showMessageDialog(null, "INGRESE CORRECTAMENTE LA DIRECCION DE CORREO ELECTRONICO","Registrar Personal", JOptionPane.ERROR_MESSAGE);} // TODO add your handling code here:
 
         }
     }//GEN-LAST:event_jTextField9FocusLost
@@ -912,7 +908,7 @@ public class JFramePersonal extends javax.swing.JFrame {
             while(it.hasNext()){
                 Actividad tip=(Actividad) it.next();
                 if(tip.getActividad().equals(cadSalida)){
-                    JOptionPane.showMessageDialog(null, "La actividad ya existe");
+                    JOptionPane.showMessageDialog(null, "La actividad ya existe","Registrar Actividad", JOptionPane.ERROR_MESSAGE);
                     w=true;
                 }
             }
@@ -941,7 +937,7 @@ public class JFramePersonal extends javax.swing.JFrame {
             while(it.hasNext()){
                 Departamento tip=(Departamento) it.next();
                 if(tip.getNombre().equals(cadSalida)){
-                    JOptionPane.showMessageDialog(null, "El departamento ya existe");
+                    JOptionPane.showMessageDialog(null, "El departamento ya existe","Registrar Departamento", JOptionPane.ERROR_MESSAGE);
                     w=true;
                 }
             }
@@ -1006,7 +1002,7 @@ public class JFramePersonal extends javax.swing.JFrame {
             while(it.hasNext()){
                 Tipodoc tip=(Tipodoc) it.next();
                 if(tip.getTipodoc().equals(cadSalida)){
-                    JOptionPane.showMessageDialog(null, "El tipo de documento ya existe");
+                    JOptionPane.showMessageDialog(null, "El tipo de documento ya existe","Registrar Tipo de Documento", JOptionPane.ERROR_MESSAGE);
                     w=true;
                 }
             }

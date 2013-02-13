@@ -259,7 +259,7 @@ public class JFrameFeriados extends javax.swing.JFrame {
                 }
             }
         }catch (Exception e){
-            JOptionPane.showMessageDialog(null,"Para eliminar una fecha debe seleccionarla y luego presionar 'Eliminar'");
+            JOptionPane.showMessageDialog(null,"Para eliminar una fecha debe seleccionarla y luego presionar 'Eliminar'","Eliminar Feriado", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -278,13 +278,13 @@ public class JFrameFeriados extends javax.swing.JFrame {
                     fer.guardarFeriado(fer);
                     Drive.CargarTablaFeriados(jTable1);
                 }else{
-                JOptionPane.showMessageDialog(null,"Ya existe el feriado");
+                JOptionPane.showMessageDialog(null,"Ya existe el feriado","Registrar Feriado", JOptionPane.ERROR_MESSAGE);
                 }
             }else{
-                JOptionPane.showMessageDialog(null,"Ingrese correctamente la fecha");
+                JOptionPane.showMessageDialog(null,"Ingrese correctamente la fecha","Registrar Feriado", JOptionPane.ERROR_MESSAGE);
             }
         }catch (Exception e){
-            JOptionPane.showMessageDialog(null,"Ingrese correctamente la fecha");
+            JOptionPane.showMessageDialog(null,"Ingrese correctamente la fecha","Registrar Feriado", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 

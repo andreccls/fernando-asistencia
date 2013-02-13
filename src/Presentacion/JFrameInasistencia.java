@@ -271,33 +271,123 @@ public class JFrameInasistencia extends javax.swing.JFrame {
     }//GEN-LAST:event_jComboBox1ItemStateChanged
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        DefaultTableModel modelo = (DefaultTableModel)jTable1.getModel();
-        int e=0;
-        while(modelo.getRowCount()!=e){
-            Asistencia asis=Drive.getAsistencia(Integer.parseInt(modelo.getValueAt(e, 0).toString()));
-            if(!modelo.getValueAt(e, 6).equals(asis.getEstado()) || !modelo.getValueAt(e, 7).equals(asis.getTardanza())){
-                if(modelo.getValueAt(e, 6).equals(true) && modelo.getValueAt(e, 7).equals(false) || modelo.getValueAt(e, 6).equals(true) && modelo.getValueAt(e, 7).equals(true)){
-                    Object a=modelo.getValueAt(e, 8);
-                    Object m=modelo.getValueAt(e, 9);
-                    if(a!=null && m!=null){
-                        asis.setEstado(true);
-                        asis.guardarAsistencia(asis);
-                        Justificacion jus=new Justificacion();
-                        jus.setAsistencia(asis);
-                        jus.setMotivo(modelo.getValueAt(e, 9).toString());
-                        Articulo art=(Articulo) modelo.getValueAt(e, 8);
-                        jus.setArticulo(art);
-                        jus.guardarJustificacion(jus);
-                    }else{JOptionPane.showMessageDialog(null, "Para justificar una inasistencia, necesita un artículo y un motivo");}
-                }else if(modelo.getValueAt(e, 6).equals(false) && modelo.getValueAt(e, 7).equals(true)){
-                    JOptionPane.showMessageDialog(null, "Esta operacion no esta permitida para la asistencia numero: "+asis.getIdAsistencia());
-                }
+        try{
+            DefaultTableModel modelo = (DefaultTableModel)jTable1.getModel();
+            int e=0;
+            while(modelo.getRowCount()!=e){
+                Asistencia asis=Drive.getAsistencia(Integer.parseInt(modelo.getValueAt(e, 0).toString()));
+                //Object combo= modelo.get;
+                //if(!modelo.getValueAt(e, 6).equals(asis.getEstado()) || !modelo.getValueAt(e, 7).equals(asis.getTardanza())){
+                    if(modelo.getValueAt(e, 6).equals(true) && modelo.getValueAt(e, 7).equals(false)){
+                        Object a=modelo.getValueAt(e, 8);
+                        Object m=modelo.getValueAt(e, 9);
+                        boolean res=modelo.getValueAt(e, 6).equals(true);
+                        boolean res2=modelo.getValueAt(e, 7).equals(true);
+                        if(asis.getEstado()!= res){
+                            //Cambia una inasistencia o una tardanza por una asistencia
+                            if(a!=null && m!=null){
+                                if(m.toString().length()<=16){
+                                    asis.setEstado(true);
+                                    asis.setTardanza(false);
+                                    asis.guardarAsistencia(asis);
+                                    Justificacion jus=asis.getJustificacion(asis);
+                                    jus.setAsistencia(asis);
+                                    jus.setMotivo("Inasistencia por asistencia: "+modelo.getValueAt(e, 9).toString());
+                                    Articulo art=(Articulo) modelo.getValueAt(e, 8);
+                                    jus.setArticulo(art);
+                                    if(jus.getIdJustificacion()!=null){
+                                        jus.actualizarJustificacion(jus);
+                                    }else{jus.guardarJustificacion(jus);}
+                                }else{JOptionPane.showMessageDialog(null, "El motivo es muy largo, por favor reduzcalo","Registrar Inasistencia", JOptionPane.ERROR_MESSAGE);}
+                            }else{JOptionPane.showMessageDialog(null, "Para cambiar una inasistencia por una asistencia, necesita un artículo y un motivo","Registrar Inasistencia", JOptionPane.ERROR_MESSAGE);}
+                        }else if(asis.getTardanza()!=res2){
+                            //Cambia una tardanza por una asistencia
+                            if(a!=null && m!=null){
+                                if(m.toString().length()<=20){
+                                    asis.setEstado(true);
+                                    asis.setTardanza(false);
+                                    asis.guardarAsistencia(asis);
+                                    Justificacion jus=asis.getJustificacion(asis);
+                                    jus.setAsistencia(asis);
+                                    jus.setMotivo("Tardanza por asistencia: "+modelo.getValueAt(e, 9).toString());
+                                    Articulo art=(Articulo) modelo.getValueAt(e, 8);
+                                    jus.setArticulo(art);
+                                    if(jus.getIdJustificacion()!=null){
+                                        jus.actualizarJustificacion(jus);
+                                    }else{jus.guardarJustificacion(jus);}
+                                }else{JOptionPane.showMessageDialog(null, "El motivo es muy largo, por favor reduzcalo","Registrar Inasistencia", JOptionPane.ERROR_MESSAGE);}
+                            }else{JOptionPane.showMessageDialog(null, "Para cambiar una tardanza por una asistencia, necesita un artículo y un motivo","Registrar Inasistencia", JOptionPane.ERROR_MESSAGE);}
+                        }
+                    }else if(modelo.getValueAt(e, 6).equals(false) && modelo.getValueAt(e, 7).equals(true)){
+                        JOptionPane.showMessageDialog(null, "Esta operacion no esta permitida para la asistencia numero: "+asis.getIdAsistencia(),"Registrar Inasistencia", JOptionPane.ERROR_MESSAGE);
+                    }else if(modelo.getValueAt(e, 6).equals(false) && modelo.getValueAt(e, 7).equals(false)){
+                        Object a=modelo.getValueAt(e, 8);
+                        Object m=modelo.getValueAt(e, 9);
+                        boolean res=modelo.getValueAt(e, 6).equals(true);
+                        boolean res2=modelo.getValueAt(e, 7).equals(true);
+                        if(asis.getEstado()== res && asis.getTardanza()==res2){
+                            if(a!=null && m!=null){
+                                if(m.toString().length()<=45){
+                                    asis.setEstado(false);
+                                    asis.setTardanza(false);
+                                    asis.guardarAsistencia(asis);
+                                    Justificacion jus=asis.getJustificacion(asis);
+                                    jus.setAsistencia(asis);
+                                    jus.setMotivo(modelo.getValueAt(e, 9).toString());
+                                    Articulo art=(Articulo) modelo.getValueAt(e, 8);
+                                    jus.setArticulo(art);
+                                    if(jus.getIdJustificacion()!=null){
+                                        jus.actualizarJustificacion(jus);
+                                    }else{jus.guardarJustificacion(jus);}
+                                }else{JOptionPane.showMessageDialog(null, "El motivo es muy largo, por favor reduzcalo","Registrar Inasistencia", JOptionPane.ERROR_MESSAGE);}
+                            }
+                        }else{JOptionPane.showMessageDialog(null, "No se puede cambiar una tardanza por una inasistencia","Registrar Inasistencia", JOptionPane.ERROR_MESSAGE);}
+                    }else if(modelo.getValueAt(e, 6).equals(true) && modelo.getValueAt(e, 7).equals(true)){
+                        Object a=modelo.getValueAt(e, 8);
+                        Object m=modelo.getValueAt(e, 9);
+                        if(asis.getEstado()!=modelo.getValueAt(e, 6).equals(true)){
+                            if(a!=null && m!=null){
+                                if(m.toString().length()<=18){
+                                    asis.setEstado(true);
+                                    asis.setTardanza(true);
+                                    asis.guardarAsistencia(asis);
+                                    Justificacion jus=asis.getJustificacion(asis);
+                                    jus.setAsistencia(asis);
+                                    jus.setMotivo("Inasistencia por tardanza: "+modelo.getValueAt(e, 9).toString());
+                                    Articulo art=(Articulo) modelo.getValueAt(e, 8);
+                                    jus.setArticulo(art);
+                                    if(jus.getIdJustificacion()!=null){
+                                        jus.actualizarJustificacion(jus);
+                                    }else{jus.guardarJustificacion(jus);}
+                                }else{JOptionPane.showMessageDialog(null, "El motivo es muy largo, por favor reduzcalo","Registrar Inasistencia", JOptionPane.ERROR_MESSAGE);}
+                            }else{JOptionPane.showMessageDialog(null, "Para cambiar una inasistencia por una tardanza, necesita un artículo y un motivo","Registrar Inasistencia", JOptionPane.ERROR_MESSAGE);}
+                        }else{
+                            if(a!=null && m!=null){
+                                if(m.toString().length()<=45){
+                                    Justificacion jus=asis.getJustificacion(asis);
+                                    if(!jus.getMotivo().contains("Inasistencia por tardanza")){
+                                        asis.setEstado(true);
+                                        asis.setTardanza(true);
+                                        asis.guardarAsistencia(asis);
+                                        jus.setAsistencia(asis);
+                                        jus.setMotivo(modelo.getValueAt(e, 9).toString());
+                                        Articulo art=(Articulo) modelo.getValueAt(e, 8);
+                                        jus.setArticulo(art);
+                                        if(jus.getIdJustificacion()!=null){
+                                            jus.actualizarJustificacion(jus);
+                                        }else{jus.guardarJustificacion(jus);}
+                                    }else{JOptionPane.showMessageDialog(null, "No se puede modificar el motivo de esta tardanza","Registrar Inasistencia", JOptionPane.ERROR_MESSAGE);}
+                                }else{JOptionPane.showMessageDialog(null, "El motivo es muy largo, por favor reduzcalo","Registrar Inasistencia", JOptionPane.ERROR_MESSAGE);}
+                            }else{JOptionPane.showMessageDialog(null, "Para cambiar una inasistencia por una tardanza, necesita un artículo y un motivo","Registrar Inasistencia", JOptionPane.ERROR_MESSAGE);}
+                        }
+                    }
+    //            }
+                e++;
             }
-            e++;
-        }
-        Drive.LimpiarTabla(jTable1);
-        String mes= String.valueOf(jComboBox1.getSelectedItem());
-        Drive.CargarTablaInasistencias(jTable1,mes,Integer.parseInt(jTextField1.getText()));
+            Drive.LimpiarTabla(jTable1);
+            String mes= String.valueOf(jComboBox1.getSelectedItem());
+            Drive.CargarTablaInasistencias(jTable1,mes,Integer.parseInt(jTextField1.getText()));
+        }catch(Exception e){JOptionPane.showMessageDialog(null, "Error al registrar la inasistencia","Registrar Inasistencia", JOptionPane.ERROR_MESSAGE);}
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed

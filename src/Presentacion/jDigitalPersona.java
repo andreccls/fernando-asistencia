@@ -718,7 +718,7 @@ public class jDigitalPersona extends javax.swing.JFrame {
              per.setCodigo(bit);
              per.actualizarPersonal(per);
              JOptionPane.showMessageDialog(null,"Huella Guardada Correctamente");
-         }else{JOptionPane.showMessageDialog(null,"Tiene que seleccionar un personal");}
+         }else{JOptionPane.showMessageDialog(null,"Debe que seleccionar un personal","Registrar Huella", JOptionPane.ERROR_MESSAGE);}
      } catch (Exception ex) {
      //Si ocurre un error lo indica en la consola
      System.err.println("Error al guardar los datos de la huella.");

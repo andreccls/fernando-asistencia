@@ -339,10 +339,8 @@ public class JFrameConsultaActividades extends javax.swing.JFrame {
                 }
             }
         }catch (Exception e){
-            JOptionPane.showMessageDialog(null,"Ingrese correctamente los datos");
+            JOptionPane.showMessageDialog(null,"Ingrese correctamente los datos","Error", JOptionPane.ERROR_MESSAGE);
         }
-//        List consulta=Controlador.getPERSISTENCIA().getPersonalesTrue(1);
-//        Drive.mostrarReporte("ListaPersonal",consulta,"Lista Personal");
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private static class HeaderRenderer implements TableCellRenderer {
