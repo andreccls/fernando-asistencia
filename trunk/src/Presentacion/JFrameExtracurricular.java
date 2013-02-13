@@ -529,10 +529,10 @@ jButton2.addActionListener(new java.awt.event.ActionListener() {
                     Drive.LimpiarTabla(jTable1);
                     Drive.CargarTablacheck(jTable1);
                 }
-            }else{JOptionPane.showMessageDialog(null, "Todos los campos con '*' son obligatorios y los horarios no pueden contener espacios en blanco");}
-            }else{JOptionPane.showMessageDialog(null, "Debe seleccionar al menos un personal");}
+            }else{JOptionPane.showMessageDialog(null, "Todos los campos con '*' son obligatorios y los horarios no pueden contener espacios en blanco","Registrar Tarea Extracurricular", JOptionPane.ERROR_MESSAGE);}
+            }else{JOptionPane.showMessageDialog(null, "Debe seleccionar al menos un personal","Registrar Tarea Extracurricular", JOptionPane.ERROR_MESSAGE);}
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, ex.toString());
+            JOptionPane.showMessageDialog(null, ex.toString(),"Registrar Tarea Extracurricular", JOptionPane.ERROR_MESSAGE);
         }        // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 

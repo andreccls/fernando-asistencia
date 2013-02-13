@@ -63,6 +63,12 @@ public class persistencia {
         session.merge(unObjeto);
         tr.commit();
     }
+    
+    public void update2(Object unObjeto) {
+        Transaction tr = session.beginTransaction();
+        session.update(unObjeto);
+        tr.commit();
+    }
 
     public void saveupdate(Object unObjeto) {
         Transaction tr = session.beginTransaction();
@@ -246,7 +252,7 @@ public class persistencia {
     }
 
     public List ObtenerListaTardanza(int mes, int ano) throws ArrayStoreException {
-        String hql = "select id_asistencia,estado,tardanza,asistencia.id_iniciofin from asistencia,iniciofin,dia,mes,ano where asistencia.id_iniciofin=iniciofin.id_iniciofin and iniciofin.id_dia=dia.id_dia and dia.id_mes=mes.id_mes and mes.mes=" + mes + " and mes.id_ano=ano.id_ano and ano.ano=" + ano + " and asistencia.estado=1 and asistencia.tardanza=1;";
+        String hql = "select id_asistencia,estado,tardanza,asistencia.id_iniciofin from asistencia,iniciofin,dia,mes,ano where asistencia.id_iniciofin=iniciofin.id_iniciofin and iniciofin.id_dia=dia.id_dia and dia.id_mes=mes.id_mes and mes.mes=" + mes + " and mes.id_ano=ano.id_ano and ano.ano=" + ano + " and asistencia.estado=1 and asistencia.tardanza=1";
         List items = new ArrayList();
         Transaction tx = session.beginTransaction();
         Query q = session.createSQLQuery(hql).addEntity(Asistencia.class);

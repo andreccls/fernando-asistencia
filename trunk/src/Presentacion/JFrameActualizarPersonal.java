@@ -1588,10 +1588,10 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
                     modificar=false;
                     
                 }else{
-                    JOptionPane.showMessageDialog( null, "YA NO PUEDE ASIGNAR MAS PADRES A ESTA PERSONA");
+                    JOptionPane.showMessageDialog( null, "YA NO PUEDE ASIGNAR MAS PADRES A ESTA PERSONA","Actualizar Personal", JOptionPane.ERROR_MESSAGE);
                 }
             }else{
-                JOptionPane.showMessageDialog(null,"Los campos con '*' son obligatorios y no pueden tener espacios en blanco");
+                JOptionPane.showMessageDialog(null,"Los campos con '*' son obligatorios y no pueden tener espacios en blanco","Actualizar Personal", JOptionPane.ERROR_MESSAGE);
                 jFormattedTextField5.setText("");
                 jFormattedTextField2.setText("");
                 jFormattedTextField1.setText("");
@@ -1695,7 +1695,7 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
             }
 
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, ex.toString());
+            JOptionPane.showMessageDialog(null, ex.toString(),"Actualizar Personal", JOptionPane.ERROR_MESSAGE);
         }        // TODO add your handling code here:
     }//GEN-LAST:event_jButton4ActionPerformed
 
@@ -1726,7 +1726,7 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
 //            per.eliminarFamiliar(fam);
 //            modelo.removeRow(jTable1.getSelectedRow());
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, ex.toString());
+            JOptionPane.showMessageDialog(null, ex.toString(),"Actualizar Personal", JOptionPane.ERROR_MESSAGE);
         }// TODO add your handling code here:
     }//GEN-LAST:event_jButton7ActionPerformed
 
@@ -1820,7 +1820,7 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
                 Drive.LimpiarCombo(jComboBox11);
             }
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, ex.toString());
+            JOptionPane.showMessageDialog(null, ex.toString(),"Actualizar Personal", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jComboBox10ItemStateChanged
 
@@ -1851,7 +1851,7 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
                 //Drive.CargarTablaInactivo(jTable2, nivels);
             }else{jTextField12.setText("");}
         }catch(Exception ex) {
-            JOptionPane.showMessageDialog(null, ex.toString());
+            JOptionPane.showMessageDialog(null, ex.toString(),"Actualizar Personal", JOptionPane.ERROR_MESSAGE);
         }
         
         // TODO add your handling code here:
@@ -1872,9 +1872,9 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         Declaracionjurada dec=pe.getDeclaracionjurada();
         if(jFormattedTextField6.getText().equals("    ")){
-            JOptionPane.showMessageDialog(null, "Ingrese el año de la declaración jurada");
+            JOptionPane.showMessageDialog(null, "Ingrese el año de la declaración jurada","Declaración Jurada", JOptionPane.INFORMATION_MESSAGE);
         }else if(Integer.parseInt(jFormattedTextField6.getText())< 2012){
-            JOptionPane.showMessageDialog(null, "Ingrese correctamente el año, este tiene que ser mayor a 2011");
+            JOptionPane.showMessageDialog(null, "Ingrese correctamente el año, este tiene que ser mayor a 2011","Declaración Jurada", JOptionPane.INFORMATION_MESSAGE);
         }else{
             if(dec.getIdDeclaracionjurada()==null){
                 Establecimiento est= pe.getEstablecimiento();
@@ -2062,7 +2062,7 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
             if(matcher.matches()) {
                 isValidEmail = true;
             }
-            else {JOptionPane.showMessageDialog(null, "INGRESE CORRECTAMENTE LA DIRECCION DE CORREO ELECTRONICO");} // TODO add your handling code here:
+            else {JOptionPane.showMessageDialog(null, "INGRESE CORRECTAMENTE LA DIRECCION DE CORREO ELECTRONICO","Actualizar Personal", JOptionPane.ERROR_MESSAGE);} // TODO add your handling code here:
 
         }
     }//GEN-LAST:event_jTextField21FocusLost
@@ -2091,7 +2091,7 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
             while(it.hasNext()){
                 Tiporelacion tip=(Tiporelacion) it.next();
                 if(tip.getRelacion().equals(cadSalida)){
-                    JOptionPane.showMessageDialog(null, "La relación ya existe");
+                    JOptionPane.showMessageDialog(null, "La relación ya existe","Nueva Relación", JOptionPane.ERROR_MESSAGE);
                     w=true;
                 }
             }
@@ -2121,7 +2121,7 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
             while(it.hasNext()){
                 Departamento tip=(Departamento) it.next();
                 if(tip.getNombre().equals(cadSalida)){
-                    JOptionPane.showMessageDialog(null, "El departamento ya existe");
+                    JOptionPane.showMessageDialog(null, "El departamento ya existe","Nuevo Departamento", JOptionPane.ERROR_MESSAGE);
                     w=true;
                 }
             }
@@ -2151,7 +2151,7 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
             while(it.hasNext()){
                 Actividad tip=(Actividad) it.next();
                 if(tip.getActividad().equals(cadSalida)){
-                    JOptionPane.showMessageDialog(null, "La actividad ya existe");
+                    JOptionPane.showMessageDialog(null, "La actividad ya existe","Nueva Actividad", JOptionPane.ERROR_MESSAGE);
                     w=true;
                 }
             }

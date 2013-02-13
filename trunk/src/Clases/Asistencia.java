@@ -102,6 +102,14 @@ public class Asistencia  implements java.io.Serializable {
             //agregarReserva(unaReserva);
         //} 
      }
+    
+    public Justificacion getJustificacion(Asistencia asi){
+        Justificacion just=new Justificacion();
+        if(asi.getJustificacions().iterator().hasNext()){
+            just=asi.getJustificacions().iterator().next();
+        }
+        return just;
+     }
 
 
 }

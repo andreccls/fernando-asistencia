@@ -807,7 +807,7 @@ public class Controlador {
                             fila[7] = new Boolean(true);
                         }else{fila[7] = new Boolean(false);}
                         if(asis.getJustificacions().iterator().hasNext()){
-                            fila[8] = asis.getJustificacions().iterator().next().getArticulo().getNroArticulo();
+                            fila[8] = asis.getJustificacions().iterator().next().getArticulo();
                             fila[9] = asis.getJustificacions().iterator().next().getMotivo();
                         }
                         modelo.addRow(fila);
@@ -837,7 +837,7 @@ public class Controlador {
                             fila[7] = new Boolean(true);
                         }else{fila[7] = new Boolean(false);}
                         if(asis.getJustificacions().iterator().hasNext()){
-                            fila[8] = asis.getJustificacions().iterator().next().getArticulo().toString();
+                            fila[8] = asis.getJustificacions().iterator().next().getArticulo();
                             fila[9] = asis.getJustificacions().iterator().next().getMotivo();
                         }
                         modelo.addRow(fila);

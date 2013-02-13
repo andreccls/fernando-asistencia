@@ -668,11 +668,11 @@ jTable1.setModel(new javax.swing.table.DefaultTableModel(
                     jFormattedTextField2.setText("");
                     Drive.LimpiarTabla(jTable1);
                 }else{
-                    JOptionPane.showMessageDialog(null,"Los campos con '*' son obligatorios y no puede contener espacios en blanco en los horarios");
+                    JOptionPane.showMessageDialog(null,"Los campos con '*' son obligatorios y no puede contener espacios en blanco en los horarios","Registrar Clase", JOptionPane.ERROR_MESSAGE);
                 } 
-            }else{JOptionPane.showMessageDialog(null,"Debe ingresar un personal");}
+            }else{JOptionPane.showMessageDialog(null,"Debe ingresar un personal","Registrar Clase", JOptionPane.ERROR_MESSAGE);}
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, ex.toString());
+            JOptionPane.showMessageDialog(null, ex.toString(),"Registrar Clase", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -697,10 +697,10 @@ jTable1.setModel(new javax.swing.table.DefaultTableModel(
                     fila[4] = rev;
                     model.addRow(fila);
                     jTable1.setModel(model);
-                }else{JOptionPane.showMessageDialog(null, "Ingrese correctamente los horarios");}
-            }else{JOptionPane.showMessageDialog(null, "Los campos con '*' son obligatorios y no puede contener espacios en blanco en los horarios");}
+                }else{JOptionPane.showMessageDialog(null, "Ingrese correctamente los horarios","Registrar Clase", JOptionPane.ERROR_MESSAGE);}
+            }else{JOptionPane.showMessageDialog(null, "Los campos con '*' son obligatorios y no puede contener espacios en blanco en los horarios","Registrar Clase", JOptionPane.ERROR_MESSAGE);}
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, ex.toString());
+            JOptionPane.showMessageDialog(null, ex.toString(),"Registrar Clase", JOptionPane.ERROR_MESSAGE);
         }        // TODO add your handling code here:
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -723,7 +723,7 @@ jTable1.setModel(new javax.swing.table.DefaultTableModel(
             while(it.hasNext()){
                 Revista tip=(Revista) it.next();
                 if(tip.getNombre().equals(cadSalida)){
-                    JOptionPane.showMessageDialog(null, "La situación de revista ya existe");
+                    JOptionPane.showMessageDialog(null, "La situación de revista ya existe","Nueva Situación de Revista", JOptionPane.ERROR_MESSAGE);
                     w=true;
                 }
             }

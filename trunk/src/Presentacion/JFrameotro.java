@@ -529,9 +529,9 @@ jButton2.addActionListener(new java.awt.event.ActionListener() {
                     Drive.LimpiarTabla(jTable1);
                     Drive.CargarTablacheck(jTable1);
             }
-            }else{JOptionPane.showMessageDialog(null, "Todos los campos con '*' son obligatorios y los horarios no pueden contener espacios en blanco");}
+            }else{JOptionPane.showMessageDialog(null, "Todos los campos con '*' son obligatorios y los horarios no pueden contener espacios en blanco","Registrar Otra Actividad", JOptionPane.ERROR_MESSAGE);}
             
-            }else{JOptionPane.showMessageDialog(null, "Debe seleccionar al menos un personal");}
+            }else{JOptionPane.showMessageDialog(null, "Debe seleccionar al menos un personal","Registrar Otra Actividad", JOptionPane.ERROR_MESSAGE);}
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, ex.toString());
         }        // TODO add your handling code here:
