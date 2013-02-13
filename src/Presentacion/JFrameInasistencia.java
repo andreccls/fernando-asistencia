@@ -444,13 +444,13 @@ public class JFrameInasistencia extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null,salida, "¿Que desea imprimir?", JOptionPane.INFORMATION_MESSAGE);
                 cadSalida = salida.getSelectedItem().toString();
                 if (cadSalida.equals("Asistencias")) {
-                    List consulta = Controlador.getPERSISTENCIA().getTareasClasesTrue(1);
+                    List consulta = Controlador.getPERSISTENCIA().getAsistenciasReporte();
                     Drive.mostrarReporte("Asistencias", consulta, "Lista de Asistencias");
                 } else if (cadSalida.equals("Tardanzas")) {
-                    List consulta = Controlador.getPERSISTENCIA().getTareasExtracurricularTrue(1);
+                    List consulta = Controlador.getPERSISTENCIA().getTardanzasReporte();
                     Drive.mostrarReporte("Asistencia y tardanza", consulta, "Lista de Tardanzas");
                 } else if (cadSalida.equals("Inasistencias")) {
-                    List consulta = Controlador.getPERSISTENCIA().getTareasReunionTrue(1);
+                    List consulta = Controlador.getPERSISTENCIA().getInasistenciasReporte();
                     Drive.mostrarReporte("Inasistencia", consulta, "Lista de Inasistencias");
                 }
     }//GEN-LAST:event_jButton3ActionPerformed

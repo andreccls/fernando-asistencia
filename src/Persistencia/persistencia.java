@@ -209,16 +209,16 @@ public class persistencia {
 
     }
     
-    public List getTareasTrue(int i) throws ArrayStoreException {
-        String hql = "from Tarea where estado="+i;
-        List items = new ArrayList();
-        Transaction tx = session.beginTransaction();
-        Query q = session.createQuery(hql);
-        items = q.list();
-        tx.commit();
-        return items;
-
-    }
+//    public List getTareasTrue(int i) throws ArrayStoreException {
+//        String hql = "from Tarea where estado="+i;
+//        List items = new ArrayList();
+//        Transaction tx = session.beginTransaction();
+//        Query q = session.createQuery(hql);
+//        items = q.list();
+//        tx.commit();
+//        return items;
+//
+//    }
     
     public List getTareasClasesTrue(int i) throws ArrayStoreException {
         String hql = "from Tarea as tar,Tareaclase as tarcla where tar.idTarea=tarcla.tarea.idTarea and estado="+i;
@@ -252,6 +252,36 @@ public class persistencia {
     
     public List getTareasOtroTrue(int i) throws ArrayStoreException {
         String hql = "from Tarea as tar,Tareaotro as tarot where tar.idTarea=tarot.tarea.idTarea and estado="+i;
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
+    }
+    
+    public List getAsistenciasReporte() throws ArrayStoreException {
+        String hql = "select per.apellido as apellido, per.nombre as nombre, tar.nombre as tareanombre, ann.ano as anio, me.mes as mes, di.dia as dia, hour(ini.inicio) as iniciohr,minute(ini.inicio) as iniciomin, hour(ini.fin) as finhr,minute(ini.fin) as finmin, asi.estado as estado, asi.tardanza as tardanza, just.motivo as motiv, art.nombre as nombreart, art.nroArticulo as nroart from Personal as per, Tarea as tar, Agenda as age, Ano as ann, Mes as me, Dia as di, Iniciofin as ini, Asistencia as asi, Justificacion as just, Articulo as art where per.idPersonal=age.personal.idPersonal and tar.idTarea=age.tarea.idTarea and age.tarea.idTarea=ann.agenda.tarea.idTarea and age.personal.idPersonal=ann.agenda.personal.idPersonal and me.ano.idAno=ann.idAno and me.idMes=di.mes.idMes and di.idDia = ini.dia.idDia and asi.iniciofin.idIniciofin=ini.idIniciofin and asi.estado=1 and asi.tardanza=0 and asi.idAsistencia=just.asistencia.idAsistencia and just.articulo.idArticulo=art.idArticulo";
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
+    }
+    
+    public List getInasistenciasReporte() throws ArrayStoreException {
+        String hql = "select per.apellido as apellido, per.nombre as nombre, tar.nombre as tareanombre, ann.ano as anio, me.mes as mes, di.dia as dia, hour(ini.inicio) as iniciohr,minute(ini.inicio) as iniciomin, hour(ini.fin) as finhr,minute(ini.fin) as finmin, asi.estado as estado, asi.tardanza as tardanza, just.motivo as motiv, art.nombre as nombreart, art.nroArticulo as nroart from Personal as per, Tarea as tar, Agenda as age, Ano as ann, Mes as me, Dia as di, Iniciofin as ini, Asistencia as asi, Justificacion as just, Articulo as art where per.idPersonal=age.personal.idPersonal and tar.idTarea=age.tarea.idTarea and age.tarea.idTarea=ann.agenda.tarea.idTarea and age.personal.idPersonal=ann.agenda.personal.idPersonal and me.ano.idAno=ann.idAno and me.idMes=di.mes.idMes and di.idDia = ini.dia.idDia and asi.iniciofin.idIniciofin=ini.idIniciofin and asi.estado=0 and asi.tardanza=0 and asi.idAsistencia=just.asistencia.idAsistencia and just.articulo.idArticulo=art.idArticulo";
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
+    }
+    
+    public List getTardanzasReporte() throws ArrayStoreException {
+        String hql = "select per.apellido as apellido, per.nombre as nombre, tar.nombre as tareanombre, ann.ano as anio, me.mes as mes, di.dia as dia, hour(ini.inicio) as iniciohr,minute(ini.inicio) as iniciomin, hour(ini.fin) as finhr,minute(ini.fin) as finmin, asi.estado as estado, asi.tardanza as tardanza, just.motivo as motiv, art.nombre as nombreart, art.nroArticulo as nroart from Personal as per, Tarea as tar, Agenda as age, Ano as ann, Mes as me, Dia as di, Iniciofin as ini, Asistencia as asi, Justificacion as just, Articulo as art where per.idPersonal=age.personal.idPersonal and tar.idTarea=age.tarea.idTarea and age.tarea.idTarea=ann.agenda.tarea.idTarea and age.personal.idPersonal=ann.agenda.personal.idPersonal and me.ano.idAno=ann.idAno and me.idMes=di.mes.idMes and di.idDia = ini.dia.idDia and asi.iniciofin.idIniciofin=ini.idIniciofin and asi.estado=1 and asi.tardanza=1 and asi.idAsistencia=just.asistencia.idAsistencia and just.articulo.idArticulo=art.idArticulo";
         List items = new ArrayList();
         Transaction tx = session.beginTransaction();
         Query q = session.createQuery(hql);
