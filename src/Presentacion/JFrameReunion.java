@@ -96,8 +96,13 @@ public class JFrameReunion extends javax.swing.JFrame {
         jLabel17 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("SISTEMA DE ASISTENCIA DEL PERSONAL");
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("SISTEMA DE ASISTENCIA DE PERSONAL EDUCATIVO");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos de la reunión"));
 
@@ -112,7 +117,7 @@ public class JFrameReunion extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setText("Cancelar");
+        jButton2.setText("Salir");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -266,7 +271,7 @@ public class JFrameReunion extends javax.swing.JFrame {
                 .addComponent(jTextField4))
             .addContainerGap())
         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-            .addContainerGap(365, Short.MAX_VALUE)
+            .addContainerGap(369, Short.MAX_VALUE)
             .addComponent(jButton1)
             .addGap(18, 18, 18)
             .addComponent(jButton2)
@@ -306,6 +311,8 @@ public class JFrameReunion extends javax.swing.JFrame {
     );
 
     jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jTextField1, jTextField3});
+
+    jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jButton1, jButton2});
 
     jPanel1Layout.setVerticalGroup(
         jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -497,6 +504,11 @@ public class JFrameReunion extends javax.swing.JFrame {
     private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField3ActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        this.dispose();
+        vp.show();        // TODO add your handling code here:
+    }//GEN-LAST:event_formWindowClosing
 
     /**
     * @param args the command line arguments

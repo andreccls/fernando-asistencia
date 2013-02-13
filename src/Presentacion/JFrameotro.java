@@ -100,7 +100,13 @@ public class JFrameotro extends javax.swing.JFrame {
         jLabel15 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("SISTEMA DE ASISTENCIA DE PERSONAL EDUCATIVO");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos de la tarea"));
 
@@ -234,7 +240,7 @@ public class JFrameotro extends javax.swing.JFrame {
             false,
             true)));
 
-jButton2.setText("Cancelar");
+jButton2.setText("Salir");
 jButton2.addActionListener(new java.awt.event.ActionListener() {
     public void actionPerformed(java.awt.event.ActionEvent evt) {
         jButton2ActionPerformed(evt);
@@ -331,6 +337,9 @@ jButton2.addActionListener(new java.awt.event.ActionListener() {
                     .addGap(0, 0, Short.MAX_VALUE)))
             .addContainerGap())
     );
+
+    jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jButton1, jButton2});
+
     jPanel1Layout.setVerticalGroup(
         jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
         .addGroup(jPanel1Layout.createSequentialGroup()
@@ -547,6 +556,11 @@ jButton2.addActionListener(new java.awt.event.ActionListener() {
         }else{this.dispose();
             vp.show();}
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        this.dispose();
+        vp.show();
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments

@@ -79,7 +79,13 @@ public class JFrameConsultaActividades extends javax.swing.JFrame {
         jProgressBar1 = new javax.swing.JProgressBar();
         jButton2 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("SISTEMA DE ASISTENCIA DE PERSONAL EDUCATIVO");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Actividad"));
 
@@ -175,7 +181,7 @@ public class JFrameConsultaActividades extends javax.swing.JFrame {
             }
         });
 
-        jButton3.setText("Cancelar");
+        jButton3.setText("Salir");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -208,6 +214,9 @@ public class JFrameConsultaActividades extends javax.swing.JFrame {
                         .addComponent(jButton3)))
                 .addContainerGap())
         );
+
+        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jButton2, jButton3, jButton4});
+
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -306,18 +315,22 @@ public class JFrameConsultaActividades extends javax.swing.JFrame {
     }//GEN-LAST:event_jTable1MouseReleased
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        Establecimiento col= Drive.getPrimerEstablecimiento();
-        jTable1.getModel();
-        int fila = Integer.parseInt(jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString());
-        if ((fila > -1)){
-            tar=col.getTarea(fila);
+        try{
+            Establecimiento col= Drive.getPrimerEstablecimiento();
+            jTable1.getModel();
+            int fila = Integer.parseInt(jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString());
+            if ((fila > -1)){
+                tar=col.getTarea(fila);
+            }
+            iniciarSplash();
+    //            //Creamos un objeto HiloProgreso al cual
+    //            //le pasamos por parámetro la barra de progreso
+            hilo1=new HiloProgreso(jProgressBar1,this,Drive,tar);
+            hilo1.start();
+            hilo1=null;
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null,"Seleccione una actividad","Consultar Actividad",JOptionPane.ERROR_MESSAGE);
         }
-        iniciarSplash();
-//            //Creamos un objeto HiloProgreso al cual
-//            //le pasamos por parámetro la barra de progreso
-        hilo1=new HiloProgreso(jProgressBar1,this,Drive,tar);
-        hilo1.start();
-        hilo1=null;
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -359,6 +372,11 @@ public class JFrameConsultaActividades extends javax.swing.JFrame {
         Drive.CargarTablaFiltroActividades(jTable1,buscar, buscar2, es.toUpperCase());
         bandera=(String) jComboBox2.getSelectedItem();
     }//GEN-LAST:event_jComboBox2ItemStateChanged
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        this.dispose();
+        vp.show();        // TODO add your handling code here:
+    }//GEN-LAST:event_formWindowClosing
 
     private static class HeaderRenderer implements TableCellRenderer {
         DefaultTableCellRenderer renderer;

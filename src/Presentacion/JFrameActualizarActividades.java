@@ -150,7 +150,13 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("SISTEMA DE ASISTENCIA DE PERSONAL EDUCATIVO");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos de la Tarea"));
 
@@ -350,6 +356,12 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Ingrese correctamente la fecha de franco","Ingresar Franco", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        JFrameConsultaActividades vpp=new JFrameConsultaActividades(Drive);
+        this.dispose();
+        vpp.show();
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments

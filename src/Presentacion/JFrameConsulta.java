@@ -75,7 +75,13 @@ public class JFrameConsulta extends javax.swing.JFrame {
         jProgressBar1 = new javax.swing.JProgressBar();
         jButton5 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("SISTEMA DE ASISTENCIA DE PERSONAL EDUCATIVO");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Personal"));
 
@@ -169,7 +175,7 @@ public class JFrameConsulta extends javax.swing.JFrame {
             }
         });
 
-        jButton3.setText("Cancelar");
+        jButton3.setText("Salir");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -202,6 +208,9 @@ public class JFrameConsulta extends javax.swing.JFrame {
                         .addComponent(jButton3)))
                 .addContainerGap())
         );
+
+        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jButton3, jButton4, jButton5});
+
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -340,6 +349,11 @@ public class JFrameConsulta extends javax.swing.JFrame {
         List consulta=Controlador.getPERSISTENCIA().getPersonalesTrue(1);
         Drive.mostrarReporte("ListaPersonal",consulta,"Lista Personal");
     }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        this.dispose();
+        vp.show();
+    }//GEN-LAST:event_formWindowClosing
     Frame vp = new JFramePrincipal();
 
     /**

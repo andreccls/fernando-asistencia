@@ -160,8 +160,13 @@ public class JFramePersonal extends javax.swing.JFrame {
         jLabel26 = new javax.swing.JLabel();
         jLabel25 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("SISTEMA DE ASISTENCIA DEL PERSONAL");
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("SISTEMA DE ASISTENCIA DE PERSONAL EDUCATIVO");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos del docente"));
 
@@ -1016,6 +1021,11 @@ public class JFramePersonal extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_jLabel35MouseClicked
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        this.dispose();
+        vp.show();        // TODO add your handling code here:
+    }//GEN-LAST:event_formWindowClosing
 
     /**
     * @param args the command line arguments
