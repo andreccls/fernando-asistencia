@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Otras Actividades" language="groovy" pageWidth="595" pageHeight="842" columnWidth="511" leftMargin="56" rightMargin="28" topMargin="28" bottomMargin="28">
 	<queryString language="hql">
-		<![CDATA[select tar.nombre as nombre, tar.lugar as lugar, hour(tarot.diaInicio) as iniciohr,minute(tarot.diaInicio) as iniciomin, hour(tarot.diaFin) as finhr,minute(tarot.diaFin) as finmin , tarot.caracteristica as caracteristica from Clases.Tarea tar, Tareaotro tarot where tar.idTarea=tarot.tarea.idTarea]]>
+		<![CDATA[select tar.nombre as nombre, tar.lugar as lugar, hour(tarot.diaInicio) as iniciohr,minute(tarot.diaInicio) as iniciomin, hour(tarot.diaFin) as finhr,minute(tarot.diaFin) as finmin , tarot.caracteristica as caracteristica from Clases.Tarea tar, Tareaotro tarot where tar.idTarea=tarot.tarea.idTarea and tar.estado=1]]>
 	</queryString>
 	<field name="nombre" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>

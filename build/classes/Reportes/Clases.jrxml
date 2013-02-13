@@ -4,7 +4,7 @@
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="45"/>
 	<queryString language="hql">
-		<![CDATA[select tar.nombre as nombre, tar.lugar as lugar, tarcla.aula as aula, tarcla.numero as numero from Clases.Tarea tar, Tareaclase tarcla where tar.idTarea=tarcla.tarea.idTarea]]>
+		<![CDATA[select tar.nombre as nombre, tar.lugar as lugar, tarcla.aula as aula, tarcla.numero as numero from Clases.Tarea tar, Tareaclase tarcla where tar.idTarea=tarcla.tarea.idTarea and tar.estado=1]]>
 	</queryString>
 	<field name="nombre" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>

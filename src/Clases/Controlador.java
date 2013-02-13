@@ -400,35 +400,152 @@ public class Controlador {
         tabla.setModel(model);
     }
 
-    public void CargarTablaFiltroActividades(JTable tabla, String buscarpor, String valor) {
+    public void CargarTablaFiltroActividades(JTable tabla, String buscarpor, String tipo, String valor) {
         DefaultTableModel model = (DefaultTableModel) tabla.getModel();
-        Iterator<Tarea> act = PERSISTENCIA.getTareas().iterator();
-        while (act.hasNext()) {
-            Tarea ac = act.next();
-            if(ac.getEstado()==true){
-                if (buscarpor.equals("Nombre") && ac.getEstado() == true) {
-                    int i = ac.getNombre().indexOf(valor);
-                    if (i == 0) {
-                        Object[] fila = new Object[4];
-                        fila[0] = ac.getIdTarea();
-                        fila[1] = ac.getNombre();
-                        fila[2] = ac.getLugar();
-                        fila[3] = ac.getComentario();
-                        model.addRow(fila);
+        if (tipo.equals("Clase")) {
+            Iterator<Tareaclase> act = PERSISTENCIA.getTareasClases().iterator();
+            while (act.hasNext()) {
+                Tareaclase ac = act.next();
+                if (ac.getTarea().getEstado() == true) {
+                    if (buscarpor.equals("Nombre") && ac.getTarea().getEstado() == true) {
+                        int i = ac.getTarea().getNombre().indexOf(valor);
+                        if (i == 0) {
+                            Object[] fila = new Object[4];
+                            fila[0] = ac.getTarea().getIdTarea();
+                            fila[1] = ac.getTarea().getNombre();
+                            fila[2] = ac.getTarea().getLugar();
+                            fila[3] = ac.getTarea().getComentario();
+                            model.addRow(fila);
+                        }
+                    } else if (buscarpor.equals("Lugar") && ac.getTarea().getEstado() == true) {
+                        int i = ac.getTarea().getLugar().indexOf(valor);
+                        if (i == 0) {
+                            Object[] fila = new Object[4];
+                            fila[0] = ac.getTarea().getIdTarea();
+                            fila[1] = ac.getTarea().getNombre();
+                            fila[2] = ac.getTarea().getLugar();
+                            fila[3] = ac.getTarea().getComentario();
+                            model.addRow(fila);
+                        }
                     }
-                } else if (buscarpor.equals("Lugar") && ac.getEstado() == true) {
-                    int i = ac.getLugar().indexOf(valor);
-                    if (i == 0) {
-                        Object[] fila = new Object[4];
-                        fila[0] = ac.getIdTarea();
-                        fila[1] = ac.getNombre();
-                        fila[2] = ac.getLugar();
-                        fila[3] = ac.getComentario();
-                        model.addRow(fila);
+                }
+            }
+        } else if (tipo.equals("Reunión")) {
+            Iterator<Tareareunion> act = PERSISTENCIA.getTareasReuniones().iterator();
+            while (act.hasNext()) {
+                Tareareunion ac = act.next();
+                if (ac.getTarea().getEstado() == true) {
+                    if (buscarpor.equals("Nombre") && ac.getTarea().getEstado() == true) {
+                        int i = ac.getTarea().getNombre().indexOf(valor);
+                        if (i == 0) {
+                            Object[] fila = new Object[4];
+                            fila[0] = ac.getTarea().getIdTarea();
+                            fila[1] = ac.getTarea().getNombre();
+                            fila[2] = ac.getTarea().getLugar();
+                            fila[3] = ac.getTarea().getComentario();
+                            model.addRow(fila);
+                        }
+                    } else if (buscarpor.equals("Lugar") && ac.getTarea().getEstado() == true) {
+                        int i = ac.getTarea().getLugar().indexOf(valor);
+                        if (i == 0) {
+                            Object[] fila = new Object[4];
+                            fila[0] = ac.getTarea().getIdTarea();
+                            fila[1] = ac.getTarea().getNombre();
+                            fila[2] = ac.getTarea().getLugar();
+                            fila[3] = ac.getTarea().getComentario();
+                            model.addRow(fila);
+                        }
+                    }
+                }
+            }
+        } else if (tipo.equals("Extracurricular")) {
+            Iterator<Tareaextracurricular> act = PERSISTENCIA.getTareasExtracurriculares().iterator();
+            while (act.hasNext()) {
+                Tareaextracurricular acc = act.next();
+                Tarea ac=acc.getTarea();
+                if (ac.getEstado() == true) {
+                    if (buscarpor.equals("Nombre") && ac.getEstado() == true) {
+                        int i = ac.getNombre().indexOf(valor);
+                        if (i == 0) {
+                            Object[] fila = new Object[4];
+                            fila[0] = ac.getIdTarea();
+                            fila[1] = ac.getNombre();
+                            fila[2] = ac.getLugar();
+                            fila[3] = ac.getComentario();
+                            model.addRow(fila);
+                        }
+                    } else if (buscarpor.equals("Lugar") && ac.getEstado() == true) {
+                        int i = ac.getLugar().indexOf(valor);
+                        if (i == 0) {
+                            Object[] fila = new Object[4];
+                            fila[0] = ac.getIdTarea();
+                            fila[1] = ac.getNombre();
+                            fila[2] = ac.getLugar();
+                            fila[3] = ac.getComentario();
+                            model.addRow(fila);
+                        }
+                    }
+                }
+            }
+        } else if (tipo.equals("Otro")) {
+            Iterator<Tareaotro> act = PERSISTENCIA.getTareasOtros().iterator();
+            while (act.hasNext()) {
+                Tareaotro acc = act.next();
+                Tarea ac=acc.getTarea();
+                if (ac.getEstado() == true) {
+                    if (buscarpor.equals("Nombre") && ac.getEstado() == true) {
+                        int i = ac.getNombre().indexOf(valor);
+                        if (i == 0) {
+                            Object[] fila = new Object[4];
+                            fila[0] = ac.getIdTarea();
+                            fila[1] = ac.getNombre();
+                            fila[2] = ac.getLugar();
+                            fila[3] = ac.getComentario();
+                            model.addRow(fila);
+                        }
+                    } else if (buscarpor.equals("Lugar") && ac.getEstado() == true) {
+                        int i = ac.getLugar().indexOf(valor);
+                        if (i == 0) {
+                            Object[] fila = new Object[4];
+                            fila[0] = ac.getIdTarea();
+                            fila[1] = ac.getNombre();
+                            fila[2] = ac.getLugar();
+                            fila[3] = ac.getComentario();
+                            model.addRow(fila);
+                        }
+                    }
+                }
+            }
+        } else if (tipo.equals("Todos")) {
+            Iterator<Tarea> act = PERSISTENCIA.getTareas().iterator();
+            while (act.hasNext()) {
+                Tarea ac=act.next();
+                if (ac.getEstado() == true) {
+                    if (buscarpor.equals("Nombre") && ac.getEstado() == true) {
+                        int i = ac.getNombre().indexOf(valor);
+                        if (i == 0) {
+                            Object[] fila = new Object[4];
+                            fila[0] = ac.getIdTarea();
+                            fila[1] = ac.getNombre();
+                            fila[2] = ac.getLugar();
+                            fila[3] = ac.getComentario();
+                            model.addRow(fila);
+                        }
+                    } else if (buscarpor.equals("Lugar") && ac.getEstado() == true) {
+                        int i = ac.getLugar().indexOf(valor);
+                        if (i == 0) {
+                            Object[] fila = new Object[4];
+                            fila[0] = ac.getIdTarea();
+                            fila[1] = ac.getNombre();
+                            fila[2] = ac.getLugar();
+                            fila[3] = ac.getComentario();
+                            model.addRow(fila);
+                        }
                     }
                 }
             }
         }
+
         tabla.setModel(model);
     }
     

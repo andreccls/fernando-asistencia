@@ -35,6 +35,7 @@ public class JFrameConsultaActividades extends javax.swing.JFrame {
     StringBuffer buffer= new StringBuffer();
     HiloProgreso hilo1;
     Tarea tar=new Tarea();
+    String bandera;
     
     public JFrameConsultaActividades(Controlador unDrive) {
         this.Drive=unDrive;
@@ -43,14 +44,16 @@ public class JFrameConsultaActividades extends javax.swing.JFrame {
         auxDrive.getPrimerEstablecimiento();
         Drive = auxDrive;
         String buscar=(String) jComboBox1.getSelectedItem();
-        Drive.CargarTablaFiltroActividades(jTable1, buscar, jTextField1.getText());
+        String buscar2=(String) jComboBox2.getSelectedItem();
+        Drive.CargarTablaFiltroActividades(jTable1, buscar, buscar2, jTextField1.getText());
         jTextField1.grabFocus();
-        
+        bandera=(String) jComboBox2.getSelectedItem();
         int[] anchos1 = {60,150,150,150};
         for(int i = 0; i < jTable1.getColumnCount(); i++) {
             jTable1.getColumnModel().getColumn(i).setPreferredWidth(anchos1[i]);
         }
-        jTable1.getTableHeader().setDefaultRenderer(new JFrameConsultaActividades.HeaderRenderer(jTable1));        
+        jTable1.getTableHeader().setDefaultRenderer(new JFrameConsultaActividades.HeaderRenderer(jTable1));      
+        
     }
 
     /**
@@ -68,6 +71,7 @@ public class JFrameConsultaActividades extends javax.swing.JFrame {
         jComboBox1 = new javax.swing.JComboBox();
         jTextField1 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
+        jComboBox2 = new javax.swing.JComboBox();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jButton4 = new javax.swing.JButton();
@@ -96,30 +100,40 @@ public class JFrameConsultaActividades extends javax.swing.JFrame {
             }
         });
 
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Todos", "Clase", "Reunión", "Extracurricular", "Otro" }));
+        jComboBox2.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboBox2ItemStateChanged(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel1)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jButton1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(41, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1)
-                    .addComponent(jLabel1))
+                    .addComponent(jLabel1)
+                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(27, Short.MAX_VALUE))
         );
 
@@ -183,10 +197,10 @@ public class JFrameConsultaActividades extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 490, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jProgressBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton2)
                         .addGap(18, 18, 18)
                         .addComponent(jButton4)
@@ -248,19 +262,22 @@ public class JFrameConsultaActividades extends javax.swing.JFrame {
             buffer.append(evt.getKeyChar());
             String es=buffer.toString();
             String buscar=(String) jComboBox1.getSelectedItem();
-            Drive.CargarTablaFiltroActividades(jTable1,buscar, es.toUpperCase());
+            String buscar2=(String) jComboBox2.getSelectedItem();
+            Drive.CargarTablaFiltroActividades(jTable1,buscar, buscar2, es.toUpperCase());
         }else if(car==(char)KeyEvent.VK_BACK_SPACE){
             buffer.deleteCharAt(buffer.length()-1);
             String es=buffer.toString();
             String buscar=(String) jComboBox1.getSelectedItem();
-            Drive.CargarTablaFiltroActividades(jTable1,buscar, es.toUpperCase());
+            String buscar2=(String) jComboBox2.getSelectedItem();
+            Drive.CargarTablaFiltroActividades(jTable1,buscar, buscar2, es.toUpperCase());
         }
     }//GEN-LAST:event_jTextField1KeyTyped
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         Drive.LimpiarTabla(jTable1);
         String buscar=(String) jComboBox1.getSelectedItem();
-        Drive.CargarTablaFiltroActividades(jTable1, buscar, jTextField1.getText().toUpperCase());// TODO add your handling code here:
+        String buscar2=(String) jComboBox2.getSelectedItem();
+        Drive.CargarTablaFiltroActividades(jTable1, buscar, buscar2, jTextField1.getText().toUpperCase());// TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
@@ -313,35 +330,35 @@ public class JFrameConsultaActividades extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         try{
-            JTextField salida = new JTextField();
-            String cadSalida;
-            salida.setText("");
-            salida.setSize(25, 25);
-            //" 'C' Clases,'E' Actividades estracurriculares,'R' Reuniones,'O' Otros,'T' Todos" +
-            JOptionPane.showMessageDialog(null,salida, "¿Que desea imprimir?", JOptionPane.INFORMATION_MESSAGE);
-            if(!salida.getText().isEmpty()){
-                cadSalida = salida.getText().toUpperCase();
-                if (cadSalida.equals("C")) {
-                    List consulta = Controlador.getPERSISTENCIA().getTareasClasesTrue(1);
-                    Drive.mostrarReporte("Clases", consulta, "Lista Clases");
-                } else if (cadSalida.equals("E")) {
-                    List consulta = Controlador.getPERSISTENCIA().getTareasExtracurricularTrue(1);
-                    Drive.mostrarReporte("ListaPersonal", consulta, "Lista Personal");
-                } else if (cadSalida.equals("R")) {
-                    List consulta = Controlador.getPERSISTENCIA().getTareasReunionTrue(1);
-                    Drive.mostrarReporte("ListaPersonal", consulta, "Lista Personal");
-                } else if (cadSalida.equals("O")) {
-                    List consulta = Controlador.getPERSISTENCIA().getTareasOtroTrue(1);
-                    Drive.mostrarReporte("ListaPersonal", consulta, "Lista Personal");
-                } else if (cadSalida.equals("T")) {
-                    List consulta = Controlador.getPERSISTENCIA().getTareasTrue(1);
-                    Drive.mostrarReporte("Actividades", consulta, "Lista Actividades");
-                }
+            bandera=(String) jComboBox2.getSelectedItem();
+            if(bandera.equals("Clase")){
+                List consulta=Controlador.getPERSISTENCIA().getTareasClasesTrue(1);
+                Drive.mostrarReporte("Clases",consulta,"Lista de Clases");
+            }else if(bandera.equals("Reunión")){
+                List consulta=Controlador.getPERSISTENCIA().getTareasReunionTrue(1);
+                Drive.mostrarReporte("Reuniones",consulta,"Lista de Reuniones");
+            }else if(bandera.equals("Extracurricular")){
+                List consulta=Controlador.getPERSISTENCIA().getTareasExtracurricularTrue(1);
+                Drive.mostrarReporte("Tareas Extracurriculares",consulta,"Lista de Tareas Extracurriculares");
+            }else if(bandera.equals("Otro")){
+                List consulta=Controlador.getPERSISTENCIA().getTareasOtroTrue(1);
+                Drive.mostrarReporte("Otras Actividades",consulta,"Lista de Otras Actividades");
+            }else if(bandera.equals("Todos")){
+                JOptionPane.showMessageDialog(null,"No se pueden imprimir todas las actividades, por favor seleccione una actividad en especial","Error de impresión", JOptionPane.ERROR_MESSAGE);
             }
         }catch (Exception e){
-            JOptionPane.showMessageDialog(null,"Ingrese correctamente los datos","Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"Ingrese correctamente los datos","Error de impresion", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jComboBox2ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox2ItemStateChanged
+        String es=buffer.toString();
+        String buscar=(String) jComboBox1.getSelectedItem();
+        String buscar2=(String) jComboBox2.getSelectedItem();
+        Drive.LimpiarTabla(jTable1);
+        Drive.CargarTablaFiltroActividades(jTable1,buscar, buscar2, es.toUpperCase());
+        bandera=(String) jComboBox2.getSelectedItem();
+    }//GEN-LAST:event_jComboBox2ItemStateChanged
 
     private static class HeaderRenderer implements TableCellRenderer {
         DefaultTableCellRenderer renderer;
@@ -398,6 +415,7 @@ public class JFrameConsultaActividades extends javax.swing.JFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JComboBox jComboBox1;
+    private javax.swing.JComboBox jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
