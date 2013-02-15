@@ -66,9 +66,9 @@ public class Ano  implements java.io.Serializable {
     public void guardarAno(Ano unAno){
         Controlador.getPERSISTENCIA().insert(this);
 
-        JOptionPane.showMessageDialog(null,"El Año "+ 
-                String.valueOf(unAno.getAno()) +
-                " se guardo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+//        JOptionPane.showMessageDialog(null,"El Año "+ 
+//                String.valueOf(unAno.getAno()) +
+//                " se guardo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
     }
     
     public Mes getMes(int unMes){

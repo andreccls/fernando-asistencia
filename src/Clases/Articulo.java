@@ -66,9 +66,9 @@ public class Articulo  implements java.io.Serializable {
     public void guardarArticulo(Articulo unArticulo){
         Controlador.getPERSISTENCIA().insert(this);
 
-        JOptionPane.showMessageDialog(null,"El Artículo "+ 
-                String.valueOf(unArticulo.getIdArticulo()) +
-                " se guardo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+//        JOptionPane.showMessageDialog(null,"El Artículo "+ 
+//                String.valueOf(unArticulo.getIdArticulo()) +
+//                " se guardo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
     }
 
 
