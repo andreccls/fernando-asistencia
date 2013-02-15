@@ -67,17 +67,17 @@ public class Activo  implements java.io.Serializable {
     public void guardarActivo(Activo unActivo){
         Controlador.getPERSISTENCIA().saveupdate(this);
 
-        JOptionPane.showMessageDialog(null,"El activo "+ 
-                String.valueOf(unActivo.getIdActivo()) +
-                " se guardo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+//        JOptionPane.showMessageDialog(null,"El activo "+ 
+//                String.valueOf(unActivo.getIdActivo()) +
+//                " se guardo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
     }
     
     public void eliminarActivo(Activo unActivo){
         Controlador.getPERSISTENCIA().delete(this);
-
-        JOptionPane.showMessageDialog(null,"El activo "+ 
-                String.valueOf(unActivo.getIdActivo()) +
-                " se elimino correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+//
+//        JOptionPane.showMessageDialog(null,"El activo "+ 
+//                String.valueOf(unActivo.getIdActivo()) +
+//                " se elimino correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
     }
 
     public void crearActivoiniciofin(Activo activo, Date inicio, Date fin){

@@ -99,9 +99,9 @@ public class Agenda  implements java.io.Serializable {
     public void guardarAgenda(Agenda unaAgenda){
         Controlador.getPERSISTENCIA().insert(this);
 
-        JOptionPane.showMessageDialog(null,"La Agenda de la tarea "+ 
-                String.valueOf(unaAgenda.getId().getIdTarea()) +
-                " se guardo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+//        JOptionPane.showMessageDialog(null,"La Agenda de la tarea "+ 
+//                String.valueOf(unaAgenda.getId().getIdTarea()) +
+//                " se guardo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
     }
     
      public Dia getDia() {

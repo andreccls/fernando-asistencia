@@ -38,6 +38,8 @@ import com.digitalpersona.onetouch.processing.DPFPImageQualityException;
 import com.digitalpersona.onetouch.verification.DPFPVerification;
 import com.digitalpersona.onetouch.verification.DPFPVerificationResult;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.sql.Time;
@@ -45,6 +47,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
@@ -94,8 +97,11 @@ public class JFrameAsistencia extends javax.swing.JFrame {
         Icon icono4 = new ImageIcon(fott.getImage().getScaledInstance(jLabel1.getWidth(), jLabel1.getHeight(), Image.SCALE_DEFAULT));
         jLabel1.setIcon(icono4);
         jLabel1.repaint();
-        jButton3.setEnabled(false);
         jButton1.setEnabled(false);
+        ImageIcon fot = new ImageIcon("C:\\Users\\fer\\Desktop\\Tesis\\tesisanalista\\src\\imagenes\\Lector1.gif");
+        Icon icono5 = new ImageIcon(fot.getImage().getScaledInstance(jLabel5.getWidth(), jLabel5.getHeight(), Image.SCALE_DEFAULT));
+        jLabel5.setIcon(icono5);
+        jLabel5.repaint();
         Iniciar();
 	start();
     }
@@ -111,11 +117,12 @@ public class JFrameAsistencia extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jButton3 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("SISTEMA DE ASISTENCIA DE PERSONAL EDUCATIVO");
@@ -141,13 +148,6 @@ public class JFrameAsistencia extends javax.swing.JFrame {
         jLabel1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jLabel1.setOpaque(true);
 
-        jButton3.setText("Registrar");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
-
         jButton1.setText("Actividades");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -156,6 +156,7 @@ public class JFrameAsistencia extends javax.swing.JFrame {
         });
 
         jLabel3.setFont(new java.awt.Font("Segoe Script", 3, 12)); // NOI18N
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("Bienvenido al Sistema de Asistencia de Personal Educativo (S.A.P.E.)");
 
         jLabel4.setText("Incorporado a la Enseñanza oficial N º441"); // NOI18N
@@ -164,33 +165,34 @@ public class JFrameAsistencia extends javax.swing.JFrame {
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("INSTITUTO \"GUTENBERG\"");
 
+        jLabel6.setText("Apoye su dedo en el lector:");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(163, 163, 163))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(39, 39, 39)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(129, 129, 129)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addComponent(jLabel6)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton1)))))
-                .addContainerGap())
+                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton1)
+                        .addGap(162, 162, 162))))
         );
 
         jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jLabel1, jLabel2, jLabel4});
-
-        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jButton1, jButton3});
 
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -203,10 +205,12 @@ public class JFrameAsistencia extends javax.swing.JFrame {
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton3)
-                    .addComponent(jButton1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                .addComponent(jLabel6)
+                .addGap(14, 14, 14)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -216,7 +220,7 @@ public class JFrameAsistencia extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 462, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -236,7 +240,7 @@ public class JFrameAsistencia extends javax.swing.JFrame {
             @Override public void dataAcquired(final DPFPDataEvent e){
                 SwingUtilities.invokeLater(new Runnable() {public void run() {
 //                        EnviarTexto("La Huella Digital ha sido Capturada"); 
-                        ProcesarCaptura(e.getSample()); 
+                    ProcesarCaptura(e.getSample());
                 }});}
         });
         
@@ -283,55 +287,39 @@ public class JFrameAsistencia extends javax.swing.JFrame {
         });
     }
     
-    public  void ProcesarCaptura(DPFPSample sample){
-     //featuresinscripcion = extraerCaracteristicas(sample, DPFPDataPurpose.DATA_PURPOSE_ENROLLMENT);
-     featuresverificacion = extraerCaracteristicas(sample, DPFPDataPurpose.DATA_PURPOSE_VERIFICATION);
-     if (featuresverificacion != null){
-         try{
-             System.out.println("Las Caracteristicas de la Huella han sido creada");
-             Reclutador.addFeatures(featuresverificacion);
-             jButton3.setEnabled(true);
-             jButton1.setEnabled(true);
-         }catch (DPFPImageQualityException ex) {
-             System.err.println("Error: "+ex.getMessage());
-         }finally {
-            switch(Reclutador.getTemplateStatus()){
-                case TEMPLATE_STATUS_READY:
-                stop();
-                setTemplate(Reclutador.getTemplate());
-                jButton3.setEnabled(true);
-                jButton1.setEnabled(true);
-                break;
+    public void ProcesarCaptura(DPFPSample sample) {
+        featuresverificacion = extraerCaracteristicas(sample, DPFPDataPurpose.DATA_PURPOSE_VERIFICATION);
+        if (featuresverificacion != null) {
+            try {
+                System.out.println("Las Caracteristicas de la Huella han sido creada");
+                Reclutador.addFeatures(featuresverificacion);
 
-                case TEMPLATE_STATUS_FAILED:
-                Reclutador.clear();
-                stop();
-                setTemplate(null);
-                Iniciar();  
-                start();
-                break;
+            } catch (/*DPFPImageQualityException*/Exception ex) {
+                System.err.println("Error: " + ex.getMessage());
+            } finally {
+                try {
+                    identificarHuella();
+                } catch (IOException ex) {
+                    Logger.getLogger(JFrameAsistencia.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
-         }
-     }
+        }
     }
 
-    public  DPFPFeatureSet extraerCaracteristicas(DPFPSample sample, DPFPDataPurpose purpose){
-     DPFPFeatureExtraction extractor = DPFPGlobal.getFeatureExtractionFactory().createFeatureExtraction();
-     try {
-      return extractor.createFeatureSet(sample, purpose);
-     } catch (DPFPImageQualityException e) {
-      return null;
-     }
-}
-    
+    public DPFPFeatureSet extraerCaracteristicas(DPFPSample sample, DPFPDataPurpose purpose) {
+        DPFPFeatureExtraction extractor = DPFPGlobal.getFeatureExtractionFactory().createFeatureExtraction();
+        try {
+            return extractor.createFeatureSet(sample, purpose);
+        } catch (DPFPImageQualityException e) {
+            return null;
+        }
+    }
     public  void start(){
         Lector.startCapture();
-//        EnviarTexto("Utilizando el Lector de Huella Dactilar ");
     }
 
     public  void stop(){
         Lector.stopCapture();
-//        EnviarTexto("No se está usando el Lector de Huella Dactilar ");
     }
 
     public DPFPTemplate getTemplate() {
@@ -343,155 +331,164 @@ public class JFrameAsistencia extends javax.swing.JFrame {
         this.template = template;
         firePropertyChange(TEMPLATE_PROPERTY, old, template);
     }
+    
+    
      // </editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc="Identidicadores"> 
-    public void identificarHuella() throws IOException{
-     try {
-         //Establecimiento est=Drive.getPrimerEstablecimiento();
-         Iterator<Personal> it=Drive.PERSISTENCIA.getPersonalesTrue(1).iterator();
-         while(it.hasNext()){
-            Personal pp=it.next();
-            byte templateBuffer[] = pp.getCodigo();
-            DPFPTemplate referenceTemplate = DPFPGlobal.getTemplateFactory().createTemplate(templateBuffer);
-            setTemplate(referenceTemplate);
-            DPFPVerificationResult result = Verificador.verify(featuresverificacion, getTemplate());
-            if (result.isVerified()){
-                per=pp;
-                Date cal=Calendar.getInstance().getTime();
-                Iterator itt=pp.getAgendas().iterator();
-                while(itt.hasNext()){
-                    Agenda age=(Agenda)itt.next();
-                    Dia d=age.getDia();
-                    Iterator ittt=d.getIniciofins().iterator();
-                    while(ittt.hasNext()){
-                        Iniciofin cam=(Iniciofin)ittt.next();
-                        String s=new SimpleDateFormat("HH:mm").format(cal.getTime());
-                        SimpleDateFormat fo=new SimpleDateFormat("HH:mm");
-                        Date a=fo.parse(s);
-                        if(cam.getEstadoInicio()!=null){
-                            Calendar cel1=Calendar.getInstance();
-                            cel1.setTime(cam.getInicio());
-                            cel1.add(Calendar.MINUTE, -30);
-                            System.out.println(cam.getInicio());
-                            System.out.println(a);
-                            Calendar cel2=Calendar.getInstance();
-                            cel2.setTime(cam.getInicio());
-                            cel2.add(Calendar.MINUTE, 10);
-                            Calendar cel3=Calendar.getInstance();
-                            cel3.setTime(cam.getFin());
-                            cel3.add(Calendar.MINUTE, -10);
-                            if(cel1.getTime().compareTo(a) <=0 && cel2.getTime().compareTo(a)>=0){
-                                if(cam.getEstadoInicio()==false){
-                                    cam.setEstadoInicio(true);
-                                    cam.actualizarIniciofin(cam);
-                                    JOptionPane.showMessageDialog(null,"Usted se ha registrado satisfactoriamente");
+    Timer t = new Timer(3000, new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+            setTemplate(null);
+            stop();
+            //Iniciar();
+            start();
+            //
+            jButton1.setEnabled(false);
+            t.stop();
+            //JOptionPane.showMessageDialog(null, "HOLA");
+        }
+    });
+
+    
+    //public void Reloj() {
+//        Timer timer; // El timer que se encarga de administrar los tiempo de repeticion
+//        public int segundos; // manejar el valor del contador
+//        public boolean frozen; // manejar el estado del contador TIMER AUTOMATICO -- True Detenido | False Corriendo
+////
+////        // clase interna que representa una tarea, se puede crear varias tareas y asignarle al timer luego
+//        public class MiTarea() extends TimerTask {
+//            //public void run() {
+//                segundos++;
+//                System.out.println(segundos);
+//                // aqui se puede escribir el codigo de la tarea que necesitamos ejecutar
+//            //}// end run()
+//        }// end SincronizacionAutomatica
+////
+//        public void Start(int pSeg) throws Exception {
+//            frozen = false;
+//            // le asignamos una tarea al timer
+//            timer.schedule(MiTarea(), 0, pSeg * 1000 * 60);
+//        }// end Start
+////
+//        public void Stop() {
+//            System.out.println("Stop");
+//            frozen = true;
+//        }// end Stop
+////
+//        public void Reset() {
+//            System.out.println("Reset");
+//            frozen = true;
+//            segundos = 0;
+//        }// end Reset
+////    // end Reloj
+        
+
+    
+    public void identificarHuella() throws IOException {
+        try {
+            Iterator<Personal> it = Drive.PERSISTENCIA.getPersonalesTrue(1).iterator();
+            while (it.hasNext()) {
+                Personal pp = it.next();
+                byte templateBuffer[] = pp.getCodigo();
+                DPFPTemplate referenceTemplate = DPFPGlobal.getTemplateFactory().createTemplate(templateBuffer);
+                setTemplate(referenceTemplate);
+                DPFPVerificationResult result = Verificador.verify(featuresverificacion, getTemplate());
+                if (result.isVerified()) {
+                    per = pp;
+                    Date cal = Calendar.getInstance().getTime();
+                    Iterator itt = pp.getAgendas().iterator();
+                    while (itt.hasNext()) {
+                        Agenda age = (Agenda) itt.next();
+                        Dia d = age.getDia();
+                        Iterator ittt = d.getIniciofins().iterator();
+                        while (ittt.hasNext()) {
+                            Iniciofin cam = (Iniciofin) ittt.next();
+                            String s = new SimpleDateFormat("HH:mm").format(cal.getTime());
+                            SimpleDateFormat fo = new SimpleDateFormat("HH:mm");
+                            Date a = fo.parse(s);
+                            if (cam.getEstadoInicio() != null) {
+                                Calendar cel1 = Calendar.getInstance();
+                                cel1.setTime(cam.getInicio());
+                                cel1.add(Calendar.MINUTE, -30);
+                                System.out.println(cam.getInicio());
+                                System.out.println(a);
+                                Calendar cel2 = Calendar.getInstance();
+                                cel2.setTime(cam.getInicio());
+                                cel2.add(Calendar.MINUTE, 10);
+                                Calendar cel3 = Calendar.getInstance();
+                                cel3.setTime(cam.getFin());
+                                cel3.add(Calendar.MINUTE, -10);
+                                if (cel1.getTime().compareTo(a) <= 0 && cel2.getTime().compareTo(a) >= 0) {
+                                    if (cam.getEstadoInicio() == false) {
+                                        cam.setEstadoInicio(true);
+                                        cam.actualizarIniciofin(cam);
+                                        JOptionPane.showMessageDialog(null, "Usted se ha registrado satisfactoriamente");
+                                        jButton1.setEnabled(true);
+                                    }
+                                } else if (cel2.getTime().compareTo(a) < 0 && cel3.getTime().compareTo(a) <= 0) {
+                                    if (cam.getEstadoInicio() == false) {
+                                        cam.setEstadoInicio(true);
+                                        cam.actualizarIniciofin(cam);
+                                        Asistencia asis = cam.getAsistencias().iterator().next();
+                                        asis.setEstado(true);
+                                        asis.setTardanza(true);
+                                        asis.setIniciofin(cam);
+                                        if (!Drive2.existeAsistencia(cam)) {
+                                            asis.guardarAsistencia(asis);
+                                            JOptionPane.showMessageDialog(null, "Usted se ha registrado satisfactoriamente pero tiene tardanza");
+                                            jButton1.setEnabled(true);
+                                        } else {
+                                            asis.ActualizarAsistencia(asis);
+                                        }
+                                    }
                                 }
-                            }else if(cel2.getTime().compareTo(a)<0 && cel3.getTime().compareTo(a)<=0){
-                                if(cam.getEstadoInicio()==false){
-                                    cam.setEstadoInicio(true);
-                                    cam.actualizarIniciofin(cam);
-                                    Asistencia asis=cam.getAsistencias().iterator().next();
-                                    asis.setEstado(true);
-                                    asis.setTardanza(true);
-                                    asis.setIniciofin(cam);
-                                    if(!Drive2.existeAsistencia(cam)){
-                                        asis.guardarAsistencia(asis);
-                                        JOptionPane.showMessageDialog(null,"Usted se ha registrado satisfactoriamente pero tiene tardanza");
-                                    }else{
-                                        asis.ActualizarAsistencia(asis);
+                            }
+                            if (cam.getEstadoFin() != null) {
+                                Calendar cel = Calendar.getInstance();
+                                cel.setTime(cam.getFin());
+                                cel.add(Calendar.MINUTE, 30);
+                                System.out.println(cam.getFin());
+                                System.out.println(a);
+                                Calendar cel2 = Calendar.getInstance();
+                                cel2.setTime(cam.getInicio());
+                                cel2.add(Calendar.MINUTE, -10);
+                                if (cel.getTime().compareTo(a) >= 0 && cel2.getTime().compareTo(a) <= 0) {
+                                    if (cam.getEstadoFin() == false) {
+                                        cam.setEstadoFin(true);
+                                        cam.actualizarIniciofin(cam);
+                                        JOptionPane.showMessageDialog(null, "Usted se ha registrado satisfactoriamente");
+                                        jButton1.setEnabled(true);
                                     }
                                 }
                             }
                         }
-                        if(cam.getEstadoFin()!=null){
-                            Calendar cel=Calendar.getInstance();
-                            cel.setTime(cam.getFin());
-                            cel.add(Calendar.MINUTE, 30);
-                            System.out.println(cam.getFin());
-                            System.out.println(a);
-                            Calendar cel2=Calendar.getInstance();
-                            cel2.setTime(cam.getInicio());
-                            cel2.add(Calendar.MINUTE, -10);
-                            if(cel.getTime().compareTo(a) >=0 && cel2.getTime().compareTo(a)<=0){
-                                if(cam.getEstadoFin()==false){
-                                    cam.setEstadoFin(true);
-                                    cam.actualizarIniciofin(cam);
-                                    JOptionPane.showMessageDialog(null,"Usted se ha registrado satisfactoriamente");
-                                }
-                            }
-                        }
+
                     }
-                    
-                 }
-                 JOptionPane.showMessageDialog(null, "Las huella capturada es de " + pp.toString(), "Verificacion de Huella", JOptionPane.INFORMATION_MESSAGE);
-                 setTemplate(null);
-                 stop();
-                 Iniciar();
-                 start();
-                 return;
-             }
-         }
-        JOptionPane.showMessageDialog(null, "La huella no coincide con ningun personal. Por favor dirigirse a secretaria", "Verificacion de Huella", JOptionPane.ERROR_MESSAGE);
-        setTemplate(null);
-         stop();
-         Iniciar();
-         start();
-       }catch (Exception e) {
-         JOptionPane.showMessageDialog(null, "Hubo un problema con la identificación de la huella. Por favor intentelo nuevamente", "Verificacion de Huella", JOptionPane.ERROR_MESSAGE);
-         Reclutador.clear();
-         stop();
-         setTemplate(null);
-         Iniciar();
-         start();
-       }
-   }
-  
-    public void identificarHuella2() throws IOException{
-     try {
-         //Establecimiento est=Drive.getPrimerEstablecimiento();
-         Iterator<Personal> it=Drive.PERSISTENCIA.getPersonalesTrue(1).iterator();
-         while(it.hasNext()){
-            Personal pp=it.next();
-            byte templateBuffer[] = pp.getCodigo();
-            DPFPTemplate referenceTemplate = DPFPGlobal.getTemplateFactory().createTemplate(templateBuffer);
-            setTemplate(referenceTemplate);
-            DPFPVerificationResult result = Verificador.verify(featuresverificacion, getTemplate());
-            if (result.isVerified()){
-                per=pp;
-                JOptionPane.showMessageDialog(null, "BIENVENIDO "+pp.toString(),"Verificacion de Huella", JOptionPane.INFORMATION_MESSAGE);
-                JFrameActividades frame=new JFrameActividades(Drive,per);
-                this.hide();
-                frame.show();
-                return;
+                    JOptionPane.showMessageDialog(null, "BIENVENIDO " + pp.toString(), "Verificacion de Huella", JOptionPane.INFORMATION_MESSAGE);
+                    t.start();
+                    //t.stop();
+                    jButton1.setEnabled(true);
+                    //setTemplate(null);
+                    //stop();
+                    //Iniciar();
+                    //start();
+                    return;
+                }
             }
-         }
-         JOptionPane.showMessageDialog(null, "La huella no coincide con ningun personal. Por favor dirigirse a secretaria", "Verificacion de Huella", JOptionPane.ERROR_MESSAGE);
-         setTemplate(null);
-         stop();
-         Iniciar();
-         start();
-     } catch (Exception e) {
-         JOptionPane.showMessageDialog(null, "Hubo un problema con la identificación de la huella. Por favor intentelo nuevamente", "Verificacion de Huella", JOptionPane.ERROR_MESSAGE);
-         Reclutador.clear();
-         stop();
-         setTemplate(null);
-         Iniciar();
-         start();
-       }
-   }
+            JOptionPane.showMessageDialog(null, "La huella no coincide con ningun personal. Por favor dirigirse a secretaria", "Verificacion de Huella", JOptionPane.ERROR_MESSAGE);
+            setTemplate(null);
+            stop();
+            start();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Hubo un problema con la identificación de la huella. Por favor intentelo nuevamente", "Verificacion de Huella", JOptionPane.ERROR_MESSAGE);
+            Reclutador.clear();
+            stop();
+            setTemplate(null);
+            start();
+        }
+    }
     // </editor-fold>
     
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        try {
-            jButton1.setEnabled(false);
-            jButton3.setEnabled(false);
-            identificarHuella();
-        } catch (IOException ex) {
-            Logger.getLogger(JFrameAsistencia.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_jButton3ActionPerformed
-
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
     }//GEN-LAST:event_formWindowOpened
 
@@ -501,9 +498,10 @@ public class JFrameAsistencia extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
             jButton1.setEnabled(false);
-            jButton3.setEnabled(false);
-            identificarHuella2();
-        } catch (IOException ex) {
+            JFrameActividades frame=new JFrameActividades(Drive,per);
+            this.dispose();
+            frame.show();
+        } catch (Exception ex) {
             Logger.getLogger(JFrameAsistencia.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -530,11 +528,12 @@ public class JFrameAsistencia extends javax.swing.JFrame {
      
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }
