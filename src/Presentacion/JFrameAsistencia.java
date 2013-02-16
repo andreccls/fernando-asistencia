@@ -498,6 +498,7 @@ public class JFrameAsistencia extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
             jButton1.setEnabled(false);
+            t.stop();
             JFrameActividades frame=new JFrameActividades(Drive,per);
             this.dispose();
             frame.show();
