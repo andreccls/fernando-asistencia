@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 
 /**
@@ -286,6 +287,7 @@ public class Establecimiento  implements java.io.Serializable {
         }
         return tmpres;
     }
+    
 }
 
 

@@ -37,7 +37,7 @@ public class persistencia {
     private Session session;
 
     public persistencia() {
-        sessionFactory = new Configuration().configure("/hibernate1.cfg.xml").buildSessionFactory();
+        sessionFactory = new Configuration().configure("/hibernate.cfg.xml").buildSessionFactory();
         session = sessionFactory.openSession();
     }
 
@@ -517,6 +517,16 @@ public class persistencia {
 
     public List getDepartamentos() throws ArrayStoreException {
         String hql = "from Departamento";
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
+    }
+    
+    public List getPersonalDepto() throws ArrayStoreException {
+        String hql = "from PersonalDepartamento";
         List items = new ArrayList();
         Transaction tx = session.beginTransaction();
         Query q = session.createQuery(hql);
