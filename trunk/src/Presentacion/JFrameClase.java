@@ -256,6 +256,7 @@ public class JFrameClase extends javax.swing.JFrame {
                 (datechooser.view.BackRenderer)null,
                 false,
                 true)));
+    dateChooserCombo1.setBehavior(datechooser.model.multiple.MultyModelBehavior.SELECT_SINGLE);
 
     jLabel11.setText("Hasta:");
 
@@ -300,6 +301,7 @@ public class JFrameClase extends javax.swing.JFrame {
             (datechooser.view.BackRenderer)null,
             false,
             true)));
+dateChooserCombo2.setBehavior(datechooser.model.multiple.MultyModelBehavior.SELECT_SINGLE);
 
 jComboBox3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "LUNES", "MARTES", "MIERCOLES", "JUEVES", "VIERNES", "SABADO" }));
 

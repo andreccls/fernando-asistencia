@@ -81,7 +81,7 @@ public class JFrameAsistencia extends javax.swing.JFrame {
         initComponents();
         Inicio();
     }
-    private void Inicio() {
+    private void Inicio() throws ArrayStoreException {
         Controlador auxDrive = new Controlador();
         try {
             if (auxDrive.getPrimerEstablecimiento()== null) {
@@ -104,6 +104,13 @@ public class JFrameAsistencia extends javax.swing.JFrame {
         jLabel5.repaint();
         Iniciar();
 	start();
+        try {
+            boolean s=Drive.PERSISTENCIA.getUsuarios();
+            boolean x=s;
+        } catch (IOException ex) {
+            Logger.getLogger(JFrameAsistencia.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
 
     /**

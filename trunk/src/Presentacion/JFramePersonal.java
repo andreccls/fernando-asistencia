@@ -202,6 +202,11 @@ public class JFramePersonal extends javax.swing.JFrame {
         });
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "MASCULINO", "FEMENINO" }));
+        jComboBox1.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboBox1ItemStateChanged(evt);
+            }
+        });
 
         jComboBox4.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "SOLTERO", "CASADO", "DIVORCIADO" }));
 
@@ -279,6 +284,11 @@ public class JFramePersonal extends javax.swing.JFrame {
         jRadioButton1.setText("Docente");
 
         jRadioButton2.setText("No docente");
+        jRadioButton2.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jRadioButton2ItemStateChanged(evt);
+            }
+        });
 
         try {
             jFormattedTextField2.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##-########-#")));
@@ -298,13 +308,28 @@ public class JFramePersonal extends javax.swing.JFrame {
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
+        jFormattedTextField5.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jFormattedTextField5FocusLost(evt);
+            }
+        });
 
+        jTextField3.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jTextField3FocusLost(evt);
+            }
+        });
         jTextField3.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 jTextField3KeyTyped(evt);
             }
         });
 
+        jTextField4.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jTextField4FocusLost(evt);
+            }
+        });
         jTextField4.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 jTextField4KeyTyped(evt);
@@ -833,12 +858,22 @@ public class JFramePersonal extends javax.swing.JFrame {
 
     private void jTextField4KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField4KeyTyped
         char car = evt.getKeyChar();
-        if((car<'0' || car>'9')) evt.consume();
+        if(jRadioButton1.isSelected()){
+            if((car<'0' || car>'9')) evt.consume();
+        }else{
+            JOptionPane.showMessageDialog(null, "Debe seleccionar 'DOCENTE' ","Registrar Personal", JOptionPane.ERROR_MESSAGE);
+            evt.consume();
+        }
     }//GEN-LAST:event_jTextField4KeyTyped
 
     private void jTextField3KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField3KeyTyped
         char car = evt.getKeyChar();
-        if((car<'0' || car>'9')) evt.consume();
+        if(jRadioButton1.isSelected()){
+            if((car<'0' || car>'9')) evt.consume();
+        }else{
+            JOptionPane.showMessageDialog(null, "Debe seleccionar 'DOCENTE' ","Registrar Personal", JOptionPane.ERROR_MESSAGE);
+            evt.consume();
+        }
     }//GEN-LAST:event_jTextField3KeyTyped
 
     private void jFormattedTextField2FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jFormattedTextField2FocusLost
@@ -889,8 +924,10 @@ public class JFramePersonal extends javax.swing.JFrame {
             Matcher matcher = compare.matcher(jTextField9.getText());
             if(matcher.matches()) {
                 isValidEmail = true;
+            }else {
+                JOptionPane.showMessageDialog(null, "INGRESE CORRECTAMENTE LA DIRECCION DE CORREO ELECTRONICO","Registrar Personal", JOptionPane.ERROR_MESSAGE);
+                jTextField9.setText("");
             }
-            else {JOptionPane.showMessageDialog(null, "INGRESE CORRECTAMENTE LA DIRECCION DE CORREO ELECTRONICO","Registrar Personal", JOptionPane.ERROR_MESSAGE);} // TODO add your handling code here:
 
         }
     }//GEN-LAST:event_jTextField9FocusLost
@@ -1027,6 +1064,76 @@ public class JFramePersonal extends javax.swing.JFrame {
         vp.show();        // TODO add your handling code here:
     }//GEN-LAST:event_formWindowClosing
 
+    private void jFormattedTextField5FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jFormattedTextField5FocusLost
+        if(!jFormattedTextField5.getText().contains(" ")){
+            Cuit cuil=new Cuit();
+            String d=jFormattedTextField5.getText().replace(".", "");
+            Integer.parseInt(d);
+            char s;
+            if(jComboBox1.getSelectedItem().equals("MASCULINO")){
+                s='m';
+            }else { s='f';}
+            jFormattedTextField2.setText(cuil.generar(Integer.parseInt(d),s ));
+        }else{
+            JOptionPane.showMessageDialog(null, "Ingrese correctamente el numero de documento","Registrar Tipo de Documento", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jFormattedTextField5FocusLost
+
+    private void jComboBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox1ItemStateChanged
+        Cuit cuil=new Cuit();
+        String d=jFormattedTextField5.getText().replace(".", "");
+        Integer.parseInt(d);
+        char s;
+        if(jComboBox1.getSelectedItem().equals("MASCULINO")){
+            s='m';
+        }else { s='f';}
+        jFormattedTextField2.setText(cuil.generar(Integer.parseInt(d),s ));
+    }//GEN-LAST:event_jComboBox1ItemStateChanged
+
+    private void jTextField3FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField3FocusLost
+        if(!jTextField3.getText().isEmpty()){
+            if(jRadioButton2.isSelected()){
+                if(Integer.parseInt(jTextField3.getText())>21){
+                    JOptionPane.showMessageDialog(null, "El cargo de hora no puede ser mayor a 21","Registrar Cargo/horas", JOptionPane.ERROR_MESSAGE);
+                    jTextField3.setText("");
+                }
+            }else{
+                if(Integer.parseInt(jTextField3.getText())>42){
+                    JOptionPane.showMessageDialog(null, "El cargo de hora no puede ser mayor a 42","Registrar Cargo/horas", JOptionPane.ERROR_MESSAGE);
+                    jTextField3.setText("");
+                }
+            }
+        }
+    }//GEN-LAST:event_jTextField3FocusLost
+
+    private void jRadioButton2ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jRadioButton2ItemStateChanged
+        if(jRadioButton2.isSelected()){
+             if(!jTextField3.getText().isEmpty()){
+                if(Integer.parseInt(jTextField3.getText())>21){
+                    JOptionPane.showMessageDialog(null, "El cargo de hora no puede ser mayor a 21","Registrar Cargo/horas", JOptionPane.ERROR_MESSAGE);
+                    jTextField3.setText("");
+                }
+             }
+        }else{
+            if(!jTextField3.getText().isEmpty()){
+                if(Integer.parseInt(jTextField3.getText())>42){
+                    JOptionPane.showMessageDialog(null, "El cargo de hora no puede ser mayor a 42","Registrar Cargo/horas", JOptionPane.ERROR_MESSAGE);
+                    jTextField3.setText("");
+                }
+            }
+        }
+    }//GEN-LAST:event_jRadioButton2ItemStateChanged
+
+    private void jTextField4FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField4FocusLost
+        if(!jTextField3.getText().isEmpty()){
+            if(Integer.parseInt(jTextField4.getText())>60){
+                JOptionPane.showMessageDialog(null, "La antiguedad no puede ser mayor a 60","Registrar Cargo/horas", JOptionPane.ERROR_MESSAGE);
+                jTextField4.setText("");
+            }
+        }
+    }//GEN-LAST:event_jTextField4FocusLost
+
+    
     /**
     * @param args the command line arguments
     */

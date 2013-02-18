@@ -466,6 +466,9 @@
               </StringArray>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="jComboBox1ItemStateChanged"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JComboBox" name="jComboBox2">
           <Properties>
@@ -655,6 +658,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="No docente"/>
           </Properties>
+          <Events>
+            <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="jRadioButton2ItemStateChanged"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JComboBox" name="jComboBox6">
           <Properties>
@@ -684,14 +690,19 @@
               <Format format="##.###.###" subtype="-1" type="5"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jFormattedTextField5FocusLost"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="jTextField3">
           <Events>
+            <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jTextField3FocusLost"/>
             <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jTextField3KeyTyped"/>
           </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="jTextField4">
           <Events>
+            <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jTextField4FocusLost"/>
             <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jTextField4KeyTyped"/>
           </Events>
         </Component>
