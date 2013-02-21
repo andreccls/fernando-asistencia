@@ -8,6 +8,7 @@ import Persistencia.persistencia;
 import java.awt.Label;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -324,6 +325,22 @@ public class Controlador {
             modelo.removeRow(0);
         }
     }
+    
+     public List ObtenerListaTabla(JTable Tabla) {
+        List lista = new ArrayList();
+        DefaultTableModel modelo = (DefaultTableModel) Tabla.getModel();
+        int c=0;
+        while (modelo.getRowCount() != c) {
+            boolean check=(Boolean) Tabla.getValueAt(c, 0);
+            if(check==true){
+                Personal per=(Personal) Tabla.getValueAt(c, 1);
+                lista.add(per);
+                
+            }
+            c++;
+        }
+        return lista;
+    }
 
     public void CargarGrillaActividades(JTable tabla, Personal per, Date di) {
         DefaultTableModel model = (DefaultTableModel) tabla.getModel();
@@ -617,6 +634,121 @@ public class Controlador {
                     }
                 }
             
+        }
+        tabla.setModel(model);
+    }
+    
+    public void CargarTablacheck(JTable tabla, String buscarpor, String valor, List personales) {
+        try {
+            DefaultTableModel model = (DefaultTableModel) tabla.getModel();
+            if (!personales.isEmpty()) {
+                //Cargar lista de checkeados
+                Iterator<Personal> it = getPrimerEstablecimiento().getPersonals().iterator();
+                while (it.hasNext()) {
+                    Personal person = (Personal) it.next();
+                    Iterator<Personal> itt = personales.iterator();
+                    while (itt.hasNext()) {
+                        Personal per = itt.next();
+                        if (per.getIdPersonal() == person.getIdPersonal()) {
+                            Object fila[] = new Object[3];
+                            fila[0] = new Boolean(true);
+                            fila[1] = person;
+                            fila[2] = person.getDni();
+                            model.addRow(fila);
+                        }
+                    }
+                }
+            }
+            boolean band = true;
+            Iterator<Personal> ite = getPrimerEstablecimiento().getPersonals().iterator();
+            while (ite.hasNext()) {
+                band = true;
+                Personal person = (Personal) ite.next();
+                //No cargar la lista de personales checkeados
+                if (!personales.isEmpty()) {
+                    Iterator<Personal> iter = personales.iterator();
+                    while (iter.hasNext()) {
+                        Personal per = iter.next();
+                        if (per.getIdPersonal() == person.getIdPersonal()) {
+                            band = false;
+                            break;
+                        }
+                    }
+                }
+                if (band == true) {
+                    //Cargar resto de personales
+                    boolean band2 = false;
+                    if (!buscarpor.equals("TODOS")) {
+                        Iterator it = person.getPersonalDepartamentos().iterator();
+                        while (it.hasNext()) {
+                            PersonalDepartamento perd = (PersonalDepartamento) it.next();
+                            if (perd.getDepartamento().getNombre().equals(buscarpor)) {
+                                band2 = true;
+                            }
+                        }
+                    } else {
+                        band2 = true;
+                    }
+                
+                    if (person.getEstado() == true && band2==true) {
+                        int i = person.getApellido().indexOf(valor);
+                        int e = person.getNombre().indexOf(valor);
+                        if (i == 0||e==0) {
+                            Object fila[] = new Object[3];
+                            fila[0] = new Boolean(false);
+                            fila[1] = person;
+                            fila[2] = person.getDni();
+                            model.addRow(fila);
+                        }
+                    } 
+                    tabla.setModel(model);
+                }
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex.toString());
+        }
+    }
+    
+    public void CargarpersonalSimple(JTable tabla, String buscarpor, String valor, List personales) {
+        DefaultTableModel model = (DefaultTableModel) tabla.getModel();
+        boolean band=true;
+        Iterator<Personal> pe = getPrimerEstablecimiento().getPersonals().iterator();
+        while (pe.hasNext()) {
+            band=true;
+            Personal person = (Personal) pe.next();
+            Iterator<Personal> it= personales.iterator();
+            while(it.hasNext()){
+                Personal per=it.next();
+                if(per.getIdPersonal()==person.getIdPersonal()){
+                    band=false;
+                    break;
+                }
+            }
+            if(band==true){
+                if (buscarpor.equals("Apellido") && person.getEstado() == true) {
+                    int i = person.getApellido().indexOf(valor);
+                    if (i == 0) {
+                        Object[] fila = new Object[5];
+                        fila[0] = person.getIdPersonal();
+                        fila[1] = person.toString();
+                        fila[2] = person.getDni();
+                        fila[3] = person.getSexo();
+                        fila[4] = person.getEstadoCivil();
+                        model.addRow(fila);
+                    }
+                } else if (buscarpor.equals("Nombre") && person.getEstado() == true) {
+                    int i = person.getNombre().indexOf(valor);
+                    if (i == 0) {
+                        Object[] fila = new Object[5];
+                        fila[0] = person.getIdPersonal();
+                        fila[1] = person.toString();
+                        fila[2] = person.getDni();
+                        fila[3] = person.getSexo();
+                        fila[4] = person.getEstadoCivil();
+                        model.addRow(fila);
+                    }
+                } 
+            }
         }
         tabla.setModel(model);
     }
@@ -1014,26 +1146,7 @@ public class Controlador {
         }
         return t;
     }
-        public void CargarTablacheck(JTable Tabla){
-            try {
-                DefaultTableModel modelo = (DefaultTableModel)Tabla.getModel();
-                Establecimiento col= getPrimerEstablecimiento();
-                Iterator rs=col.getPersonals().iterator();
-                while (rs.hasNext()) {
-                    Personal per=(Personal) rs.next();
-                    if(per.getEstado()==true){
-                        Object fila[]=new Object[3];
-                        fila[0] = new Boolean(false);
-                        fila[1] = per;
-                        fila[2] = per.getDni();
-                        modelo.addRow(fila); 
-                    }
-                }
-                Tabla.setModel(modelo);
-             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(null, ex.toString());
-            }   
-        }
+        
 
     public static Date sumarFechasDias(Date fch, int dias) {
         Calendar cal = new GregorianCalendar();
