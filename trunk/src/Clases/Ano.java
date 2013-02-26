@@ -71,6 +71,14 @@ public class Ano  implements java.io.Serializable {
 //                " se guardo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
     }
     
+    public void eliminarAno(Ano unAno){
+        Controlador.getPERSISTENCIA().delete(this);
+
+//        JOptionPane.showMessageDialog(null,"El Año "+ 
+//                String.valueOf(unAno.getAno()) +
+//                " se guardo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+    }
+    
     public Mes getMes(int unMes){
           Mes tmpres=null;
           Iterator it=meses.iterator();

@@ -38,19 +38,23 @@ public class JFramenuevadeclaracion extends javax.swing.JFrame{
      * Creates new form JFramenuevadeclaracion
      */
     Controlador Drive=new Controlador();
+    public Personal adm;
     Personal pe;
+    int idsesion;
     StringBuffer buffer1=new StringBuffer();
     StringBuffer buffer2=new StringBuffer();
     StringBuffer buffer3=new StringBuffer();
     Declaracionjurada dec;
     
-    public JFramenuevadeclaracion(Controlador unDrive,Personal per,Declaracionjurada decju) {
+    public JFramenuevadeclaracion(Controlador unDrive,Personal per,Declaracionjurada decju, Personal admin,int id) {
         initComponents();
         Controlador auxDrive = new Controlador();
         auxDrive.getPrimerEstablecimiento();
         this.Drive=unDrive;
         this.pe=per;
         this.dec=decju;
+        this.adm=admin;
+        this.idsesion=id;
         Drive.PERSISTENCIA.DecjuradaPer(pe.getIdPersonal());
         Drive.CargarComboEstablecimiento(jComboBox1);
         Drive.CargarComboTipocargo(jComboBox2);
@@ -476,7 +480,7 @@ public class JFramenuevadeclaracion extends javax.swing.JFrame{
     }//GEN-LAST:event_jLabel3MouseClicked
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        JFrameActualizarPersonal ventdec = new JFrameActualizarPersonal(Drive,pe);
+        JFrameActualizarPersonal ventdec = new JFrameActualizarPersonal(Drive,pe,adm,idsesion);
         if(!jTextField1.getText().isEmpty()){
             int confirmado = JOptionPane.showConfirmDialog(null,"¿Desea cancelar la nueva declaración?","",JOptionPane.YES_NO_OPTION);
             if (JOptionPane.OK_OPTION == confirmado){
@@ -519,7 +523,7 @@ public class JFramenuevadeclaracion extends javax.swing.JFrame{
                 }
             }
 
-            JFrameActualizarPersonal ventdec = new JFrameActualizarPersonal(Drive,pe);
+            JFrameActualizarPersonal ventdec = new JFrameActualizarPersonal(Drive,pe,adm,idsesion);
             this.hide();
             ventdec.show();
         }else{JOptionPane.showMessageDialog(null, "INGRESE LAS HORAS","Registrar Declaración", JOptionPane.ERROR_MESSAGE);
@@ -557,7 +561,7 @@ public class JFramenuevadeclaracion extends javax.swing.JFrame{
     }//GEN-LAST:event_jLabel36MouseClicked
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        JFrameActualizarPersonal ventdec = new JFrameActualizarPersonal(Drive,pe);
+        JFrameActualizarPersonal ventdec = new JFrameActualizarPersonal(Drive,pe,adm,idsesion);
         this.dispose();
         ventdec.show();
     }//GEN-LAST:event_formWindowClosing

@@ -8,6 +8,7 @@ import Clases.Ano;
 import Clases.Controlador;
 import Clases.Establecimiento;
 import Clases.Feriado;
+import Clases.Personal;
 import java.awt.Component;
 import java.awt.Frame;
 import java.text.SimpleDateFormat;
@@ -25,13 +26,17 @@ import javax.swing.table.TableCellRenderer;
  */
 public class JFrameFeriados extends javax.swing.JFrame {
     public Controlador Drive;
-    Frame vp=new JFramePrincipal();
+    public Personal adm;
+    int idsesion;
+    
     Date s=new Date();
     /**
      * Creates new form JFrameFeriados
      */
-    public JFrameFeriados(Controlador unDrive) {
+    public JFrameFeriados(Controlador unDrive, Personal admin,int id) {
         this.Drive=unDrive;
+        this.adm=admin;
+        this.idsesion=id;
         initComponents();
         Controlador auxDrive = new Controlador();
         auxDrive.getPrimerEstablecimiento();
@@ -244,10 +249,13 @@ public class JFrameFeriados extends javax.swing.JFrame {
         if(!jFormattedTextField1.getText().isEmpty()||!jTextField4.getText().isEmpty()){
             int confirmado = JOptionPane.showConfirmDialog(null,"¿Desea cancelar la registración del feriado?","",JOptionPane.YES_NO_OPTION);
             if (JOptionPane.OK_OPTION == confirmado){
-               this.dispose();
+               Frame vp=new JFramePrincipal(Drive,adm,idsesion);
+                this.dispose();
                vp.show();
             }
-        }else{this.dispose();
+        }else{
+            Frame vp=new JFramePrincipal(Drive,adm,idsesion);
+            this.dispose();
                 vp.show();}
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -299,6 +307,7 @@ public class JFrameFeriados extends javax.swing.JFrame {
     }//GEN-LAST:event_jFormattedTextField1ActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        Frame vp=new JFramePrincipal(Drive,adm,idsesion);
         this.dispose();
         vp.show();        // TODO add your handling code here:
     }//GEN-LAST:event_formWindowClosing

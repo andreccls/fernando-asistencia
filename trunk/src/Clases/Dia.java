@@ -72,6 +72,14 @@ public class Dia  implements java.io.Serializable {
 //                " se guardo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
     }
     
+    public void eliminarDia(Dia unDia){
+        Controlador.getPERSISTENCIA().delete(this);
+
+//        JOptionPane.showMessageDialog(null,"El Dia "+ 
+//                String.valueOf(unDia.getDia()) +
+//                " se guardo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+    }
+    
 //    public boolean existeIniciofin(Iniciofin unIniciofin){
 //          boolean tmpres=false;
 //          Iterator it=iniciofins.iterator();

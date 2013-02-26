@@ -31,14 +31,18 @@ public class JFrameConsultaActividades extends javax.swing.JFrame {
      * Creates new form JFrameConsultaActividades
      */
     public Controlador Drive;
+    public Personal adm;
     Personal per= new Personal();
     StringBuffer buffer= new StringBuffer();
     HiloProgreso hilo1;
     Tarea tar=new Tarea();
     String bandera;
+    int idsesion;
     
-    public JFrameConsultaActividades(Controlador unDrive) {
+    public JFrameConsultaActividades(Controlador unDrive, Personal admin,int id) {
         this.Drive=unDrive;
+        this.adm=admin;
+        this.idsesion=id;
         initComponents();
         Controlador auxDrive = new Controlador();
         auxDrive.getPrimerEstablecimiento();
@@ -248,7 +252,7 @@ public class JFrameConsultaActividades extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    Frame vp=new JFramePrincipal(); 
+    
 
     /**
      * @return the jPanel3
@@ -305,12 +309,14 @@ public class JFrameConsultaActividades extends javax.swing.JFrame {
             if ((fila > -1)){
                 tar=col.getTarea(Integer.parseInt(jTable1.getValueAt(fila,0).toString()));
             }
-            iniciarSplash();
-//            //Creamos un objeto HiloProgreso al cual
-//            //le pasamos por parámetro la barra de progreso
-            hilo1=new HiloProgreso(jProgressBar1,this,Drive,tar);
-            hilo1.start();
-            hilo1=null;
+            if(adm.getPerfil().getNivel()<=2){
+                iniciarSplash();
+    //            //Creamos un objeto HiloProgreso al cual
+    //            //le pasamos por parámetro la barra de progreso
+                hilo1=new HiloProgreso(jProgressBar1,this,Drive,tar,adm,idsesion);
+                hilo1.start();
+                hilo1=null;
+            }
         }                 // TODO add your handling code here:
     }//GEN-LAST:event_jTable1MouseReleased
 
@@ -322,12 +328,14 @@ public class JFrameConsultaActividades extends javax.swing.JFrame {
             if ((fila > -1)){
                 tar=col.getTarea(fila);
             }
-            iniciarSplash();
+            if(adm.getPerfil().getNivel()<=2){
+                iniciarSplash();
     //            //Creamos un objeto HiloProgreso al cual
     //            //le pasamos por parámetro la barra de progreso
-            hilo1=new HiloProgreso(jProgressBar1,this,Drive,tar);
-            hilo1.start();
-            hilo1=null;
+                hilo1=new HiloProgreso(jProgressBar1,this,Drive,tar,adm,idsesion);
+                hilo1.start();
+                hilo1=null;
+            }
         }catch(Exception e){
             JOptionPane.showMessageDialog(null,"Seleccione una actividad","Consultar Actividad",JOptionPane.ERROR_MESSAGE);
         }
@@ -336,6 +344,7 @@ public class JFrameConsultaActividades extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         int confirmado = JOptionPane.showConfirmDialog(null,"¿Desea volver al menú principal?","",JOptionPane.YES_NO_OPTION);
         if (JOptionPane.OK_OPTION == confirmado){
+            Frame vp=new JFramePrincipal(Drive,adm,idsesion); 
             this.dispose();
             vp.show();
         }
@@ -374,6 +383,7 @@ public class JFrameConsultaActividades extends javax.swing.JFrame {
     }//GEN-LAST:event_jComboBox2ItemStateChanged
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        Frame vp=new JFramePrincipal(Drive,adm,idsesion); 
         this.dispose();
         vp.show();        // TODO add your handling code here:
     }//GEN-LAST:event_formWindowClosing

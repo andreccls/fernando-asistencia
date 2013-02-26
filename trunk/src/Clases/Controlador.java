@@ -79,9 +79,9 @@ public class Controlador {
         return cole;
     }
 
-    public void crearEstablecimiento(String nombre, String calle, Integer altura, String piso, String depto, Set<Feriado> feriados, Set<Tarea> tareas, Set<Departamento> departamentos, Set<Personal> personals, Set<DetalleEstablecimiento> detalleEstablecimientos, Set<Declaracionjurada> declaracionjuradas) {
+    public void crearEstablecimiento(String nombre, String calle, Integer altura, String piso, String depto, Set<Feriado> feriados, Set<Tarea> tareas, Set<Departamento> departamentos, Set<Circular> circulars, Set<Personal> personals, Set<DetalleEstablecimiento> detalleEstablecimientos, Set<Declaracionjurada> declaracionjuradas) {
         if (!existeColegio()) {
-            Establecimiento unEstablecimiento = new Establecimiento(nombre, calle, altura, piso, depto, feriados, tareas, departamentos, personals, detalleEstablecimientos, declaracionjuradas);
+            Establecimiento unEstablecimiento = new Establecimiento(nombre, calle, altura, piso, depto, feriados, tareas, departamentos,circulars, personals, detalleEstablecimientos, declaracionjuradas);
             unEstablecimiento.guardarEstablecimiento(unEstablecimiento);
         } else {
             JOptionPane.showMessageDialog(null, "Ya existe el Colegio");
@@ -138,6 +138,19 @@ public class Controlador {
             while (rs.hasNext()) {
                 Departamento dep = (Departamento) rs.next();
                 JCombo.addItem(dep);
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex.toString());
+        }
+    }
+    
+    public void CargarComboPerfil(JComboBox JCombo) {
+        try {
+            //Establecimiento col = getPrimerEstablecimiento();
+            Iterator rs = Controlador.getPERSISTENCIA().getPerfiles().iterator();
+            while (rs.hasNext()) {
+                Perfil perf = (Perfil) rs.next();
+                JCombo.addItem(perf);
             }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, ex.toString());
@@ -1346,4 +1359,17 @@ public class Controlador {
         }
 
     }
+     
+//     public Registroacceso getRegistroacceso(Personal per,int idreg) {
+//        Registroacceso reg=new Registroacceso();
+//        Iterator it= PERSISTENCIA.getRegistroaccesos(per.getIdPersonal()).iterator();
+//        while(it.hasNext()){
+//            Registroacceso registro=(Registroacceso) it.next();
+//            if(registro.getIdRegistroacceso()==idreg){
+//                reg=registro;
+//            }
+//            
+//        }
+//        return reg;
+//    }
 }

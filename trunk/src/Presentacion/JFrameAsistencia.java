@@ -93,7 +93,7 @@ public class JFrameAsistencia extends javax.swing.JFrame {
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, ex.toString());
         }
-       ImageIcon fott = new ImageIcon("C:\\Users\\fer\\Desktop\\Tesis\\tesisanalista\\src\\imagenes\\gutenberg.png");
+        ImageIcon fott = new ImageIcon("C:\\Users\\fer\\Desktop\\Tesis\\tesisanalista\\src\\imagenes\\gutenberg.png");
         Icon icono4 = new ImageIcon(fott.getImage().getScaledInstance(jLabel1.getWidth(), jLabel1.getHeight(), Image.SCALE_DEFAULT));
         jLabel1.setIcon(icono4);
         jLabel1.repaint();
@@ -280,7 +280,7 @@ public class JFrameAsistencia extends javax.swing.JFrame {
         Lector.addErrorListener(new DPFPErrorAdapter(){
             public void errorReader(final DPFPErrorEvent e){
                 SwingUtilities.invokeLater(new Runnable() {  public void run() {
-                    System.err.println("Error: "+e.getError());
+//                    System.err.println("Error: "+e.getError());
                 }});
             }
         });
@@ -356,41 +356,6 @@ public class JFrameAsistencia extends javax.swing.JFrame {
         }
     });
 
-    
-    //public void Reloj() {
-//        Timer timer; // El timer que se encarga de administrar los tiempo de repeticion
-//        public int segundos; // manejar el valor del contador
-//        public boolean frozen; // manejar el estado del contador TIMER AUTOMATICO -- True Detenido | False Corriendo
-////
-////        // clase interna que representa una tarea, se puede crear varias tareas y asignarle al timer luego
-//        public class MiTarea() extends TimerTask {
-//            //public void run() {
-//                segundos++;
-//                System.out.println(segundos);
-//                // aqui se puede escribir el codigo de la tarea que necesitamos ejecutar
-//            //}// end run()
-//        }// end SincronizacionAutomatica
-////
-//        public void Start(int pSeg) throws Exception {
-//            frozen = false;
-//            // le asignamos una tarea al timer
-//            timer.schedule(MiTarea(), 0, pSeg * 1000 * 60);
-//        }// end Start
-////
-//        public void Stop() {
-//            System.out.println("Stop");
-//            frozen = true;
-//        }// end Stop
-////
-//        public void Reset() {
-//            System.out.println("Reset");
-//            frozen = true;
-//            segundos = 0;
-//        }// end Reset
-////    // end Reloj
-        
-
-    
     public void identificarHuella() throws IOException {
         try {
             Iterator<Personal> it = Drive.PERSISTENCIA.getPersonalesTrue(1).iterator();
@@ -519,8 +484,7 @@ public class JFrameAsistencia extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowDeactivated
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
-//        Iniciar();
-//	start();
+
     }//GEN-LAST:event_formWindowActivated
     /**
      * @param args the command line arguments

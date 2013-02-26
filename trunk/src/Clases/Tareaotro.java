@@ -75,9 +75,17 @@ public class Tareaotro  implements java.io.Serializable {
     public void guardarTareaotro(Tareaotro unaTareaotro){
         Controlador.getPERSISTENCIA().insert(this);
 
-        JOptionPane.showMessageDialog(null,"La Tarea otro "+ 
-                String.valueOf(unaTareaotro.getId()) +
-                " se guardo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+//        JOptionPane.showMessageDialog(null,"La Tarea otro "+ 
+//                String.valueOf(unaTareaotro.getId()) +
+//                " se guardo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+    }
+    
+    public void actualizarTareaotro(Tareaotro unaTareaotro){
+        Controlador.getPERSISTENCIA().update(this);
+
+//        JOptionPane.showMessageDialog(null,"La Tarea otro "+ 
+//                String.valueOf(unaTareaotro.getId()) +
+//                " se guardo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
     }
 
 

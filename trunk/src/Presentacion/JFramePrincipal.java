@@ -17,9 +17,12 @@ import javax.swing.JOptionPane;
 import Clases.Personal;
 import Clases.Personaldocente;
 import Clases.Personalnodocente;
+import Clases.Registroacceso;
+import Clases.Tarea;
 import Clases.Telefono;
 import TareasProgramadas.Programacion;
 import java.awt.Image;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Set;
@@ -27,8 +30,6 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-
-
 
 /**
  *
@@ -39,35 +40,46 @@ public class JFramePrincipal extends javax.swing.JFrame {
     /**
      * Creates new form JFramePrincipal
      */
-  
+     Controlador Drive=new Controlador();
+     Personal adm;
+     public int idsesion;
+     Tarea tar=new Tarea();
     
-    public JFramePrincipal() {
-    try {
-        this.setDefaultLookAndFeelDecorated( true );
-        UIManager.setLookAndFeel(new com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel());
-    }catch (Exception e){e.printStackTrace();}
-    initComponents();
-    Inicio();
-    new Programacion().iniciarTarea();
-    }
-    public Controlador Drive;
-    private void Inicio() {
-        Controlador auxDrive = new Controlador();
-        try {
-            if (auxDrive.getPrimerEstablecimiento()== null) {
-                JOptionPane.showMessageDialog(null, "Debe ingresar Colegio","Colegio", JOptionPane.ERROR_MESSAGE);
-            } else {
-                auxDrive.getPrimerEstablecimiento();
-                Drive = auxDrive;
-            }
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, ex.toString());
-        }
+    public JFramePrincipal(Controlador unDrive, Personal admin,int id) {
+        this.Drive=unDrive;
+        this.adm=admin;
+        this.idsesion=id;
+        initComponents();
         ImageIcon fott = new ImageIcon("C:\\Users\\fer\\Desktop\\Tesis\\tesisanalista\\src\\imagenes\\gutenberg.png");
         Icon icono4 = new ImageIcon(fott.getImage().getScaledInstance(jLabel1.getWidth(), jLabel1.getHeight(), Image.SCALE_DEFAULT));
         jLabel1.setIcon(icono4);
         jLabel1.repaint();
+        int nivel=adm.getPerfil().getNivel();
+        if(nivel==4){
+            jMenuItem1.setEnabled(false);//registrar personal
+            jMenuItem2.setEnabled(false);//registrar huella
+            jMenuItem3.setEnabled(false);//Consultar personal
+            jMenuItem4.setEnabled(false);//registrar extracurricular
+            jMenuItem5.setEnabled(false);//registrar clase
+            jMenuItem6.setEnabled(false);//registrar reunion
+            jMenuItem7.setEnabled(false);//registrar otro
+            jMenuItem8.setEnabled(false);//Consultar inasistencia
+            jMenuItem9.setEnabled(false);//Consultar actividades
+            jMenuItem10.setEnabled(false);//registrar feriados
+        }else if(nivel==3){
+            jMenuItem1.setEnabled(false);//registrar personal
+            jMenuItem2.setEnabled(false);//registrar huella
+            jMenuItem4.setEnabled(false);//registrar extracurricular
+            jMenuItem5.setEnabled(false);//registrar clase
+            jMenuItem6.setEnabled(false);//registrar reunion
+            jMenuItem7.setEnabled(false);//registrar otro
+        }
     }
+    
+
+//    private void Inicio() {
+//        
+//    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -83,6 +95,7 @@ public class JFramePrincipal extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        jButton3 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -98,8 +111,13 @@ public class JFramePrincipal extends javax.swing.JFrame {
         jMenuItem9 = new javax.swing.JMenuItem();
         jMenuItem10 = new javax.swing.JMenuItem();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("SISTEMA DE ASISTENCIA DE PERSONAL EDUCATIVO");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("Segoe Script", 3, 12)); // NOI18N
         jLabel3.setText("Bienvenido al Sistema de Asistencia de Personal Educativo (S.A.P.E.)");
@@ -117,11 +135,21 @@ public class JFramePrincipal extends javax.swing.JFrame {
 
         jLabel4.setText("Incorporado a la Enseñanza oficial N º441"); // NOI18N
 
+        jButton3.setText("Salir");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 462, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(399, Short.MAX_VALUE)
+                .addComponent(jButton3)
+                .addContainerGap())
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addContainerGap()
@@ -141,7 +169,10 @@ public class JFramePrincipal extends javax.swing.JFrame {
 
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 287, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(253, Short.MAX_VALUE)
+                .addComponent(jButton3)
+                .addContainerGap())
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addGap(3, 3, 3)
@@ -273,77 +304,119 @@ public class JFramePrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenu1ActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-       JFramePersonal vent2 = new JFramePersonal(Drive);
-       this.hide();
-       vent2.show();
+        JFramePersonal vent2 = new JFramePersonal(Drive,adm,idsesion);
+        this.hide();
+        vent2.show();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
-        JFrameClase vent2 = new JFrameClase(Drive);
+        JFrameClase vent2 = new JFrameClase(Drive,adm,idsesion,tar);
         this.hide();
         vent2.show();
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
-        JFrameReunion vent2 = new JFrameReunion(Drive);
+        JFrameReunion vent2 = new JFrameReunion(Drive,adm,idsesion,tar);
         this.hide();
         vent2.show();
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        JFrameConsulta vent2 = new JFrameConsulta(Drive);
+        JFrameConsulta vent2 = new JFrameConsulta(Drive,adm,idsesion);
         this.hide();
         vent2.show();
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        jDigitalPersona vent2 = new jDigitalPersona(Drive);
+        jDigitalPersona vent2 = new jDigitalPersona(Drive,adm,idsesion);
         this.hide();
         vent2.show();        // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        JFrameExtracurricular vent2 = new JFrameExtracurricular(Drive);
+        JFrameExtracurricular vent2 = new JFrameExtracurricular(Drive,adm,idsesion,tar);
         this.hide();
         vent2.show();
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
-        JFrameotro vent2 = new JFrameotro(Drive);
+        JFrameotro vent2 = new JFrameotro(Drive,adm,idsesion,tar);
         this.hide();
         vent2.show();
     }//GEN-LAST:event_jMenuItem7ActionPerformed
 
     private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
-        JFrameInasistencia vent2 = new JFrameInasistencia(Drive);
+        JFrameInasistencia vent2 = new JFrameInasistencia(Drive,adm,idsesion);
         this.hide();
         vent2.show();
     }//GEN-LAST:event_jMenuItem8ActionPerformed
 
     private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
-        JFrameConsultaActividades vent2 = new JFrameConsultaActividades(Drive);
+        JFrameConsultaActividades vent2 = new JFrameConsultaActividades(Drive,adm,idsesion);
         this.hide();
         vent2.show();
     }//GEN-LAST:event_jMenuItem9ActionPerformed
 
     private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
-        JFrameFeriados vent2 = new JFrameFeriados(Drive);
+        JFrameFeriados vent2 = new JFrameFeriados(Drive,adm,idsesion);
         this.hide();
         vent2.show();
     }//GEN-LAST:event_jMenuItem10ActionPerformed
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        try {
+            int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea salir?", "Cerrar sesión", JOptionPane.OK_CANCEL_OPTION);
+            if (JOptionPane.OK_OPTION == confirmado) {
+                JFrameInicio vp = new JFrameInicio();
+                Registroacceso reg = adm.getRegistroacceso(idsesion);//Drive.getRegistroacceso(adm, vp.idsesion);
+                if (reg.getIdRegistroacceso() != null) {
+                    Date hoy = new Date();
+                    String s = new SimpleDateFormat("HH:mm").format(hoy.getTime());
+                    SimpleDateFormat fo = new SimpleDateFormat("HH:mm");
+                    Date fin = fo.parse(s);
+                    reg.setFin(fin);
+                    reg.actualizarRegistroAcceso(reg);
+                }
+                this.dispose();
+                vp.show();
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.toString());
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        try {
+            JFrameInicio vp = new JFrameInicio();
+            Registroacceso reg = adm.getRegistroacceso(idsesion);//Drive.getRegistroacceso(adm,idsesion);
+            if (reg.getIdRegistroacceso() != null) {
+                Date hoy = new Date();
+                String s = new SimpleDateFormat("HH:mm").format(hoy.getTime());
+                SimpleDateFormat fo = new SimpleDateFormat("HH:mm");
+                Date fin = fo.parse(s);
+                reg.setFin(fin);
+                reg.actualizarRegistroAcceso(reg);
+            }
+            this.dispose();
+            vp.show();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.toString());
+        }
+        
+    }//GEN-LAST:event_formWindowClosing
+
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-
-            public void run() {
-                new JFramePrincipal().setVisible(true);
-            }
-        });
-    }
+//    public static void main(String args[]) {
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                new JFramePrincipal(Drive, adm).setVisible(true);
+//            }
+//        });
+//    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

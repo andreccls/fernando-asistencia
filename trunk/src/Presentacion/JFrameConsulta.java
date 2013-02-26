@@ -31,12 +31,16 @@ public class JFrameConsulta extends javax.swing.JFrame {
      * Creates new form JFrameConsulta
      */
     public Controlador Drive;
+    public Personal adm;
+    int idsesion;
     Personal per = new Personal();
     StringBuffer buffer = new StringBuffer();
     HiloProgreso hilo;
 
-    public JFrameConsulta(Controlador unDrive) {
+    public JFrameConsulta(Controlador unDrive,Personal admin,int id) {
+        this.adm=admin;
         this.Drive = unDrive;
+        this.idsesion=id;
         initComponents();
         //Iniciamos el Hilo
         Controlador auxDrive = new Controlador();
@@ -50,6 +54,9 @@ public class JFrameConsulta extends javax.swing.JFrame {
             jTable1.getColumnModel().getColumn(i).setPreferredWidth(anchos1[i]);
         }
         jTable1.getTableHeader().setDefaultRenderer(new HeaderRenderer(jTable1));
+        if(adm.getPerfil().getNivel()>2){
+            jButton2.setEnabled(false);
+        }
     }
 
     /**
@@ -245,6 +252,7 @@ public class JFrameConsulta extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea volver al menú principal?", "", JOptionPane.YES_NO_OPTION);
         if (JOptionPane.OK_OPTION == confirmado) {
+            Frame vp = new JFramePrincipal(Drive,adm,idsesion);
             this.dispose();
             vp.show();
         }
@@ -257,10 +265,12 @@ public class JFrameConsulta extends javax.swing.JFrame {
         if ((fila > -1)) {
             per = col.getPersonal(fila);
         }
-        iniciarSplash();
-        hilo = new HiloProgreso(jProgressBar1, this, Drive, per);
-        hilo.start();
-        hilo = null;
+        if(adm.getPerfil().getNivel()<=2){
+                iniciarSplash();
+                hilo = new HiloProgreso(jProgressBar1, this, Drive, per,adm,idsesion);
+                hilo.start();
+                hilo = null;
+            }
     }//GEN-LAST:event_jButton4ActionPerformed
 
 //    public void HiloProgres(JProgressBar progreso1) {
@@ -291,10 +301,12 @@ public class JFrameConsulta extends javax.swing.JFrame {
             if ((fila > -1)) {
                 per = col.getPersonal(Integer.parseInt(jTable1.getValueAt(fila, 0).toString()));
             }
-            iniciarSplash();
-            hilo = new HiloProgreso(jProgressBar1, this, Drive, per);
-            hilo.start();
-            hilo = null;
+            if(adm.getPerfil().getNivel()<=2){
+                iniciarSplash();
+                hilo = new HiloProgreso(jProgressBar1, this, Drive, per,adm,idsesion);
+                hilo.start();
+                hilo = null;
+            }
         }
     }//GEN-LAST:event_jTable1MouseReleased
 
@@ -351,10 +363,11 @@ public class JFrameConsulta extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        Frame vp = new JFramePrincipal(Drive,adm,idsesion);
         this.dispose();
         vp.show();
     }//GEN-LAST:event_formWindowClosing
-    Frame vp = new JFramePrincipal();
+    
 
     /**
      * @return the jPanel3

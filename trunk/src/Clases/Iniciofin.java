@@ -104,6 +104,14 @@ public class Iniciofin  implements java.io.Serializable {
 //                String.valueOf(unIniciofin.getIdIniciofin()) +
 //                " se guardo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
     }
+    
+    public void eliminarIniciofin(Iniciofin unIniciofin){
+        Controlador.getPERSISTENCIA().delete(this);
+
+//        JOptionPane.showMessageDialog(null,"El Iniciofin "+ 
+//                String.valueOf(unIniciofin.getIdIniciofin()) +
+//                " se guardo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+    }
 
 
 }

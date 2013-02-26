@@ -1,5 +1,5 @@
 package Clases;
-// Generated 22/11/2012 14:19:28 by Hibernate Tools 3.2.1.GA
+// Generated 23/02/2013 16:02:09 by Hibernate Tools 3.2.1.GA
 
 
 import java.util.Date;
@@ -18,6 +18,7 @@ public class Personal  implements java.io.Serializable {
 
      private Integer idPersonal;
      private Tipodoc tipodoc;
+     private Perfil perfil;
      private Establecimiento establecimiento;
      private byte[] codigo;
      private String dni;
@@ -36,7 +37,9 @@ public class Personal  implements java.io.Serializable {
      private Boolean familiar;
      private Date fechaNac;
      private Set<PersonalDepartamento> personalDepartamentos = new HashSet<PersonalDepartamento>(0);
+     private Set<Registroacceso> registroaccesos = new HashSet<Registroacceso>(0);
      private Set<Declaracionjurada> declaracionjuradas = new HashSet<Declaracionjurada>(0);
+     private Set<Circularpersonal> circularpersonals = new HashSet<Circularpersonal>(0);
      private Set<Personalnodocente> personalnodocentes = new HashSet<Personalnodocente>(0);
      private Set<PersonalFamiliar> personalFamiliarsForIdPersonal = new HashSet<PersonalFamiliar>(0);
      private Set<PersonalFamiliar> personalFamiliarsForIdFamiliar = new HashSet<PersonalFamiliar>(0);
@@ -48,15 +51,17 @@ public class Personal  implements java.io.Serializable {
     }
 
 	
-    public Personal(Tipodoc tipodoc, Establecimiento establecimiento, String dni, String apellido, String nombre) {
+    public Personal(Tipodoc tipodoc, Perfil perfil, Establecimiento establecimiento, String dni, String apellido, String nombre) {
         this.tipodoc = tipodoc;
+        this.perfil = perfil;
         this.establecimiento = establecimiento;
         this.dni = dni;
         this.apellido = apellido;
         this.nombre = nombre;
     }
-    public Personal(Tipodoc tipodoc, Establecimiento establecimiento, byte[] codigo, String dni, String apellido, String nombre, String cuil, String calle, Integer altura, String piso, String depto, String correoElectronico, String sexo, String estadoCivil, Date ingreso, Boolean estado, Boolean familiar, Date fechaNac, Set<PersonalDepartamento> personalDepartamentos, Set<Declaracionjurada> declaracionjuradas, Set<Personalnodocente> personalnodocentes, Set<PersonalFamiliar> personalFamiliarsForIdPersonal, Set<PersonalFamiliar> personalFamiliarsForIdFamiliar, Set<Personaldocente> personaldocentes, Set<Agenda> agendas, Set<Telefono> telefonos) {
+    public Personal(Tipodoc tipodoc, Perfil perfil, Establecimiento establecimiento, byte[] codigo, String dni, String apellido, String nombre, String cuil, String calle, Integer altura, String piso, String depto, String correoElectronico, String sexo, String estadoCivil, Date ingreso, Boolean estado, Boolean familiar, Date fechaNac, Set<PersonalDepartamento> personalDepartamentos, Set<Registroacceso> registroaccesos, Set<Declaracionjurada> declaracionjuradas, Set<Circularpersonal> circularpersonals, Set<Personalnodocente> personalnodocentes, Set<PersonalFamiliar> personalFamiliarsForIdPersonal, Set<PersonalFamiliar> personalFamiliarsForIdFamiliar, Set<Personaldocente> personaldocentes, Set<Agenda> agendas, Set<Telefono> telefonos) {
        this.tipodoc = tipodoc;
+       this.perfil = perfil;
        this.establecimiento = establecimiento;
        this.codigo = codigo;
        this.dni = dni;
@@ -75,7 +80,9 @@ public class Personal  implements java.io.Serializable {
        this.familiar = familiar;
        this.fechaNac = fechaNac;
        this.personalDepartamentos = personalDepartamentos;
+       this.registroaccesos = registroaccesos;
        this.declaracionjuradas = declaracionjuradas;
+       this.circularpersonals = circularpersonals;
        this.personalnodocentes = personalnodocentes;
        this.personalFamiliarsForIdPersonal = personalFamiliarsForIdPersonal;
        this.personalFamiliarsForIdFamiliar = personalFamiliarsForIdFamiliar;
@@ -102,6 +109,13 @@ public class Personal  implements java.io.Serializable {
     
     public void setTipodoc(Tipodoc tipodoc) {
         this.tipodoc = tipodoc;
+    }
+    public Perfil getPerfil() {
+        return this.perfil;
+    }
+    
+    public void setPerfil(Perfil perfil) {
+        this.perfil = perfil;
     }
     public Establecimiento getEstablecimiento() {
         return this.establecimiento;
@@ -229,12 +243,26 @@ public class Personal  implements java.io.Serializable {
     public void setPersonalDepartamentos(Set<PersonalDepartamento> personalDepartamentos) {
         this.personalDepartamentos = personalDepartamentos;
     }
+    public Set<Registroacceso> getRegistroaccesos() {
+        return this.registroaccesos;
+    }
+    
+    public void setRegistroaccesos(Set<Registroacceso> registroaccesos) {
+        this.registroaccesos = registroaccesos;
+    }
     public Set<Declaracionjurada> getDeclaracionjuradas() {
         return this.declaracionjuradas;
     }
     
     public void setDeclaracionjuradas(Set<Declaracionjurada> declaracionjuradas) {
         this.declaracionjuradas = declaracionjuradas;
+    }
+    public Set<Circularpersonal> getCircularpersonals() {
+        return this.circularpersonals;
+    }
+    
+    public void setCircularpersonals(Set<Circularpersonal> circularpersonals) {
+        this.circularpersonals = circularpersonals;
     }
     public Set<Personalnodocente> getPersonalnodocentes() {
         return this.personalnodocentes;
@@ -637,10 +665,25 @@ public class Personal  implements java.io.Serializable {
         while(it.hasNext()){
             dec=(Declaracionjurada) it.next();
         }
+        
+        
         return dec;
     }
-    
-    
+
+    public Registroacceso getRegistroacceso(int idreg) {
+        Registroacceso reg=new Registroacceso();
+        Iterator it= registroaccesos.iterator();
+        while(it.hasNext()){
+            Registroacceso registro=(Registroacceso) it.next();
+            if(registro.getIdRegistroacceso()==idreg){
+                reg=registro;
+                break;
+            }
+            
+        }
+        return reg;
+    }
+
 }
 
 

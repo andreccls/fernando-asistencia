@@ -40,19 +40,24 @@ import javax.swing.text.MaskFormatter;
 public class JFrameActualizarActividades extends javax.swing.JFrame {
 
     public Controlador Drive;
-    Frame vp=new JFrameConsultaActividades(Drive);
-    Tarea tar=new Tarea();
+    public Personal adm;
+    int idsesion;
+    Tarea tar;
     /**
      * Creates new form JFrameActualizarActividades
      */
-    public JFrameActualizarActividades(Controlador unDrive,Tarea tarr) {
+    public JFrameActualizarActividades(Controlador unDrive,Tarea tarr, Personal admin,int id) {
         initComponents();
         this.Drive=unDrive;
+        this.adm=admin;
         this.tar=tarr;
+        this.idsesion=id;
         Drive.LimpiarTabla(jTable1);
         jTextField5.setText(Integer.toString(tarr.getIdTarea()));
         jTextField1.setText(tarr.getNombre());
+        jTextField1.setEnabled(false);
         jTextField3.setText(tarr.getLugar());
+        jTextField3.setEnabled(false);
         int[] anchos1 = {30,170,120,90,80,80,80,80};
         for(int i = 0; i < jTable1.getColumnCount(); i++) {
             jTable1.getColumnModel().getColumn(i).setPreferredWidth(anchos1[i]);
@@ -149,6 +154,7 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
         jTextField5 = new javax.swing.JTextField();
         jButton3 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("SISTEMA DE ASISTENCIA DE PERSONAL EDUCATIVO");
@@ -209,6 +215,13 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
             }
         });
 
+        jButton4.setText("Modificar");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -235,13 +248,15 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addComponent(jButton1)
                                 .addGap(18, 18, 18)
+                                .addComponent(jButton4)
+                                .addGap(18, 18, 18)
                                 .addComponent(jButton3)
                                 .addGap(18, 18, 18)
                                 .addComponent(jButton2)))))
                 .addContainerGap())
         );
 
-        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jButton1, jButton2, jButton3});
+        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jButton1, jButton2, jButton3, jButton4});
 
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -263,7 +278,8 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton2)
                     .addComponent(jButton3)
-                    .addComponent(jButton1))
+                    .addComponent(jButton1)
+                    .addComponent(jButton4))
                 .addContainerGap())
         );
 
@@ -304,17 +320,17 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
     }
      
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        JFrameConsultaActividades vpp=new JFrameConsultaActividades(Drive);
+        JFrameConsultaActividades vpp=new JFrameConsultaActividades(Drive,adm,idsesion);
         this.hide();
         vpp.show();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        int confirmado = JOptionPane.showConfirmDialog(null,"¿Esta seguro que desea eliminar la tarea y todos sus horarios?","",JOptionPane.YES_NO_OPTION);
+        int confirmado = JOptionPane.showConfirmDialog(null,"¿Esta seguro que desea eliminar la tarea y todos sus horarios?","Eliminar tarea",JOptionPane.YES_NO_OPTION);
         if (JOptionPane.OK_OPTION == confirmado){
             tar.setEstado(false);
             tar.ActualizarTarea(tar);
-            JFrameConsultaActividades vpp=new JFrameConsultaActividades(Drive);
+            JFrameConsultaActividades vpp=new JFrameConsultaActividades(Drive,adm,idsesion);
             this.hide();
             vpp.show();
         }        
@@ -322,11 +338,6 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
-            if (!jTextField1.getText().equals(tar.getNombre()) || !jTextField3.getText().equals(tar.getLugar())) {
-                tar.setNombre(jTextField1.getText());
-                tar.setLugar(jTextField3.getText());
-                tar.ActualizarTarea(tar);
-            }
             if(tar.getComentario().equals("EXTRACURRICULAR")){
                 DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
                 int e = 0;
@@ -341,7 +352,6 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
                             if(fran.getIdFranco()!=null){
                                 fran.actualizarFranco(fran);
                             }else{
-
                                 fran.setAgenda(age);
                                 fran.guardarFranco(fran);
                             }
@@ -349,7 +359,7 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
                     e++;
                 }
             }
-            JFrameConsultaActividades vpp=new JFrameConsultaActividades(Drive);
+            JFrameConsultaActividades vpp=new JFrameConsultaActividades(Drive,adm,idsesion);
             this.hide();
             vpp.show();
         } catch (Exception ex) {
@@ -358,10 +368,77 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        JFrameConsultaActividades vpp=new JFrameConsultaActividades(Drive);
+        JFrameConsultaActividades vpp=new JFrameConsultaActividades(Drive,adm,idsesion);
         this.dispose();
         vpp.show();
     }//GEN-LAST:event_formWindowClosing
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        int confirmado = JOptionPane.showConfirmDialog(null, "¿Esta seguro que desea eliminar la tarea y todos sus horarios?", "", JOptionPane.YES_NO_OPTION);
+        if (JOptionPane.OK_OPTION == confirmado) {
+            if (tar.getComentario().equals("EXTRACURRICULAR")) {
+                try {
+                    DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+                    if (jTable1.getRowCount() > 0) {
+                        Object o = modelo.getValueAt(0, 4);
+                        SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+                        Date fecha = formateador.parse(o.toString());
+                        Date aux = new Date();
+                        if (aux.compareTo(fecha) > 0) {
+                            JOptionPane.showMessageDialog(null, "No puede modificar una tarea que ya ocurrió", "Modificar Tarea", JOptionPane.ERROR_MESSAGE);
+                        } else {
+                            JFrameExtracurricular vent2 = new JFrameExtracurricular(Drive, adm, idsesion,tar);
+                            this.hide();
+                            vent2.show();
+                        }
+                    }
+                } catch (Exception e) {
+                }
+                
+            } else if (tar.getComentario().equals("OTRO")) {
+                try {
+                    DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+                    if (jTable1.getRowCount() > 0) {
+                        Object o = modelo.getValueAt(0, 4);
+                        SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+                        Date fecha = formateador.parse(o.toString());
+                        Date aux = new Date();
+                        if (aux.compareTo(fecha) > 0) {
+                            JOptionPane.showMessageDialog(null, "No puede modificar una tarea que ya ocurrió", "Modificar Tarea", JOptionPane.ERROR_MESSAGE);
+                        } else {
+                            JFrameotro vent2 = new JFrameotro(Drive, adm, idsesion, tar);
+                            this.hide();
+                            vent2.show();
+                        }
+                    }
+                } catch (Exception e) {
+                }
+            } else if (tar.getComentario().equals("CLASE")) {
+                JFrameClase vent2 = new JFrameClase(Drive, adm, idsesion, tar);
+                this.hide();
+                vent2.show();
+            } else if (tar.getComentario().equals("REUNION")) {
+                try {
+                    DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+                    if (jTable1.getRowCount() > 0) {
+                        Object o = modelo.getValueAt(0, 5);
+                        SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+                        Date fecha = formateador.parse(o.toString());
+                        Date aux = new Date();
+                        if (aux.compareTo(fecha) > 0) {
+                            JOptionPane.showMessageDialog(null, "No puede modificar una tarea que ya ocurrió", "Modificar Tarea", JOptionPane.ERROR_MESSAGE);
+                        } else {
+                            JFrameReunion vent2 = new JFrameReunion(Drive, adm, idsesion,tar);
+                            this.hide();
+                            vent2.show();
+                        }
+                    }
+                } catch (Exception e) {
+                }
+                
+            }
+        }
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -401,6 +478,7 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;

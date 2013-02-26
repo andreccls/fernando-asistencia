@@ -67,9 +67,17 @@ public class Mes  implements java.io.Serializable {
     public void guardarMes(Mes unMes){
         Controlador.getPERSISTENCIA().insert(this);
 
-        JOptionPane.showMessageDialog(null,"El Mes "+ 
-                String.valueOf(unMes.getMes()) +
-                " se guardo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+//        JOptionPane.showMessageDialog(null,"El Mes "+ 
+//                String.valueOf(unMes.getMes()) +
+//                " se guardo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+    }
+    
+    public void eliminarMes(Mes unMes){
+        Controlador.getPERSISTENCIA().delete(this);
+
+//        JOptionPane.showMessageDialog(null,"El Mes "+ 
+//                String.valueOf(unMes.getMes()) +
+//                " se guardo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
     }
     
     public Dia getDia(int dia){

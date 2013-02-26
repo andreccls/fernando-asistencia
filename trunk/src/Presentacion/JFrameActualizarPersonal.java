@@ -68,6 +68,8 @@ import javax.swing.table.TableCellRenderer;
 public class JFrameActualizarPersonal extends javax.swing.JFrame {
 
     public Controlador Drive;
+    public Personal adm;
+    int idsesion;
     Personal pe= new Personal();
     DefaultListModel modeloLista = new DefaultListModel();
     DefaultListModel modeloLista2 = new DefaultListModel();
@@ -79,8 +81,10 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
      * Creates new form JFrameActualizarPersonal
      */
    
-    public JFrameActualizarPersonal(Controlador unDrive,Personal per) {
+    public JFrameActualizarPersonal(Controlador unDrive,Personal per, Personal admin,int id) {
+        this.adm=admin;
         this.Drive=unDrive;
+        this.idsesion=id;
         initComponents();
         Controlador auxDrive = new Controlador();
         auxDrive.getPrimerEstablecimiento();
@@ -93,6 +97,7 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
         Drive.LimpiarTabla(jTable1);
         Drive.CargarTablaflia(jTable1, per);
         Drive.CargarComboTipodoc(jComboBox6);
+        Drive.CargarComboPerfil(jComboBox12);
         jFormattedTextField7.setText(per.getDni());
         jFormattedTextField7.disable();
         jTextField8.setText(per.getApellido());
@@ -100,6 +105,7 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
         jComboBox2.setSelectedItem(per.getSexo());
         jFormattedTextField5.setText(per.getCuil());
         jComboBox5.setSelectedItem(per.getEstadoCivil());
+        jComboBox5.setSelectedItem(per.getPerfil());
         jTextField21.setText(per.getCorreoElectronico());
         jTextField11.setText(per.getCalle());
         jTextField14.setText(String.valueOf(per.getAltura()));
@@ -273,6 +279,8 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
         jLabel61 = new javax.swing.JLabel();
         jLabel62 = new javax.swing.JLabel();
         jLabel63 = new javax.swing.JLabel();
+        jLabel64 = new javax.swing.JLabel();
+        jComboBox12 = new javax.swing.JComboBox();
         jPanel3 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
@@ -587,6 +595,8 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
 
         jLabel63.setText("*");
 
+        jLabel64.setText("Perfil:");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -639,11 +649,8 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
                                     .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(7, 7, 7)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel59)
-                                            .addComponent(jLabel62)))
+                                    .addComponent(jLabel59)
+                                    .addComponent(jLabel62)
                                     .addGroup(jPanel2Layout.createSequentialGroup()
                                         .addGap(57, 57, 57)
                                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -680,7 +687,11 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
                                                             .addComponent(jButton10, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                             .addComponent(jButton9, javax.swing.GroupLayout.Alignment.LEADING))
                                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                    .addGroup(jPanel2Layout.createSequentialGroup()
+                                                        .addComponent(jLabel64)
+                                                        .addGap(18, 18, 18)
+                                                        .addComponent(jComboBox12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                                             .addGroup(jPanel2Layout.createSequentialGroup()
                                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                     .addComponent(jLabel29)
@@ -787,9 +798,13 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel13)
-                                    .addComponent(jFormattedTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel64)
+                                        .addComponent(jComboBox12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel13)
+                                        .addComponent(jFormattedTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addGap(18, 18, 18)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel11)
@@ -1553,7 +1568,7 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    Frame vp=new JFrameConsulta(Drive);
+    
     
     private static class HeaderRenderer implements TableCellRenderer {
         DefaultTableCellRenderer renderer;
@@ -1596,7 +1611,7 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
                     Personal p=col.getPersonal(tipodoc,nro);
 
                     if(p.getIdPersonal()==null){
-                        int i=col.crearPersonal(tipodoc, col, null, nro, jTextField2.getText().toUpperCase(), jTextField3.getText().toUpperCase(), null, null, WIDTH, null, null, null, null, null, null, false, true, fechanac, null, null, null, null, null, null, null, null);
+                        int i=col.crearPersonal(tipodoc,null, col, null, nro, jTextField2.getText().toUpperCase(), jTextField3.getText().toUpperCase(), null, null, WIDTH, null, null, null, null, null, null, false, true, fechanac, null, null,null, null, null,null, null, null, null, null);
                         PersonalFamiliarId id=new PersonalFamiliarId();
                         id.setIdPersonal(pe.getIdPersonal());
                         id.setIdFamiliar(i);
@@ -1758,6 +1773,7 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        Frame vp=new JFrameConsulta(Drive,adm,idsesion);
         this.dispose();
         vp.show();
     }//GEN-LAST:event_jButton5ActionPerformed
@@ -1949,7 +1965,7 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
                 }
             }
             decju=dec;
-            JFramenuevadeclaracion ventdec = new JFramenuevadeclaracion(Drive, pe,decju);
+            JFramenuevadeclaracion ventdec = new JFramenuevadeclaracion(Drive, pe,decju,adm,idsesion);
             this.setVisible(false);
             ventdec.show();
         }
@@ -2095,10 +2111,13 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
                 !jTextField19.getText().equals(pe.getDepto())){
             int confirmado = JOptionPane.showConfirmDialog(null,"¿Desea cancelar la registración del personal?","",JOptionPane.YES_NO_OPTION);
             if (JOptionPane.OK_OPTION == confirmado){
-               this.dispose();
+               Frame vp=new JFrameConsulta(Drive,adm,idsesion);
+                this.dispose();
                 vp.show();
             }
-        }else{this.dispose();
+        }else{
+            Frame vp=new JFrameConsulta(Drive,adm,idsesion);
+            this.dispose();
                 vp.show();}
     }//GEN-LAST:event_jButton15ActionPerformed
 
@@ -2290,6 +2309,7 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel57MouseClicked
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        Frame vp=new JFrameConsulta(Drive,adm,idsesion);
         this.dispose();
         vp.show();        // TODO add your handling code here:
     }//GEN-LAST:event_formWindowClosing
@@ -2354,6 +2374,7 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JComboBox jComboBox10;
     private javax.swing.JComboBox jComboBox11;
+    private javax.swing.JComboBox jComboBox12;
     private javax.swing.JComboBox jComboBox2;
     private javax.swing.JComboBox jComboBox3;
     private javax.swing.JComboBox jComboBox4;
@@ -2431,6 +2452,7 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel61;
     private javax.swing.JLabel jLabel62;
     private javax.swing.JLabel jLabel63;
+    private javax.swing.JLabel jLabel64;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;

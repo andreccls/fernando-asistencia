@@ -61,8 +61,11 @@ public class jDigitalPersona extends javax.swing.JFrame {
    public Controlador Drive;
    Personal per=new Personal();
    StringBuffer buffer= new StringBuffer();
-   
-    public jDigitalPersona(Controlador unDrive) {
+   public Personal adm;
+   int idsesion;
+    public jDigitalPersona(Controlador unDrive, Personal admin, int id) {
+        this.adm=admin;
+        this.idsesion=id;
         initComponents();
         Controlador auxDrive = new Controlador();
         auxDrive.getPrimerEstablecimiento();
@@ -371,7 +374,7 @@ public class jDigitalPersona extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     
-    Frame vp=new JFramePrincipal();
+    
     private static class HeaderRenderer implements TableCellRenderer {
         DefaultTableCellRenderer renderer;
         public HeaderRenderer(JTable table) {
@@ -395,12 +398,14 @@ public class jDigitalPersona extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowOpened
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        Frame vp=new JFramePrincipal(Drive,adm,idsesion);
         stop(); 
         this.dispose();
         vp.show();
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        Frame vp=new JFramePrincipal(Drive,adm,idsesion);
         stop();
         this.dispose();
         vp.show();
