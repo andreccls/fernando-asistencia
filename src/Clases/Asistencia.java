@@ -86,6 +86,14 @@ public class Asistencia  implements java.io.Serializable {
                 String.valueOf(unaAsistencia.getIdAsistencia()) +
                 " se actualizo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
     }
+    
+    public void eliminarAsistencia(Asistencia unaAsistencia){
+        Controlador.getPERSISTENCIA().delete(this);
+//
+//        JOptionPane.showMessageDialog(null,"La asistencia "+ 
+//                String.valueOf(unaAsistencia.getIdAsistencia()) +
+//                " se actualizo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+    }
 
     public void crearJustificacion(Asistencia asistencia, Articulo articulo, String motivo){
         Justificacion unaJustificacion=new Justificacion (asistencia, articulo, motivo);

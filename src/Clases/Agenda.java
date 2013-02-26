@@ -104,6 +104,14 @@ public class Agenda  implements java.io.Serializable {
 //                " se guardo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
     }
     
+    public void eliminarAgenda(Agenda unaAgenda){
+        Controlador.getPERSISTENCIA().delete(this);
+
+//        JOptionPane.showMessageDialog(null,"La Agenda de la tarea "+ 
+//                String.valueOf(unaAgenda.getId().getIdTarea()) +
+//                " se guardo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+    }
+    
      public Dia getDia() {
         Date cal = Calendar.getInstance().getTime(); 
         Dia dia=new Dia();

@@ -68,9 +68,17 @@ public class Tareareunion  implements java.io.Serializable {
     public void guardarTareareunion(Tareareunion unaTareareunion){
         Controlador.getPERSISTENCIA().insert(this);
 
-        JOptionPane.showMessageDialog(null,"La Tarea reunion "+ 
-                String.valueOf(unaTareareunion.getId().getIdTarea()) +
-                " se guardo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+//        JOptionPane.showMessageDialog(null,"La Tarea reunion "+ 
+//                String.valueOf(unaTareareunion.getId().getIdTarea()) +
+//                " se guardo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+    }
+    
+    public void actualizarTareareunion(Tareareunion unaTareareunion){
+        Controlador.getPERSISTENCIA().update(this);
+
+//        JOptionPane.showMessageDialog(null,"La Tarea reunion "+ 
+//                String.valueOf(unaTareareunion.getId().getIdTarea()) +
+//                " se guardo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
     }
 
 

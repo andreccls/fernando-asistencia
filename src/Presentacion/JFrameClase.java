@@ -54,19 +54,25 @@ import javax.swing.table.TableCellRenderer;
  * @author fer
  */
 public class JFrameClase extends javax.swing.JFrame {
-    public Controlador Drive;
+     Controlador Drive;
+     Personal adm;
+     int idsesion;
     StringBuffer buffer= new StringBuffer();
     List lista = new ArrayList();
     Personal per=new Personal();
-
+    Tarea tar=new Tarea();
+    boolean cambio=false;
+    Date mayor=new Date();
+    Date menor=new Date();
     /** Creates new form JFrameClase */
-    public JFrameClase(Controlador unDrive) {
+    public JFrameClase(Controlador unDrive, Personal admin,int id,Tarea tarr) {
+        this.adm=admin;
         this.Drive=unDrive;
+        this.idsesion=id;
+        this.tar=tarr;
         initComponents();
 
         Drive.CargarComboSituacionRevista(jComboBox2);
-        //Drive.CargarCombo(jComboBox2);
-        //Drive.CargarCombo(jComboBox4);
         int[] anchos1 = {85,65 ,65,200,85};
         for(int i = 0; i < jTable1.getColumnCount(); i++) {
             jTable1.getColumnModel().getColumn(i).setPreferredWidth(anchos1[i]);
@@ -85,6 +91,58 @@ public class JFrameClase extends javax.swing.JFrame {
         Icon icono2 = new ImageIcon(fott.getImage().getScaledInstance(jLabel19.getWidth(), jLabel19.getHeight(), Image.SCALE_DEFAULT));
         jLabel19.setIcon(icono2);
         jLabel19.repaint();
+        ///Verificar si vengo desde principal o desde consultar tarea
+        if(tar.getIdTarea()!=null){
+            try{
+            jTextField1.setText(tar.getNombre());
+            jTextField1.setEnabled(false);
+            jTextField3.setText(tar.getLugar());
+            Tareaclase tarcla=tar.getTareaclases().iterator().next();
+            jTextField2.setText(tarcla.getAula());
+            jTextField4.setText(String.valueOf(tarcla.getNumero()));
+            this.mayor=tar.ObtenerFechaMayor(new Date().getYear());
+            if(mayor!=null){
+                Calendar mmayor = Calendar.getInstance();
+                mmayor.setTime(mayor);
+                dateChooserCombo2.setSelectedDate(mmayor);
+            }
+            this.menor=tar.ObtenerFechaMenor(new Date().getYear());
+            if(menor!=null){
+                Calendar mmenor = Calendar.getInstance();
+                mmenor.setTime(menor);                
+                dateChooserCombo1.setSelectedDate(mmenor);
+            }
+            String dia=Drive.ObtenerDia(mayor.getDay());
+            jComboBox3.setSelectedItem(dia);
+            Agenda age=tar.getAgendas().iterator().next();
+            Dia d=age.getDia2(mayor);
+            Iniciofin ini = d.getIniciofins().iterator().next();
+            SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
+            jFormattedTextField1.setValue(formateador.format(ini.getInicio()));
+            jFormattedTextField2.setValue(formateador.format(ini.getFin()));
+            Date inicio = formateador.parse(jFormattedTextField1.getText());
+            Date fin = formateador.parse(jFormattedTextField2.getText());
+            Drive.LimpiarTabla(jTable2);
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            Iterator it=tar.getAgendas().iterator();
+            while(it.hasNext()){
+                Agenda agg=(Agenda) it.next();
+                Personal per=agg.getPersonal();
+                Revista rev=agg.getRevista();
+                Object[] fila = new Object[5];
+                fila[0] = dia;
+                fila[1] = formateador.format(inicio);
+                fila[2] = formateador.format(fin);
+                fila[3] = per;
+                fila[4] = rev;
+                model.addRow(fila);
+            }
+            jTable1.setModel(model);
+            
+            }catch(Exception e){
+                JOptionPane.showMessageDialog(null,"Error al cargar el formulario","Registrar Clase", JOptionPane.ERROR_MESSAGE);
+            }
+        }
         
     }
 
@@ -180,6 +238,11 @@ public class JFrameClase extends javax.swing.JFrame {
                 jFormattedTextField1ActionPerformed(evt);
             }
         });
+        jFormattedTextField1.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jFormattedTextField1FocusLost(evt);
+            }
+        });
 
         try {
             jFormattedTextField2.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##:##")));
@@ -189,6 +252,11 @@ public class JFrameClase extends javax.swing.JFrame {
         jFormattedTextField2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jFormattedTextField2ActionPerformed(evt);
+            }
+        });
+        jFormattedTextField2.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jFormattedTextField2FocusLost(evt);
             }
         });
 
@@ -313,6 +381,11 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
     });
 
     jComboBox3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "LUNES", "MARTES", "MIERCOLES", "JUEVES", "VIERNES", "SABADO" }));
+    jComboBox3.addItemListener(new java.awt.event.ItemListener() {
+        public void itemStateChanged(java.awt.event.ItemEvent evt) {
+            jComboBox3ItemStateChanged(evt);
+        }
+    });
 
     jTable1.setModel(new javax.swing.table.DefaultTableModel(
         new Object [][] {
@@ -632,7 +705,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
     pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    Frame vp=new JFramePrincipal();
+    
     private static class HeaderRenderer implements TableCellRenderer {
         DefaultTableCellRenderer renderer;
         public HeaderRenderer(JTable table) {
@@ -653,10 +726,13 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
         if(!jTextField1.getText().isEmpty()||!jTextField2.getText().isEmpty()||!jTextField3.getText().isEmpty()||!jTextField4.getText().isEmpty()||!jFormattedTextField1.getText().isEmpty()||!jFormattedTextField2.getText().isEmpty()){
             int confirmado = JOptionPane.showConfirmDialog(null,"¿Desea cancelar la registración de la clase?","",JOptionPane.YES_NO_OPTION);
             if (JOptionPane.OK_OPTION == confirmado){
+                Frame vp=new JFramePrincipal(Drive,adm,idsesion);
                this.dispose();
                 vp.show();
             }
-        }else{this.dispose();
+        }else{
+            Frame vp=new JFramePrincipal(Drive,adm,idsesion);
+            this.dispose();
                 vp.show();}
 
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -670,110 +746,287 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
     }//GEN-LAST:event_jFormattedTextField2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        try{
-            if(jTable1.getRowCount()!=0){
-                if(!jTextField1.getText().isEmpty()&& !jFormattedTextField1.getText().contains(" ") && !jFormattedTextField2.getText().contains(" ")){
-                    Establecimiento est=Drive.getPrimerEstablecimiento();
-                    Tarea tar=est.crearTarea(est, jTextField1.getText().toUpperCase(),jTextField3.getText().toUpperCase(),"CLASE",true, null, null, null, null, null);
-                    TareaclaseId id=new TareaclaseId();
-                    id.setIdTarea(tar.getIdTarea());
-                    int i=0;
-                    if(!jTextField4.getText().isEmpty()){
-                        i=Integer.parseInt(jTextField4.getText());
-                    }
-                    tar.crearTareaclase(id, tar, jTextField2.getText().toUpperCase(),i );
-                    DefaultTableModel modelo = (DefaultTableModel)jTable1.getModel();
-                    int c=0;
-                    while(jTable1.getRowCount()!=c){
-                        Personal per=(Personal) modelo.getValueAt(c, 3);
-                        SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
-                        Date inn=formateador.parse((String) modelo.getValueAt(c, 1));
-                        Date fii=formateador.parse((String) modelo.getValueAt(c, 2));
-                        Iniciofin aux=new Iniciofin();
-                        aux.setInicio(inn);
-                        aux.setFin(fii);
-                        Date inicioo=dateChooserCombo1.getSelectedDate().getTime();
-                        Date finn=dateChooserCombo2.getSelectedDate().getTime();
-                        String dse=(String) modelo.getValueAt(c, 0);
-                        int[][] cant= per.VerificarDisponibilidadClase(inicioo,finn, aux, dse);
-                        int ee =cant [0].length;
-                        int eee =cant [1].length;
-                        int confirmado = JOptionPane.showConfirmDialog(null,"El personal"+per.toString()+" tendrá "+ee+" inasistencias debido a actividades y "+eee+" debido a declaración jurada, ¿Desea continuar?","",JOptionPane.YES_NO_OPTION);
-                        if (JOptionPane.OK_OPTION == confirmado){
-                            AgendaId idage=new AgendaId(per.getIdPersonal(),tar.getIdTarea());
-                            Revista rev=(Revista) modelo.getValueAt(c, 4);
-                            Agenda age=new Agenda();
-                            age.setId(idage);
-                            age.setRevista(rev);
-                            age.setComentario(null);
-                            age.guardarAgenda(age);
+        try {
+            if (jTable1.getRowCount() != 0) {
+                if (!jTextField1.getText().isEmpty() && !jFormattedTextField1.getText().contains(" ") && !jFormattedTextField2.getText().contains(" ")) {
+                    if (tar.getIdTarea() == null) {
+                        // <editor-fold defaultstate="collapsed" desc="Guardar tarea nueva"> 
+                        Establecimiento est = Drive.getPrimerEstablecimiento();
+                        Tarea tare = est.crearTarea(est, jTextField1.getText().toUpperCase(), jTextField3.getText().toUpperCase(), "CLASE", true, null, null, null, null, null);
+                        TareaclaseId id = new TareaclaseId();
+                        id.setIdTarea(tare.getIdTarea());
+                        int i = 0;
+                        if (!jTextField4.getText().isEmpty()) {
+                            i = Integer.parseInt(jTextField4.getText());
+                        }
+                        tare.crearTareaclase(id, tare, jTextField2.getText().toUpperCase(), i);
+                        DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+                        int c = 0;
+                        while (jTable1.getRowCount() != c) {
+                            Personal person = (Personal) modelo.getValueAt(c, 3);
+                            SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
+                            Date inn = formateador.parse((String) modelo.getValueAt(c, 1));
+                            Date fii = formateador.parse((String) modelo.getValueAt(c, 2));
+                            Iniciofin aux = new Iniciofin();
+                            aux.setInicio(inn);
+                            aux.setFin(fii);
+                            Date inicioo = dateChooserCombo1.getSelectedDate().getTime();
+                            Date finn = dateChooserCombo2.getSelectedDate().getTime();
+                            String dse = (String) modelo.getValueAt(c, 0);
+                            int[][] cant = person.VerificarDisponibilidadClase(inicioo, finn, aux, dse);
+                            int ee = cant[0].length;
+                            int eee = cant[1].length;
+                            int confirmado = JOptionPane.showConfirmDialog(null, "El personal" + person.toString() + " tendrá " + ee + " inasistencias debido a actividades y " + eee + " debido a declaración jurada, ¿Desea continuar?", "", JOptionPane.YES_NO_OPTION);
+                            if (JOptionPane.OK_OPTION == confirmado) {
+                                AgendaId idage = new AgendaId(person.getIdPersonal(), tare.getIdTarea());
+                                Revista rev = (Revista) modelo.getValueAt(c, 4);
+                                Agenda age = new Agenda();
+                                age.setId(idage);
+                                age.setRevista(rev);
+                                age.setComentario(null);
+                                age.guardarAgenda(age);
 
-                            Date inicio=dateChooserCombo1.getSelectedDate().getTime();
-                            Date fin=dateChooserCombo2.getSelectedDate().getTime();
+                                Date inicio = dateChooserCombo1.getSelectedDate().getTime();
+                                Date fin = dateChooserCombo2.getSelectedDate().getTime();
 
-                            Ano anio=new Ano();
-                            anio.setAgenda(age);
-                            anio.setAno(inicio.getYear()+1900);
-                            anio.guardarAno(anio);
-                            String dsem=(String) modelo.getValueAt(c, 0);
-                            Date ot=inicio;
-                            if(dsem.equals("LUNES")){while(ot.getDay()!=1){ot=Controlador.sumarFechasDias(ot, 1);}
-                            }else if(dsem.equals("MARTES")){while(ot.getDay()!=2){ot=Controlador.sumarFechasDias(ot, 1);}
-                            }else if(dsem.equals("MIERCOLES")){while(ot.getDay()!=3){ot=Controlador.sumarFechasDias(ot, 1);}
-                            }else if(dsem.equals("JUEVES")){while(ot.getDay()!=4){ot=Controlador.sumarFechasDias(ot, 1);}
-                            }else if(dsem.equals("VIERNES")){while(ot.getDay()!=5){ot=Controlador.sumarFechasDias(ot, 1);}
-                            }else if(dsem.equals("SABADO")){while(ot.getDay()!=6){ot=Controlador.sumarFechasDias(ot, 1);}}
-                            Date otro=ot;
-                            while(otro.compareTo(fin)<=0){
-                                Mes mes=anio.getMes(otro.getMonth());
-                                if(mes==null){
-                                    mes=new Mes();
-                                    mes.setAno(anio);
-                                    mes.setMes(otro.getMonth());
-                                    mes.guardarMes(mes);
-                                    int e=mes.getMes();
-                                    while(otro.getMonth()==e && otro.compareTo(fin)<=0){
-                                        Dia dia=mes.getDia(otro.getDate());
-                                        if(dia==null){
-                                            dia=new Dia();
-                                            dia.setMes(mes);
-                                            dia.setDia(otro.getDate());
-                                            dia.guardarDia(dia);
-                                            int f=dia.getDia();
-                                            while(otro.getDate()==f && otro.compareTo(fin)<=0){
-                                                //SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
-                                                formateador.setLenient(false);
-                                                Date inici=formateador.parse((String) modelo.getValueAt(c, 1));
-                                                Date fi=formateador.parse((String) modelo.getValueAt(c, 2));
-                                                Iniciofin in=new Iniciofin();
-                                                in.setDia(dia);
-                                                in.setInicio(inici);
-                                                in.setEstadoInicio(false);
-                                                in.setFin(fi);
-                                                in.setEstadoFin(false);
-                                                in.guardarIniciofin(in);
-                                                otro=Drive.sumarFechasDias(otro, 7);
+                                Ano anio = new Ano();
+                                anio.setAgenda(age);
+                                anio.setAno(inicio.getYear() + 1900);
+                                anio.guardarAno(anio);
+                                String dsem = (String) modelo.getValueAt(c, 0);
+                                Date ot = inicio;
+                                if (dsem.equals("LUNES")) {
+                                    while (ot.getDay() != 1) {
+                                        ot = Controlador.sumarFechasDias(ot, 1);
+                                    }
+                                } else if (dsem.equals("MARTES")) {
+                                    while (ot.getDay() != 2) {
+                                        ot = Controlador.sumarFechasDias(ot, 1);
+                                    }
+                                } else if (dsem.equals("MIERCOLES")) {
+                                    while (ot.getDay() != 3) {
+                                        ot = Controlador.sumarFechasDias(ot, 1);
+                                    }
+                                } else if (dsem.equals("JUEVES")) {
+                                    while (ot.getDay() != 4) {
+                                        ot = Controlador.sumarFechasDias(ot, 1);
+                                    }
+                                } else if (dsem.equals("VIERNES")) {
+                                    while (ot.getDay() != 5) {
+                                        ot = Controlador.sumarFechasDias(ot, 1);
+                                    }
+                                } else if (dsem.equals("SABADO")) {
+                                    while (ot.getDay() != 6) {
+                                        ot = Controlador.sumarFechasDias(ot, 1);
+                                    }
+                                }
+                                Date otro = ot;
+                                while (otro.compareTo(fin) <= 0) {
+                                    Mes mes = anio.getMes(otro.getMonth());
+                                    if (mes == null) {
+                                        mes = new Mes();
+                                        mes.setAno(anio);
+                                        mes.setMes(otro.getMonth());
+                                        mes.guardarMes(mes);
+                                        int e = mes.getMes();
+                                        while (otro.getMonth() == e && otro.compareTo(fin) <= 0) {
+                                            Dia dia = mes.getDia(otro.getDate());
+                                            if (dia == null) {
+                                                dia = new Dia();
+                                                dia.setMes(mes);
+                                                dia.setDia(otro.getDate());
+                                                dia.guardarDia(dia);
+                                                int f = dia.getDia();
+                                                while (otro.getDate() == f && otro.compareTo(fin) <= 0) {
+                                                    //SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
+                                                    formateador.setLenient(false);
+                                                    Date inici = formateador.parse((String) modelo.getValueAt(c, 1));
+                                                    Date fi = formateador.parse((String) modelo.getValueAt(c, 2));
+                                                    Iniciofin in = new Iniciofin();
+                                                    in.setDia(dia);
+                                                    in.setInicio(inici);
+                                                    in.setEstadoInicio(false);
+                                                    in.setFin(fi);
+                                                    in.setEstadoFin(false);
+                                                    in.guardarIniciofin(in);
+                                                    otro = Drive.sumarFechasDias(otro, 7);
+                                                }
                                             }
                                         }
                                     }
                                 }
                             }
+                            c++;
                         }
-                        c++;
+                        jTextField1.setText("");
+                        jTextField2.setText("");
+                        jTextField3.setText("");
+                        jTextField4.setText("");
+                        jFormattedTextField1.setText("");
+                        jFormattedTextField2.setText("");
+                        Drive.LimpiarTabla(jTable1);
+                        // </editor-fold>
+                    } else {
+                        // <editor-fold defaultstate="collapsed" desc="Actualizar tarea"> 
+                        if (!tar.getLugar().equals(jTextField3.getText().toUpperCase())) {
+                            Establecimiento est = Drive.getPrimerEstablecimiento();
+                            tar.setLugar(jTextField3.getText().toUpperCase());
+                            tar.ActualizarTarea(tar);
+                        }
+                        Tareaclase clase = tar.getTareaclases().iterator().next();
+                        int i = 0;
+                        if (!jTextField4.getText().isEmpty()) {
+                            i = Integer.parseInt(jTextField4.getText());
+                        }
+                        if (!clase.getAula().equals(jTextField2.getText().toUpperCase()) || clase.getNumero() != i) {
+                            clase.setAula(jTextField2.getText().toUpperCase());
+                            clase.setNumero(i);
+                            clase.actualizarTareaclase(clase);
+                        }
+                        DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+                        int c = 0;
+                        boolean bander=false;
+                        int cont=tar.getAgendas().size();
+                        int contper=0;
+                        while (jTable1.getRowCount() != c) {
+                            Personal person = (Personal) modelo.getValueAt(c, 3);
+                            Revista rev = (Revista) modelo.getValueAt(c, 4);
+                            Iterator it = tar.getAgendas().iterator();
+                            bander=false;
+                            while (it.hasNext()) {
+                                Agenda ag = (Agenda) it.next();
+                                Personal pp = ag.getPersonal();
+                                if (pp.getIdPersonal() == person.getIdPersonal() && ag.getRevista().getIdRevista() == rev.getIdRevista()) {
+                                    bander=true;
+                                    break;
+                                }
+                                //bander=false;
+                                //cambio = true;
+                            }
+                            if(bander==false){
+                                cambio=true;
+                            }
+                            c++;
+                        }
+                        if(cont!=jTable1.getRowCount()){
+                            cambio=true;
+                        }
+                        if (cambio == true) {
+                            tar.BorrarTodo();
+                            c = 0;
+                            while (jTable1.getRowCount() != c) {
+                                Personal person = (Personal) modelo.getValueAt(c, 3);
+                                SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
+                                Date inn = formateador.parse((String) modelo.getValueAt(c, 1));
+                                Date fii = formateador.parse((String) modelo.getValueAt(c, 2));
+                                Iniciofin aux = new Iniciofin();
+                                aux.setInicio(inn);
+                                aux.setFin(fii);
+                                Date inicioo = dateChooserCombo1.getSelectedDate().getTime();
+                                Date finn = dateChooserCombo2.getSelectedDate().getTime();
+                                String dse = (String) modelo.getValueAt(c, 0);
+                                int[][] cant = person.VerificarDisponibilidadClase(inicioo, finn, aux, dse);
+                                int ee = cant[0].length;
+                                int eee = cant[1].length;
+                                int confirmado = JOptionPane.showConfirmDialog(null, "El personal" + person.toString() + " tendrá " + ee + " inasistencias debido a actividades y " + eee + " debido a declaración jurada, ¿Desea continuar?", "", JOptionPane.YES_NO_OPTION);
+                                if (JOptionPane.OK_OPTION == confirmado) {
+                                    Revista rev = (Revista) modelo.getValueAt(c, 4);
+                                    Agenda age=tar.ObtenerAgenda(person.getIdPersonal(),rev.getIdRevista());
+                                    if(age.getId()==null){
+                                        AgendaId idage = new AgendaId(person.getIdPersonal(), tar.getIdTarea());
+                                        age = new Agenda();
+                                        age.setId(idage);
+                                        age.setRevista(rev);
+                                        age.setComentario(null);
+                                        age.guardarAgenda(age);
+                                    }
+                                    Date inicio = dateChooserCombo1.getSelectedDate().getTime();
+                                    Date fin = dateChooserCombo2.getSelectedDate().getTime();
+
+                                    Ano anio = new Ano();
+                                    anio.setAgenda(age);
+                                    anio.setAno(inicio.getYear() + 1900);
+                                    anio.guardarAno(anio);
+                                    String dsem = (String) modelo.getValueAt(c, 0);
+                                    Date ot = inicio;
+                                    if (dsem.equals("LUNES")) {
+                                        while (ot.getDay() != 1) {
+                                            ot = Controlador.sumarFechasDias(ot, 1);
+                                        }
+                                    } else if (dsem.equals("MARTES")) {
+                                        while (ot.getDay() != 2) {
+                                            ot = Controlador.sumarFechasDias(ot, 1);
+                                        }
+                                    } else if (dsem.equals("MIERCOLES")) {
+                                        while (ot.getDay() != 3) {
+                                            ot = Controlador.sumarFechasDias(ot, 1);
+                                        }
+                                    } else if (dsem.equals("JUEVES")) {
+                                        while (ot.getDay() != 4) {
+                                            ot = Controlador.sumarFechasDias(ot, 1);
+                                        }
+                                    } else if (dsem.equals("VIERNES")) {
+                                        while (ot.getDay() != 5) {
+                                            ot = Controlador.sumarFechasDias(ot, 1);
+                                        }
+                                    } else if (dsem.equals("SABADO")) {
+                                        while (ot.getDay() != 6) {
+                                            ot = Controlador.sumarFechasDias(ot, 1);
+                                        }
+                                    }
+                                    Date otro = ot;
+                                    while (otro.compareTo(fin) <= 0) {
+                                        Mes mes = anio.getMes(otro.getMonth());
+                                        if (mes == null) {
+                                            mes = new Mes();
+                                            mes.setAno(anio);
+                                            mes.setMes(otro.getMonth());
+                                            mes.guardarMes(mes);
+                                            int e = mes.getMes();
+                                            while (otro.getMonth() == e && otro.compareTo(fin) <= 0) {
+                                                Dia dia = mes.getDia(otro.getDate());
+                                                if (dia == null) {
+                                                    dia = new Dia();
+                                                    dia.setMes(mes);
+                                                    dia.setDia(otro.getDate());
+                                                    dia.guardarDia(dia);
+                                                    int f = dia.getDia();
+                                                    while (otro.getDate() == f && otro.compareTo(fin) <= 0) {
+                                                        //SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
+                                                        formateador.setLenient(false);
+                                                        Date inici = formateador.parse((String) modelo.getValueAt(c, 1));
+                                                        Date fi = formateador.parse((String) modelo.getValueAt(c, 2));
+                                                        Iniciofin in = new Iniciofin();
+                                                        in.setDia(dia);
+                                                        in.setInicio(inici);
+                                                        in.setEstadoInicio(false);
+                                                        in.setFin(fi);
+                                                        in.setEstadoFin(false);
+                                                        in.guardarIniciofin(in);
+                                                        otro = Drive.sumarFechasDias(otro, 7);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                c++;
+                            }
+                        }
+                        Frame vp = new JFrameConsultaActividades(Drive, adm, idsesion);
+                        this.dispose();
+                        vp.show();
+                        // </editor-fold>
                     }
-                    jTextField1.setText("");
-                    jTextField2.setText("");
-                    jTextField3.setText("");
-                    jTextField4.setText("");
-                    jFormattedTextField1.setText("");
-                    jFormattedTextField2.setText("");
-                    Drive.LimpiarTabla(jTable1);
-                }else{
-                    JOptionPane.showMessageDialog(null,"Los campos con '*' son obligatorios y no puede contener espacios en blanco en los horarios","Registrar Clase", JOptionPane.ERROR_MESSAGE);
-                } 
-            }else{JOptionPane.showMessageDialog(null,"Debe ingresar un personal","Registrar Clase", JOptionPane.ERROR_MESSAGE);}
+                } else {
+                    JOptionPane.showMessageDialog(null, "Los campos con '*' son obligatorios y no puede contener espacios en blanco en los horarios", "Registrar Clase", JOptionPane.ERROR_MESSAGE);
+                }
+
+            } else {
+                JOptionPane.showMessageDialog(null, "Debe ingresar un personal", "Registrar Clase", JOptionPane.ERROR_MESSAGE);
+            }
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, ex.toString(),"Registrar Clase", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, ex.toString(), "Registrar Clase", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -810,6 +1063,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                             Drive.LimpiarTabla(jTable2);
                             jTextField5.setText(buffer.toString());
                             per = new Personal();
+                            
                         } else {JOptionPane.showMessageDialog(null, "Ingrese correctamente los horarios", "Registrar Clase", JOptionPane.ERROR_MESSAGE);}
                     } else {JOptionPane.showMessageDialog(null, "La situación de revista es unica por personal", "Registrar Clase", JOptionPane.ERROR_MESSAGE);}
                 } else {JOptionPane.showMessageDialog(null, "Debe seleccionar un personal", "Registrar Clase", JOptionPane.ERROR_MESSAGE);}
@@ -883,11 +1137,13 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
     }//GEN-LAST:event_jLabel19MouseClicked
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        Frame vp=new JFramePrincipal(Drive,adm,idsesion);
         this.dispose();
         vp.show();
     }//GEN-LAST:event_formWindowClosing
 
     private void dateChooserCombo1OnSelectionChange(datechooser.events.SelectionChangedEvent evt) {//GEN-FIRST:event_dateChooserCombo1OnSelectionChange
+        try{
         Date inicio=dateChooserCombo1.getSelectedDate().getTime();
         Date fin=dateChooserCombo2.getSelectedDate().getTime();
         if(inicio.compareTo(fin)>0){
@@ -896,9 +1152,25 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
             dateChooserCombo1.setSelectedDate(cal);
             dateChooserCombo2.setSelectedDate(cal);
         }
+        if(tar.getIdTarea()!=null){
+            SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+            formateador.setLenient(false);
+            String i=formateador.format(menor);
+            Date mmenor=formateador.parse(i);
+            String e=formateador.format(inicio);
+            Date iinicio=formateador.parse(e);
+            if(!mmenor.equals(iinicio)){
+                cambio=true;
+            }
+        }
+        }catch(Exception e){
+            
+        }
+        
     }//GEN-LAST:event_dateChooserCombo1OnSelectionChange
 
     private void dateChooserCombo2OnSelectionChange(datechooser.events.SelectionChangedEvent evt) {//GEN-FIRST:event_dateChooserCombo2OnSelectionChange
+        try{
         Date inicio=dateChooserCombo1.getSelectedDate().getTime();
         Date fin=dateChooserCombo2.getSelectedDate().getTime();
         if(inicio.compareTo(fin)>0){
@@ -906,24 +1178,42 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
             Calendar cal = Calendar.getInstance();
             //dateChooserCombo1.setSelectedDate(cal);
             dateChooserCombo2.setSelectedDate(cal);
-        }        // TODO add your handling code here:
+        }
+        if(tar.getIdTarea()!=null){
+            SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+            formateador.setLenient(false);
+            String i=formateador.format(mayor);
+            Date mmayor=formateador.parse(i);
+            String e=formateador.format(fin);
+            Date ffin=formateador.parse(e);
+            if(!mmayor.equals(ffin)){
+                cambio=true;
+            }
+        }
+        }catch(Exception e){}
     }//GEN-LAST:event_dateChooserCombo2OnSelectionChange
 
     private void jTextField5KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField5KeyTyped
-        Drive.LimpiarTabla(jTable2);
-        char car=evt.getKeyChar();
-        int m= buffer.capacity();
-        if((car>='a' && car<='z') || (car>='A' && car<='Z')){
-            buffer.append(evt.getKeyChar());
-            String es=buffer.toString();
-            String buscar=(String) jComboBox4.getSelectedItem();
-            Drive.CargarpersonalSimple(jTable2,buscar, es.toUpperCase(),lista);
-        }else if(car==(char)KeyEvent.VK_BACK_SPACE){
-            buffer.deleteCharAt(buffer.length()-1);
-            String es=buffer.toString();
-            String buscar=(String) jComboBox4.getSelectedItem();
-            Drive.CargarpersonalSimple(jTable2,buscar, es.toUpperCase(),lista);
-        }        // TODO add your handling code here:
+        try{
+            Drive.LimpiarTabla(jTable2);
+            char car=evt.getKeyChar();
+            if((car>='a' && car<='z') || (car>='A' && car<='Z')){
+                buffer.append(evt.getKeyChar());
+                String es=buffer.toString();
+                String buscar=(String) jComboBox4.getSelectedItem();
+                Drive.CargarpersonalSimple(jTable2,buscar, es.toUpperCase(),lista);
+            }else if(car==(char)KeyEvent.VK_BACK_SPACE){
+                int m= buffer.length();
+                if(m!=0){
+                    buffer.deleteCharAt(buffer.length()-1);
+                }
+                String es=buffer.toString();
+                String buscar=(String) jComboBox4.getSelectedItem();
+                Drive.CargarpersonalSimple(jTable2,buscar, es.toUpperCase(),lista);
+            }
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, "ERROR","Registrar Tarea Extracurricular", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jTextField5KeyTyped
 
     private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
@@ -966,7 +1256,82 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
         String es=buffer.toString();
         String buscar=(String) jComboBox4.getSelectedItem();
         Drive.CargarpersonalSimple(jTable2,buscar, es.toUpperCase(),lista);
+//        if(jTable1.getRowCount()>0){
+//            jTextField1.setEnabled(false);
+//            jTextField2.setEnabled(false);
+//            jTextField3.setEnabled(false);
+//            jTextField4.setEnabled(false);
+//            jFormattedTextField1.setEnabled(false);
+//            jFormattedTextField2.setEnabled(false);
+//            dateChooserCombo1.setEnabled(false);
+//            dateChooserCombo2.setEnabled(false);
+//            jComboBox3.setEnabled(false);
+//        }else{
+//            //jTextField1.setEnabled(true);
+//            jTextField2.setEnabled(true);
+//            jTextField3.setEnabled(true);
+//            jTextField4.setEnabled(true);
+//            //jFormattedTextField1.setEnabled(true);
+//            jFormattedTextField2.setEnabled(true);
+//            dateChooserCombo1.setEnabled(true);
+//            dateChooserCombo2.setEnabled(true);
+//            jComboBox3.setEnabled(true);
+//        }
     }//GEN-LAST:event_jTable1ComponentResized
+
+    private void jFormattedTextField2FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jFormattedTextField2FocusLost
+        try{
+            SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
+            Date inicio = formateador.parse(jFormattedTextField1.getText());
+            Date fin = formateador.parse(jFormattedTextField2.getText());
+            if(inicio.compareTo(fin)>=0){
+                JOptionPane.showMessageDialog(null,"El horario de fin debe ser mayor al horario de inicio","Registrar Clase", JOptionPane.ERROR_MESSAGE);
+                jFormattedTextField2.setText("");
+            }
+            if(tar.getIdTarea()!=null){
+                Agenda age=tar.getAgendas().iterator().next();
+                Dia d=age.getDia2(mayor);
+                Iniciofin ini = d.getIniciofins().iterator().next();
+                String est=formateador.format(ini.getFin());
+                Date aux=formateador.parse(est);
+                if(!fin.equals(aux)){
+                    cambio=true;
+                }
+            }
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null,"Error","Registrar Clase", JOptionPane.ERROR_MESSAGE);
+        }
+            
+    }//GEN-LAST:event_jFormattedTextField2FocusLost
+
+    private void jComboBox3ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox3ItemStateChanged
+        if(tar.getIdTarea()!=null){
+            String dia=Drive.ObtenerDia(mayor.getDay());
+            if(!dia.equals((String)jComboBox3.getSelectedItem())){
+                cambio=true;
+            }
+        }
+    }//GEN-LAST:event_jComboBox3ItemStateChanged
+
+    private void jFormattedTextField1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jFormattedTextField1FocusLost
+        try {
+            if (tar.getIdTarea() != null) {
+                Agenda age = tar.getAgendas().iterator().next();
+                Dia d = age.getDia2(mayor);
+                Iniciofin ini = d.getIniciofins().iterator().next();
+                SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
+                Date inicio = formateador.parse(jFormattedTextField1.getText());
+                String est = formateador.format(ini.getInicio());
+                Date aux = formateador.parse(est);
+                if (!inicio.equals(aux)) {
+                    cambio = true;
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Ingrese correctamente la hora", "Registrar Clase", JOptionPane.ERROR_MESSAGE);
+            jFormattedTextField1.setText("");
+        }
+    }//GEN-LAST:event_jFormattedTextField1FocusLost
 
     /**
     * @param args the command line arguments

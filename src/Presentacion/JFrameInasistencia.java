@@ -11,6 +11,7 @@ import Clases.Asistencia;
 import Clases.Controlador;
 import Clases.Establecimiento;
 import Clases.Justificacion;
+import Clases.Personal;
 import Clases.Tipodoc;
 import java.awt.Component;
 import java.awt.Frame;
@@ -54,11 +55,15 @@ public class JFrameInasistencia extends javax.swing.JFrame {
      * Creates new form JFrameInasistencia
      */
     public Controlador Drive;
-    Frame vp=new JFramePrincipal();
+    public Personal adm;
+    int idsesion;
+    
     JComboBox comboBoxart = new JComboBox();
     JasperReport reporte;
-    public JFrameInasistencia(Controlador unDrive) {
+    public JFrameInasistencia(Controlador unDrive, Personal admin,int id) {
         this.Drive=unDrive;
+        this.adm=admin;
+        this.idsesion=id;
         initComponents();
         
         jTextField1.setText(String.valueOf(Calendar.getInstance().getTime().getYear()+1900));
@@ -401,7 +406,8 @@ public class JFrameInasistencia extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         int confirmado = JOptionPane.showConfirmDialog(null,"¿Desea volver al menu principal?","",JOptionPane.YES_NO_OPTION);
         if (JOptionPane.OK_OPTION == confirmado){
-           this.dispose();
+           Frame vp=new JFramePrincipal(Drive,adm,idsesion);
+            this.dispose();
            vp.show();
         }
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -464,6 +470,7 @@ public class JFrameInasistencia extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        Frame vp=new JFramePrincipal(Drive,adm,idsesion);
         this.dispose();
         vp.show();        // TODO add your handling code here:
     }//GEN-LAST:event_formWindowClosing

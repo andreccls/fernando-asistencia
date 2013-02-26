@@ -26,6 +26,7 @@ import java.awt.event.KeyEvent;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -53,13 +54,19 @@ public class JFrameExtracurricular extends javax.swing.JFrame {
     /**
      * Creates new form JFrameExtracurricular
      */
-    public Controlador Drive;
-    Frame vp=new JFramePrincipal();
+     Controlador Drive;
+     Personal adm;
+     int idsesion;
+     Tarea tar;
+    
     StringBuffer buffer= new StringBuffer();
     List lista = new ArrayList();
     
-    public JFrameExtracurricular(Controlador unDrive) {
+    public JFrameExtracurricular(Controlador unDrive, Personal admin,int id,Tarea tarr) {
         this.Drive=unDrive;
+        this.adm=admin;
+        this.idsesion=id;
+        this.tar=tarr;
         initComponents();
         
         int[] anchos1 = {85,200 ,65};
@@ -73,6 +80,9 @@ public class JFrameExtracurricular extends javax.swing.JFrame {
         Drive.CargarComboDepartamento(jComboBox1);
         String buscar=(String) jComboBox1.getSelectedItem();
         Drive.CargarTablacheck(jTable1,buscar, buffer.toString().toUpperCase(),lista);
+        ///Verificar si vengo desde principal o desde consultar tarea
+        if(tar.getIdTarea()!=null){
+        }
     }
 
     /**
@@ -257,12 +267,17 @@ public class JFrameExtracurricular extends javax.swing.JFrame {
             false,
             true)));
 dateChooserCombo2.setBehavior(datechooser.model.multiple.MultyModelBehavior.SELECT_SINGLE);
-
-jButton2.setText("Salir");
-jButton2.addActionListener(new java.awt.event.ActionListener() {
-    public void actionPerformed(java.awt.event.ActionEvent evt) {
-        jButton2ActionPerformed(evt);
+dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionChangedListener() {
+    public void onSelectionChange(datechooser.events.SelectionChangedEvent evt) {
+        dateChooserCombo2OnSelectionChange(evt);
     }
+    });
+
+    jButton2.setText("Salir");
+    jButton2.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            jButton2ActionPerformed(evt);
+        }
     });
 
     jButton1.setText("Aceptar");
@@ -279,6 +294,11 @@ jButton2.addActionListener(new java.awt.event.ActionListener() {
     } catch (java.text.ParseException ex) {
         ex.printStackTrace();
     }
+    jFormattedTextField2.addFocusListener(new java.awt.event.FocusAdapter() {
+        public void focusLost(java.awt.event.FocusEvent evt) {
+            jFormattedTextField2FocusLost(evt);
+        }
+    });
 
     jLabel9.setText("hh:mm");
 
@@ -479,10 +499,13 @@ jButton2.addActionListener(new java.awt.event.ActionListener() {
         if(!jTextField3.getText().isEmpty()||!jTextField4.getText().isEmpty()||!jFormattedTextField1.getText().isEmpty()||!jFormattedTextField2.getText().isEmpty()){
             int confirmado = JOptionPane.showConfirmDialog(null,"¿Desea cancelar la tarea extracurricular?","",JOptionPane.YES_NO_OPTION);
             if (JOptionPane.OK_OPTION == confirmado){
+                Frame vp=new JFramePrincipal(Drive,adm,idsesion);
                 this.dispose();
                 vp.show();
             }
-        }else{this.dispose();
+        }else{
+            Frame vp=new JFramePrincipal(Drive,adm,idsesion);
+            this.dispose();
             vp.show();}
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -588,6 +611,7 @@ jButton2.addActionListener(new java.awt.event.ActionListener() {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        Frame vp=new JFramePrincipal(Drive,adm,idsesion);
         this.dispose();
         vp.show();        // TODO add your handling code here:
     }//GEN-LAST:event_formWindowClosing
@@ -643,6 +667,31 @@ jButton2.addActionListener(new java.awt.event.ActionListener() {
         }
         Drive.CargarTablacheck(jTable1,buscar, buffer.toString().toUpperCase(),lista);
     }//GEN-LAST:event_jComboBox1ItemStateChanged
+
+    private void jFormattedTextField2FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jFormattedTextField2FocusLost
+        try{
+            SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
+            Date inicio = formateador.parse(jFormattedTextField1.getText());
+            Date fin = formateador.parse(jFormattedTextField2.getText());
+            if(inicio.compareTo(fin)>=0){
+                JOptionPane.showMessageDialog(null,"El horario de fin debe ser mayor al horario de inicio","Registrar Clase", JOptionPane.ERROR_MESSAGE);
+                jFormattedTextField2.setText("");
+            }
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null,"Error","Registrar Clase", JOptionPane.ERROR_MESSAGE);
+        } 
+    }//GEN-LAST:event_jFormattedTextField2FocusLost
+
+    private void dateChooserCombo2OnSelectionChange(datechooser.events.SelectionChangedEvent evt) {//GEN-FIRST:event_dateChooserCombo2OnSelectionChange
+        Date inicio=dateChooserCombo1.getSelectedDate().getTime();
+        Date fin=dateChooserCombo2.getSelectedDate().getTime();
+        if(inicio.compareTo(fin)>0){
+            JOptionPane.showMessageDialog(null,"La fecha de inicio debe ser menor que la fecha de fin","",JOptionPane.ERROR_MESSAGE);
+            Calendar cal = Calendar.getInstance();
+            //dateChooserCombo1.setSelectedDate(cal);
+            dateChooserCombo2.setSelectedDate(cal);
+        }
+    }//GEN-LAST:event_dateChooserCombo2OnSelectionChange
 
     /**
      * @param args the command line arguments

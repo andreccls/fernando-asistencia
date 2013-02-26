@@ -130,17 +130,13 @@ public class Tarea  implements java.io.Serializable {
     public void guardarTarea(Tarea unaTarea){
     Controlador.getPERSISTENCIA().insert(this);
 
-    JOptionPane.showMessageDialog(null,"La tarea "+ 
-            String.valueOf(unaTarea.getIdTarea()) +
-            " se guardo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+    JOptionPane.showMessageDialog(null,"La tarea se guardó correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
     }
     
     public void ActualizarTarea(Tarea unaTarea){
     Controlador.getPERSISTENCIA().update(this);
 
-    JOptionPane.showMessageDialog(null,"La tarea "+ 
-            String.valueOf(unaTarea.getIdTarea()) +
-            " se actualizo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+    JOptionPane.showMessageDialog(null,"La tarea se actualizó correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
     }
     
     public void crearTareaclase(TareaclaseId id, Tarea tarea, String aula, Integer numero){
@@ -163,6 +159,141 @@ public class Tarea  implements java.io.Serializable {
             unaTareaotro.guardarTareaotro(unaTareaotro);
      }
     
+    public Date ObtenerFechaMayor(int anio){
+        Date mayor = new Date();
+        mayor.setYear(anio-20);
+        Date aux=new Date();
+        aux.setYear(anio);
+        Iterator it=agendas.iterator();
+        while(it.hasNext()){
+            Agenda age=(Agenda) it.next();
+            Iterator ita=age.getAnos().iterator();
+            while(ita.hasNext()){
+                Ano an=(Ano) ita.next();
+                if(an.getAno()==anio+1900){
+                    Iterator itm=an.getMeses().iterator();
+                    while(itm.hasNext()){
+                        Mes me=(Mes) itm.next();
+                        aux.setMonth(me.getMes());
+                        Iterator itd=me.getDias().iterator();
+                        while(itd.hasNext()){
+                            Dia di=(Dia) itd.next();
+                            aux.setDate(di.getDia());
+                            if(aux.compareTo(mayor)>0){
+                                mayor.setDate(aux.getDate());
+                                mayor.setMonth(aux.getMonth());
+                                mayor.setYear(aux.getYear());
+                            }
+                        }
+                    }
+                }
+            }
+            break;
+        } 
+        return mayor;
+    }
+    
+    public Date ObtenerFechaMenor(int anio){
+        Date menor = new Date();
+        menor.setYear(anio+20);
+        Date aux=new Date();
+        aux.setYear(anio);
+        Iterator it=agendas.iterator();
+        while(it.hasNext()){
+            Agenda age=(Agenda) it.next();
+            Iterator ita=age.getAnos().iterator();
+            while(ita.hasNext()){
+                Ano an=(Ano) ita.next();
+                if(an.getAno()==anio+1900){
+                    Iterator itm=an.getMeses().iterator();
+                    while(itm.hasNext()){
+                        Mes me=(Mes) itm.next();
+                        aux.setMonth(me.getMes());
+                        Iterator itd=me.getDias().iterator();
+                        while(itd.hasNext()){
+                            Dia di=(Dia) itd.next();
+                            aux.setDate(di.getDia());
+                            if(aux.compareTo(menor)<0){
+                                menor.setDate(aux.getDate());
+                                menor.setMonth(aux.getMonth());
+                                menor.setYear(aux.getYear());
+                            }
+                        }
+                    }
+                }
+            }
+            break;
+        } 
+        return menor;
+    }
+    
+    public void BorrarTodo() {
+        Iterator it = agendas.iterator();
+        Date aux=new Date();
+        Date hoy=new Date();
+        while (it.hasNext()) {
+            Agenda age = (Agenda) it.next();
+            Iterator ita = age.getAnos().iterator();
+            while (ita.hasNext()) {
+                Ano an = (Ano) ita.next();
+                aux.setYear(an.getAno()-1900);
+                Iterator itm = an.getMeses().iterator();
+                while (itm.hasNext()) {
+                    Mes me = (Mes) itm.next();
+                    aux.setMonth(me.getMes());
+                    Iterator itd = me.getDias().iterator();
+                    while (itd.hasNext()) {
+                        Dia di = (Dia) itd.next();
+                        aux.setDate(di.getDia());
+                        if(aux.compareTo(hoy)>0){
+                            Iterator iti=di.getIniciofins().iterator();
+                            while(iti.hasNext()){
+                                Iniciofin ini=(Iniciofin) iti.next();
+                                //Asistencia asi=new Asistencia();
+                                if (ini.getAsistencias().iterator().hasNext()) {
+                                    Asistencia asi = ini.getAsistencias().iterator().next();
+                                    Iterator jus = asi.getJustificacions().iterator();
+                                    Justificacion just;
+                                    while (jus.hasNext()) {
+                                        just = (Justificacion) jus.next();
+                                        just.eliminarJustificacion(just);
+                                    }
+                                    asi.eliminarAsistencia(asi);
+                                }
+                                ini.eliminarIniciofin(ini);
+                                di.eliminarDia(di);
+                            }
+                        }
+                    }
+                    if(!me.getDias().iterator().hasNext()){
+                        me.eliminarMes(me);}
+                }
+                if(!an.getMeses().iterator().hasNext()){
+                an.eliminarAno(an);}
+            }
+            Iterator itf=age.getFrancos().iterator();
+            if(itf.hasNext()){
+                Franco fran=(Franco)itf.next();
+                fran.eliminarFranco(fran);
+            }
+            if(!age.getAnos().iterator().hasNext()){
+                age.eliminarAgenda(age);
+            }
+        }
+    }
+    
+    public Agenda ObtenerAgenda(int idper, int idrev) {
+        Agenda age = new Agenda();
+        Iterator it=agendas.iterator();
+        while(it.hasNext()){
+            Agenda ag=(Agenda) it.next();
+            if(ag.getId().getIdPersonal()==idper && ag.getRevista().getIdRevista()==idrev){
+                age=ag;
+                break;
+            }
+        }
+        return age;
+    }
 }
 
 

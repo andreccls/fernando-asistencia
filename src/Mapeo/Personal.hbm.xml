@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 31/01/2013 23:17:21 by Hibernate Tools 3.2.1.GA -->
+<!-- Generated 23/02/2013 16:02:11 by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
   <class catalog="asistencia" name="Clases.Personal" table="personal">
     <id name="idPersonal" type="java.lang.Integer">
@@ -9,6 +9,9 @@
     </id>
     <many-to-one class="Clases.Tipodoc" fetch="select" name="tipodoc">
       <column name="Id_tipodoc" not-null="true"/>
+    </many-to-one>
+    <many-to-one class="Clases.Perfil" fetch="select" name="perfil">
+      <column name="Id_perfil" not-null="true"/>
     </many-to-one>
     <many-to-one class="Clases.Establecimiento" fetch="select" name="establecimiento">
       <column name="Id_establecimiento" not-null="true"/>
@@ -67,11 +70,23 @@
       </key>
       <one-to-many class="Clases.PersonalDepartamento"/>
     </set>
+    <set inverse="true" name="registroaccesos">
+      <key>
+        <column name="Id_personal" not-null="true"/>
+      </key>
+      <one-to-many class="Clases.Registroacceso"/>
+    </set>
     <set inverse="true" name="declaracionjuradas">
       <key>
         <column name="Id_personal" not-null="true" unique="true"/>
       </key>
       <one-to-many class="Clases.Declaracionjurada"/>
+    </set>
+    <set inverse="true" name="circularpersonals">
+      <key>
+        <column name="Id_personal" not-null="true"/>
+      </key>
+      <one-to-many class="Clases.Circularpersonal"/>
     </set>
     <set inverse="true" name="personalnodocentes">
       <key>

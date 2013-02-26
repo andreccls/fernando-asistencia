@@ -67,9 +67,17 @@ public class Tareaclase  implements java.io.Serializable {
     public void guardarTareaclase(Tareaclase unaTareaclase){
         Controlador.getPERSISTENCIA().insert(this);
 
-        JOptionPane.showMessageDialog(null,"La tareaclas "+ 
-                String.valueOf(unaTareaclase.getId()) +
-                " se guardo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+//        JOptionPane.showMessageDialog(null,"La tareaclas "+ 
+//                String.valueOf(unaTareaclase.getId()) +
+//                " se guardo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+    }
+    
+    public void actualizarTareaclase(Tareaclase unaTareaclase){
+        Controlador.getPERSISTENCIA().update(this);
+
+//        JOptionPane.showMessageDialog(null,"La tareaclas "+ 
+//                String.valueOf(unaTareaclase.getId()) +
+//                " se guardo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
     }
 
 

@@ -17,6 +17,7 @@ import Clases.Personal;
 import Clases.Revista;
 import Clases.Tarea;
 import Clases.TareaextracurricularId;
+import Clases.Tareaotro;
 import Clases.TareaotroId;
 import Clases.TareareunionId;
 import datechooser.beans.DateChooserCombo;
@@ -26,7 +27,9 @@ import java.awt.event.KeyEvent;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -53,12 +56,21 @@ public class JFrameotro extends javax.swing.JFrame {
      * Creates new form JFrameotro
      */
     public Controlador Drive;
-    Frame vp=new JFramePrincipal();
+    public Personal adm;
+    int idsesion;
+    Tarea tar=new Tarea();
+    Date fecha;
     StringBuffer buffer= new StringBuffer();
     List lista = new ArrayList();
+    boolean cambio=false;
+    Date mayor=new Date();
+    Date menor=new Date();
     
-    public JFrameotro(Controlador unDrive) {
+    public JFrameotro(Controlador unDrive, Personal admin,int id,Tarea tarr) {
         this.Drive=unDrive;
+        this.adm=admin;
+        this.idsesion=id;
+        this.tar=tarr;
         initComponents();
         int[] anchos1 = {85,200 ,65};
         for(int i = 0; i < jTable1.getColumnCount(); i++) {
@@ -71,6 +83,40 @@ public class JFrameotro extends javax.swing.JFrame {
         Drive.CargarComboDepartamento(jComboBox1);
         String buscar=(String) jComboBox1.getSelectedItem();
         Drive.CargarTablacheck(jTable1,buscar, buffer.toString().toUpperCase(),lista);
+        ///Verificar si vengo desde principal o desde consultar tarea
+        if(tar.getIdTarea()!=null){
+            try {
+                jTextField3.setText(tar.getNombre());
+                jTextField3.setEnabled(false);
+                jTextField4.setText(tar.getLugar());
+                Tareaotro tarot = tar.getTareaotros().iterator().next();
+                jTextField1.setText(tarot.getCaracteristica());
+                Calendar ffechaini = Calendar.getInstance();
+                ffechaini.setTime(tarot.getDiaInicio());
+                dateChooserCombo1.setSelectedDate(ffechaini);
+                menor=tarot.getDiaInicio();
+                mayor=tarot.getDiaFin();
+                Calendar ffechafin = Calendar.getInstance();
+                ffechafin.setTime(tarot.getDiaFin());
+                dateChooserCombo2.setSelectedDate(ffechafin);
+                
+                fecha = tar.ObtenerFechaMayor(new Date().getYear());
+                Agenda age = tar.getAgendas().iterator().next();
+                Dia d = age.getDia2(fecha);
+                Iniciofin ini = d.getIniciofins().iterator().next();
+                SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
+                jFormattedTextField1.setValue(formateador.format(ini.getInicio()));
+                jFormattedTextField2.setValue(formateador.format(ini.getFin()));
+                Drive.LimpiarTabla(jTable1);
+                Iterator it = tar.getAgendas().iterator();
+                while (it.hasNext()) {
+                    Agenda agg = (Agenda) it.next();
+                    lista.add(agg.getPersonal());
+                }
+                Drive.CargarTablacheck(jTable1, buscar, buffer.toString().toUpperCase(), lista);
+            } catch (Exception e) {
+            }
+        }
     }
 
     /**
@@ -169,6 +215,12 @@ public class JFrameotro extends javax.swing.JFrame {
                 (datechooser.view.BackRenderer)null,
                 false,
                 true)));
+    dateChooserCombo1.setBehavior(datechooser.model.multiple.MultyModelBehavior.SELECT_SINGLE);
+    dateChooserCombo1.addSelectionChangedListener(new datechooser.events.SelectionChangedListener() {
+        public void onSelectionChange(datechooser.events.SelectionChangedEvent evt) {
+            dateChooserCombo1OnSelectionChange(evt);
+        }
+    });
 
     jLabel3.setText("Hora Inicio:");
 
@@ -177,6 +229,11 @@ public class JFrameotro extends javax.swing.JFrame {
     } catch (java.text.ParseException ex) {
         ex.printStackTrace();
     }
+    jFormattedTextField1.addFocusListener(new java.awt.event.FocusAdapter() {
+        public void focusLost(java.awt.event.FocusEvent evt) {
+            jFormattedTextField1FocusLost(evt);
+        }
+    });
 
     jLabel8.setText("hh:mm");
 
@@ -251,12 +308,18 @@ public class JFrameotro extends javax.swing.JFrame {
             (datechooser.view.BackRenderer)null,
             false,
             true)));
-
-jButton2.setText("Salir");
-jButton2.addActionListener(new java.awt.event.ActionListener() {
-    public void actionPerformed(java.awt.event.ActionEvent evt) {
-        jButton2ActionPerformed(evt);
+dateChooserCombo2.setBehavior(datechooser.model.multiple.MultyModelBehavior.SELECT_SINGLE);
+dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionChangedListener() {
+    public void onSelectionChange(datechooser.events.SelectionChangedEvent evt) {
+        dateChooserCombo2OnSelectionChange(evt);
     }
+    });
+
+    jButton2.setText("Salir");
+    jButton2.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            jButton2ActionPerformed(evt);
+        }
     });
 
     jButton1.setText("Aceptar");
@@ -273,6 +336,11 @@ jButton2.addActionListener(new java.awt.event.ActionListener() {
     } catch (java.text.ParseException ex) {
         ex.printStackTrace();
     }
+    jFormattedTextField2.addFocusListener(new java.awt.event.FocusAdapter() {
+        public void focusLost(java.awt.event.FocusEvent evt) {
+            jFormattedTextField2FocusLost(evt);
+        }
+    });
 
     jLabel9.setText("hh:mm");
 
@@ -303,6 +371,57 @@ jButton2.addActionListener(new java.awt.event.ActionListener() {
     jPanel1.setLayout(jPanel1Layout);
     jPanel1Layout.setHorizontalGroup(
         jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGroup(jPanel1Layout.createSequentialGroup()
+            .addGap(10, 10, 10)
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jLabel2)
+                .addComponent(jLabel7)
+                .addComponent(jLabel3)
+                .addComponent(jLabel11))
+            .addGap(208, 208, 208)
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jLabel6)
+                .addComponent(jLabel1)
+                .addComponent(jLabel5))
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(dateChooserCombo2, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jTextField4, javax.swing.GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE)
+                .addComponent(jLabel9)
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addComponent(jFormattedTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(jLabel16)))
+            .addGap(4, 4, 4))
+        .addGroup(jPanel1Layout.createSequentialGroup()
+            .addContainerGap()
+            .addComponent(jLabel4)
+            .addGap(24, 24, 24)
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jTextField2)
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jLabel14))
+                        .addComponent(dateChooserCombo1, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jLabel15))
+                        .addComponent(jLabel8))
+                    .addGap(0, 0, Short.MAX_VALUE)))
+            .addGap(18, 18, 18)
+            .addComponent(jLabel12)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGap(127, 127, 127))
+        .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
+        .addGroup(jPanel1Layout.createSequentialGroup()
+            .addContainerGap()
+            .addComponent(jScrollPane1)
+            .addContainerGap())
         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
             .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jButton1)
@@ -310,98 +429,44 @@ jButton2.addActionListener(new java.awt.event.ActionListener() {
             .addComponent(jButton2)
             .addGap(10, 10, 10))
         .addGroup(jPanel1Layout.createSequentialGroup()
-            .addGap(10, 10, 10)
-            .addComponent(jLabel3)
-            .addGap(247, 247, 247)
-            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE)
-                    .addComponent(dateChooserCombo2, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jFormattedTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel16)))
-                .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addComponent(jLabel9)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 125, javax.swing.GroupLayout.PREFERRED_SIZE)))
-            .addGap(28, 28, 28))
-        .addGroup(jPanel1Layout.createSequentialGroup()
-            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(jLabel4)
-                    .addGap(24, 24, 24)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jTextField2)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(jLabel14))
-                                .addComponent(dateChooserCombo1, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(jLabel15))
-                                .addComponent(jLabel8))
-                            .addGap(0, 0, Short.MAX_VALUE)))
-                    .addGap(18, 18, Short.MAX_VALUE))
-                .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addGap(10, 10, 10)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel7)
-                        .addComponent(jLabel2))
-                    .addGap(206, 206, 206)))
-            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jLabel5)
-                .addComponent(jLabel1)
-                .addComponent(jLabel6)
-                .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addComponent(jLabel12)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-            .addContainerGap(123, Short.MAX_VALUE))
-        .addGroup(jPanel1Layout.createSequentialGroup()
-            .addContainerGap()
-            .addComponent(jScrollPane1)
-            .addContainerGap())
-        .addGroup(jPanel1Layout.createSequentialGroup()
-            .addContainerGap()
-            .addComponent(jLabel11)
-            .addGap(10, 10, 10)
+            .addGap(79, 79, 79)
             .addComponent(jTextField1)
             .addContainerGap())
-        .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
     );
 
     jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jButton1, jButton2});
+
+    jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {dateChooserCombo1, dateChooserCombo2});
 
     jPanel1Layout.setVerticalGroup(
         jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
         .addGroup(jPanel1Layout.createSequentialGroup()
             .addContainerGap()
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(dateChooserCombo2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel6)
+                        .addComponent(jLabel2))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(30, 30, 30)
+                                .addComponent(jLabel7))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addGap(36, 36, 36)
+                                .addComponent(jLabel1)))
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGap(30, 30, 30)
+                            .addComponent(dateChooserCombo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel14)))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel6)
-                                .addComponent(jLabel2))
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(30, 30, 30)
-                                        .addComponent(jLabel7))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                        .addGap(36, 36, 36)
-                                        .addComponent(jLabel1)))
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addGap(30, 30, 30)
-                                    .addComponent(dateChooserCombo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel14)))
                     .addGap(25, 25, 25)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel1Layout.createSequentialGroup()
@@ -414,11 +479,8 @@ jButton2.addActionListener(new java.awt.event.ActionListener() {
                                 .addComponent(jLabel5))
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(jLabel8))))
-                .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(23, 23, 23)
-                    .addComponent(dateChooserCombo2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(25, 25, 25)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                    .addGap(24, 24, 24)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jFormattedTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel16))
@@ -445,6 +507,8 @@ jButton2.addActionListener(new java.awt.event.ActionListener() {
                 .addComponent(jButton1))
             .addContainerGap())
     );
+
+    jPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {dateChooserCombo1, dateChooserCombo2});
 
     javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
     getContentPane().setLayout(layout);
@@ -484,125 +548,284 @@ jButton2.addActionListener(new java.awt.event.ActionListener() {
     
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
-            if(Drive.VerificarCheckTabla(jTable1)){
-            if(!jTextField3.getText().isEmpty()&&!jFormattedTextField1.getText().contains(" ") &&!jFormattedTextField2.getText().contains(" ")){
-                SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
-                formateador.setLenient(false);
-                Date inicio=formateador.parse(jFormattedTextField1.getText());
-                Date fin=formateador.parse(jFormattedTextField2.getText());
-                if(inicio.compareTo(fin) < 0){
-                    Establecimiento col= Drive.getPrimerEstablecimiento();
-                    Date fecha_inicio = dateChooserCombo1.getSelectedDate().getTime();
-                    Date fecha_fin = dateChooserCombo2.getSelectedDate().getTime();
+            if (Drive.VerificarCheckTabla(jTable1)) {
+                if (!jTextField3.getText().isEmpty() && !jFormattedTextField1.getText().contains(" ") && !jFormattedTextField2.getText().contains(" ")) {
+                    if (tar.getIdTarea() == null) {
+                        // <editor-fold defaultstate="collapsed" desc="Guardar tarea nueva"> 
+                        SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
+                        formateador.setLenient(false);
+                        Date inicio = formateador.parse(jFormattedTextField1.getText());
+                        Date fin = formateador.parse(jFormattedTextField2.getText());
+                        if (inicio.compareTo(fin) < 0) {
+                            Establecimiento col = Drive.getPrimerEstablecimiento();
+                            Date fecha_inicio = dateChooserCombo1.getSelectedDate().getTime();
+                            Date fecha_fin = dateChooserCombo2.getSelectedDate().getTime();
+                            inicio.setYear(fecha_inicio.getYear());
+                            inicio.setMonth(fecha_inicio.getMonth());
+                            inicio.setDate(fecha_inicio.getDate());
+                            fin.setYear(fecha_fin.getYear());
+                            fin.setMonth(fecha_fin.getMonth());
+                            fin.setDate(fecha_fin.getDate());
 //                    SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
 //                    formateador.setLenient(false);
 //                    Date ini=formateador.parse(jFormattedTextField1.getText());
 //                    Date fi=formateador.parse(jFormattedTextField2.getText());
-                    Tarea tar=col.crearTarea(col, jTextField3.getText().toUpperCase(), jTextField4.getText().toUpperCase(), "OTRO", true, null, null, null, null, null);
-                    TareaotroId id=new TareaotroId();
-                    id.setIdTarea(tar.getIdTarea());
-                    tar.crearTareaotro(id, tar, jTextField1.getText().toUpperCase(), inicio, fin);
-                    DefaultTableModel modelo = (DefaultTableModel)jTable1.getModel();
-                    int c=0;
-                    while(jTable1.getRowCount()!=c){
-                        if(modelo.getValueAt(c, 0).equals(true)){
-                            Personal per=(Personal) modelo.getValueAt(c, 1);
-                            Iniciofin aux=new Iniciofin();
-                            aux.setInicio(inicio);
-                            aux.setFin(fin);
-                            if(per.VerificarDisponibilidadExtraotro(fecha_inicio,  inicio,fin, fecha_fin)){
-                                AgendaId ida=new AgendaId(per.getIdPersonal(),tar.getIdTarea());
-                                Agenda age=new Agenda();
-                                age.setId(ida);
-                                age.setPersonal(per);
-                                Revista rev=(Revista) Drive.PERSISTENCIA.getSitRevista().get(0);
-                                age.setRevista(rev);
-                                age.setTarea(tar);
-                                age.setComentario(null);
-                                age.guardarAgenda(age);
-                                ///Guarda el dia y hora de inicio
-                                Ano anio=new Ano();
-                                anio.setAgenda(age);
-                                anio.setAno(fecha_inicio.getYear()+1900);
-                                anio.guardarAno(anio);
-                                Mes mes=new Mes();
-                                mes.setAno(anio);
-                                mes.setMes(fecha_inicio.getMonth());
-                                mes.guardarMes(mes);
-                                Dia dia=new Dia();
-                                dia.setMes(mes);
-                                dia.setDia(fecha_inicio.getDate());
-                                dia.guardarDia(dia);
-                                Iniciofin in=new Iniciofin();
-                                in.setDia(dia);
-                                in.setInicio(inicio);
-        ////                        if(jRadioButton1.isSelected()){
-        ////                            in.setEstadoInicio(false);
-        ////                        }
-                                in.guardarIniciofin(in);
-                                ///Guarda el dia y hora de fin
-                                Ano anioo=new Ano();
-                                Mes mess=new Mes();
-                                Dia diaa=new Dia();
-                                if(fecha_inicio.getYear()!=fecha_fin.getYear()||fecha_inicio.getMonth()!=fecha_fin.getMonth()||fecha_inicio.getDate()!=fecha_fin.getDate()){
-                                    if(fecha_inicio.getYear()!=fecha_fin.getYear()){
-                                        anioo.setAgenda(age);
-                                        anioo.setAno(fecha_fin.getYear()+1900);
-                                        anioo.guardarAno(anioo);
-                                    }
-                                    if(fecha_inicio.getMonth()!=fecha_fin.getMonth()){
-                                        mess.setAno(anioo);
-                                        mess.setMes(fecha_fin.getMonth());
-                                        mess.guardarMes(mess);
-                                    }
-                                    if(fecha_inicio.getDate()!=fecha_fin.getDate()){
-                                        diaa.setMes(mess);
-                                        diaa.setDia(fecha_fin.getDate());
-                                        diaa.guardarDia(diaa);
-                                        Iniciofin finn=new Iniciofin();
-                                        finn.setDia(diaa);
-                                        finn.setFin(fin);
-                                        finn.guardarIniciofin(finn);
+                            tar = col.crearTarea(col, jTextField3.getText().toUpperCase(), jTextField4.getText().toUpperCase(), "OTRO", true, null, null, null, null, null);
+                            TareaotroId id = new TareaotroId();
+                            id.setIdTarea(tar.getIdTarea());
+
+                            tar.crearTareaotro(id, tar, jTextField1.getText().toUpperCase(), inicio, fin);
+                            DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+                            int c = 0;
+                            while (jTable1.getRowCount() != c) {
+                                if (modelo.getValueAt(c, 0).equals(true)) {
+                                    Personal per = (Personal) modelo.getValueAt(c, 1);
+                                    Iniciofin aux = new Iniciofin();
+                                    aux.setInicio(inicio);
+                                    aux.setFin(fin);
+                                    if (per.VerificarDisponibilidadExtraotro(fecha_inicio, inicio, fin, fecha_fin)) {
+                                        AgendaId ida = new AgendaId(per.getIdPersonal(), tar.getIdTarea());
+                                        Agenda age = new Agenda();
+                                        age.setId(ida);
+                                        age.setPersonal(per);
+                                        Revista rev = (Revista) Drive.PERSISTENCIA.getSitRevista().get(0);
+                                        age.setRevista(rev);
+                                        age.setTarea(tar);
+                                        age.setComentario(null);
+                                        age.guardarAgenda(age);
+                                        ///Guarda el dia y hora de inicio
+                                        Ano anio = new Ano();
+                                        anio.setAgenda(age);
+                                        anio.setAno(fecha_inicio.getYear() + 1900);
+                                        anio.guardarAno(anio);
+                                        Mes mes = new Mes();
+                                        mes.setAno(anio);
+                                        mes.setMes(fecha_inicio.getMonth());
+                                        mes.guardarMes(mes);
+                                        Dia dia = new Dia();
+                                        dia.setMes(mes);
+                                        dia.setDia(fecha_inicio.getDate());
+                                        dia.guardarDia(dia);
+                                        Iniciofin in = new Iniciofin();
+                                        in.setDia(dia);
+                                        in.setInicio(inicio);
+                                        ////                        if(jRadioButton1.isSelected()){
+                                        ////                            in.setEstadoInicio(false);
+                                        ////                        }
+                                        in.guardarIniciofin(in);
+                                        ///Guarda el dia y hora de fin
+                                        Ano anioo = new Ano();
+                                        Mes mess = new Mes();
+                                        Dia diaa = new Dia();
+                                        if (fecha_inicio.getYear() != fecha_fin.getYear() || fecha_inicio.getMonth() != fecha_fin.getMonth() || fecha_inicio.getDate() != fecha_fin.getDate()) {
+                                            if (fecha_inicio.getYear() != fecha_fin.getYear()) {
+                                                anioo.setAgenda(age);
+                                                anioo.setAno(fecha_fin.getYear() + 1900);
+                                                anioo.guardarAno(anioo);
+                                            }
+                                            if (fecha_inicio.getMonth() != fecha_fin.getMonth()) {
+                                                mess.setAno(anioo);
+                                                mess.setMes(fecha_fin.getMonth());
+                                                mess.guardarMes(mess);
+                                            }
+                                            if (fecha_inicio.getDate() != fecha_fin.getDate()) {
+                                                diaa.setMes(mess);
+                                                diaa.setDia(fecha_fin.getDate());
+                                                diaa.guardarDia(diaa);
+                                                Iniciofin finn = new Iniciofin();
+                                                finn.setDia(diaa);
+                                                finn.setFin(fin);
+                                                finn.guardarIniciofin(finn);
+                                            }
+
+                                        } else {
+                                            in.setFin(fin);
+                                            in.guardarIniciofin(in);
+                                        }
                                     }
 
-                                }else{
-                                    in.setFin(fin);
-                                    in.guardarIniciofin(in);
+                                }
+
+                                c++;
+                            }
+                            jFormattedTextField1.setText("");
+                            jFormattedTextField2.setText("");
+                            jTextField1.setText("");
+                            jTextField3.setText("");
+                            jTextField4.setText("");
+                            Drive.LimpiarTabla(jTable1);
+//                    Drive.CargarTablacheck(jTable1);
+                        }
+                        // </editor-fold>
+                    } else {
+                        // <editor-fold defaultstate="collapsed" desc="Actualizar tarea"> 
+                        SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
+                        formateador.setLenient(false);
+                        Date inicio = formateador.parse(jFormattedTextField1.getText());
+                        Date fin = formateador.parse(jFormattedTextField2.getText());
+                        if (inicio.compareTo(fin) < 0) {
+                            Date fecha_inicio = dateChooserCombo1.getSelectedDate().getTime();
+                            Date fecha_fin = dateChooserCombo2.getSelectedDate().getTime();
+                            inicio.setYear(fecha_inicio.getYear());
+                            inicio.setMonth(fecha_inicio.getMonth());
+                            inicio.setDate(fecha_inicio.getDate());
+                            fin.setYear(fecha_fin.getYear());
+                            fin.setMonth(fecha_fin.getMonth());
+                            fin.setDate(fecha_fin.getDate());
+//                    SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
+//                    formateador.setLenient(false);
+//                    Date ini=formateador.parse(jFormattedTextField1.getText());
+//                    Date fi=formateador.parse(jFormattedTextField2.getText());
+                            tar.setLugar(jTextField4.getText().toUpperCase());
+                            tar.ActualizarTarea(tar);
+
+                            Tareaotro tarot = tar.getTareaotros().iterator().next();
+                            tarot.setDiaInicio(inicio);
+                            tarot.setDiaFin(fin);
+                            tarot.setCaracteristica(jTextField1.getText().toUpperCase());
+                            tarot.actualizarTareaotro(tarot);
+
+                            DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+                            int c = 0;
+                            boolean bander = false;
+                            int cont = tar.getAgendas().size();
+                            int contper = 0;
+                            while (jTable1.getRowCount() != c) {
+                                boolean aux = (Boolean) modelo.getValueAt(c, 0);
+                                if (aux == true) {
+                                    contper++;
+                                    Personal person = (Personal) modelo.getValueAt(c, 1);
+                                    Iterator it = tar.getAgendas().iterator();
+                                    bander = false;
+                                    while (it.hasNext()) {
+                                        Agenda ag = (Agenda) it.next();
+                                        Personal pp = ag.getPersonal();
+                                        if (pp.getIdPersonal() == person.getIdPersonal()) {
+                                            bander = true;
+                                            break;
+                                        }
+                                    }
+                                    if (bander == false) {
+                                        cambio = true;
+                                    }
+                                }
+                                c++;
+                            }
+                            if (cont != contper) {
+                                cambio = true;
+                            }
+                            if (cambio == true) {
+                                tar.BorrarTodo();
+                                c = 0;
+                                while (jTable1.getRowCount() != c) {
+                                    if (modelo.getValueAt(c, 0).equals(true)) {
+                                        Personal per = (Personal) modelo.getValueAt(c, 1);
+                                        Iniciofin aux = new Iniciofin();
+                                        aux.setInicio(inicio);
+                                        aux.setFin(fin);
+                                        if (per.VerificarDisponibilidadExtraotro(fecha_inicio, inicio, fin, fecha_fin)) {
+                                            Revista rev = (Revista) Drive.PERSISTENCIA.getSitRevista().get(0);
+                                            Agenda age = tar.ObtenerAgenda(per.getIdPersonal(), rev.getIdRevista());
+                                            if (age.getId() == null) {
+                                                AgendaId ida = new AgendaId(per.getIdPersonal(), tar.getIdTarea());
+                                                age.setId(ida);
+                                                age.setPersonal(per);
+                                                age.setRevista(rev);
+                                                age.setTarea(tar);
+                                                age.setComentario(null);
+                                                age.guardarAgenda(age);
+                                            }
+                                            ///Guarda el dia y hora de inicio
+                                            Ano anio = new Ano();
+                                            anio.setAgenda(age);
+                                            anio.setAno(fecha_inicio.getYear() + 1900);
+                                            anio.guardarAno(anio);
+                                            Mes mes = new Mes();
+                                            mes.setAno(anio);
+                                            mes.setMes(fecha_inicio.getMonth());
+                                            mes.guardarMes(mes);
+                                            Dia dia = new Dia();
+                                            dia.setMes(mes);
+                                            dia.setDia(fecha_inicio.getDate());
+                                            dia.guardarDia(dia);
+                                            Iniciofin in = new Iniciofin();
+                                            in.setDia(dia);
+                                            in.setInicio(inicio);
+                                            ////                        if(jRadioButton1.isSelected()){
+                                            ////                            in.setEstadoInicio(false);
+                                            ////                        }
+                                            in.guardarIniciofin(in);
+                                            ///Guarda el dia y hora de fin
+                                            Ano anioo = new Ano();
+                                            Mes mess = new Mes();
+                                            Dia diaa = new Dia();
+                                            if (fecha_inicio.getYear() != fecha_fin.getYear() || fecha_inicio.getMonth() != fecha_fin.getMonth() || fecha_inicio.getDate() != fecha_fin.getDate()) {
+                                                if (fecha_inicio.getYear() != fecha_fin.getYear()) {
+                                                    anioo.setAgenda(age);
+                                                    anioo.setAno(fecha_fin.getYear() + 1900);
+                                                    anioo.guardarAno(anioo);
+                                                }
+                                                if (fecha_inicio.getMonth() != fecha_fin.getMonth()) {
+                                                    mess.setAno(anioo);
+                                                    mess.setMes(fecha_fin.getMonth());
+                                                    mess.guardarMes(mess);
+                                                }
+                                                if (fecha_inicio.getDate() != fecha_fin.getDate()) {
+                                                    diaa.setMes(mess);
+                                                    diaa.setDia(fecha_fin.getDate());
+                                                    diaa.guardarDia(diaa);
+                                                    Iniciofin finn = new Iniciofin();
+                                                    finn.setDia(diaa);
+                                                    finn.setFin(fin);
+                                                    finn.guardarIniciofin(finn);
+                                                }
+
+                                            } else {
+                                                in.setFin(fin);
+                                                in.guardarIniciofin(in);
+                                            }
+                                        }else {
+                                            JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para: " + per.toString(), "Registrar Reunión", JOptionPane.ERROR_MESSAGE);
+                                        }
+
+                                    }
+                                    c++;
                                 }
                             }
-
                         }
-                        
-                        c++;
+                        Frame vp = new JFrameConsultaActividades(Drive, adm, idsesion);
+                        this.dispose();
+                        vp.show();
+                        // </editor-fold>
                     }
-                    jFormattedTextField1.setText("");
-                    jFormattedTextField2.setText("");
-                    jTextField1.setText("");
-                    jTextField3.setText("");
-                    jTextField4.setText("");
-                    Drive.LimpiarTabla(jTable1);
-//                    Drive.CargarTablacheck(jTable1);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Todos los campos con '*' son obligatorios y los horarios no pueden contener espacios en blanco", "Registrar Otra Actividad", JOptionPane.ERROR_MESSAGE);
+                }
+
+            } else {
+                JOptionPane.showMessageDialog(null, "Debe seleccionar al menos un personal", "Registrar Otra Actividad", JOptionPane.ERROR_MESSAGE);
             }
-            }else{JOptionPane.showMessageDialog(null, "Todos los campos con '*' son obligatorios y los horarios no pueden contener espacios en blanco","Registrar Otra Actividad", JOptionPane.ERROR_MESSAGE);}
-            
-            }else{JOptionPane.showMessageDialog(null, "Debe seleccionar al menos un personal","Registrar Otra Actividad", JOptionPane.ERROR_MESSAGE);}
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, ex.toString());
-        }        // TODO add your handling code here:
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         if(!jTextField3.getText().isEmpty()||!jTextField4.getText().isEmpty()||!jTextField1.getText().isEmpty()||!jFormattedTextField1.getText().isEmpty()||!jFormattedTextField2.getText().isEmpty()){
             int confirmado = JOptionPane.showConfirmDialog(null,"¿Desea cancelar la tarea extracurricular?","",JOptionPane.YES_NO_OPTION);
             if (JOptionPane.OK_OPTION == confirmado){
+                Frame vp=new JFramePrincipal(Drive,adm,idsesion);
                 this.dispose();
                 vp.show();
             }
-        }else{this.dispose();
+        }else{
+            Frame vp=new JFramePrincipal(Drive,adm,idsesion);
+            this.dispose();
             vp.show();}
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        Frame vp=new JFramePrincipal(Drive,adm,idsesion);
         this.dispose();
         vp.show();
     }//GEN-LAST:event_formWindowClosing
@@ -658,6 +881,99 @@ jButton2.addActionListener(new java.awt.event.ActionListener() {
         }
         Drive.CargarTablacheck(jTable1,buscar, buffer.toString().toUpperCase(),lista);
     }//GEN-LAST:event_jComboBox1ItemStateChanged
+
+    private void jFormattedTextField2FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jFormattedTextField2FocusLost
+        try{
+            SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
+            Date inicio = formateador.parse(jFormattedTextField1.getText());
+            Date fin = formateador.parse(jFormattedTextField2.getText());
+            if(inicio.compareTo(fin)>=0){
+                JOptionPane.showMessageDialog(null,"El horario de fin debe ser mayor al horario de inicio","Registrar Clase", JOptionPane.ERROR_MESSAGE);
+                jFormattedTextField2.setText("");
+            }
+            if(tar.getIdTarea()!=null){
+                Agenda age=tar.getAgendas().iterator().next();
+                Dia d=age.getDia2(mayor);
+                Iniciofin ini = d.getIniciofins().iterator().next();
+                String est=formateador.format(ini.getFin());
+                Date aux=formateador.parse(est);
+                if(!fin.equals(aux)){
+                    cambio=true;
+                }
+            }
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null,"Error","Registrar Clase", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jFormattedTextField2FocusLost
+
+    private void dateChooserCombo2OnSelectionChange(datechooser.events.SelectionChangedEvent evt) {//GEN-FIRST:event_dateChooserCombo2OnSelectionChange
+        try{
+        Date inicio=dateChooserCombo1.getSelectedDate().getTime();
+        Date fin=dateChooserCombo2.getSelectedDate().getTime();
+        if(inicio.compareTo(fin)>0){
+            JOptionPane.showMessageDialog(null,"La fecha de inicio debe ser menor que la fecha de fin","",JOptionPane.ERROR_MESSAGE);
+            Calendar cal = Calendar.getInstance();
+            dateChooserCombo2.setSelectedDate(cal);
+        }
+        if(tar.getIdTarea()!=null){
+            SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+            formateador.setLenient(false);
+            String i=formateador.format(mayor);
+            Date mmayor=formateador.parse(i);
+            String e=formateador.format(fin);
+            Date ffin=formateador.parse(e);
+            if(!mmayor.equals(ffin)){
+                cambio=true;
+            }
+        }
+        }catch(Exception e){}
+    }//GEN-LAST:event_dateChooserCombo2OnSelectionChange
+
+    private void dateChooserCombo1OnSelectionChange(datechooser.events.SelectionChangedEvent evt) {//GEN-FIRST:event_dateChooserCombo1OnSelectionChange
+        try{
+        Date inicio=dateChooserCombo1.getSelectedDate().getTime();
+        Date fin=dateChooserCombo2.getSelectedDate().getTime();
+        if(inicio.compareTo(fin)>0){
+            JOptionPane.showMessageDialog(null,"La fecha de inicio debe ser menor que la fecha de fin","",JOptionPane.ERROR_MESSAGE);
+            Calendar cal = Calendar.getInstance();
+            dateChooserCombo1.setSelectedDate(cal);
+            dateChooserCombo2.setSelectedDate(cal);
+        }
+        if(tar.getIdTarea()!=null){
+            SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+            formateador.setLenient(false);
+            String i=formateador.format(menor);
+            Date mmenor=formateador.parse(i);
+            String e=formateador.format(inicio);
+            Date iinicio=formateador.parse(e);
+            if(!mmenor.equals(iinicio)){
+                cambio=true;
+            }
+        }
+        }catch(Exception e){
+            
+        }
+    }//GEN-LAST:event_dateChooserCombo1OnSelectionChange
+
+    private void jFormattedTextField1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jFormattedTextField1FocusLost
+        try {
+            if (tar.getIdTarea() != null) {
+                Agenda age = tar.getAgendas().iterator().next();
+                Dia d = age.getDia2(menor);
+                Iniciofin ini = d.getIniciofins().iterator().next();
+                SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
+                Date inicio = formateador.parse(jFormattedTextField1.getText());
+                String est = formateador.format(ini.getInicio());
+                Date aux = formateador.parse(est);
+                if (!inicio.equals(aux)) {
+                    cambio = true;
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Ingrese correctamente la hora", "Registrar Clase", JOptionPane.ERROR_MESSAGE);
+            jFormattedTextField1.setText("");
+        }
+    }//GEN-LAST:event_jFormattedTextField1FocusLost
 
     /**
      * @param args the command line arguments

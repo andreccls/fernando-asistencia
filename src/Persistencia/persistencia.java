@@ -158,6 +158,17 @@ public class persistencia {
         return items;
 
     }
+    
+    public List getRegistroaccesos(int id) throws ArrayStoreException {
+        String hql = "from Registroacceso where id_personal="+id;
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
+
+    }
 
     public List getTareas() throws ArrayStoreException {
         String hql = "from Tarea";
@@ -181,6 +192,16 @@ public class persistencia {
     
     public List getTareasExtracurriculares() throws ArrayStoreException {
         String hql = "from Tareaextracurricular";
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
+    }
+    
+    public List getPerfiles() throws ArrayStoreException {
+        String hql = "from Perfil";
         List items = new ArrayList();
         Transaction tx = session.beginTransaction();
         Query q = session.createQuery(hql);
