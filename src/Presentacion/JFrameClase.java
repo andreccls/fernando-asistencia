@@ -751,15 +751,22 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                 if (!jTextField1.getText().isEmpty() && !jFormattedTextField1.getText().contains(" ") && !jFormattedTextField2.getText().contains(" ")) {
                     if (tar.getIdTarea() == null) {
                         // <editor-fold defaultstate="collapsed" desc="Guardar tarea nueva"> 
-                        Establecimiento est = Drive.getPrimerEstablecimiento();
-                        Tarea tare = est.crearTarea(est, jTextField1.getText().toUpperCase(), jTextField3.getText().toUpperCase(), "CLASE", true, null, null, null, null, null);
+//                        Establecimiento est = Drive.getPrimerEstablecimiento();
+                        Tarea tarr=new Tarea();
+                        tarr.setEstablecimiento(Drive.getPrimerEstablecimiento());
+                        tarr.setNombre(jTextField1.getText().toUpperCase());
+                        tarr.setLugar(jTextField3.getText().toUpperCase());
+                        tarr.setComentario("CLASE");
+                        tarr.setEstado(true);
+                        int idtar=tarr.guardarTarea(tarr);
+//                        Tarea tare = est.crearTarea(est, jTextField1.getText().toUpperCase(), jTextField3.getText().toUpperCase(), "CLASE", true, null, null, null, null, null);
                         TareaclaseId id = new TareaclaseId();
-                        id.setIdTarea(tare.getIdTarea());
+                        id.setIdTarea(idtar);
                         int i = 0;
                         if (!jTextField4.getText().isEmpty()) {
                             i = Integer.parseInt(jTextField4.getText());
                         }
-                        tare.crearTareaclase(id, tare, jTextField2.getText().toUpperCase(), i);
+                        tarr.crearTareaclase(id, tarr, jTextField2.getText().toUpperCase(), i);
                         DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
                         int c = 0;
                         while (jTable1.getRowCount() != c) {
@@ -776,9 +783,9 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                             int[][] cant = person.VerificarDisponibilidadClase(inicioo, finn, aux, dse);
                             int ee = cant[0].length;
                             int eee = cant[1].length;
-                            int confirmado = JOptionPane.showConfirmDialog(null, "El personal" + person.toString() + " tendrá " + ee + " inasistencias debido a actividades y " + eee + " debido a declaración jurada, ¿Desea continuar?", "", JOptionPane.YES_NO_OPTION);
+                            int confirmado = JOptionPane.showConfirmDialog(null, "El personal " + person.toString() + " tendrá " + ee + " inasistencias debido a actividades y " + eee + " debido a declaración jurada, ¿Desea continuar?", "", JOptionPane.YES_NO_OPTION);
                             if (JOptionPane.OK_OPTION == confirmado) {
-                                AgendaId idage = new AgendaId(person.getIdPersonal(), tare.getIdTarea());
+                                AgendaId idage = new AgendaId(person.getIdPersonal(), tarr.getIdTarea());
                                 Revista rev = (Revista) modelo.getValueAt(c, 4);
                                 Agenda age = new Agenda();
                                 age.setId(idage);
@@ -865,6 +872,9 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                         jFormattedTextField1.setText("");
                         jFormattedTextField2.setText("");
                         Drive.LimpiarTabla(jTable1);
+                        lista.removeAll(lista);
+                        String buscar=(String) jComboBox4.getSelectedItem();
+                        Drive.CargarpersonalSimple(jTable2,buscar, buffer.toString().toUpperCase(),lista);
                         // </editor-fold>
                     } else {
                         // <editor-fold defaultstate="collapsed" desc="Actualizar tarea"> 
@@ -887,7 +897,6 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                         int c = 0;
                         boolean bander=false;
                         int cont=tar.getAgendas().size();
-                        int contper=0;
                         while (jTable1.getRowCount() != c) {
                             Personal person = (Personal) modelo.getValueAt(c, 3);
                             Revista rev = (Revista) modelo.getValueAt(c, 4);

@@ -408,21 +408,18 @@ public class JFrameReunion extends javax.swing.JFrame {
             .addContainerGap()
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addComponent(jLabel2)
-                            .addGap(24, 24, 24)
-                            .addComponent(jLabel1))
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel14))
-                            .addGap(18, 18, 18)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel14)
+                        .addComponent(jLabel2))
                     .addGap(18, 18, 18)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel7)
-                        .addComponent(dateChooserCombo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel1))
+                    .addGap(18, 18, 18)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(dateChooserCombo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel7)))
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -534,14 +531,22 @@ public class JFrameReunion extends javax.swing.JFrame {
                         Date inicio = formateador.parse(jFormattedTextField1.getText());
                         Date fin = formateador.parse(jFormattedTextField2.getText());
                         if (inicio.compareTo(fin) < 0) {
-                            Establecimiento col = Drive.getPrimerEstablecimiento();
+//                            Establecimiento col = Drive.getPrimerEstablecimiento();
                             String jcombo2 = (String) jComboBox2.getSelectedItem();
                             fecha = dateChooserCombo1.getSelectedDate().getTime();
-                            tar = col.crearTarea(col, jTextField3.getText().toUpperCase(), jTextField4.getText().toUpperCase(), "REUNION", true, null, null, null, null, null);
+                            Tarea tarr=new Tarea();
+                            tarr.setEstablecimiento(Drive.getPrimerEstablecimiento());
+                            tarr.setNombre(jTextField3.getText().toUpperCase());
+                            tarr.setLugar(jTextField4.getText().toUpperCase());
+                            tarr.setComentario("REUNION");
+                            tarr.setEstado(true);
+                            int idtar=tarr.guardarTarea(tarr);
+                            
+//                            Tarea tarr = col.crearTarea(col, jTextField3.getText().toUpperCase(), jTextField4.getText().toUpperCase(), "REUNION", true, null, null, null, null, null);
 
                             TareareunionId id = new TareareunionId();
-                            id.setIdTarea(tar.getIdTarea());
-                            tar.crearTareareunion(id, tar, jTextField1.getText().toUpperCase(), jcombo2);
+                            id.setIdTarea(idtar);
+                            tarr.crearTareareunion(id, tarr, jTextField1.getText().toUpperCase(), jcombo2);
                             DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
                             int c = 0;
                             while (jTable1.getRowCount() != c) {
@@ -552,13 +557,13 @@ public class JFrameReunion extends javax.swing.JFrame {
                                     aux.setInicio(inicio);
                                     aux.setFin(fin);
                                     if (per.VerificarDisponibilidadReunion(fecha, aux)) {
-                                        AgendaId ida = new AgendaId(per.getIdPersonal(), tar.getIdTarea());
+                                        AgendaId ida = new AgendaId(per.getIdPersonal(), tarr.getIdTarea());
                                         Agenda age = new Agenda();
                                         age.setId(ida);
                                         age.setPersonal(per);
                                         Revista rev = (Revista) Drive.PERSISTENCIA.getSitRevista().get(0);
                                         age.setRevista(rev);
-                                        age.setTarea(tar);
+                                        age.setTarea(tarr);
                                         age.setComentario(null);
                                         age.guardarAgenda(age);
 
@@ -593,6 +598,7 @@ public class JFrameReunion extends javax.swing.JFrame {
                             jTextField4.setText("");
                             jTextField1.setText("");
                             Drive.LimpiarTabla(jTable1);
+                            lista.removeAll(lista);
                             String buscar = (String) jComboBox1.getSelectedItem();
                             Drive.CargarTablacheck(jTable1, buscar, buffer.toString().toUpperCase(), lista);
                         }

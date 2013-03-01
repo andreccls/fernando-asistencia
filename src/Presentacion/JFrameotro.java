@@ -59,7 +59,7 @@ public class JFrameotro extends javax.swing.JFrame {
     public Personal adm;
     int idsesion;
     Tarea tar=new Tarea();
-    Date fecha;
+    Date fecha=new Date();
     StringBuffer buffer= new StringBuffer();
     List lista = new ArrayList();
     boolean cambio=false;
@@ -557,7 +557,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                         Date inicio = formateador.parse(jFormattedTextField1.getText());
                         Date fin = formateador.parse(jFormattedTextField2.getText());
                         if (inicio.compareTo(fin) < 0) {
-                            Establecimiento col = Drive.getPrimerEstablecimiento();
+//                            Establecimiento col = Drive.getPrimerEstablecimiento();
                             Date fecha_inicio = dateChooserCombo1.getSelectedDate().getTime();
                             Date fecha_fin = dateChooserCombo2.getSelectedDate().getTime();
                             inicio.setYear(fecha_inicio.getYear());
@@ -566,15 +566,22 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                             fin.setYear(fecha_fin.getYear());
                             fin.setMonth(fecha_fin.getMonth());
                             fin.setDate(fecha_fin.getDate());
+                            Tarea tarr=new Tarea();
+                            tarr.setEstablecimiento(Drive.getPrimerEstablecimiento());
+                            tarr.setNombre(jTextField3.getText().toUpperCase());
+                            tarr.setLugar(jTextField4.getText().toUpperCase());
+                            tarr.setComentario("OTRO");
+                            tarr.setEstado(true);
+                            int idtar=tarr.guardarTarea(tarr);
 //                    SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
 //                    formateador.setLenient(false);
 //                    Date ini=formateador.parse(jFormattedTextField1.getText());
 //                    Date fi=formateador.parse(jFormattedTextField2.getText());
-                            tar = col.crearTarea(col, jTextField3.getText().toUpperCase(), jTextField4.getText().toUpperCase(), "OTRO", true, null, null, null, null, null);
+//                            Tarea tarr = col.crearTarea(col, jTextField3.getText().toUpperCase(), jTextField4.getText().toUpperCase(), "OTRO", true, null, null, null, null, null);
                             TareaotroId id = new TareaotroId();
-                            id.setIdTarea(tar.getIdTarea());
+                            id.setIdTarea(idtar);
 
-                            tar.crearTareaotro(id, tar, jTextField1.getText().toUpperCase(), inicio, fin);
+                            tarr.crearTareaotro(id, tarr, jTextField1.getText().toUpperCase(), inicio, fin);
                             DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
                             int c = 0;
                             while (jTable1.getRowCount() != c) {
@@ -584,13 +591,13 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                     aux.setInicio(inicio);
                                     aux.setFin(fin);
                                     if (per.VerificarDisponibilidadExtraotro(fecha_inicio, inicio, fin, fecha_fin)) {
-                                        AgendaId ida = new AgendaId(per.getIdPersonal(), tar.getIdTarea());
+                                        AgendaId ida = new AgendaId(per.getIdPersonal(), tarr.getIdTarea());
                                         Agenda age = new Agenda();
                                         age.setId(ida);
                                         age.setPersonal(per);
                                         Revista rev = (Revista) Drive.PERSISTENCIA.getSitRevista().get(0);
                                         age.setRevista(rev);
-                                        age.setTarea(tar);
+                                        age.setTarea(tarr);
                                         age.setComentario(null);
                                         age.guardarAgenda(age);
                                         ///Guarda el dia y hora de inicio
@@ -615,20 +622,16 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                         in.guardarIniciofin(in);
                                         ///Guarda el dia y hora de fin
                                         Ano anioo = new Ano();
+//                                        Ano auxa=anio;                                        
                                         Mes mess = new Mes();
                                         Dia diaa = new Dia();
                                         if (fecha_inicio.getYear() != fecha_fin.getYear() || fecha_inicio.getMonth() != fecha_fin.getMonth() || fecha_inicio.getDate() != fecha_fin.getDate()) {
-                                            if (fecha_inicio.getYear() != fecha_fin.getYear()) {
                                                 anioo.setAgenda(age);
                                                 anioo.setAno(fecha_fin.getYear() + 1900);
                                                 anioo.guardarAno(anioo);
-                                            }
-                                            if (fecha_inicio.getMonth() != fecha_fin.getMonth()) {
-                                                mess.setAno(anioo);
+                                                mess.setAno(anio);
                                                 mess.setMes(fecha_fin.getMonth());
                                                 mess.guardarMes(mess);
-                                            }
-                                            if (fecha_inicio.getDate() != fecha_fin.getDate()) {
                                                 diaa.setMes(mess);
                                                 diaa.setDia(fecha_fin.getDate());
                                                 diaa.guardarDia(diaa);
@@ -636,8 +639,6 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                                 finn.setDia(diaa);
                                                 finn.setFin(fin);
                                                 finn.guardarIniciofin(finn);
-                                            }
-
                                         } else {
                                             in.setFin(fin);
                                             in.guardarIniciofin(in);
@@ -654,6 +655,9 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                             jTextField3.setText("");
                             jTextField4.setText("");
                             Drive.LimpiarTabla(jTable1);
+                            lista.removeAll(lista);
+                            String buscar=(String) jComboBox1.getSelectedItem();
+                            Drive.CargarTablacheck(jTable1,buscar, buffer.toString().toUpperCase(),lista);
 //                    Drive.CargarTablacheck(jTable1);
                         }
                         // </editor-fold>
