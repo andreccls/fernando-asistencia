@@ -127,10 +127,11 @@ public class Tarea  implements java.io.Serializable {
 
 //// GENERADO POR GONZALEZ FERNANDO
        
-    public void guardarTarea(Tarea unaTarea){
+    public int guardarTarea(Tarea unaTarea){
     Controlador.getPERSISTENCIA().insert(this);
-
+    int id=unaTarea.getIdTarea();
     JOptionPane.showMessageDialog(null,"La tarea se guardó correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+    return id;
     }
     
     public void ActualizarTarea(Tarea unaTarea){
@@ -245,17 +246,19 @@ public class Tarea  implements java.io.Serializable {
                     while (itd.hasNext()) {
                         Dia di = (Dia) itd.next();
                         aux.setDate(di.getDia());
-                        if(aux.compareTo(hoy)>0){
+                        aux.setHours(di.getIniciofins().iterator().next().getFin().getHours());
+                        aux.setMinutes(di.getIniciofins().iterator().next().getFin().getMinutes());
+                        if(aux.compareTo(hoy)>=0){
                             Iterator iti=di.getIniciofins().iterator();
                             while(iti.hasNext()){
                                 Iniciofin ini=(Iniciofin) iti.next();
                                 //Asistencia asi=new Asistencia();
                                 if (ini.getAsistencias().iterator().hasNext()) {
                                     Asistencia asi = ini.getAsistencias().iterator().next();
-                                    Iterator jus = asi.getJustificacions().iterator();
-                                    Justificacion just;
+                                    Iterator<Justificacion> jus = asi.getJustificacions().iterator();
+                                    //Justificacion just;
                                     while (jus.hasNext()) {
-                                        just = (Justificacion) jus.next();
+                                        Justificacion just = (Justificacion) jus.next();
                                         just.eliminarJustificacion(just);
                                     }
                                     asi.eliminarAsistencia(asi);
@@ -265,18 +268,20 @@ public class Tarea  implements java.io.Serializable {
                             }
                         }
                     }
-                    if(!me.getDias().iterator().hasNext()){
-                        me.eliminarMes(me);}
+                    if(!Controlador.getPERSISTENCIA().getDias(me.getIdMes()).iterator().hasNext()){
+                        me.eliminarMes(me);
+                    }
                 }
-                if(!an.getMeses().iterator().hasNext()){
-                an.eliminarAno(an);}
+                if(!Controlador.getPERSISTENCIA().getMeses(an.getIdAno()).iterator().hasNext()){
+                    an.eliminarAno(an);
+                }
             }
             Iterator itf=age.getFrancos().iterator();
             if(itf.hasNext()){
                 Franco fran=(Franco)itf.next();
                 fran.eliminarFranco(fran);
             }
-            if(!age.getAnos().iterator().hasNext()){
+            if(!Controlador.getPERSISTENCIA().getAnos(age.getId().getIdPersonal(), age.getId().getIdTarea()).iterator().hasNext()){
                 age.eliminarAgenda(age);
             }
         }

@@ -58,6 +58,7 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
         jTextField1.setEnabled(false);
         jTextField3.setText(tarr.getLugar());
         jTextField3.setEnabled(false);
+        jButton1.setEnabled(false);
         int[] anchos1 = {30,170,120,90,80,80,80,80};
         for(int i = 0; i < jTable1.getColumnCount(); i++) {
             jTable1.getColumnModel().getColumn(i).setPreferredWidth(anchos1[i]);
@@ -70,6 +71,7 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
         
         jTable1.getTableHeader().setDefaultRenderer(new JFrameActualizarActividades.HeaderRenderer(jTable1));
         if(tar.getComentario().equals("EXTRACURRICULAR")){
+            jButton1.setEnabled(true);
             JTableHeader th = jTable1.getTableHeader();
             TableColumnModel tcm = th.getColumnModel();
             TableColumn tc = tcm.getColumn(3); //recordemos que las columnas inician a enumerarse desde cero
@@ -374,15 +376,20 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosing
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        int confirmado = JOptionPane.showConfirmDialog(null, "¿Esta seguro que desea eliminar la tarea y todos sus horarios?", "", JOptionPane.YES_NO_OPTION);
+        int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea modificar la Tarea?", "Modificar Tarea", JOptionPane.YES_NO_OPTION);
         if (JOptionPane.OK_OPTION == confirmado) {
             if (tar.getComentario().equals("EXTRACURRICULAR")) {
                 try {
                     DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
                     if (jTable1.getRowCount() > 0) {
                         Object o = modelo.getValueAt(0, 4);
+                        Object oo = modelo.getValueAt(0, 7);
                         SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+                        SimpleDateFormat formateador2 = new SimpleDateFormat("HH:mm");
                         Date fecha = formateador.parse(o.toString());
+                        Date hora = formateador2.parse(oo.toString());
+                        fecha.setHours(hora.getHours());
+                        fecha.setMinutes(hora.getMinutes());
                         Date aux = new Date();
                         if (aux.compareTo(fecha) > 0) {
                             JOptionPane.showMessageDialog(null, "No puede modificar una tarea que ya ocurrió", "Modificar Tarea", JOptionPane.ERROR_MESSAGE);
@@ -400,8 +407,13 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
                     DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
                     if (jTable1.getRowCount() > 0) {
                         Object o = modelo.getValueAt(0, 4);
+                        Object oo = modelo.getValueAt(0, 7);
                         SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+                        SimpleDateFormat formateador2 = new SimpleDateFormat("HH:mm");
                         Date fecha = formateador.parse(o.toString());
+                        Date hora = formateador2.parse(oo.toString());
+                        fecha.setHours(hora.getHours());
+                        fecha.setMinutes(hora.getMinutes());
                         Date aux = new Date();
                         if (aux.compareTo(fecha) > 0) {
                             JOptionPane.showMessageDialog(null, "No puede modificar una tarea que ya ocurrió", "Modificar Tarea", JOptionPane.ERROR_MESSAGE);
@@ -422,8 +434,13 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
                     DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
                     if (jTable1.getRowCount() > 0) {
                         Object o = modelo.getValueAt(0, 5);
+                        Object oo = modelo.getValueAt(0, 7);
                         SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+                        SimpleDateFormat formateador2 = new SimpleDateFormat("HH:mm");
                         Date fecha = formateador.parse(o.toString());
+                        Date hora = formateador2.parse(oo.toString());
+                        fecha.setHours(hora.getHours());
+                        fecha.setMinutes(hora.getMinutes());
                         Date aux = new Date();
                         if (aux.compareTo(fecha) > 0) {
                             JOptionPane.showMessageDialog(null, "No puede modificar una tarea que ya ocurrió", "Modificar Tarea", JOptionPane.ERROR_MESSAGE);

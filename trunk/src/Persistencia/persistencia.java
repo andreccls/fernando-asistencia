@@ -159,6 +159,36 @@ public class persistencia {
 
     }
     
+    public List getAnos(int idper, int idtar) throws ArrayStoreException {
+        String hql = "from Ano where idPersonal="+idper+" and where idTarea="+idtar;
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
+    }
+    
+    public List getMeses(int idano) throws ArrayStoreException {
+        String hql = "from Ano where idAno="+idano;
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
+    }
+    
+    public List getDias(int idmes) throws ArrayStoreException {
+        String hql = "from Ano where idMes="+idmes;
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
+    }
+    
     public List getRegistroaccesos(int id) throws ArrayStoreException {
         String hql = "from Registroacceso where id_personal="+id;
         List items = new ArrayList();

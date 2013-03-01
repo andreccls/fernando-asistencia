@@ -4,8 +4,10 @@
  */
 package Clases;
 
+import Persistencia.ConexionJDBC;
 import Persistencia.persistencia;
 import java.awt.Label;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -18,6 +20,8 @@ import java.util.Iterator;
 import java.util.List;
 import javax.swing.JOptionPane;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -44,13 +48,24 @@ import net.sf.jasperreports.view.JasperViewer;
 public class Controlador {
 
     public static persistencia PERSISTENCIA;
+    public static ConexionJDBC conexion;
+    
 
     public Controlador() {
-        PERSISTENCIA = new persistencia();
+        try {
+            PERSISTENCIA = new persistencia();
+            conexion= new ConexionJDBC();
+        } catch (SQLException ex) {
+            Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public static persistencia getPERSISTENCIA() {
         return PERSISTENCIA;
+    }
+    
+    public static ConexionJDBC getConexionJDBC() {
+        return conexion;
     }
 
     public boolean existeColegio() {

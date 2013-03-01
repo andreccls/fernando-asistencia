@@ -70,6 +70,14 @@ public class Tareaextracurricular  implements java.io.Serializable {
 //                String.valueOf(unaTareaextracurricular.getId()) +
 //                " se guardo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
     }
+    
+    public void actualizarTareaextracurricular(Tareaextracurricular unaTareaextracurricular){
+        Controlador.getPERSISTENCIA().update(this);
+
+//        JOptionPane.showMessageDialog(null,"La Tarea extracurricular "+ 
+//                String.valueOf(unaTareaextracurricular.getId()) +
+//                " se guardo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+    }
 
 
 }
