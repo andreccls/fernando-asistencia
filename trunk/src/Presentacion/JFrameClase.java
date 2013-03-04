@@ -751,7 +751,6 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                 if (!jTextField1.getText().isEmpty() && !jFormattedTextField1.getText().contains(" ") && !jFormattedTextField2.getText().contains(" ")) {
                     if (tar.getIdTarea() == null) {
                         // <editor-fold defaultstate="collapsed" desc="Guardar tarea nueva"> 
-//                        Establecimiento est = Drive.getPrimerEstablecimiento();
                         Tarea tarr=new Tarea();
                         tarr.setEstablecimiento(Drive.getPrimerEstablecimiento());
                         tarr.setNombre(jTextField1.getText().toUpperCase());
@@ -759,7 +758,6 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                         tarr.setComentario("CLASE");
                         tarr.setEstado(true);
                         int idtar=tarr.guardarTarea(tarr);
-//                        Tarea tare = est.crearTarea(est, jTextField1.getText().toUpperCase(), jTextField3.getText().toUpperCase(), "CLASE", true, null, null, null, null, null);
                         TareaclaseId id = new TareaclaseId();
                         id.setIdTarea(idtar);
                         int i = 0;
@@ -875,6 +873,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                         lista.removeAll(lista);
                         String buscar=(String) jComboBox4.getSelectedItem();
                         Drive.CargarpersonalSimple(jTable2,buscar, buffer.toString().toUpperCase(),lista);
+                        Drive=new Controlador();
                         // </editor-fold>
                     } else {
                         // <editor-fold defaultstate="collapsed" desc="Actualizar tarea"> 

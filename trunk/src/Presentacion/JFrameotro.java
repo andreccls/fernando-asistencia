@@ -557,7 +557,6 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                         Date inicio = formateador.parse(jFormattedTextField1.getText());
                         Date fin = formateador.parse(jFormattedTextField2.getText());
                         if (inicio.compareTo(fin) < 0) {
-//                            Establecimiento col = Drive.getPrimerEstablecimiento();
                             Date fecha_inicio = dateChooserCombo1.getSelectedDate().getTime();
                             Date fecha_fin = dateChooserCombo2.getSelectedDate().getTime();
                             inicio.setYear(fecha_inicio.getYear());
@@ -566,88 +565,120 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                             fin.setYear(fecha_fin.getYear());
                             fin.setMonth(fecha_fin.getMonth());
                             fin.setDate(fecha_fin.getDate());
-                            Tarea tarr=new Tarea();
-                            tarr.setEstablecimiento(Drive.getPrimerEstablecimiento());
-                            tarr.setNombre(jTextField3.getText().toUpperCase());
-                            tarr.setLugar(jTextField4.getText().toUpperCase());
-                            tarr.setComentario("OTRO");
-                            tarr.setEstado(true);
-                            int idtar=tarr.guardarTarea(tarr);
-//                    SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
-//                    formateador.setLenient(false);
-//                    Date ini=formateador.parse(jFormattedTextField1.getText());
-//                    Date fi=formateador.parse(jFormattedTextField2.getText());
-//                            Tarea tarr = col.crearTarea(col, jTextField3.getText().toUpperCase(), jTextField4.getText().toUpperCase(), "OTRO", true, null, null, null, null, null);
-                            TareaotroId id = new TareaotroId();
-                            id.setIdTarea(idtar);
-
-                            tarr.crearTareaotro(id, tarr, jTextField1.getText().toUpperCase(), inicio, fin);
-                            DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
-                            int c = 0;
-                            while (jTable1.getRowCount() != c) {
-                                if (modelo.getValueAt(c, 0).equals(true)) {
-                                    Personal per = (Personal) modelo.getValueAt(c, 1);
-                                    Iniciofin aux = new Iniciofin();
-                                    aux.setInicio(inicio);
-                                    aux.setFin(fin);
-                                    if (per.VerificarDisponibilidadExtraotro(fecha_inicio, inicio, fin, fecha_fin)) {
-                                        AgendaId ida = new AgendaId(per.getIdPersonal(), tarr.getIdTarea());
-                                        Agenda age = new Agenda();
-                                        age.setId(ida);
-                                        age.setPersonal(per);
-                                        Revista rev = (Revista) Drive.PERSISTENCIA.getSitRevista().get(0);
-                                        age.setRevista(rev);
-                                        age.setTarea(tarr);
-                                        age.setComentario(null);
-                                        age.guardarAgenda(age);
-                                        ///Guarda el dia y hora de inicio
-                                        Ano anio = new Ano();
-                                        anio.setAgenda(age);
-                                        anio.setAno(fecha_inicio.getYear() + 1900);
-                                        anio.guardarAno(anio);
-                                        Mes mes = new Mes();
-                                        mes.setAno(anio);
-                                        mes.setMes(fecha_inicio.getMonth());
-                                        mes.guardarMes(mes);
-                                        Dia dia = new Dia();
-                                        dia.setMes(mes);
-                                        dia.setDia(fecha_inicio.getDate());
-                                        dia.guardarDia(dia);
-                                        Iniciofin in = new Iniciofin();
-                                        in.setDia(dia);
-                                        in.setInicio(inicio);
-                                        ////                        if(jRadioButton1.isSelected()){
-                                        ////                            in.setEstadoInicio(false);
-                                        ////                        }
-                                        in.guardarIniciofin(in);
-                                        ///Guarda el dia y hora de fin
-                                        Ano anioo = new Ano();
-//                                        Ano auxa=anio;                                        
-                                        Mes mess = new Mes();
-                                        Dia diaa = new Dia();
-                                        if (fecha_inicio.getYear() != fecha_fin.getYear() || fecha_inicio.getMonth() != fecha_fin.getMonth() || fecha_inicio.getDate() != fecha_fin.getDate()) {
-                                                anioo.setAgenda(age);
-                                                anioo.setAno(fecha_fin.getYear() + 1900);
-                                                anioo.guardarAno(anioo);
-                                                mess.setAno(anio);
-                                                mess.setMes(fecha_fin.getMonth());
-                                                mess.guardarMes(mess);
-                                                diaa.setMes(mess);
-                                                diaa.setDia(fecha_fin.getDate());
-                                                diaa.guardarDia(diaa);
-                                                Iniciofin finn = new Iniciofin();
-                                                finn.setDia(diaa);
-                                                finn.setFin(fin);
-                                                finn.guardarIniciofin(finn);
-                                        } else {
-                                            in.setFin(fin);
+                            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+                            int cc = 0;
+                            boolean est = false;
+                            while (jTable1.getRowCount() != cc) {
+                                if (model.getValueAt(cc, 0).equals(true)) {
+                                    Personal per = (Personal) model.getValueAt(cc, 1);
+                                    if (per.VerificarDisponibilidad(fecha, inicio, fin, fecha)) {
+                                        est = true;
+                                    }
+                                }
+                                cc++;
+                            }
+                            Tarea tarr = new Tarea();
+                            if (est == true) {
+                                tarr.setEstablecimiento(Drive.getPrimerEstablecimiento());
+                                tarr.setNombre(jTextField3.getText().toUpperCase());
+                                tarr.setLugar(jTextField4.getText().toUpperCase());
+                                tarr.setComentario("OTRO");
+                                tarr.setEstado(true);
+                                int idtar = tarr.guardarTarea(tarr);
+                                TareaotroId id = new TareaotroId();
+                                id.setIdTarea(idtar);
+                                tarr.crearTareaotro(id, tarr, jTextField1.getText().toUpperCase(), inicio, fin);
+                                DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+                                int c = 0;
+                                while (jTable1.getRowCount() != c) {
+                                    if (modelo.getValueAt(c, 0).equals(true)) {
+                                        Personal per = (Personal) modelo.getValueAt(c, 1);
+                                        Iniciofin aux = new Iniciofin();
+                                        aux.setInicio(inicio);
+                                        aux.setFin(fin);
+                                        String i = formateador.format(inicio);
+                                        String e = formateador.format(fin);
+                                        Date ini = new Date();
+                                        Date fi = new Date();
+                                        ini = formateador.parse(i);
+                                        fi = formateador.parse(e);
+                                        if (per.VerificarDisponibilidad(fecha_inicio, ini, fi, fecha_fin)) {
+                                            AgendaId ida = new AgendaId(per.getIdPersonal(), tarr.getIdTarea());
+                                            Agenda age = new Agenda();
+                                            age.setId(ida);
+                                            age.setPersonal(per);
+                                            Revista rev = (Revista) Drive.PERSISTENCIA.getSitRevista().get(0);
+                                            age.setRevista(rev);
+                                            age.setTarea(tarr);
+                                            age.setComentario(null);
+                                            age.guardarAgenda(age);
+                                            ///Guarda el dia y hora de inicio
+                                            Ano anio = new Ano();
+                                            anio.setAgenda(age);
+                                            anio.setAno(fecha_inicio.getYear() + 1900);
+                                            anio.guardarAno(anio);
+                                            Mes mes = new Mes();
+                                            mes.setAno(anio);
+                                            mes.setMes(fecha_inicio.getMonth());
+                                            mes.guardarMes(mes);
+                                            Dia dia = new Dia();
+                                            dia.setMes(mes);
+                                            dia.setDia(fecha_inicio.getDate());
+                                            dia.guardarDia(dia);
+                                            Iniciofin in = new Iniciofin();
+                                            in.setDia(dia);
+                                            in.setInicio(inicio);
                                             in.guardarIniciofin(in);
+                                            ///Guarda el dia y hora de fin
+                                            Ano anioo = new Ano();                                   
+                                            Mes mess = new Mes();
+                                            Dia diaa = new Dia();
+                                            if (fecha_inicio.getYear() != fecha_fin.getYear() || fecha_inicio.getMonth() != fecha_fin.getMonth() || fecha_inicio.getDate() != fecha_fin.getDate()) {
+                                                if (fecha_inicio.getYear() != fecha_fin.getYear()) {
+                                                    anioo.setAgenda(age);
+                                                    anioo.setAno(fecha_fin.getYear() + 1900);
+                                                    anioo.guardarAno(anioo);
+                                                    mess.setAno(anioo);
+                                                    mess.setMes(fecha_fin.getMonth());
+                                                    mess.guardarMes(mess);
+                                                    diaa.setMes(mess);
+                                                    diaa.setDia(fecha_fin.getDate());
+                                                    diaa.guardarDia(diaa);
+                                                    Iniciofin finn = new Iniciofin();
+                                                    finn.setDia(diaa);
+                                                    finn.setFin(fin);
+                                                    finn.guardarIniciofin(finn);
+                                                } else if (fecha_inicio.getMonth() != fecha_fin.getMonth()) {
+                                                    mess.setAno(anio);
+                                                    mess.setMes(fecha_fin.getMonth());
+                                                    mess.guardarMes(mess);
+                                                    diaa.setMes(mess);
+                                                    diaa.setDia(fecha_fin.getDate());
+                                                    diaa.guardarDia(diaa);
+                                                    Iniciofin finn = new Iniciofin();
+                                                    finn.setDia(diaa);
+                                                    finn.setFin(fin);
+                                                    finn.guardarIniciofin(finn);
+                                                } else if (fecha_inicio.getDate() != fecha_fin.getDate()) {
+                                                    diaa.setMes(mes);
+                                                    diaa.setDia(fecha_fin.getDate());
+                                                    diaa.guardarDia(diaa);
+                                                    Iniciofin finn = new Iniciofin();
+                                                    finn.setDia(diaa);
+                                                    finn.setFin(fin);
+                                                    finn.guardarIniciofin(finn);
+                                                }
+
+                                            } else {
+                                                in.setFin(fin);
+                                                in.guardarIniciofin(in);
+                                            }
                                         }
+
                                     }
 
+                                    c++;
                                 }
-
-                                c++;
                             }
                             jFormattedTextField1.setText("");
                             jFormattedTextField2.setText("");
@@ -656,9 +687,9 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                             jTextField4.setText("");
                             Drive.LimpiarTabla(jTable1);
                             lista.removeAll(lista);
-                            String buscar=(String) jComboBox1.getSelectedItem();
-                            Drive.CargarTablacheck(jTable1,buscar, buffer.toString().toUpperCase(),lista);
-//                    Drive.CargarTablacheck(jTable1);
+                            String buscar = (String) jComboBox1.getSelectedItem();
+                            Drive.CargarTablacheck(jTable1, buscar, buffer.toString().toUpperCase(), lista);
+                            Drive = new Controlador();
                         }
                         // </editor-fold>
                     } else {
@@ -727,7 +758,13 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                         Iniciofin aux = new Iniciofin();
                                         aux.setInicio(inicio);
                                         aux.setFin(fin);
-                                        if (per.VerificarDisponibilidadExtraotro(fecha_inicio, inicio, fin, fecha_fin)) {
+                                        String i = formateador.format(inicio);
+                                        String e = formateador.format(fin);
+                                        Date ini = new Date();
+                                        Date fi = new Date();
+                                        ini = formateador.parse(i);
+                                        fi = formateador.parse(e);
+                                        if (per.VerificarDisponibilidad(fecha_inicio, inicio, fin, fecha_fin)) {
                                             Revista rev = (Revista) Drive.PERSISTENCIA.getSitRevista().get(0);
                                             Agenda age = tar.ObtenerAgenda(per.getIdPersonal(), rev.getIdRevista());
                                             if (age.getId() == null) {
@@ -768,13 +805,9 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                                     anioo.setAgenda(age);
                                                     anioo.setAno(fecha_fin.getYear() + 1900);
                                                     anioo.guardarAno(anioo);
-                                                }
-                                                if (fecha_inicio.getMonth() != fecha_fin.getMonth()) {
                                                     mess.setAno(anioo);
                                                     mess.setMes(fecha_fin.getMonth());
                                                     mess.guardarMes(mess);
-                                                }
-                                                if (fecha_inicio.getDate() != fecha_fin.getDate()) {
                                                     diaa.setMes(mess);
                                                     diaa.setDia(fecha_fin.getDate());
                                                     diaa.guardarDia(diaa);
@@ -782,13 +815,31 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                                     finn.setDia(diaa);
                                                     finn.setFin(fin);
                                                     finn.guardarIniciofin(finn);
+                                                } else if (fecha_inicio.getMonth() != fecha_fin.getMonth()) {
+                                                    mess.setAno(anio);
+                                                    mess.setMes(fecha_fin.getMonth());
+                                                    mess.guardarMes(mess);
+                                                    diaa.setMes(mess);
+                                                    diaa.setDia(fecha_fin.getDate());
+                                                    diaa.guardarDia(diaa);
+                                                    Iniciofin finn = new Iniciofin();
+                                                    finn.setDia(diaa);
+                                                    finn.setFin(fin);
+                                                    finn.guardarIniciofin(finn);
+                                                } else if (fecha_inicio.getDate() != fecha_fin.getDate()) {
+                                                    diaa.setMes(mes);
+                                                    diaa.setDia(fecha_fin.getDate());
+                                                    diaa.guardarDia(diaa);
+                                                    Iniciofin finn = new Iniciofin();
+                                                    finn.setDia(diaa);
+                                                    finn.setFin(fin);
+                                                    finn.guardarIniciofin(finn);
                                                 }
-
                                             } else {
                                                 in.setFin(fin);
                                                 in.guardarIniciofin(in);
                                             }
-                                        }else {
+                                        } else {
                                             JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para: " + per.toString(), "Registrar Reunión", JOptionPane.ERROR_MESSAGE);
                                         }
 
@@ -807,7 +858,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                 }
 
             } else {
-                JOptionPane.showMessageDialog(null, "Debe seleccionar al menos un personal", "Registrar Otra Actividad", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Debe seleccionar al menos un personal", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);
             }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, ex.toString());
@@ -815,8 +866,8 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        if(!jTextField3.getText().isEmpty()||!jTextField4.getText().isEmpty()||!jTextField1.getText().isEmpty()||!jFormattedTextField1.getText().isEmpty()||!jFormattedTextField2.getText().isEmpty()){
-            int confirmado = JOptionPane.showConfirmDialog(null,"¿Desea cancelar la tarea extracurricular?","",JOptionPane.YES_NO_OPTION);
+        if(!jTextField3.getText().isEmpty()||!jTextField4.getText().isEmpty()||!jFormattedTextField1.getText().contains(" ") ||!jFormattedTextField2.getText().contains(" ")){
+            int confirmado = JOptionPane.showConfirmDialog(null,"¿Desea cancelar la tarea?","Registrar Tarea",JOptionPane.YES_NO_OPTION);
             if (JOptionPane.OK_OPTION == confirmado){
                 Frame vp=new JFramePrincipal(Drive,adm,idsesion);
                 this.dispose();
@@ -868,7 +919,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                 Drive.CargarTablacheck(jTable1,buscar, es.toUpperCase(),lista);
             }
         }catch(Exception e){
-            JOptionPane.showMessageDialog(null, "ERROR","Registrar Tarea Extracurricular", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "ERROR","Registrar Tarea", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jTextField2KeyTyped
 
@@ -891,9 +942,17 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
             SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
             Date inicio = formateador.parse(jFormattedTextField1.getText());
             Date fin = formateador.parse(jFormattedTextField2.getText());
-            if(inicio.compareTo(fin)>=0){
-                JOptionPane.showMessageDialog(null,"El horario de fin debe ser mayor al horario de inicio","Registrar Clase", JOptionPane.ERROR_MESSAGE);
-                jFormattedTextField2.setText("");
+            SimpleDateFormat formateador2 = new SimpleDateFormat("dd/MM/yyyy");
+            formateador.setLenient(false);
+            String i=formateador2.format(dateChooserCombo1.getSelectedDate().getTime());
+            String ii=formateador2.format(dateChooserCombo2.getSelectedDate().getTime());
+            Date fini=formateador2.parse(i);
+            Date ffin=formateador2.parse(ii);
+            if(fini.compareTo(ffin)==0){
+                if(inicio.compareTo(fin)>=0){
+                    JOptionPane.showMessageDialog(null,"El horario de fin debe ser mayor al horario de inicio","Registrar Clase", JOptionPane.ERROR_MESSAGE);
+                    jFormattedTextField2.setText("");
+                }
             }
             if(tar.getIdTarea()!=null){
                 Agenda age=tar.getAgendas().iterator().next();
@@ -906,7 +965,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                 }
             }
         }catch(Exception e){
-            JOptionPane.showMessageDialog(null,"Error","Registrar Clase", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"Error","Registrar Tarea", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jFormattedTextField2FocusLost
 
@@ -915,9 +974,10 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
         Date inicio=dateChooserCombo1.getSelectedDate().getTime();
         Date fin=dateChooserCombo2.getSelectedDate().getTime();
         if(inicio.compareTo(fin)>0){
-            JOptionPane.showMessageDialog(null,"La fecha de inicio debe ser menor que la fecha de fin","",JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"La fecha de inicio debe ser menor que la fecha de fin","Registrar Tarea",JOptionPane.ERROR_MESSAGE);
             Calendar cal = Calendar.getInstance();
             dateChooserCombo2.setSelectedDate(cal);
+            jFormattedTextField2.setText("");
         }
         if(tar.getIdTarea()!=null){
             SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
@@ -930,7 +990,9 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                 cambio=true;
             }
         }
-        }catch(Exception e){}
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null,"Error","Registrar Tarea",JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_dateChooserCombo2OnSelectionChange
 
     private void dateChooserCombo1OnSelectionChange(datechooser.events.SelectionChangedEvent evt) {//GEN-FIRST:event_dateChooserCombo1OnSelectionChange
@@ -938,10 +1000,11 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
         Date inicio=dateChooserCombo1.getSelectedDate().getTime();
         Date fin=dateChooserCombo2.getSelectedDate().getTime();
         if(inicio.compareTo(fin)>0){
-            JOptionPane.showMessageDialog(null,"La fecha de inicio debe ser menor que la fecha de fin","",JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"La fecha de inicio debe ser menor que la fecha de fin","Registrar Tarea",JOptionPane.ERROR_MESSAGE);
             Calendar cal = Calendar.getInstance();
             dateChooserCombo1.setSelectedDate(cal);
             dateChooserCombo2.setSelectedDate(cal);
+            jFormattedTextField2.setText("");
         }
         if(tar.getIdTarea()!=null){
             SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
@@ -955,7 +1018,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
             }
         }
         }catch(Exception e){
-            
+            JOptionPane.showMessageDialog(null,"Error","Registrar Tarea",JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_dateChooserCombo1OnSelectionChange
 
@@ -974,7 +1037,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                 }
             }
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Ingrese correctamente la hora", "Registrar Clase", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Ingrese correctamente la hora", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);
             jFormattedTextField1.setText("");
         }
     }//GEN-LAST:event_jFormattedTextField1FocusLost
