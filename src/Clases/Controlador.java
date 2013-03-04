@@ -960,24 +960,24 @@ public class Controlador {
                     Iterator it=tar.getAgendas().iterator();
                     while(it.hasNext()){
                         Agenda age=(Agenda) it.next();
-                        Iterator ita=age.getAnos().iterator();
-                        while(ita.hasNext()){
-                           Ano an=(Ano) ita.next();
-                           Iterator itm=an.getMeses().iterator();
-                           while(itm.hasNext()){
-                               Mes me=(Mes) itm.next();
-                               Iterator itd=me.getDias().iterator();
-                               while(itd.hasNext()){
-                                   Dia di=(Dia) itd.next();
-                                   Iterator itini=di.getIniciofins().iterator();
-                                   while(itini.hasNext()){
-                                       Iniciofin ini=(Iniciofin)itini.next();
+//                        Iterator ita=age.getAnos().iterator();
+//                        while(ita.hasNext()){
+//                           Ano an=(Ano) ita.next();
+//                           Iterator itm=an.getMeses().iterator();
+//                           while(itm.hasNext()){
+//                               Mes me=(Mes) itm.next();
+//                               Iterator itd=me.getDias().iterator();
+//                               while(itd.hasNext()){
+//                                   Dia di=(Dia) itd.next();
+//                                   Iterator itini=di.getIniciofins().iterator();
+//                                   while(itini.hasNext()){
+//                                       Iniciofin ini=(Iniciofin)itini.next();
                                        Tareaextracurricular tarreu=tar.getTareaextracurriculars().iterator().next();
-                                       Date fecha=new Date();
-                                       String vacio="";
-                                       fecha.setYear(an.getAno()-1900);
-                                       fecha.setMonth(me.getMes());
-                                       fecha.setDate(di.getDia());
+//                                       Date fecha=new Date();
+//                                       String vacio="";
+//                                       fecha.setYear(an.getAno()-1900);
+//                                       fecha.setMonth(me.getMes());
+//                                       fecha.setDate(di.getDia());
                                        fila[0] = age.getPersonal().getIdPersonal();
                                        fila[1] = age.getPersonal().toString();
                                        fila[2] = tar.getComentario();
@@ -986,59 +986,38 @@ public class Controlador {
                                        Franco fran=age.getFranco(age);
                                        if(fran.getIdFranco()!=null){fila[3] = formateador.format(fran.getDiaFranco());}
                                        fila[4] = formateador.format(tarreu.getDiaFin());
-                                       fila[5] = formateador.format(fecha);
-                                       fila[6] = formateador2.format(ini.getInicio());
-                                       fila[7] = formateador2.format(ini.getFin());
+                                       fila[5] = formateador.format(tarreu.getDiaInicio());
+                                       fila[6] = formateador2.format(tarreu.getDiaInicio());
+                                       fila[7] = formateador2.format(tarreu.getDiaFin());
                                        modelo.addRow(fila);
                                    }
-                               }
-                           }
-                        }
-                    }
+//                               }
+//                           }
+//                        }
+//                    }
                 }
-            }else if(!tar.getTareaotros().isEmpty()){
+            } else if (!tar.getTareaotros().isEmpty()) {
                 if (tar.getEstado() == true) {
                     Object fila[] = new Object[8];
-                    Iterator it=tar.getAgendas().iterator();
-                    while(it.hasNext()){
-                        Agenda age=(Agenda) it.next();
-                        Iterator ita=age.getAnos().iterator();
-                        while(ita.hasNext()){
-                           Ano an=(Ano) ita.next();
-                           Iterator itm=an.getMeses().iterator();
-                           while(itm.hasNext()){
-                               Mes me=(Mes) itm.next();
-                               Iterator itd=me.getDias().iterator();
-                               while(itd.hasNext()){
-                                   Dia di=(Dia) itd.next();
-                                   Iterator itini=di.getIniciofins().iterator();
-                                   while(itini.hasNext()){
-                                       Iniciofin ini=(Iniciofin)itini.next();
-                                       Tareaotro tarreu=tar.getTareaotros().iterator().next();
-                                       Date fecha=new Date();
-                                       String vacio="";
-                                       fecha.setYear(an.getAno()-1900);
-                                       fecha.setMonth(me.getMes());
-                                       fecha.setDate(di.getDia());
-                                       fila[0] = age.getPersonal().getIdPersonal();
-                                       fila[1] = age.getPersonal().toString();
-                                       fila[2] = tar.getComentario();
-                                       fila[3] = tarreu.getCaracteristica();
-                                       SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
-                                       SimpleDateFormat formateador2 = new SimpleDateFormat("HH:mm");
-                                       fila[4] = formateador.format(tarreu.getDiaFin());
-                                       fila[5] = formateador.format(fecha);
-                                       fila[6] = formateador2.format(ini.getInicio());
-                                       fila[7] = formateador2.format(ini.getFin());
-                                       modelo.addRow(fila);
-                                   }
-                               }
-                           }
-                        }
+                    Iterator it = tar.getAgendas().iterator();
+                    while (it.hasNext()) {
+                        Agenda age = (Agenda) it.next();
+                        Tareaotro tarreu = tar.getTareaotros().iterator().next();
+                        //Date fecha = new Date();
+                        fila[0] = age.getPersonal().getIdPersonal();
+                        fila[1] = age.getPersonal().toString();
+                        fila[2] = tar.getComentario();
+                        fila[3] = tarreu.getCaracteristica();
+                        SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+                        SimpleDateFormat formateador2 = new SimpleDateFormat("HH:mm");
+                        fila[4] = formateador.format(tarreu.getDiaFin());
+                        fila[5] = formateador.format(tarreu.getDiaInicio());
+                        fila[6] = formateador2.format(tarreu.getDiaInicio());
+                        fila[7] = formateador2.format(tarreu.getDiaFin());
+                        modelo.addRow(fila);
                     }
                 }
             }
-                
             Tabla.setModel(modelo);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, ex.toString());

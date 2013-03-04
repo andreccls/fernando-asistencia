@@ -2,6 +2,7 @@ package Clases;
 // Generated 23/02/2013 16:02:09 by Hibernate Tools 3.2.1.GA
 
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -508,31 +509,89 @@ public class Personal  implements java.io.Serializable {
     return dia;
     }
     
-    public boolean VerificarDisponibilidadExtraotro (Date diaini, Date hini,Date hfin,Date diafin){
+    public boolean VerificarDisponibilidad (Date diaini,Date hini,Date hfin,Date diafin){
         boolean band=true;
-        try{
-            if(!agendas.isEmpty()){
-                Iterator it=agendas.iterator();
-                while(it.hasNext()){
-                    Agenda age=(Agenda) it.next();
-                    Date diaaux=diaini;
-                    while(diaaux.compareTo(diafin)<=0){
-                        Dia di=age.getDia2(diaaux);
-                        if(di.getIdDia()!=null){
-                            Iterator itin=di.getIniciofins().iterator();
-                            while(itin.hasNext()){
-                                Iniciofin in=(Iniciofin) itin.next();
-                                if(in.getDia().getMes().getAno().getAgenda().getTarea().getEstado()==true && in.getDia().getMes().getAno().getAgenda().getPersonal().getEstado()==true ){
-                                //if(in.getInicio().compareTo(ini.getInicio())>0 && in.getInicio().compareTo(ini.getFin())<0 || in.getFin().compareTo(ini.getInicio())>0 && in.getFin().compareTo(ini.getFin())<0){
-                                    if(in.getInicio().compareTo(hini)>0 && in.getInicio().compareTo(hfin) <0 || in.getFin().compareTo(hini)>0 && in.getFin().compareTo(hfin)<0){
-                                        band=false;
-                                        JOptionPane.showMessageDialog(null,"no existe disponibilidad porque hay otra tarea a ese horario");
+        try {
+            if (!Controlador.PERSISTENCIA.getAgendas(idPersonal).isEmpty()) {
+                Iterator it = Controlador.PERSISTENCIA.getAgendas(idPersonal).iterator();
+                while (it.hasNext()) {
+                    Agenda age = (Agenda) it.next();
+                    if (age.getPersonal().getEstado() == true && age.getTarea().getEstado() == true) {
+                        if(age.getTarea().getTareaotros().iterator().hasNext()){
+                            Tareaotro tarot=age.getTarea().getTareaotros().iterator().next();
+                            Date inicio=tarot.getDiaInicio();
+                            Date fin=tarot.getDiaFin();
+                            if(diaini.compareTo(inicio)>=0 ||diafin.compareTo(inicio)>= 0 && diaini.compareTo(fin)<=0 || diafin.compareTo(fin)<=0){
+                                band = false;
+                                JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para "+ toString() +" porque hay otra tarea a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);
+                                return band;
+                            }
+                        }else if(age.getTarea().getTareaextracurriculars().iterator().hasNext()){
+                            Tareaextracurricular tarot=age.getTarea().getTareaextracurriculars().iterator().next();
+                            Date inicio=tarot.getDiaInicio();
+                            Date fin=tarot.getDiaFin();
+                            if(diaini.compareTo(inicio)>=0 ||diafin.compareTo(inicio)>= 0 && diaini.compareTo(fin)<=0 || diafin.compareTo(fin)<=0){
+                                band = false;
+                                JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para "+ toString() +" porque existe una tarea extracurricular a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);
+                                return band;
+                            }
+                        }else if(age.getTarea().getTareaclases().iterator().hasNext()){
+                            Date diaaux = diaini;
+                            while (diaaux.compareTo(diafin) <= 0) {
+                                Dia di = age.getDia2(diaaux);
+                                if (di.getIdDia() != null) {
+                                    Iterator itin = di.getIniciofins().iterator();
+                                    while (itin.hasNext()) {
+                                        Iniciofin in = (Iniciofin) itin.next();
+                                        SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
+                                        String i=formateador.format(in.getInicio());
+                                        String ii=formateador.format(in.getFin());
+                                        Date inicio = formateador.parse(i);
+                                        Date fin = formateador.parse(ii);
+                                        if(hini.compareTo(inicio)<=0&&hfin.compareTo(inicio)>=0){
+                                            band = false;
+                                            JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para "+ toString() +" porque existe una clase a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);
+                                            return band;
+                                        }else if(hini.compareTo(fin)<=0&&hfin.compareTo(fin)>=0){
+                                            band = false;
+                                            JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para "+ toString() +" porque existe una clase a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);
+                                            return band;
+                                        }else if(hini.compareTo(inicio)>=0&&hfin.compareTo(inicio)>=0&&hini.compareTo(fin)<=0&&hfin.compareTo(fin)<=0){
+                                            band = false;
+                                            JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para "+ toString() +" porque existe una clase a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);
+                                            return band;
+                                        }
+                                    }
+                                }
+                                diaaux = Controlador.sumarFechasDias(diaaux, 1);
+                            }
+                        }else if(age.getTarea().getTareareunions().iterator().hasNext()){
+                            Dia di = age.getDia2(diaini);
+                            if (di.getIdDia() != null) {
+                                Iterator itin = di.getIniciofins().iterator();
+                                while (itin.hasNext()) {
+                                    Iniciofin in = (Iniciofin) itin.next();
+                                    SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
+                                    String i=formateador.format(in.getInicio());
+                                    String ii=formateador.format(in.getFin());
+                                    Date inicio = formateador.parse(i);
+                                    Date fin = formateador.parse(ii);
+                                    if (hini.compareTo(inicio) <= 0 && hfin.compareTo(inicio) >= 0) {
+                                        band = false;
+                                        JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para " + toString() + " porque existe una reunión a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);
+                                        return band;
+                                    } else if (hini.compareTo(fin) <= 0 && hfin.compareTo(fin) >= 0) {
+                                        band = false;
+                                        JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para " + toString() + " porque existe una reunión a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);
+                                        return band;
+                                    } else if (hini.compareTo(inicio) >= 0 && hfin.compareTo(inicio) >= 0 && hini.compareTo(fin) <= 0 && hfin.compareTo(fin) <= 0) {
+                                        band = false;
+                                        JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para " + toString() + " porque existe una clase a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);
                                         return band;
                                     }
                                 }
                             }
                         }
-                        diaaux=Controlador.sumarFechasDias(diaaux, 1);
                     }
                 }
             }
@@ -563,99 +622,128 @@ public class Personal  implements java.io.Serializable {
         return band;
     }
     
-    public boolean VerificarDisponibilidadReunion (Date dia, Iniciofin ini){
-        boolean band=true;
-        try{
-            if(!agendas.isEmpty()){
-                Iterator it=agendas.iterator();
-                while(it.hasNext()){
-                    Agenda age=(Agenda) it.next();
-                    Dia di=age.getDia2(dia);
-                    if(di.getIdDia()!=null){
-                        Iterator itin=di.getIniciofins().iterator();
-                        while(itin.hasNext()){
-                            Iniciofin in=(Iniciofin) itin.next();
-                            if(in.getDia().getMes().getAno().getAgenda().getTarea().getEstado()==true && in.getDia().getMes().getAno().getAgenda().getPersonal().getEstado()==true ){
-                                if(in.getInicio().compareTo(ini.getInicio())>0 && in.getInicio().compareTo(ini.getFin())<0 || in.getFin().compareTo(ini.getInicio())>0 && in.getFin().compareTo(ini.getFin())<0){
-                                    band=false;
-                                    JOptionPane.showMessageDialog(null,"no existe disponibilidad porque hay otra tarea a ese horario");
-                                    return band;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            if(!declaracionjuradas.isEmpty()){
-                String di= ObtenerDia(dia.getDay());
-                Iterator itact=declaracionjuradas.iterator().next().ObtenerActivos(di).iterator();
-                while(itact.hasNext()){
-                    Activo act=(Activo) itact.next();
-                    Iterator itin=act.getActivoIniciofins().iterator();
-                    while(itin.hasNext()){
-                        ActivoIniciofin in=(ActivoIniciofin) itin.next();
-                        if(in.getInicio().compareTo(ini.getInicio())>0 && in.getInicio().compareTo(ini.getFin())<0 || in.getFin().compareTo(ini.getInicio())>0 && in.getFin().compareTo(ini.getFin())<0){
-                            band=false;
-                            JOptionPane.showMessageDialog(null,"no existe disponibilidad por parte de la declaración jurada a ese horario");
-                            return band;
-                        }
-                    }
-                }
-            }
-        }catch(Exception ex){JOptionPane.showMessageDialog(null, ex.toString());}
-        return band;
-    }
+//    public boolean VerificarDisponibilidadReunion (Date dia, Iniciofin ini){
+//        boolean band=true;
+//        try{
+//            if(!agendas.isEmpty()){
+//                Iterator it=agendas.iterator();
+//                while(it.hasNext()){
+//                    Agenda age=(Agenda) it.next();
+//                    Dia di=age.getDia2(dia);
+//                    if(di.getIdDia()!=null){
+//                        Iterator itin=di.getIniciofins().iterator();
+//                        while(itin.hasNext()){
+//                            Iniciofin in=(Iniciofin) itin.next();
+//                            if(in.getDia().getMes().getAno().getAgenda().getTarea().getEstado()==true && in.getDia().getMes().getAno().getAgenda().getPersonal().getEstado()==true ){
+//                                if(in.getInicio().compareTo(ini.getInicio())>0 && in.getInicio().compareTo(ini.getFin())<0 || in.getFin().compareTo(ini.getInicio())>0 && in.getFin().compareTo(ini.getFin())<0){
+//                                    band=false;
+//                                    JOptionPane.showMessageDialog(null,"no existe disponibilidad porque hay otra tarea a ese horario");
+//                                    return band;
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//            if(!declaracionjuradas.isEmpty()){
+//                String di= ObtenerDia(dia.getDay());
+//                Iterator itact=declaracionjuradas.iterator().next().ObtenerActivos(di).iterator();
+//                while(itact.hasNext()){
+//                    Activo act=(Activo) itact.next();
+//                    Iterator itin=act.getActivoIniciofins().iterator();
+//                    while(itin.hasNext()){
+//                        ActivoIniciofin in=(ActivoIniciofin) itin.next();
+//                        if(in.getInicio().compareTo(ini.getInicio())>0 && in.getInicio().compareTo(ini.getFin())<0 || in.getFin().compareTo(ini.getInicio())>0 && in.getFin().compareTo(ini.getFin())<0){
+//                            band=false;
+//                            JOptionPane.showMessageDialog(null,"no existe disponibilidad por parte de la declaración jurada a ese horario");
+//                            return band;
+//                        }
+//                    }
+//                }
+//            }
+//        }catch(Exception ex){JOptionPane.showMessageDialog(null, ex.toString());}
+//        return band;
+//    }
+//    
     
-    
-    public int[][] VerificarDisponibilidadClase(Date inicio, Date fin, Iniciofin ini,String dsem){
+    public int[][] VerificarDisponibilidadClase(Date inici, Date finn, Iniciofin ini,String dsem){
         int a=0;
         int d=0;
-        Date ot=inicio;
+        Date ot=inici;
         if(dsem.equals("LUNES")){while(ot.getDay()!=1){ot=Controlador.sumarFechasDias(ot, 1);}
         }else if(dsem.equals("MARTES")){while(ot.getDay()!=2){ot=Controlador.sumarFechasDias(ot, 1);}
         }else if(dsem.equals("MIERCOLES")){while(ot.getDay()!=3){ot=Controlador.sumarFechasDias(ot, 1);}
         }else if(dsem.equals("JUEVES")){while(ot.getDay()!=4){ot=Controlador.sumarFechasDias(ot, 1);}
         }else if(dsem.equals("VIERNES")){while(ot.getDay()!=5){ot=Controlador.sumarFechasDias(ot, 1);}
         }else if(dsem.equals("SABADO")){while(ot.getDay()!=6){ot=Controlador.sumarFechasDias(ot, 1);}}
-        
-        Date otro=ot;
-        while(otro.compareTo(fin)<=0){
-            if(!agendas.isEmpty()){
-                Iterator it=agendas.iterator();
-                while(it.hasNext()){
-                    Agenda age=(Agenda) it.next();
-                    Dia di=age.getDia2(otro);
-                    if(di.getIdDia()!=null){
-                        Iterator itin=di.getIniciofins().iterator();
-                        while(itin.hasNext()){
-                            Iniciofin in=(Iniciofin) itin.next();
-                            if(in.getDia().getMes().getAno().getAgenda().getTarea().getEstado()==true && in.getDia().getMes().getAno().getAgenda().getPersonal().getEstado()==true ){
-                                if(in.getInicio().compareTo(ini.getInicio())>0 && in.getInicio().compareTo(ini.getFin())<0 || in.getFin().compareTo(ini.getInicio())>0 && in.getFin().compareTo(ini.getFin())<0){
-                                    a++;
+
+        Date otro = ot;
+        while (otro.compareTo(finn) <= 0) {
+            if (!agendas.isEmpty()) {
+                Iterator it = agendas.iterator();
+                while (it.hasNext()) {
+                    Agenda age = (Agenda) it.next();
+                    if (age.getPersonal().getEstado() == true && age.getTarea().getEstado() == true) {
+                        if (age.getTarea().getTareaotros().iterator().hasNext()) {
+                            Tareaotro tarot = age.getTarea().getTareaotros().iterator().next();
+                            Date inicio = tarot.getDiaInicio();
+                            Date fin = tarot.getDiaFin();
+                            if (otro.compareTo(inicio) >= 0 && otro.compareTo(fin) <= 0) {
+                                a++;
+                            }
+                        } else if (age.getTarea().getTareaextracurriculars().iterator().hasNext()) {
+                            Tareaextracurricular tarot = age.getTarea().getTareaextracurriculars().iterator().next();
+                            Date inicio = tarot.getDiaInicio();
+                            Date fin = tarot.getDiaFin();
+                            if (otro.compareTo(inicio) >= 0 && otro.compareTo(fin) <= 0) {
+                                a++;
+                            }
+                        } else if (age.getTarea().getTareaclases().iterator().hasNext()) {
+                            Dia di = age.getDia2(otro);
+                            if (di.getIdDia() != null) {
+                                Iterator itin = di.getIniciofins().iterator();
+                                while (itin.hasNext()) {
+                                    Iniciofin in = (Iniciofin) itin.next();
+                                    if (ini.getInicio().compareTo(in.getInicio()) >= 0 || ini.getFin().compareTo(in.getInicio()) >= 0 && ini.getInicio().compareTo(in.getFin()) <= 0 || ini.getFin().compareTo(in.getFin()) <= 0) {
+                                        a++;
+                                    }
+                                }
+                            }
+                        } else if (age.getTarea().getTareareunions().iterator().hasNext()) {
+                            Dia di = age.getDia2(otro);
+                            if (di.getIdDia() != null) {
+                                Iterator itin = di.getIniciofins().iterator();
+                                while (itin.hasNext()) {
+                                    Iniciofin in = (Iniciofin) itin.next();
+                                    if (ini.getInicio().compareTo(in.getInicio()) >= 0 || ini.getFin().compareTo(in.getInicio()) >= 0 && ini.getInicio().compareTo(in.getFin()) <= 0 || ini.getFin().compareTo(in.getFin()) <= 0) {
+                                        a++;
+                                    }
                                 }
                             }
                         }
                     }
                 }
             }
-            if(!declaracionjuradas.isEmpty()){
-                Iterator itact=declaracionjuradas.iterator().next().ObtenerActivos(dsem).iterator();
-                while(itact.hasNext()){
-                    Activo act=(Activo) itact.next();
-                    Iterator itin=act.getActivoIniciofins().iterator();
-                    while(itin.hasNext()){
-                        ActivoIniciofin in=(ActivoIniciofin) itin.next();
-                        if(in.getInicio().compareTo(ini.getInicio())>0 && in.getInicio().compareTo(ini.getFin())<0 || in.getFin().compareTo(ini.getInicio())>0 && in.getFin().compareTo(ini.getFin())<0){
+            if (!declaracionjuradas.isEmpty()) {
+                Iterator itact = declaracionjuradas.iterator().next().ObtenerActivos(dsem).iterator();
+                while (itact.hasNext()) {
+                    Activo act = (Activo) itact.next();
+                    Iterator itin = act.getActivoIniciofins().iterator();
+                    while (itin.hasNext()) {
+                        ActivoIniciofin in = (ActivoIniciofin) itin.next();
+                        if (in.getInicio().compareTo(ini.getInicio()) > 0 && in.getInicio().compareTo(ini.getFin()) < 0 || in.getFin().compareTo(ini.getInicio()) > 0 && in.getFin().compareTo(ini.getFin()) < 0) {
                             d++;
                         }
                     }
                 }
             }
-            otro=Controlador.sumarFechasDias(otro, 7);
+            otro = Controlador.sumarFechasDias(otro, 7);
         }
-        int[][] cant=new int[2][];
-        cant[0]= new int [a];
-        cant[1]= new int [d];
+        
+
+        int[][] cant = new int[2][];
+        cant[0] = new int[a];
+        cant[1] = new int[d];
         return cant;
     }
     

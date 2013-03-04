@@ -450,6 +450,11 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
                             vent2.show();
                         }
                     }
+//                    else if(jTable1.getRowCount()==0){
+//                        JFrameReunion vent2 = new JFrameReunion(Drive, adm, idsesion,tar);
+//                        this.hide();
+//                        vent2.show();
+//                    }
                 } catch (Exception e) {
                 }
                 
