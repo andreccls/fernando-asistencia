@@ -160,7 +160,7 @@ public class persistencia {
     }
     
     public List getAnos(int idper, int idtar) throws ArrayStoreException {
-        String hql = "from Ano where idPersonal="+idper+" and where idTarea="+idtar;
+        String hql = "from Ano where id_personal="+idper+" and id_tarea="+idtar;
         List items = new ArrayList();
         Transaction tx = session.beginTransaction();
         Query q = session.createQuery(hql);
@@ -170,7 +170,7 @@ public class persistencia {
     }
     
     public List getMeses(int idano) throws ArrayStoreException {
-        String hql = "from Ano where idAno="+idano;
+        String hql = "from Mes where id_ano="+idano;
         List items = new ArrayList();
         Transaction tx = session.beginTransaction();
         Query q = session.createQuery(hql);
@@ -180,7 +180,7 @@ public class persistencia {
     }
     
     public List getDias(int idmes) throws ArrayStoreException {
-        String hql = "from Ano where idMes="+idmes;
+        String hql = "from Dia where id_mes="+idmes;
         List items = new ArrayList();
         Transaction tx = session.beginTransaction();
         Query q = session.createQuery(hql);
@@ -202,6 +202,16 @@ public class persistencia {
 
     public List getTareas() throws ArrayStoreException {
         String hql = "from Tarea";
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
+    }
+    
+    public List getTarea(int idtar) throws ArrayStoreException {
+        String hql = "from Tarea where id_tarea="+idtar;
         List items = new ArrayList();
         Transaction tx = session.beginTransaction();
         Query q = session.createQuery(hql);

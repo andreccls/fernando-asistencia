@@ -246,8 +246,17 @@ public class Tarea  implements java.io.Serializable {
                     while (itd.hasNext()) {
                         Dia di = (Dia) itd.next();
                         aux.setDate(di.getDia());
-                        aux.setHours(di.getIniciofins().iterator().next().getFin().getHours());
-                        aux.setMinutes(di.getIniciofins().iterator().next().getFin().getMinutes());
+                        Iterator itin=di.getIniciofins().iterator();
+                        while(itin.hasNext()){
+                                Iniciofin inic=(Iniciofin) itin.next();
+                                if(inic.getInicio()!=null){
+                                    aux.setHours(inic.getInicio().getHours());
+                                    aux.setMinutes(inic.getInicio().getMinutes());
+                                }else{
+                                    aux.setHours(inic.getFin().getHours());
+                                    aux.setMinutes(inic.getFin().getMinutes());
+                                }
+                        }
                         if(aux.compareTo(hoy)>=0){
                             Iterator iti=di.getIniciofins().iterator();
                             while(iti.hasNext()){
