@@ -522,18 +522,42 @@ public class Personal  implements java.io.Serializable {
                             Date inicio=tarot.getDiaInicio();
                             Date fin=tarot.getDiaFin();
                             if(diaini.compareTo(inicio)>=0 ||diafin.compareTo(inicio)>= 0 && diaini.compareTo(fin)<=0 || diafin.compareTo(fin)<=0){
-                                band = false;
-                                JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para "+ toString() +" porque hay otra tarea a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);
-                                return band;
+                                Date hinicio = tarot.getDiaInicio();
+                                Date hhfin = tarot.getDiaFin();
+                                if(hini.compareTo(hinicio)<=0&&hfin.compareTo(hinicio)>=0){
+                                    band = false;
+                                    JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para "+ toString() +" porque existe otra tarea a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);
+                                    return band;
+                                }else if(hini.compareTo(hhfin)<=0&&hfin.compareTo(hhfin)>=0){
+                                    band = false;
+                                    JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para "+ toString() +" porque existe otra tarea a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);
+                                    return band;
+                                }else if(hini.compareTo(hinicio)>=0&&hfin.compareTo(hinicio)>=0&&hini.compareTo(hhfin)<=0&&hfin.compareTo(hhfin)<=0){
+                                    band = false;
+                                    JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para "+ toString() +" porque existe otra tarea a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);
+                                    return band;
+                                }
                             }
                         }else if(age.getTarea().getTareaextracurriculars().iterator().hasNext()){
                             Tareaextracurricular tarot=age.getTarea().getTareaextracurriculars().iterator().next();
                             Date inicio=tarot.getDiaInicio();
                             Date fin=tarot.getDiaFin();
                             if(diaini.compareTo(inicio)>=0 ||diafin.compareTo(inicio)>= 0 && diaini.compareTo(fin)<=0 || diafin.compareTo(fin)<=0){
-                                band = false;
-                                JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para "+ toString() +" porque existe una tarea extracurricular a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);
-                                return band;
+                                Date hinicio = tarot.getDiaInicio();
+                                Date hhfin = tarot.getDiaFin();
+                                if(hini.compareTo(hinicio)<=0&&hfin.compareTo(hinicio)>=0){
+                                    band = false;
+                                    JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para "+ toString() +" porque existe una tarea extracurricular a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);
+                                    return band;
+                                }else if(hini.compareTo(hhfin)<=0&&hfin.compareTo(hhfin)>=0){
+                                    band = false;
+                                    JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para "+ toString() +" porque existe una tarea extracurricular a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);
+                                    return band;
+                                }else if(hini.compareTo(hinicio)>=0&&hfin.compareTo(hinicio)>=0&&hini.compareTo(hhfin)<=0&&hfin.compareTo(hhfin)<=0){
+                                    band = false;
+                                    JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para "+ toString() +" porque existe una tarea extracurricular a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);
+                                    return band;
+                                }
                             }
                         }else if(age.getTarea().getTareaclases().iterator().hasNext()){
                             Date diaaux = diaini;
@@ -586,7 +610,7 @@ public class Personal  implements java.io.Serializable {
                                         return band;
                                     } else if (hini.compareTo(inicio) >= 0 && hfin.compareTo(inicio) >= 0 && hini.compareTo(fin) <= 0 && hfin.compareTo(fin) <= 0) {
                                         band = false;
-                                        JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para " + toString() + " porque existe una clase a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);
+                                        JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para " + toString() + " porque existe una reunión a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);
                                         return band;
                                     }
                                 }
@@ -606,7 +630,6 @@ public class Personal  implements java.io.Serializable {
                         Iterator itin=act.getActivoIniciofins().iterator();
                         while(itin.hasNext()){
                             ActivoIniciofin in=(ActivoIniciofin) itin.next();
-                            
                                 if(hini.compareTo(in.getFin())<0 || hfin.compareTo(in.getInicio())>0){
                                     band=false;
                                     JOptionPane.showMessageDialog(null,"no existe disponibilidad por parte de la declaración jurada a ese horario");

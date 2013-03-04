@@ -93,22 +93,18 @@ public class JFrameExtracurricular extends javax.swing.JFrame {
                 jTextField3.setEnabled(false);
                 jTextField4.setText(tar.getLugar());
                 Tareaextracurricular tarot = tar.getTareaextracurriculars().iterator().next();
-                Calendar ffechaini = Calendar.getInstance();
-                ffechaini.setTime(tarot.getDiaInicio());
-                dateChooserCombo1.setSelectedDate(ffechaini);
                 menor=tarot.getDiaInicio();
                 mayor=tarot.getDiaFin();
                 Calendar ffechafin = Calendar.getInstance();
                 ffechafin.setTime(tarot.getDiaFin());
                 dateChooserCombo2.setSelectedDate(ffechafin);
-                
+                Calendar ffechaini = Calendar.getInstance();
+                ffechaini.setTime(tarot.getDiaInicio());
+                dateChooserCombo1.setSelectedDate(ffechaini);
                 fecha = tar.ObtenerFechaMayor(new Date().getYear());
-                Agenda age = tar.getAgendas().iterator().next();
-                Dia d = age.getDia2(fecha);
-                Iniciofin ini = d.getIniciofins().iterator().next();
                 SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
-                jFormattedTextField1.setValue(formateador.format(ini.getInicio()));
-                jFormattedTextField2.setValue(formateador.format(ini.getFin()));
+                jFormattedTextField1.setValue(formateador.format(menor));
+                jFormattedTextField2.setValue(formateador.format(mayor));
                 Drive.LimpiarTabla(jTable1);
                 Iterator it = tar.getAgendas().iterator();
                 while (it.hasNext()) {
@@ -582,13 +578,19 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                             fin.setYear(fecha_fin.getYear());
                             fin.setMonth(fecha_fin.getMonth());
                             fin.setDate(fecha_fin.getDate());
+                            String i = formateador.format(inicio);
+                            String e = formateador.format(fin);
+                            Date ini = new Date();
+                            Date fi = new Date();
+                            ini = formateador.parse(i);
+                            fi = formateador.parse(e);
                             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
                             int cc = 0;
                             boolean est = false;
                             while (jTable1.getRowCount() != cc) {
                                 if (model.getValueAt(cc, 0).equals(true)) {
                                     Personal per = (Personal) model.getValueAt(cc, 1);
-                                    if (per.VerificarDisponibilidad(fecha, inicio, fin, fecha)) {
+                                    if (per.VerificarDisponibilidad(fecha_inicio, ini, fi, fecha_fin)) {
                                         est = true;
                                     }
                                 }
@@ -611,9 +613,6 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                 while (jTable1.getRowCount() != c) {
                                     if (modelo.getValueAt(c, 0).equals(true)) {
                                         Personal per = (Personal) modelo.getValueAt(c, 1);
-                                        Iniciofin aux = new Iniciofin();
-                                        aux.setInicio(inicio);
-                                        aux.setFin(fin);
                                         if (per.VerificarDisponibilidad(fecha_inicio, inicio, fin, fecha_fin)) {
                                             AgendaId ida = new AgendaId(per.getIdPersonal(), tarr.getIdTarea());
                                             Agenda age = new Agenda();
@@ -759,6 +758,8 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                             }
                             if (cambio == true) {
                                 tar.BorrarTodo();
+                                Drive=new Controlador();
+                                tar=(Tarea) Drive.PERSISTENCIA.getTarea(tar.getIdTarea()).iterator().next();
                                 c = 0;
                                 while (jTable1.getRowCount() != c) {
                                     if (modelo.getValueAt(c, 0).equals(true)) {
