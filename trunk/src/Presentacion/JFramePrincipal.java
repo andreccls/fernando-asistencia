@@ -50,7 +50,7 @@ public class JFramePrincipal extends javax.swing.JFrame {
         this.adm=admin;
         this.idsesion=id;
         initComponents();
-        ImageIcon fott = new ImageIcon("C:\\Users\\fer\\Desktop\\Tesis\\tesisanalista\\src\\imagenes\\gutenberg.png");
+        ImageIcon fott = new ImageIcon("src\\imagenes\\gutenberg.png");
         Icon icono4 = new ImageIcon(fott.getImage().getScaledInstance(jLabel1.getWidth(), jLabel1.getHeight(), Image.SCALE_DEFAULT));
         jLabel1.setIcon(icono4);
         jLabel1.repaint();

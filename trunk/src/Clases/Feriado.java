@@ -28,6 +28,11 @@ public class Feriado  implements java.io.Serializable {
        this.comentario = comentario;
        this.dia = dia;
     }
+    
+    @Override
+    public String toString() {
+        return comentario;
+    }
    
     public Integer getIdFeriado() {
         return this.idFeriado;

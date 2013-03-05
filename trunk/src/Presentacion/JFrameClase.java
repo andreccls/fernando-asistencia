@@ -82,12 +82,12 @@ public class JFrameClase extends javax.swing.JFrame {
         jTable1.getColumnModel().getColumn(4).setCellRenderer(modelocentrar); 
         jTable1.getTableHeader().setDefaultRenderer(new HeaderRenderer(jTable1));
         ///ICONO EDITAR
-        ImageIcon fot = new ImageIcon("C:/Users/fer/Desktop/TesisAnalista/src/imagenes/image.jpg");
+        ImageIcon fot = new ImageIcon("src\\imagenes\\image.jpg");
         Icon icono1 = new ImageIcon(fot.getImage().getScaledInstance(jLabel18.getWidth(), jLabel18.getHeight(), Image.SCALE_DEFAULT));
         jLabel18.setIcon(icono1);
         jLabel18.repaint();
         ///ICONO ELIMINAR
-        ImageIcon fott = new ImageIcon("C:/Users/fer/Desktop/TesisAnalista/src/imagenes/eliminar.gif");
+        ImageIcon fott = new ImageIcon("src\\imagenes\\eliminar.gif");
         Icon icono2 = new ImageIcon(fott.getImage().getScaledInstance(jLabel19.getWidth(), jLabel19.getHeight(), Image.SCALE_DEFAULT));
         jLabel19.setIcon(icono2);
         jLabel19.repaint();
@@ -457,11 +457,11 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
 
         },
         new String [] {
-            "Nº", "Apellido", "DNI", "Sexo", "Estado civil"
+            "Apellido", "DNI", "Sexo", "Estado civil"
         }
     ) {
         boolean[] canEdit = new boolean [] {
-            false, false, false, false, false
+            false, false, false, false
         };
 
         public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -921,6 +921,8 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                         }
                         if (cambio == true) {
                             tar.BorrarTodo();
+                            Drive=new Controlador();
+                            tar=(Tarea) Drive.PERSISTENCIA.getTarea(tar.getIdTarea()).iterator().next();
                             c = 0;
                             while (jTable1.getRowCount() != c) {
                                 Personal person = (Personal) modelo.getValueAt(c, 3);
@@ -1225,11 +1227,11 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
     }//GEN-LAST:event_jTextField5KeyTyped
 
     private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
-        Establecimiento col= Drive.getPrimerEstablecimiento();
+        //Establecimiento col= Drive.getPrimerEstablecimiento();
         jTable2.getModel();
         int fila = jTable2.rowAtPoint(evt.getPoint());
         if ((fila > -1)){
-            per=col.getPersonal(Integer.parseInt(jTable2.getValueAt(fila,0).toString()));
+            per=(Personal) jTable2.getValueAt(fila,0);
         }
 
     }//GEN-LAST:event_jTable2MouseClicked

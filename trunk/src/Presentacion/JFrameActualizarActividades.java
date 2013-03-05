@@ -59,29 +59,29 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
         jTextField3.setText(tarr.getLugar());
         jTextField3.setEnabled(false);
         jButton1.setEnabled(false);
-        int[] anchos1 = {30,170,120,90,80,80,80,80};
+        int[] anchos1 = {170,120,90,80,80,80,80};
         for(int i = 0; i < jTable1.getColumnCount(); i++) {
             jTable1.getColumnModel().getColumn(i).setPreferredWidth(anchos1[i]);
         }
         DefaultTableCellRenderer modelocentrar = new DefaultTableCellRenderer();
         modelocentrar.setHorizontalAlignment(SwingConstants.CENTER);
-        jTable1.getColumnModel().getColumn(5).setCellRenderer(modelocentrar); 
+        jTable1.getColumnModel().getColumn(4).setCellRenderer(modelocentrar); 
+        jTable1.getColumnModel().getColumn(5).setCellRenderer(modelocentrar);
         jTable1.getColumnModel().getColumn(6).setCellRenderer(modelocentrar);
-        jTable1.getColumnModel().getColumn(7).setCellRenderer(modelocentrar);
         
         jTable1.getTableHeader().setDefaultRenderer(new JFrameActualizarActividades.HeaderRenderer(jTable1));
         if(tar.getComentario().equals("EXTRACURRICULAR")){
             jButton1.setEnabled(true);
             JTableHeader th = jTable1.getTableHeader();
             TableColumnModel tcm = th.getColumnModel();
-            TableColumn tc = tcm.getColumn(3); //recordemos que las columnas inician a enumerarse desde cero
+            TableColumn tc = tcm.getColumn(2); //recordemos que las columnas inician a enumerarse desde cero
             tc.setHeaderValue("Franco");
-            TableColumn tc1 = tcm.getColumn(4); //recordemos que las columnas inician a enumerarse desde cero
+            TableColumn tc1 = tcm.getColumn(3); //recordemos que las columnas inician a enumerarse desde cero
             tc1.setHeaderValue("Fecha fin");
-            TableColumn tc2 = tcm.getColumn(5); //recordemos que las columnas inician a enumerarse desde cero
+            TableColumn tc2 = tcm.getColumn(4); //recordemos que las columnas inician a enumerarse desde cero
             tc2.setHeaderValue("Fecha inicio");
             th.repaint(); //actualizamos el header
-            TableColumn Column3 = jTable1.getColumnModel().getColumn(3);
+            TableColumn Column3 = jTable1.getColumnModel().getColumn(2);
             try {
                 MaskFormatter campo=null;
                 campo = new MaskFormatter("dd/MM/yyyy");
@@ -98,33 +98,33 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
         }else if(tar.getComentario().equals("OTRO")){
             JTableHeader th = jTable1.getTableHeader();
             TableColumnModel tcm = th.getColumnModel();
-            TableColumn t = tcm.getColumn(2); //recordemos que las columnas inician a enumerarse desde cero
+            TableColumn t = tcm.getColumn(1); //recordemos que las columnas inician a enumerarse desde cero
             t.setHeaderValue("Descripción");
-            TableColumn tc = tcm.getColumn(3); //recordemos que las columnas inician a enumerarse desde cero
+            TableColumn tc = tcm.getColumn(2); //recordemos que las columnas inician a enumerarse desde cero
             tc.setHeaderValue("Comentario");
-            TableColumn tc1 = tcm.getColumn(4);
+            TableColumn tc1 = tcm.getColumn(3);
             tc1.setHeaderValue("Fecha fin");
-            TableColumn tc2 = tcm.getColumn(5);
+            TableColumn tc2 = tcm.getColumn(4);
             tc2.setHeaderValue("Fecha inicio");
             th.repaint();
             jTable1.setEnabled(false);
         }else if(tar.getComentario().equals("CLASE")){
             JTableHeader th = jTable1.getTableHeader();
             TableColumnModel tcm = th.getColumnModel();
-            TableColumn t = tcm.getColumn(2); //recordemos que las columnas inician a enumerarse desde cero
+            TableColumn t = tcm.getColumn(1); //recordemos que las columnas inician a enumerarse desde cero
             t.setHeaderValue("Sit. Revista");
-            TableColumn tc = tcm.getColumn(3); //recordemos que las columnas inician a enumerarse desde cero
+            TableColumn tc = tcm.getColumn(2); //recordemos que las columnas inician a enumerarse desde cero
             tc.setHeaderValue("Aula");
-            TableColumn tc1 = tcm.getColumn(4);
+            TableColumn tc1 = tcm.getColumn(3);
             tc1.setHeaderValue("Numero");
             th.repaint();
             jTable1.setEnabled(false);
         }else if(tar.getComentario().equals("REUNION")){
             JTableHeader th = jTable1.getTableHeader();
             TableColumnModel tcm = th.getColumnModel();
-            TableColumn t = tcm.getColumn(2); //recordemos que las columnas inician a enumerarse desde cero
+            TableColumn t = tcm.getColumn(1); //recordemos que las columnas inician a enumerarse desde cero
             t.setHeaderValue("Motivo");
-            TableColumn tc = tcm.getColumn(3); //recordemos que las columnas inician a enumerarse desde cero
+            TableColumn tc = tcm.getColumn(2); //recordemos que las columnas inician a enumerarse desde cero
             tc.setHeaderValue("Caracter");
 //            TableColumn tc1 = tcm.getColumn(4);
 //            tc1.setHeaderValue("Numero");
@@ -184,11 +184,11 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Nº", "Personal", "Descripción 1", "Descripción 2", "Descripción 3", "Fecha", "Inicio", "Fin"
+                "Personal", "Descripción 1", "Descripción 2", "Descripción 3", "Fecha", "Inicio", "Fin"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, true, false, false, false, false
+                false, false, true, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -344,13 +344,13 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
                 DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
                 int e = 0;
                 while (modelo.getRowCount() != e) {
-                    int id= Integer.parseInt(modelo.getValueAt(e, 0).toString());
-                    if(modelo.getValueAt(e, 3)!=null){
+                    Personal id= (Personal) modelo.getValueAt(e, 0);
+                    if(modelo.getValueAt(e, 2)!=null){
                             SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
                             formateador.setLenient(false);
-                            Agenda age=Drive.getAgenda(tar, id);
+                            Agenda age=Drive.getAgenda(tar, id.getIdPersonal());
                             Franco fran=age.getFranco(age);
-                            fran.setDiaFranco(formateador.parse(modelo.getValueAt(e, 3).toString()));
+                            fran.setDiaFranco(formateador.parse(modelo.getValueAt(e, 2).toString()));
                             if(fran.getIdFranco()!=null){
                                 fran.actualizarFranco(fran);
                             }else{
@@ -382,8 +382,8 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
                 try {
                     DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
                     if (jTable1.getRowCount() > 0) {
-                        Object o = modelo.getValueAt(0, 4);
-                        Object oo = modelo.getValueAt(0, 7);
+                        Object o = modelo.getValueAt(0, 3);
+                        Object oo = modelo.getValueAt(0, 6);
                         SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
                         SimpleDateFormat formateador2 = new SimpleDateFormat("HH:mm");
                         Date fecha = formateador.parse(o.toString());
@@ -406,8 +406,8 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
                 try {
                     DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
                     if (jTable1.getRowCount() > 0) {
-                        Object o = modelo.getValueAt(0, 4);
-                        Object oo = modelo.getValueAt(0, 7);
+                        Object o = modelo.getValueAt(0, 3);
+                        Object oo = modelo.getValueAt(0, 6);
                         SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
                         SimpleDateFormat formateador2 = new SimpleDateFormat("HH:mm");
                         Date fecha = formateador.parse(o.toString());
@@ -433,8 +433,8 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
                 try {
                     DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
                     if (jTable1.getRowCount() > 0) {
-                        Object o = modelo.getValueAt(0, 5);
-                        Object oo = modelo.getValueAt(0, 7);
+                        Object o = modelo.getValueAt(0, 4);
+                        Object oo = modelo.getValueAt(0, 6);
                         SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
                         SimpleDateFormat formateador2 = new SimpleDateFormat("HH:mm");
                         Date fecha = formateador.parse(o.toString());

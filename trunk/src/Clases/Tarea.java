@@ -46,6 +46,11 @@ public class Tarea  implements java.io.Serializable {
        this.tareaextracurriculars = tareaextracurriculars;
        this.tareaclases = tareaclases;
     }
+    
+    @Override
+    public String toString() {
+        return nombre;
+    }
    
     public Integer getIdTarea() {
         return this.idTarea;

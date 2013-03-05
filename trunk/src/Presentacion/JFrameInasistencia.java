@@ -79,7 +79,7 @@ public class JFrameInasistencia extends javax.swing.JFrame {
             jTable1.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
         }
         jTable1.getTableHeader().setDefaultRenderer(new HeaderRenderer(jTable1));
-        ImageIcon fot = new ImageIcon("C:/Users/fer/Desktop/TesisAnalista/src/imagenes/image.jpg");
+        ImageIcon fot = new ImageIcon("src\\imagenes\\image.jpg");
         Icon icono1 = new ImageIcon(fot.getImage().getScaledInstance(jLabel3.getWidth(), jLabel3.getHeight(), Image.SCALE_DEFAULT));
         jLabel3.setIcon(icono1);
         jLabel3.repaint();

@@ -82,7 +82,7 @@ public class jDigitalPersona extends javax.swing.JFrame {
             jLabel8.setVisible(false);
             jLabel9.setVisible(false);
         }
-        int[] anchos1 = {50,150,80,100,90};
+        int[] anchos1 = {150,80,100,90};
         for(int i = 0; i < jTable1.getColumnCount(); i++) {
             jTable1.getColumnModel().getColumn(i).setPreferredWidth(anchos1[i]);
         }
@@ -92,6 +92,7 @@ public class jDigitalPersona extends javax.swing.JFrame {
 //        jTable1.getColumnModel().getColumn(4).setCellRenderer(modelocentrar); 
         
         jTable1.getTableHeader().setDefaultRenderer(new HeaderRenderer(jTable1));
+        Drive.Cargarpersonal(jTable1, buffer.toString(), jTextField4.getText().toUpperCase());
     }
 
     /**
@@ -176,11 +177,11 @@ public class jDigitalPersona extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Nº", "Apellido", "DNI", "Sexo", "Estado civil"
+                "Apellido", "DNI", "Sexo", "Estado civil"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -419,12 +420,13 @@ public class jDigitalPersona extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton11ActionPerformed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
-        Establecimiento col= Drive.getPrimerEstablecimiento();
+        //Establecimiento col= Drive.getPrimerEstablecimiento();
         jTable1.getModel();
-        int fila = jTable1.rowAtPoint(evt.getPoint());
-        if ((fila > -1)){
-            per=col.getPersonal(Integer.parseInt(jTable1.getValueAt(fila,0).toString()));
-        }
+        per=(Personal)jTable1.getValueAt(jTable1.rowAtPoint(evt.getPoint()), 0);
+//        int fila = jTable1.rowAtPoint(evt.getPoint());
+//        if ((fila > -1)){
+//            per=col.getPersonal(Integer.parseInt(jTable1.getValueAt(fila,0).toString()));
+//        }
         
     }//GEN-LAST:event_jTable1MouseClicked
 
