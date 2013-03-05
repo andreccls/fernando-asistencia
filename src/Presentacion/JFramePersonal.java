@@ -68,7 +68,7 @@ public class JFramePersonal extends javax.swing.JFrame {
         jList1.setModel(modeloLista);
         jList2.setModel(modeloLista2);
         ///ICONO EDITAR
-        ImageIcon fot = new ImageIcon("C:/Users/fer/Desktop/TesisAnalista/src/imagenes/image.jpg");
+        ImageIcon fot = new ImageIcon("src\\imagenes\\image.jpg");
         Icon icono1 = new ImageIcon(fot.getImage().getScaledInstance(jLabel35.getWidth(), jLabel35.getHeight(), Image.SCALE_DEFAULT));
         jLabel35.setIcon(icono1);
         jLabel35.repaint();
@@ -77,7 +77,7 @@ public class JFramePersonal extends javax.swing.JFrame {
         jLabel31.setIcon(icono1);
         jLabel31.repaint();
         ///ICONO ELIMINAR
-        ImageIcon fott = new ImageIcon("C:/Users/fer/Desktop/TesisAnalista/src/imagenes/eliminar.gif");
+        ImageIcon fott = new ImageIcon("src\\imagenes\\eliminar.gif");
         Icon icono4 = new ImageIcon(fott.getImage().getScaledInstance(jLabel32.getWidth(), jLabel32.getHeight(), Image.SCALE_DEFAULT));
         jLabel32.setIcon(icono4);
         jLabel32.repaint();

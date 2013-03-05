@@ -49,7 +49,7 @@ public class JFrameConsulta extends javax.swing.JFrame {
         String buscar = (String) jComboBox1.getSelectedItem();
         Drive.CargarTablaFiltro(jTable1, buscar, jTextField1.getText());
         jTextField1.grabFocus();
-        int[] anchos1 = {40, 150, 75, 80, 80, 150, 100, 80};
+        int[] anchos1 = {150, 75, 80, 80, 150, 100, 80};
         for (int i = 0; i < jTable1.getColumnCount(); i++) {
             jTable1.getColumnModel().getColumn(i).setPreferredWidth(anchos1[i]);
         }
@@ -151,11 +151,11 @@ public class JFrameConsulta extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Nº", "Personal", "DNI", "Sexo", "Ingreso", "Correo electrónico", "CUIL", "Estado civil"
+                "Personal", "DNI", "Sexo", "Ingreso", "Correo electrónico", "CUIL", "Estado civil"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -259,12 +259,13 @@ public class JFrameConsulta extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        Establecimiento col = Drive.getPrimerEstablecimiento();
+        //Establecimiento col = Drive.getPrimerEstablecimiento();
         jTable1.getModel();
-        int fila = Integer.parseInt(jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString());
-        if ((fila > -1)) {
-            per = col.getPersonal(fila);
-        }
+        per=(Personal) jTable1.getValueAt(jTable1.getSelectedRow(), 0);
+//        int fila = Integer.parseInt(jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString());
+//        if ((fila > -1)) {
+//            per = col.getPersonal(fila);
+//        }
         if(adm.getPerfil().getNivel()<=2){
                 iniciarSplash();
                 hilo = new HiloProgreso(jProgressBar1, this, Drive, per,adm,idsesion);
@@ -295,12 +296,13 @@ public class JFrameConsulta extends javax.swing.JFrame {
 //}
     private void jTable1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseReleased
         if (evt.getClickCount() == 2) {
-            Establecimiento col = Drive.getPrimerEstablecimiento();
+//            Establecimiento col = Drive.getPrimerEstablecimiento();
             jTable1.getModel();
-            int fila = jTable1.rowAtPoint(evt.getPoint());
-            if ((fila > -1)) {
-                per = col.getPersonal(Integer.parseInt(jTable1.getValueAt(fila, 0).toString()));
-            }
+            per=(Personal) jTable1.getValueAt(jTable1.rowAtPoint(evt.getPoint()), 0);
+//            int fila = jTable1.rowAtPoint(evt.getPoint());
+//            if ((fila > -1)) {
+//                per = col.getPersonal(Integer.parseInt(jTable1.getValueAt(fila, 0).toString()));
+//            }
             if(adm.getPerfil().getNivel()<=2){
                 iniciarSplash();
                 hilo = new HiloProgreso(jProgressBar1, this, Drive, per,adm,idsesion);
@@ -320,9 +322,10 @@ public class JFrameConsulta extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea eliminar el personal y todas sus actividades?", "", JOptionPane.YES_NO_OPTION);
         if (JOptionPane.OK_OPTION == confirmado) {
-            Establecimiento col = Drive.getPrimerEstablecimiento();
+//            Establecimiento col = Drive.getPrimerEstablecimiento();
             jTable1.getModel();
-            Personal per = col.getPersonal(Integer.parseInt(jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString()));
+//            Personal per = col.getPersonal(Integer.parseInt(jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString()));
+            per=(Personal)jTable1.getValueAt(jTable1.getSelectedRow(), 0);
             if (per.getEstado() == true) {
                 per.setEstado(false);
                 per.actualizarPersonal(per);

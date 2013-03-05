@@ -523,7 +523,7 @@ public class JFrameReunion extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
             if (Drive.VerificarCheckTabla(jTable1)) {
-                if (!jTextField1.getText().isEmpty() && !jFormattedTextField1.getText().contains(" ") && !jFormattedTextField2.getText().contains(" ")) {
+                if (!jTextField3.getText().isEmpty() && !jFormattedTextField1.getText().contains(" ") && !jFormattedTextField2.getText().contains(" ")) {
                     if (tar.getIdTarea() == null) {
                         // <editor-fold defaultstate="collapsed" desc="Guardar tarea nueva"> 
                         SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
@@ -656,6 +656,8 @@ public class JFrameReunion extends javax.swing.JFrame {
                             }
                             if (cambio == true) {
                                 tar.BorrarTodo();
+                                Drive=new Controlador();
+                                tar=(Tarea) Drive.PERSISTENCIA.getTarea(tar.getIdTarea()).iterator().next();
                                 c = 0;
                                 while (jTable1.getRowCount() != c) {
                                     if (modelo.getValueAt(c, 0).equals(true)) {

@@ -3,14 +3,6 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/1"/>
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="3">
         <file>
-            <url>src/Clases/Controlador.java</url>
-            <bookmark id="1">
-                <name/>
-                <line>158</line>
-                <key/>
-            </bookmark>
-        </file>
-        <file>
             <url>src/Presentacion/JFrameInasistencia.java</url>
             <bookmark id="3">
                 <name/>
@@ -19,10 +11,18 @@
             </bookmark>
         </file>
         <file>
+            <url>src/Clases/Controlador.java</url>
+            <bookmark id="1">
+                <name/>
+                <line>158</line>
+                <key/>
+            </bookmark>
+        </file>
+        <file>
             <url>src/Presentacion/JFrameActualizarPersonal.java</url>
             <bookmark id="2">
                 <name/>
-                <line>2006</line>
+                <line>2044</line>
                 <key/>
             </bookmark>
         </file>

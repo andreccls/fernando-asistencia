@@ -52,7 +52,7 @@ public class JFrameConsultaActividades extends javax.swing.JFrame {
         Drive.CargarTablaFiltroActividades(jTable1, buscar, buscar2, jTextField1.getText());
         jTextField1.grabFocus();
         bandera=(String) jComboBox2.getSelectedItem();
-        int[] anchos1 = {60,150,150,150};
+        int[] anchos1 = {150,150,150};
         for(int i = 0; i < jTable1.getColumnCount(); i++) {
             jTable1.getColumnModel().getColumn(i).setPreferredWidth(anchos1[i]);
         }
@@ -153,11 +153,11 @@ public class JFrameConsultaActividades extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Nº", "Nombre", "Lugar", "Comentario"
+                "Nombre", "Lugar", "Comentario"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -305,10 +305,11 @@ public class JFrameConsultaActividades extends javax.swing.JFrame {
         if(evt.getClickCount()==2){
             Establecimiento col= Drive.getPrimerEstablecimiento();
             jTable1.getModel();
-            int fila = jTable1.rowAtPoint(evt.getPoint());
-            if ((fila > -1)){
-                tar=col.getTarea(Integer.parseInt(jTable1.getValueAt(fila,0).toString()));
-            }
+            tar=(Tarea)jTable1.getValueAt(jTable1.rowAtPoint(evt.getPoint()), 0);
+            //int fila = jTable1.rowAtPoint(evt.getPoint());
+//            if ((fila > -1)){
+//                tar=col.getTarea(Integer.parseInt(jTable1.getValueAt(fila,0).toString()));
+//            }
             if(adm.getPerfil().getNivel()<=2){
                 iniciarSplash();
     //            //Creamos un objeto HiloProgreso al cual
@@ -324,10 +325,12 @@ public class JFrameConsultaActividades extends javax.swing.JFrame {
         try{
             Establecimiento col= Drive.getPrimerEstablecimiento();
             jTable1.getModel();
-            int fila = Integer.parseInt(jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString());
-            if ((fila > -1)){
-                tar=col.getTarea(fila);
-            }
+            jTable1.getModel();
+            tar=(Tarea)jTable1.getValueAt(jTable1.getSelectedRow(), 0);
+//            int fila = Integer.parseInt(jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString());
+//            if ((fila > -1)){
+//                tar=col.getTarea(fila);
+//            }
             if(adm.getPerfil().getNivel()<=2){
                 iniciarSplash();
     //            //Creamos un objeto HiloProgreso al cual

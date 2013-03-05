@@ -436,11 +436,10 @@ public class Controlador {
         Iterator it = PERSISTENCIA.getFeriados().iterator();
         while (it.hasNext()) {
             Feriado fer = (Feriado) it.next();
-            Object[] fila = new Object[3];
-            fila[0] = fer.getIdFeriado();
-            fila[1] = fer.getComentario();
+            Object[] fila = new Object[2];
+            fila[0] = fer;
             SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
-            fila[2] = formateador.format(fer.getDia());
+            fila[1] = formateador.format(fer.getDia());
             model.addRow(fila);
         }
         tabla.setModel(model);
@@ -456,21 +455,19 @@ public class Controlador {
                     if (buscarpor.equals("Nombre") && ac.getTarea().getEstado() == true) {
                         int i = ac.getTarea().getNombre().indexOf(valor);
                         if (i == 0) {
-                            Object[] fila = new Object[4];
-                            fila[0] = ac.getTarea().getIdTarea();
-                            fila[1] = ac.getTarea().getNombre();
-                            fila[2] = ac.getTarea().getLugar();
-                            fila[3] = ac.getTarea().getComentario();
+                            Object[] fila = new Object[3];
+                            fila[0] = ac.getTarea();
+                            fila[1] = ac.getTarea().getLugar();
+                            fila[2] = ac.getTarea().getComentario();
                             model.addRow(fila);
                         }
                     } else if (buscarpor.equals("Lugar") && ac.getTarea().getEstado() == true) {
                         int i = ac.getTarea().getLugar().indexOf(valor);
                         if (i == 0) {
-                            Object[] fila = new Object[4];
-                            fila[0] = ac.getTarea().getIdTarea();
-                            fila[1] = ac.getTarea().getNombre();
-                            fila[2] = ac.getTarea().getLugar();
-                            fila[3] = ac.getTarea().getComentario();
+                            Object[] fila = new Object[3];
+                            fila[0] = ac.getTarea();
+                            fila[1] = ac.getTarea().getLugar();
+                            fila[2] = ac.getTarea().getComentario();
                             model.addRow(fila);
                         }
                     }
@@ -484,21 +481,19 @@ public class Controlador {
                     if (buscarpor.equals("Nombre") && ac.getTarea().getEstado() == true) {
                         int i = ac.getTarea().getNombre().indexOf(valor);
                         if (i == 0) {
-                            Object[] fila = new Object[4];
-                            fila[0] = ac.getTarea().getIdTarea();
-                            fila[1] = ac.getTarea().getNombre();
-                            fila[2] = ac.getTarea().getLugar();
-                            fila[3] = ac.getTarea().getComentario();
+                            Object[] fila = new Object[3];
+                            fila[0] = ac.getTarea();
+                            fila[1] = ac.getTarea().getLugar();
+                            fila[2] = ac.getTarea().getComentario();
                             model.addRow(fila);
                         }
                     } else if (buscarpor.equals("Lugar") && ac.getTarea().getEstado() == true) {
                         int i = ac.getTarea().getLugar().indexOf(valor);
                         if (i == 0) {
-                            Object[] fila = new Object[4];
-                            fila[0] = ac.getTarea().getIdTarea();
-                            fila[1] = ac.getTarea().getNombre();
-                            fila[2] = ac.getTarea().getLugar();
-                            fila[3] = ac.getTarea().getComentario();
+                            Object[] fila = new Object[3];
+                            fila[0] = ac.getTarea();
+                            fila[1] = ac.getTarea().getLugar();
+                            fila[2] = ac.getTarea().getComentario();
                             model.addRow(fila);
                         }
                     }
@@ -513,21 +508,19 @@ public class Controlador {
                     if (buscarpor.equals("Nombre") && ac.getEstado() == true) {
                         int i = ac.getNombre().indexOf(valor);
                         if (i == 0) {
-                            Object[] fila = new Object[4];
-                            fila[0] = ac.getIdTarea();
-                            fila[1] = ac.getNombre();
-                            fila[2] = ac.getLugar();
-                            fila[3] = ac.getComentario();
+                            Object[] fila = new Object[3];
+                            fila[0] = ac;
+                            fila[1] = ac.getLugar();
+                            fila[2] = ac.getComentario();
                             model.addRow(fila);
                         }
                     } else if (buscarpor.equals("Lugar") && ac.getEstado() == true) {
                         int i = ac.getLugar().indexOf(valor);
                         if (i == 0) {
-                            Object[] fila = new Object[4];
-                            fila[0] = ac.getIdTarea();
-                            fila[1] = ac.getNombre();
-                            fila[2] = ac.getLugar();
-                            fila[3] = ac.getComentario();
+                            Object[] fila = new Object[3];
+                            fila[0] = ac;
+                            fila[1] = ac.getLugar();
+                            fila[2] = ac.getComentario();
                             model.addRow(fila);
                         }
                     }
@@ -542,21 +535,19 @@ public class Controlador {
                     if (buscarpor.equals("Nombre") && ac.getEstado() == true) {
                         int i = ac.getNombre().indexOf(valor);
                         if (i == 0) {
-                            Object[] fila = new Object[4];
-                            fila[0] = ac.getIdTarea();
-                            fila[1] = ac.getNombre();
-                            fila[2] = ac.getLugar();
-                            fila[3] = ac.getComentario();
+                            Object[] fila = new Object[3];
+                            fila[0] = ac;
+                            fila[1] = ac.getLugar();
+                            fila[2] = ac.getComentario();
                             model.addRow(fila);
                         }
                     } else if (buscarpor.equals("Lugar") && ac.getEstado() == true) {
                         int i = ac.getLugar().indexOf(valor);
                         if (i == 0) {
-                            Object[] fila = new Object[4];
-                            fila[0] = ac.getIdTarea();
-                            fila[1] = ac.getNombre();
-                            fila[2] = ac.getLugar();
-                            fila[3] = ac.getComentario();
+                            Object[] fila = new Object[3];
+                            fila[0] = ac;
+                            fila[1] = ac.getLugar();
+                            fila[2] = ac.getComentario();
                             model.addRow(fila);
                         }
                     }
@@ -570,21 +561,19 @@ public class Controlador {
                     if (buscarpor.equals("Nombre") && ac.getEstado() == true) {
                         int i = ac.getNombre().indexOf(valor);
                         if (i == 0) {
-                            Object[] fila = new Object[4];
-                            fila[0] = ac.getIdTarea();
-                            fila[1] = ac.getNombre();
-                            fila[2] = ac.getLugar();
-                            fila[3] = ac.getComentario();
+                            Object[] fila = new Object[3];
+                            fila[0] = ac;
+                            fila[1] = ac.getLugar();
+                            fila[2] = ac.getComentario();
                             model.addRow(fila);
                         }
                     } else if (buscarpor.equals("Lugar") && ac.getEstado() == true) {
                         int i = ac.getLugar().indexOf(valor);
                         if (i == 0) {
-                            Object[] fila = new Object[4];
-                            fila[0] = ac.getIdTarea();
-                            fila[1] = ac.getNombre();
-                            fila[2] = ac.getLugar();
-                            fila[3] = ac.getComentario();
+                            Object[] fila = new Object[3];
+                            fila[0] = ac;
+                            fila[1] = ac.getLugar();
+                            fila[2] = ac.getComentario();
                             model.addRow(fila);
                         }
                     }
@@ -592,6 +581,55 @@ public class Controlador {
             }
         }
 
+        tabla.setModel(model);
+    }
+    public void Cargarpersonal(JTable tabla, String buscarpor, String valor) {
+        DefaultTableModel model = (DefaultTableModel) tabla.getModel();
+        Iterator<Personal> pe = getPrimerEstablecimiento().getPersonals().iterator();
+        while (pe.hasNext()) {
+            Personal person = (Personal) pe.next();
+            if (buscarpor.equals("Apellido") && person.getEstado() == true) {
+                int i = person.getApellido().indexOf(valor);
+                if (i == 0) {
+                    Object[] fila = new Object[4];
+                    fila[0] = person;
+                    fila[1] = person.getDni();
+                    fila[2] = person.getSexo();
+                    fila[3] = person.getEstadoCivil();
+                    model.addRow(fila);
+                }
+            } else if (buscarpor.equals("Nombre") && person.getEstado() == true) {
+                int i = person.getNombre().indexOf(valor);
+                if (i == 0) {
+                    Object[] fila = new Object[4];
+                    fila[0] = person;
+                    fila[1] = person.getDni();
+                    fila[2] = person.getSexo();
+                    fila[3] = person.getEstadoCivil();
+                    model.addRow(fila);
+                }
+            } else if (buscarpor.equals("Sexo") && person.getEstado() == true) {
+                int i = person.getSexo().indexOf(valor);
+                if (i == 0) {
+                    Object[] fila = new Object[4];
+                    fila[0] = person;
+                    fila[1] = person.getDni();
+                    fila[2] = person.getSexo();
+                    fila[3] = person.getEstadoCivil();
+                    model.addRow(fila);
+                }
+            } else if (buscarpor.equals("Estado civil") && person.getEstado() == true) {
+                int i = person.getEstadoCivil().indexOf(valor);
+                if (i == 0) {
+                    Object[] fila = new Object[4];
+                    fila[0] = person;
+                    fila[1] = person.getDni();
+                    fila[2] = person.getSexo();
+                    fila[3] = person.getEstadoCivil();
+                    model.addRow(fila);
+                }
+            }
+        }
         tabla.setModel(model);
     }
     
@@ -603,61 +641,57 @@ public class Controlador {
                 if (buscarpor.equals("Apellido") && person.getEstado() == true) {
                     int i = person.getApellido().indexOf(valor);
                     if (i == 0) {
-                       Object[] fila = new Object[8];
-                        fila[0] = person.getIdPersonal();
-                        fila[1] = person.toString();
-                        fila[2] = person.getDni();
-                        fila[3] = person.getSexo();
+                       Object[] fila = new Object[7];
+                        fila[0] = person;
+                        fila[1] = person.getDni();
+                        fila[2] = person.getSexo();
                         SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
-                        fila[4] = formateador.format(person.getIngreso());
-                        fila[5] = person.getCorreoElectronico();
-                        fila[6] = person.getCuil();
-                        fila[7] = person.getEstadoCivil();
+                        fila[3] = formateador.format(person.getIngreso());
+                        fila[4] = person.getCorreoElectronico();
+                        fila[5] = person.getCuil();
+                        fila[6] = person.getEstadoCivil();
                         model.addRow(fila);
                     }
                 } else if (buscarpor.equals("Nombre") && person.getEstado() == true) {
                     int i = person.getNombre().indexOf(valor);
                     if (i == 0) {
-                        Object[] fila = new Object[8];
-                        fila[0] = person.getIdPersonal();
-                        fila[1] = person.toString();
-                        fila[2] = person.getDni();
-                        fila[3] = person.getSexo();
+                        Object[] fila = new Object[7];
+                        fila[0] = person;
+                        fila[1] = person.getDni();
+                        fila[2] = person.getSexo();
                         SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
-                        fila[4] = formateador.format(person.getIngreso());
-                        fila[5] = person.getCorreoElectronico();
-                        fila[6] = person.getCuil();
-                        fila[7] = person.getEstadoCivil();
+                        fila[3] = formateador.format(person.getIngreso());
+                        fila[4] = person.getCorreoElectronico();
+                        fila[5] = person.getCuil();
+                        fila[6] = person.getEstadoCivil();
                         model.addRow(fila);
                     }
                 } else if (buscarpor.equals("Sexo") && person.getEstado() == true) {
                     int i = person.getSexo().indexOf(valor);
                     if (i == 0) {
-                        Object[] fila = new Object[8];
-                        fila[0] = person.getIdPersonal();
-                        fila[1] = person.toString();
-                        fila[2] = person.getDni();
-                        fila[3] = person.getSexo();
+                        Object[] fila = new Object[7];
+                        fila[0] = person.toString();
+                        fila[1] = person.getDni();
+                        fila[2] = person.getSexo();
                         SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
-                        fila[4] = formateador.format(person.getIngreso());
-                        fila[5] = person.getCorreoElectronico();
-                        fila[6] = person.getCuil();
-                        fila[7] = person.getEstadoCivil();
+                        fila[3] = formateador.format(person.getIngreso());
+                        fila[4] = person.getCorreoElectronico();
+                        fila[5] = person.getCuil();
+                        fila[6] = person.getEstadoCivil();
                         model.addRow(fila);
                     }
                 } else if (buscarpor.equals("Estado civil") && person.getEstado() == true) {
                     int i = person.getEstadoCivil().indexOf(valor);
                     if (i == 0) {
-                        Object[] fila = new Object[8];
-                        fila[0] = person.getIdPersonal();
-                        fila[1] = person.toString();
-                        fila[2] = person.getDni();
-                        fila[3] = person.getSexo();
+                        Object[] fila = new Object[7];
+                        fila[0] = person.toString();
+                        fila[1] = person.getDni();
+                        fila[2] = person.getSexo();
                         SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
-                        fila[4] = formateador.format(person.getIngreso());
-                        fila[5] = person.getCorreoElectronico();
-                        fila[6] = person.getCuil();
-                        fila[7] = person.getEstadoCivil();
+                        fila[3] = formateador.format(person.getIngreso());
+                        fila[7] = person.getCorreoElectronico();
+                        fila[5] = person.getCuil();
+                        fila[6] = person.getEstadoCivil();
                         model.addRow(fila);
                     }
                 }
@@ -756,23 +790,21 @@ public class Controlador {
                 if (buscarpor.equals("Apellido") && person.getEstado() == true) {
                     int i = person.getApellido().indexOf(valor);
                     if (i == 0) {
-                        Object[] fila = new Object[5];
-                        fila[0] = person.getIdPersonal();
-                        fila[1] = person.toString();
-                        fila[2] = person.getDni();
-                        fila[3] = person.getSexo();
-                        fila[4] = person.getEstadoCivil();
+                        Object[] fila = new Object[4];
+                        fila[0] = person;
+                        fila[1] = person.getDni();
+                        fila[2] = person.getSexo();
+                        fila[3] = person.getEstadoCivil();
                         model.addRow(fila);
                     }
                 } else if (buscarpor.equals("Nombre") && person.getEstado() == true) {
                     int i = person.getNombre().indexOf(valor);
                     if (i == 0) {
-                        Object[] fila = new Object[5];
-                        fila[0] = person.getIdPersonal();
-                        fila[1] = person.toString();
-                        fila[2] = person.getDni();
-                        fila[3] = person.getSexo();
-                        fila[4] = person.getEstadoCivil();
+                        Object[] fila = new Object[4];
+                        fila[0] = person;
+                        fila[1] = person.getDni();
+                        fila[2] = person.getSexo();
+                        fila[3] = person.getEstadoCivil();
                         model.addRow(fila);
                     }
                 } 
@@ -781,59 +813,7 @@ public class Controlador {
         tabla.setModel(model);
     }
     
-    public void Cargarpersonal(JTable tabla, String buscarpor, String valor) {
-        DefaultTableModel model = (DefaultTableModel) tabla.getModel();
-        Iterator<Personal> pe = getPrimerEstablecimiento().getPersonals().iterator();
-        while (pe.hasNext()) {
-            Personal person = (Personal) pe.next();
-            if (buscarpor.equals("Apellido") && person.getEstado() == true) {
-                int i = person.getApellido().indexOf(valor);
-                if (i == 0) {
-                    Object[] fila = new Object[5];
-                    fila[0] = person.getIdPersonal();
-                    fila[1] = person.toString();
-                    fila[2] = person.getDni();
-                    fila[3] = person.getSexo();
-                    fila[4] = person.getEstadoCivil();
-                    model.addRow(fila);
-                }
-            } else if (buscarpor.equals("Nombre") && person.getEstado() == true) {
-                int i = person.getNombre().indexOf(valor);
-                if (i == 0) {
-                    Object[] fila = new Object[5];
-                    fila[0] = person.getIdPersonal();
-                    fila[1] = person.toString();
-                    fila[2] = person.getDni();
-                    fila[3] = person.getSexo();
-                    fila[4] = person.getEstadoCivil();
-                    model.addRow(fila);
-                }
-            } else if (buscarpor.equals("Sexo") && person.getEstado() == true) {
-                int i = person.getSexo().indexOf(valor);
-                if (i == 0) {
-                    Object[] fila = new Object[5];
-                    fila[0] = person.getIdPersonal();
-                    fila[1] = person.toString();
-                    fila[2] = person.getDni();
-                    fila[3] = person.getSexo();
-                    fila[4] = person.getEstadoCivil();
-                    model.addRow(fila);
-                }
-            } else if (buscarpor.equals("Estado civil") && person.getEstado() == true) {
-                int i = person.getEstadoCivil().indexOf(valor);
-                if (i == 0) {
-                    Object[] fila = new Object[5];
-                    fila[0] = person.getIdPersonal();
-                    fila[1] = person.toString();
-                    fila[2] = person.getDni();
-                    fila[3] = person.getSexo();
-                    fila[4] = person.getEstadoCivil();
-                    model.addRow(fila);
-                }
-            }
-        }
-        tabla.setModel(model);
-    }
+    
 
     public void CargarTablaflia(JTable Tabla, Personal per) {
         try {
@@ -874,7 +854,7 @@ public class Controlador {
             DefaultTableModel modelo = (DefaultTableModel) Tabla.getModel();
             if(!tar.getTareaclases().isEmpty()){
                 if (tar.getEstado() == true) {
-                    Object fila[] = new Object[8];
+                    Object fila[] = new Object[7];
                     Iterator it=tar.getAgendas().iterator();
                     while(it.hasNext()){
                         Agenda age=(Agenda) it.next();
@@ -895,16 +875,15 @@ public class Controlador {
                                        fecha.setYear(an.getAno()-1900);
                                        fecha.setMonth(me.getMes());
                                        fecha.setDate(di.getDia());
-                                       fila[0] = age.getPersonal().getIdPersonal();
-                                       fila[1] = age.getPersonal().toString();
-                                       fila[2] = age.getRevista().getNombre();
-                                       fila[3] = tarcla.getAula();
-                                       fila[4] = tarcla.getNumero();
+                                       fila[0] = age.getPersonal();
+                                       fila[1] = age.getRevista().getNombre();
+                                       fila[2] = tarcla.getAula();
+                                       fila[3] = tarcla.getNumero();
                                        SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
                                        SimpleDateFormat formateador2 = new SimpleDateFormat("HH:mm");
-                                       fila[5] = formateador.format(fecha);
-                                       fila[6] = formateador2.format(ini.getInicio());
-                                       fila[7] = formateador2.format(ini.getFin());
+                                       fila[4] = formateador.format(fecha);
+                                       fila[5] = formateador2.format(ini.getInicio());
+                                       fila[6] = formateador2.format(ini.getFin());
                                        modelo.addRow(fila);
                                    }
                                }
@@ -915,7 +894,7 @@ public class Controlador {
                 }
             }else if(!tar.getTareareunions().isEmpty()){
                 if (tar.getEstado() == true) {
-                    Object fila[] = new Object[8];
+                    Object fila[] = new Object[7];
                     Iterator it=tar.getAgendas().iterator();
                     while(it.hasNext()){
                         Agenda age=(Agenda) it.next();
@@ -936,16 +915,15 @@ public class Controlador {
                                        fecha.setYear(an.getAno()-1900);
                                        fecha.setMonth(me.getMes());
                                        fecha.setDate(di.getDia());
-                                       fila[0] = age.getPersonal().getIdPersonal();
-                                       fila[1] = age.getPersonal().toString();
-                                       fila[2] = tarreu.getMotivo();
-                                       fila[3] = tarreu.getCaracter();
+                                       fila[0] = age.getPersonal();
+                                       fila[1] = tarreu.getMotivo();
+                                       fila[2] = tarreu.getCaracter();
                                        //fila[4] = 
                                        SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
                                        SimpleDateFormat formateador2 = new SimpleDateFormat("HH:mm");
-                                       fila[5] = formateador.format(fecha);
-                                       fila[6] = formateador2.format(ini.getInicio());
-                                       fila[7] = formateador2.format(ini.getFin());
+                                       fila[4] = formateador.format(fecha);
+                                       fila[5] = formateador2.format(ini.getInicio());
+                                       fila[6] = formateador2.format(ini.getFin());
                                        modelo.addRow(fila);
                                    }
                                }
@@ -956,7 +934,7 @@ public class Controlador {
                 }
             }else if(!tar.getTareaextracurriculars().isEmpty()){
                 if (tar.getEstado() == true) {
-                    Object fila[] = new Object[8];
+                    Object fila[] = new Object[7];
                     Iterator it=tar.getAgendas().iterator();
                     while(it.hasNext()){
                         Agenda age=(Agenda) it.next();
@@ -978,17 +956,16 @@ public class Controlador {
 //                                       fecha.setYear(an.getAno()-1900);
 //                                       fecha.setMonth(me.getMes());
 //                                       fecha.setDate(di.getDia());
-                                       fila[0] = age.getPersonal().getIdPersonal();
-                                       fila[1] = age.getPersonal().toString();
-                                       fila[2] = tar.getComentario();
+                                       fila[0] = age.getPersonal();
+                                       fila[1] = tar.getComentario();
                                        SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
                                        SimpleDateFormat formateador2 = new SimpleDateFormat("HH:mm");
                                        Franco fran=age.getFranco(age);
                                        if(fran.getIdFranco()!=null){fila[3] = formateador.format(fran.getDiaFranco());}
-                                       fila[4] = formateador.format(tarreu.getDiaFin());
-                                       fila[5] = formateador.format(tarreu.getDiaInicio());
-                                       fila[6] = formateador2.format(tarreu.getDiaInicio());
-                                       fila[7] = formateador2.format(tarreu.getDiaFin());
+                                       fila[3] = formateador.format(tarreu.getDiaFin());
+                                       fila[4] = formateador.format(tarreu.getDiaInicio());
+                                       fila[5] = formateador2.format(tarreu.getDiaInicio());
+                                       fila[6] = formateador2.format(tarreu.getDiaFin());
                                        modelo.addRow(fila);
                                    }
 //                               }
@@ -998,22 +975,21 @@ public class Controlador {
                 }
             } else if (!tar.getTareaotros().isEmpty()) {
                 if (tar.getEstado() == true) {
-                    Object fila[] = new Object[8];
+                    Object fila[] = new Object[7];
                     Iterator it = tar.getAgendas().iterator();
                     while (it.hasNext()) {
                         Agenda age = (Agenda) it.next();
                         Tareaotro tarreu = tar.getTareaotros().iterator().next();
                         //Date fecha = new Date();
-                        fila[0] = age.getPersonal().getIdPersonal();
-                        fila[1] = age.getPersonal().toString();
-                        fila[2] = tar.getComentario();
-                        fila[3] = tarreu.getCaracteristica();
+                        fila[0] = age.getPersonal();
+                        fila[1] = tar.getComentario();
+                        fila[2] = tarreu.getCaracteristica();
                         SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
                         SimpleDateFormat formateador2 = new SimpleDateFormat("HH:mm");
-                        fila[4] = formateador.format(tarreu.getDiaFin());
-                        fila[5] = formateador.format(tarreu.getDiaInicio());
-                        fila[6] = formateador2.format(tarreu.getDiaInicio());
-                        fila[7] = formateador2.format(tarreu.getDiaFin());
+                        fila[3] = formateador.format(tarreu.getDiaFin());
+                        fila[4] = formateador.format(tarreu.getDiaInicio());
+                        fila[5] = formateador2.format(tarreu.getDiaInicio());
+                        fila[6] = formateador2.format(tarreu.getDiaFin());
                         modelo.addRow(fila);
                     }
                 }

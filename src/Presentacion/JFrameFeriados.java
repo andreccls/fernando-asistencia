@@ -43,7 +43,7 @@ public class JFrameFeriados extends javax.swing.JFrame {
         Drive = auxDrive;
         jTextField1.setText(String.valueOf(s.getYear()+1900));
         Drive.CargarTablaFeriados(jTable1);
-        int[] anchos1 = {50,200,80};
+        int[] anchos1 = {200,80};
         for(int i = 0; i < jTable1.getColumnCount(); i++) {
             jTable1.getColumnModel().getColumn(i).setPreferredWidth(anchos1[i]);
         }
@@ -88,11 +88,11 @@ public class JFrameFeriados extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Nro", "Motivo", "Fecha"
+                "Motivo", "Fecha"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -261,17 +261,17 @@ public class JFrameFeriados extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         try{
-            int i=0;
+//            int i=0;
             jTable1.getModel();
-            i = Integer.parseInt(jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString());
-            if(i!=0){
+            //i = Integer.parseInt(jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString());
+//            if(i!=0){
                 int confirmado = JOptionPane.showConfirmDialog(null,"¿Esta seguro que desea eliminar la fecha?","",JOptionPane.YES_NO_OPTION);
                 if (JOptionPane.OK_OPTION == confirmado){
-                    Feriado fer=Drive.getFeriado(i);
+                    Feriado fer=(Feriado)jTable1.getValueAt(jTable1.getSelectedRow(), 0);
                     fer.eliminarFeriado(fer);
                     Drive.CargarTablaFeriados(jTable1);
                 }
-            }
+//            }
         }catch (Exception e){
             JOptionPane.showMessageDialog(null,"Para eliminar una fecha debe seleccionarla y luego presionar 'Eliminar'","Eliminar Feriado", JOptionPane.INFORMATION_MESSAGE);
         }

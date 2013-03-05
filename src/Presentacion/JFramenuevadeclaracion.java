@@ -60,7 +60,7 @@ public class JFramenuevadeclaracion extends javax.swing.JFrame{
         Drive.CargarComboTipocargo(jComboBox2);
         Drive.CargarComboTiponivel(jComboBox3);
         ///ICONO EDITAR
-        ImageIcon fot = new ImageIcon("C:/Users/fer/Desktop/TesisAnalista/src/imagenes/image.jpg");
+        ImageIcon fot = new ImageIcon("src\\imagenes\\image.jpg");
         Icon icono1 = new ImageIcon(fot.getImage().getScaledInstance(jLabel1.getWidth(), jLabel1.getHeight(), Image.SCALE_DEFAULT));
         jLabel1.setIcon(icono1);
         jLabel1.repaint();
@@ -69,7 +69,7 @@ public class JFramenuevadeclaracion extends javax.swing.JFrame{
         jLabel3.setIcon(icono1);
         jLabel3.repaint();
         ///ICONO ELIMINAR
-        ImageIcon fott = new ImageIcon("C:/Users/fer/Desktop/TesisAnalista/src/imagenes/eliminar.gif");
+        ImageIcon fott = new ImageIcon("src\\imagenes\\eliminar.gif");
         Icon icono4 = new ImageIcon(fott.getImage().getScaledInstance(jLabel34.getWidth(), jLabel34.getHeight(), Image.SCALE_DEFAULT));
         jLabel34.setIcon(icono4);
         jLabel34.repaint();
