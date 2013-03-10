@@ -54,7 +54,11 @@ public class JFramePrincipal extends javax.swing.JFrame {
         Icon icono4 = new ImageIcon(fott.getImage().getScaledInstance(jLabel1.getWidth(), jLabel1.getHeight(), Image.SCALE_DEFAULT));
         jLabel1.setIcon(icono4);
         jLabel1.repaint();
-        int nivel=adm.getPerfil().getNivel();
+        int nivel=0;
+        if(adm.getIdPersonal()==null){
+            nivel=1;
+        }else{
+        nivel=adm.getPerfil().getNivel();}
         if(nivel==4){
             jMenuItem1.setEnabled(false);//registrar personal
             jMenuItem2.setEnabled(false);//registrar huella

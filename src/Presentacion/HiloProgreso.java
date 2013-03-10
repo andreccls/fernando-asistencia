@@ -55,7 +55,7 @@ public class HiloProgreso extends Thread{
             framee = new JFrameActualizarPersonal(conn, perr,adm,idsesion);
             for (int i = 1; i <= 100; i++) {
                 progreso.setValue(i);
-                pausa(40);
+                pausa(10);
             }
             fr.hide();
             framee.show();
@@ -63,7 +63,7 @@ public class HiloProgreso extends Thread{
             frameee = new JFrameActualizarActividades(conn,ta,adm,idsesion);
             for(int i=1;i<=100;i++)    {
                 progreso.setValue(i);
-                pausa(50);
+                pausa(10);
             }
             frr.hide();
             frameee.show();

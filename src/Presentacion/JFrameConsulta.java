@@ -346,14 +346,18 @@ public class JFrameConsulta extends javax.swing.JFrame {
     private void jTextField1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyTyped
         Drive.LimpiarTabla(jTable1);
         char car = evt.getKeyChar();
-        int m = buffer.capacity();
+        
         if ((car >= 'a' && car <= 'z') || (car >= 'A' && car <= 'Z')) {
             buffer.append(evt.getKeyChar());
             String es = buffer.toString();
             String buscar = (String) jComboBox1.getSelectedItem();
             Drive.CargarTablaFiltro(jTable1, buscar, es.toUpperCase());
         } else if (car == (char) KeyEvent.VK_BACK_SPACE) {
-            buffer.deleteCharAt(buffer.length() - 1);
+            int m= buffer.length();
+            if(m!=0){
+                buffer.deleteCharAt(buffer.length()-1);
+            }
+////            buffer.deleteCharAt(buffer.length() - 1);
             String es = buffer.toString();
             String buscar = (String) jComboBox1.getSelectedItem();
             Drive.CargarTablaFiltro(jTable1, buscar, es.toUpperCase());

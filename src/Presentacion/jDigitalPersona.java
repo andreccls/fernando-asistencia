@@ -63,6 +63,7 @@ public class jDigitalPersona extends javax.swing.JFrame {
    StringBuffer buffer= new StringBuffer();
    public Personal adm;
    int idsesion;
+   
     public jDigitalPersona(Controlador unDrive, Personal admin, int id) {
         this.adm=admin;
         this.idsesion=id;
@@ -86,11 +87,6 @@ public class jDigitalPersona extends javax.swing.JFrame {
         for(int i = 0; i < jTable1.getColumnCount(); i++) {
             jTable1.getColumnModel().getColumn(i).setPreferredWidth(anchos1[i]);
         }
-        
-//        DefaultTableCellRenderer modelocentrar = new DefaultTableCellRenderer();
-//        modelocentrar.setHorizontalAlignment(SwingConstants.CENTER);
-//        jTable1.getColumnModel().getColumn(4).setCellRenderer(modelocentrar); 
-        
         jTable1.getTableHeader().setDefaultRenderer(new HeaderRenderer(jTable1));
         Drive.Cargarpersonal(jTable1, buffer.toString(), jTextField4.getText().toUpperCase());
     }
@@ -374,8 +370,6 @@ public class jDigitalPersona extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    
-    
     private static class HeaderRenderer implements TableCellRenderer {
         DefaultTableCellRenderer renderer;
         public HeaderRenderer(JTable table) {
@@ -420,14 +414,8 @@ public class jDigitalPersona extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton11ActionPerformed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
-        //Establecimiento col= Drive.getPrimerEstablecimiento();
         jTable1.getModel();
         per=(Personal)jTable1.getValueAt(jTable1.rowAtPoint(evt.getPoint()), 0);
-//        int fila = jTable1.rowAtPoint(evt.getPoint());
-//        if ((fila > -1)){
-//            per=col.getPersonal(Integer.parseInt(jTable1.getValueAt(fila,0).toString()));
-//        }
-        
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void jTable1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseEntered
@@ -435,9 +423,7 @@ public class jDigitalPersona extends javax.swing.JFrame {
     }//GEN-LAST:event_jTable1MouseEntered
 
     private void jTable1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseReleased
-//        if(evt.getClickCount()==2){
-//            
-//        }                 // TODO add your handling code here:
+             // TODO add your handling code here:
     }//GEN-LAST:event_jTable1MouseReleased
 
     private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
@@ -463,7 +449,6 @@ public class jDigitalPersona extends javax.swing.JFrame {
     }//GEN-LAST:event_jRadioButton2ItemStateChanged
 
     private void jRadioButton1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jRadioButton1ItemStateChanged
-
         if(jRadioButton1.isSelected()){
             jPanel5.setVisible(false);
             jLabel4.setVisible(false);
@@ -474,9 +459,7 @@ public class jDigitalPersona extends javax.swing.JFrame {
             jLabel7.setVisible(false);
             jLabel8.setVisible(false);
             jLabel9.setVisible(false);
-
-        }
-        
+        }       
     }//GEN-LAST:event_jRadioButton1ItemStateChanged
 
     private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
@@ -513,18 +496,21 @@ public class jDigitalPersona extends javax.swing.JFrame {
     private void jTextField4KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField4KeyTyped
         Drive.LimpiarTabla(jTable1);
         char car=evt.getKeyChar();
-        int m= buffer.capacity();
+//        int m= buffer.capacity();
         if((car>='a' && car<='z') || (car>='A' && car<='Z')){
             buffer.append(evt.getKeyChar());
             String es=buffer.toString();
             String buscar=(String) jComboBox4.getSelectedItem();
             Drive.Cargarpersonal(jTable1,buscar, es.toUpperCase());
         }else if(car==(char)KeyEvent.VK_BACK_SPACE){
-            buffer.deleteCharAt(buffer.length()-1);
+            int m= buffer.length();
+            if(m!=0){
+                buffer.deleteCharAt(buffer.length()-1);
+            }
             String es=buffer.toString();
             String buscar=(String) jComboBox4.getSelectedItem();
             Drive.Cargarpersonal(jTable1,buscar, es.toUpperCase());
-        }        // TODO add your handling code here:
+        }
     }//GEN-LAST:event_jTextField4KeyTyped
 
     //Varible que permite iniciar el dispositivo de lector de huella conectado
@@ -687,8 +673,10 @@ public class jDigitalPersona extends javax.swing.JFrame {
     }
 
     public  void start(){
+        try{
         Lector.startCapture();
         EnviarTexto("Utilizando el Lector de Huella Dactilar ");
+        }catch(Exception e){JOptionPane.showMessageDialog(null,e.toString());}
     }
 
     public  void stop(){
