@@ -58,8 +58,8 @@ public class JFrameInicio extends javax.swing.JFrame {
     /**
      * Creates new form JFrameInicio
      */
-    public Personal adm;
-    public int idsesion;
+    public Personal adm=new Personal();
+    public int idsesion=0;
     private DPFPCapture Lector = DPFPGlobal.getCaptureFactory().createCapture();
     private DPFPEnrollment Reclutador = DPFPGlobal.getEnrollmentFactory().createEnrollment();
     private DPFPVerification Verificador = DPFPGlobal.getVerificationFactory().createVerification();
@@ -74,7 +74,6 @@ public class JFrameInicio extends javax.swing.JFrame {
             JFrame.setDefaultLookAndFeelDecorated( true );
             UIManager.setLookAndFeel( new com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel() );
         }catch( Exception e ){ e.printStackTrace(); }
-        
         Controlador auxDrive = new Controlador();
         try {
             if (auxDrive.getPrimerEstablecimiento()== null) {
@@ -86,7 +85,9 @@ public class JFrameInicio extends javax.swing.JFrame {
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, ex.toString());
         }
+        
         initComponents();
+        
         ImageIcon fott = new ImageIcon("src\\imagenes\\gutenberg.png");
         Icon icono4 = new ImageIcon(fott.getImage().getScaledInstance(jLabel1.getWidth(), jLabel1.getHeight(), Image.SCALE_DEFAULT));
         jLabel1.setIcon(icono4);
@@ -98,6 +99,7 @@ public class JFrameInicio extends javax.swing.JFrame {
         new Programacion().iniciarTarea();
         Iniciar();
 	start();
+        
     }
 
     /**
@@ -210,6 +212,19 @@ public class JFrameInicio extends javax.swing.JFrame {
         
     }//GEN-LAST:event_formWindowClosing
 
+    public boolean runn() {
+        boolean band=true;
+        Iterator it = Drive.PERSISTENCIA.getPersonales().iterator();
+        if (!it.hasNext()) {
+            JFramePrincipal vp = new JFramePrincipal(Drive, adm, idsesion);
+//            setTemplate(null);
+            stop();
+            this.dispose();
+            vp.show();
+            band=false;
+        }
+        return band;
+    }
     // <editor-fold defaultstate="collapsed" desc="Funciones"> 
     protected void Iniciar(){
         Lector.addDataListener(new DPFPDataAdapter() {
@@ -323,6 +338,8 @@ public class JFrameInicio extends javax.swing.JFrame {
 
     public void identificarHuella() throws IOException {
         try {
+            boolean ba=runn();
+            if(ba==true){
             Iterator<Personal> it = Drive.PERSISTENCIA.getPersonalesTrue(1).iterator();
             while (it.hasNext()) {
                 Personal pp = it.next();
@@ -355,6 +372,7 @@ public class JFrameInicio extends javax.swing.JFrame {
             setTemplate(null);
             stop();
             start();
+            }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Hubo un problema con la identificación de la huella. Por favor intentelo nuevamente", "Verificacion de Huella", JOptionPane.ERROR_MESSAGE);
             Reclutador.clear();

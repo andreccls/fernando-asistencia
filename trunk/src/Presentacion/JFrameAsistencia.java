@@ -104,12 +104,12 @@ public class JFrameAsistencia extends javax.swing.JFrame {
         jLabel5.repaint();
         Iniciar();
 	start();
-        try {
-            boolean s=Drive.PERSISTENCIA.getUsuarios();
-            boolean x=s;
-        } catch (IOException ex) {
-            Logger.getLogger(JFrameAsistencia.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        try {
+//            boolean s=Drive.PERSISTENCIA.getUsuarios();
+//            boolean x=s;
+//        } catch (IOException ex) {
+//            Logger.getLogger(JFrameAsistencia.class.getName()).log(Level.SEVERE, null, ex);
+//        }
         
     }
 

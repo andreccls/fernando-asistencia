@@ -45,31 +45,6 @@ public class persistencia {
         return session.connection();
     }
     
-    boolean validarUsuario(String elUsr, String elPw) throws IOException {
-        try {
-            //nombre de la BD: bdlogin
-            //                             id      integer auto_increment not null     <--llave primaria
-            //                   campos:    usuario    char(25)
-            //                              password char(50)
-            Connection unaConexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/asistencia", "root", "root");
-            // Preparamos la consulta
-            Statement instruccionSQL = unaConexion.createStatement();
-            ResultSet resultadosConsulta = instruccionSQL.executeQuery("select * from mysql.user WHERE User='"+elUsr+"'");
-
-            if (resultadosConsulta.first()) // si es valido el primer reg. hay una fila, tons el usuario y su pw existen
-            {
-                return true;        //usuario validado correctamente
-            } else {
-                return false;        //usuario validado incorrectamente
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-   
-
-
     public void insert(Object unObjeto) {
         Transaction tr = session.beginTransaction();
         session.save(unObjeto);
@@ -118,14 +93,6 @@ public class persistencia {
         return items;
     }
     
-    public boolean getUsuarios() throws ArrayStoreException, IOException {
-        boolean items=false;
-        if(validarUsuario("Usuarios", "usuarios")){
-            items=true;
-        }
-        return items;
-    }
-
     public List getActividades() throws ArrayStoreException {
         String hql = "from Actividad";
         List items = new ArrayList();

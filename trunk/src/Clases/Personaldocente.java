@@ -61,26 +61,26 @@ public class Personaldocente  implements java.io.Serializable {
     
     public void guardarPersonaldoc(Personaldocente unPersonaldoc){
         Controlador.getPERSISTENCIA().insertstring(this);
-
-        JOptionPane.showMessageDialog(null,"El docente "+ 
-                String.valueOf(unPersonaldoc.getId().getIdDocente()) +
-                " se guardo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+//
+//        JOptionPane.showMessageDialog(null,"El docente "+ 
+//                String.valueOf(unPersonaldoc.getId().getIdDocente()) +
+//                " se guardo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
     }
     
     public void actualizarPersonaldoc(Personaldocente unPersonaldoc){
         Controlador.getPERSISTENCIA().update(this);
-
-        JOptionPane.showMessageDialog(null,"El docente "+ 
-                String.valueOf(unPersonaldoc.getId().getIdDocente()) +
-                " se actualizó correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+//
+//        JOptionPane.showMessageDialog(null,"El docente "+ 
+//                String.valueOf(unPersonaldoc.getId().getIdDocente()) +
+//                " se actualizó correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
     }
 
     public void eliminarPersonaldoc(Personaldocente unPersonaldoc){
         Controlador.getPERSISTENCIA().delete(this);
-
-        JOptionPane.showMessageDialog(null,"El docente "+ 
-                String.valueOf(unPersonaldoc.getId().getIdDocente()) +
-                " se eliminar correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+//
+//        JOptionPane.showMessageDialog(null,"El docente "+ 
+//                String.valueOf(unPersonaldoc.getId().getIdDocente()) +
+//                " se eliminar correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
     }
 }
 

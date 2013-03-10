@@ -848,7 +848,6 @@ public class JFramePersonal extends javax.swing.JFrame {
                 Date fechanac= formateador.parse(jFormattedTextField3.getText());
                 ingreso = formateador.parse(jFormattedTextField1.getText());
                 Date hoy=new Date();
-                //int ed= hoy.getYear()-fechanac.getYear();
                 Calendar cal = new GregorianCalendar();
                 cal.setTimeInMillis(fechanac.getTime());
                 cal.add(Calendar.YEAR, 18);
@@ -921,6 +920,7 @@ public class JFramePersonal extends javax.swing.JFrame {
                         pe.actualizarPersonal(pe);
                         JOptionPane.showMessageDialog(null, "EL PERSONAL YA EXISTE Y FUE DADO DE ALTA, PARA REALIZAR UN CAMBIO INGRESE A LA ACTUALIZAR PERSONAL","Registrar Personal", JOptionPane.INFORMATION_MESSAGE);
                     }
+                    
                     jTextField1.setText("");
                     jTextField2.setText("");
                     jFormattedTextField5.setText("");
@@ -1155,8 +1155,6 @@ public class JFramePersonal extends javax.swing.JFrame {
     }//GEN-LAST:event_jFormattedTextField5FocusLost
 
     private void jFormattedTextField2FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jFormattedTextField2FocusLost
-        //        if(jFormattedTextField2.getText().isEmpty()){
-            //        }// TODO add your handling code here:
     }//GEN-LAST:event_jFormattedTextField2FocusLost
 
     private void jRadioButton2ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jRadioButton2ItemStateChanged
@@ -1185,13 +1183,12 @@ public class JFramePersonal extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField7KeyTyped
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        modeloLista2.removeElementAt(jList2.getSelectedIndex());        // TODO add your handling code here:
+        if(jList2.getSelectedIndex()>=0){
+            modeloLista2.removeElementAt(jList2.getSelectedIndex());
+        }
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        
-//        PersonalDepartamento perdepto=new PersonalDepartamento();
-//        PersonalDepartamentoId id=new PersonalDepartamentoId();
         Departamento depto=(Departamento)jComboBox2.getSelectedItem();
         boolean band=true;
         int c=0;
@@ -1228,7 +1225,11 @@ public class JFramePersonal extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        modeloLista.removeElementAt(jList1.getSelectedIndex());// TODO add your handling code here:
+        if(jList1.getSelectedIndex()>=0){
+            modeloLista.removeElementAt(jList1.getSelectedIndex());// TODO add your handling code here:
+        }else{
+            JOptionPane.showMessageDialog(null, "Seleccione un telefono","Registrar Personal", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -1238,7 +1239,6 @@ public class JFramePersonal extends javax.swing.JFrame {
         tel.setNombre((String)jComboBox3.getSelectedItem());
         tel.setNumero(jTextField12.getText());
         modeloLista.addElement(tel);
-        // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jFormattedTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFormattedTextField1ActionPerformed
@@ -1309,23 +1309,18 @@ public class JFramePersonal extends javax.swing.JFrame {
                 jFormattedTextField3.setText("");
             }
         }catch(Exception e){
-            JOptionPane.showMessageDialog(null,e.toString(),"Registrar Personal", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"Ingrese correctamente la fecha","Registrar Personal", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jFormattedTextField3FocusLost
 
     private void jFormattedTextField1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jFormattedTextField1FocusLost
-//        try{
-//            SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
-//            formateador.setLenient(false);
-//            Date ingreso= formateador.parse(jFormattedTextField1.getText());
-//            Date hoy=new Date();
-//            if(ingreso.compareTo(hoy)>0){
-//                JOptionPane.showMessageDialog(null,"La fecha de ingreso debe ser mayor a la fecha actual","Registrar Personal", JOptionPane.ERROR_MESSAGE);
-//                jFormattedTextField1.setText("");
-//            }
-//        }catch(Exception e){
-//            JOptionPane.showMessageDialog(null,e.toString(),"Registrar Personal", JOptionPane.ERROR_MESSAGE);
-//        }
+        try{
+            SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+            formateador.setLenient(false);
+            formateador.parse(jFormattedTextField1.getText());
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null,"Ingrese correctamente la fecha","Registrar Personal", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jFormattedTextField1FocusLost
 
     private void formWindowDeiconified(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowDeiconified

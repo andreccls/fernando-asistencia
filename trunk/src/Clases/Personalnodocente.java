@@ -51,26 +51,26 @@ public class Personalnodocente  implements java.io.Serializable {
     
     public void guardarPersonalnodoc(Personalnodocente unPersonalnodoc){
         Controlador.getPERSISTENCIA().insertstring(this);
-
-        JOptionPane.showMessageDialog(null,"El docente "+ 
-                String.valueOf(unPersonalnodoc.getId().getIdNodocente()) +
-                " se guardo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+//
+//        JOptionPane.showMessageDialog(null,"El docente "+ 
+//                String.valueOf(unPersonalnodoc.getId().getIdNodocente()) +
+//                " se guardo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
     }
     
     public void actualizarPersonalnodoc(Personalnodocente unPersonalnodoc){
         Controlador.getPERSISTENCIA().update(this);
-
-        JOptionPane.showMessageDialog(null,"El docente "+ 
-                String.valueOf(unPersonalnodoc.getId().getIdNodocente()) +
-                " se actualizó correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+//
+//        JOptionPane.showMessageDialog(null,"El docente "+ 
+//                String.valueOf(unPersonalnodoc.getId().getIdNodocente()) +
+//                " se actualizó correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
     }
 
     public void eliminarPersonalnodoc(Personalnodocente unPersonalnodoc){
         Controlador.getPERSISTENCIA().delete(this);
-
-        JOptionPane.showMessageDialog(null,"El docente "+ 
-                String.valueOf(unPersonalnodoc.getId().getIdNodocente()) +
-                " se elimino correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+//
+//        JOptionPane.showMessageDialog(null,"El docente "+ 
+//                String.valueOf(unPersonalnodoc.getId().getIdNodocente()) +
+//                " se elimino correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
     }
 }
 

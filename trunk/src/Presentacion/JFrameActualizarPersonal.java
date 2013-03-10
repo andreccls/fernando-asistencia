@@ -15,6 +15,7 @@ import Clases.DetalleEstablecimiento;
 import Clases.Establecimiento;
 import Clases.Inactivo;
 import Clases.Nivel;
+import Clases.Perfil;
 import Clases.Personal;
 import Clases.PersonalDepartamento;
 import Clases.PersonalDepartamentoId;
@@ -35,7 +36,9 @@ import java.awt.Image;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -102,17 +105,20 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
         jFormattedTextField7.disable();
         jTextField8.setText(per.getApellido());
         jTextField7.setText(per.getNombre());
+        jTextField1.setText(per.getCuil());
+        jTextField1.disable();
         jComboBox2.setSelectedItem(per.getSexo());
-        jFormattedTextField5.setText(per.getCuil());
         jComboBox5.setSelectedItem(per.getEstadoCivil());
-        jComboBox5.setSelectedItem(per.getPerfil());
+        jComboBox12.setSelectedItem(per.getPerfil());
         jTextField21.setText(per.getCorreoElectronico());
         jTextField11.setText(per.getCalle());
         jTextField14.setText(String.valueOf(per.getAltura()));
         jTextField18.setText(per.getPiso());
+        //jTextField16.setText(null);
         jTextField19.setText(per.getDepto());
         SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
         jFormattedTextField2.setValue(formateador.format(per.getIngreso()));
+        jFormattedTextField9.setValue(formateador.format(per.getFechaNac()));
         per.CargarListTelefono(jList1,modeloLista);
         Drive.CargarComboDepartamento(jComboBox3);
         Drive.CargarComboActividad(jComboBox7);
@@ -121,16 +127,16 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
         if(perdoc.getId() != null){
             jRadioButton3.setSelected(true);
             per.CargarListDepartamento(jList2,modeloLista2);
-            jTextField16.setText(Integer.toString(perdoc.getCargohoras()));
-            jTextField17.setText(Integer.toString(perdoc.getAntiguedadDoc()));
-        }
+            jTextField16.setText(String.valueOf(perdoc.getCargohoras()));
+            jTextField17.setText(String.valueOf(perdoc.getAntiguedadDoc()));
+        }else{jRadioButton3.setSelected(false);}
         Personalnodocente pernodoc=per.getPersonalnodoc(per.getIdPersonal());
         if(pernodoc.getId() != null){
             jRadioButton4.setSelected(true);
             //int id=pernodoc.getActividad().getIdActividad();
             Actividad act=pernodoc.getActividad();
             jComboBox7.setSelectedItem(act);
-        }
+        }else{jRadioButton4.setSelected(false);}
         
         Drive.CargarComboTipodoc(jComboBox1);
         Drive.CargarComboRelacion(jComboBox8);
@@ -264,7 +270,6 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
         jComboBox7 = new javax.swing.JComboBox();
         jSeparator4 = new javax.swing.JSeparator();
         jButton15 = new javax.swing.JButton();
-        jFormattedTextField5 = new javax.swing.JFormattedTextField();
         jLabel40 = new javax.swing.JLabel();
         jTextField21 = new javax.swing.JTextField();
         jFormattedTextField7 = new javax.swing.JFormattedTextField();
@@ -281,6 +286,7 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
         jLabel63 = new javax.swing.JLabel();
         jLabel64 = new javax.swing.JLabel();
         jComboBox12 = new javax.swing.JComboBox();
+        jTextField1 = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
@@ -376,11 +382,17 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
         jLabel19.setText("Sexo:");
 
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "MASCULINO", "FEMENINO" }));
+        jComboBox2.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboBox2ItemStateChanged(evt);
+            }
+        });
 
         jLabel20.setText("Correo Elec.:");
 
         jLabel21.setText("Departamento:");
 
+        jComboBox3.setEnabled(false);
         jComboBox3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox3ActionPerformed(evt);
@@ -393,13 +405,14 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
 
         jLabel24.setText("Cargo/horas:");
 
+        jTextField16.setEnabled(false);
         jTextField16.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 jTextField16KeyTyped(evt);
             }
         });
 
-        jLabel25.setText("Iingreso:");
+        jLabel25.setText("Ingreso:");
 
         try {
             jFormattedTextField2.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
@@ -411,9 +424,15 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
                 jFormattedTextField2ActionPerformed(evt);
             }
         });
+        jFormattedTextField2.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jFormattedTextField2FocusLost(evt);
+            }
+        });
 
         jLabel26.setText("Antiguedad:");
 
+        jTextField17.setEnabled(false);
         jTextField17.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 jTextField17KeyTyped(evt);
@@ -450,6 +469,7 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
         jScrollPane2.setViewportView(jList1);
 
         jCheckBox1.setText("Jefe");
+        jCheckBox1.setEnabled(false);
         jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jCheckBox1ActionPerformed(evt);
@@ -457,6 +477,7 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
         });
 
         jButton11.setText("+");
+        jButton11.setEnabled(false);
         jButton11.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton11ActionPerformed(evt);
@@ -464,6 +485,7 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
         });
 
         jButton12.setText("-");
+        jButton12.setEnabled(false);
         jButton12.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton12ActionPerformed(evt);
@@ -473,6 +495,8 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
         jScrollPane5.setViewportView(jList2);
 
         jLabel15.setText("Tipo:");
+
+        jComboBox6.setEnabled(false);
 
         jLabel17.setText("Calle:");
 
@@ -489,6 +513,11 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
         jLabel29.setText("Depto:");
 
         jRadioButton3.setText("Docente");
+        jRadioButton3.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jRadioButton3ItemStateChanged(evt);
+            }
+        });
         jRadioButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jRadioButton3ActionPerformed(evt);
@@ -496,24 +525,20 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
         });
 
         jRadioButton4.setText("No docente");
+        jRadioButton4.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jRadioButton4ItemStateChanged(evt);
+            }
+        });
 
         jLabel30.setText("Actividad:");
+
+        jComboBox7.setEnabled(false);
 
         jButton15.setText("Cancelar");
         jButton15.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton15ActionPerformed(evt);
-            }
-        });
-
-        try {
-            jFormattedTextField5.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##-########-#")));
-        } catch (java.text.ParseException ex) {
-            ex.printStackTrace();
-        }
-        jFormattedTextField5.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                jFormattedTextField5FocusLost(evt);
             }
         });
 
@@ -530,11 +555,17 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
             }
         });
 
+        jFormattedTextField7.setEditable(false);
         try {
             jFormattedTextField7.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##.###.###")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
+        jFormattedTextField7.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jFormattedTextField7FocusLost(evt);
+            }
+        });
 
         jLabel48.setText("N");
         jLabel48.setPreferredSize(new java.awt.Dimension(15, 15));
@@ -586,6 +617,11 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
                 jFormattedTextField9ActionPerformed(evt);
             }
         });
+        jFormattedTextField9.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jFormattedTextField9FocusLost(evt);
+            }
+        });
 
         jLabel60.setText("dd/mm/aaaa");
 
@@ -596,6 +632,13 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
         jLabel63.setText("*");
 
         jLabel64.setText("Perfil:");
+
+        jTextField1.setEditable(false);
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -639,14 +682,14 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
                                             .addComponent(jLabel17)
                                             .addComponent(jLabel22))))
                                 .addGap(6, 6, 6)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jTextField18, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jFormattedTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jFormattedTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jComboBox6, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jComboBox2, 0, 112, Short.MAX_VALUE)
+                                    .addComponent(jFormattedTextField9, javax.swing.GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE)
+                                    .addComponent(jTextField8, javax.swing.GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE)
+                                    .addComponent(jComboBox6, 0, 112, Short.MAX_VALUE)
+                                    .addComponent(jTextField11, javax.swing.GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE)
+                                    .addComponent(jTextField1))
                                 .addGap(7, 7, 7)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel59)
@@ -744,7 +787,7 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
 
         jPanel2Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jButton10, jButton11, jButton12, jButton9});
 
-        jPanel2Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jComboBox2, jComboBox6, jFormattedTextField5, jFormattedTextField9, jTextField11, jTextField8});
+        jPanel2Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jComboBox2, jComboBox6, jFormattedTextField9, jTextField11, jTextField8});
 
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -773,8 +816,8 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
                             .addComponent(jLabel19))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jFormattedTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel14))
+                            .addComponent(jLabel14)
+                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(6, 6, 6)
                         .addComponent(jLabel40)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -856,7 +899,7 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jTextField17, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel26))
-                        .addGap(39, 44, Short.MAX_VALUE))
+                        .addGap(39, 45, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
@@ -888,7 +931,7 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
                     .addComponent(jLabel55, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton4)
                     .addComponent(jButton15))
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         jPanel2Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jTextField16, jTextField17});
@@ -1007,64 +1050,57 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jSeparator1)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 681, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                        .addComponent(jButton2)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton7))
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel5))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jComboBox8, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel44)
                             .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addComponent(jLabel41, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel57, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(50, 50, 50)
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addComponent(jLabel7)
-                                .addGap(18, 18, 18)
-                                .addComponent(jFormattedTextField8))
-                            .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addComponent(jLabel8)
+                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel6)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel5))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jComboBox8, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel10)
+                                    .addComponent(jLabel44)
                                     .addGroup(jPanel5Layout.createSequentialGroup()
-                                        .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel41, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jLabel45))))
+                                        .addComponent(jLabel57, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(50, 50, 50)
+                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel7)
+                                    .addComponent(jLabel8)
+                                    .addComponent(jLabel4))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(jTextField3, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jFormattedTextField8, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE)
+                                    .addComponent(jFormattedTextField1))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel42)
+                                    .addComponent(jLabel43)
+                                    .addComponent(jLabel45)))
                             .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addGap(18, 18, 18)
-                                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel42)
-                            .addComponent(jLabel43))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(jLabel9)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jRadioButton6)
-                            .addComponent(jRadioButton5))
-                        .addContainerGap(554, Short.MAX_VALUE))
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jSeparator1)
-                            .addComponent(jScrollPane1)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton2)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButton7)))
-                        .addContainerGap())))
+                                .addComponent(jLabel9)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jRadioButton6)
+                                    .addComponent(jRadioButton5)))
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addGap(349, 349, 349)
+                                .addComponent(jLabel10)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
 
         jPanel5Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jRadioButton5, jRadioButton6});
@@ -1086,8 +1122,7 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
                                 .addGap(3, 3, 3)
                                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel7)
-                                    .addComponent(jFormattedTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel42)))
+                                    .addComponent(jFormattedTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jLabel6)
                                 .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -1095,7 +1130,10 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4)
                             .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel43))))
+                            .addComponent(jLabel43)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel5Layout.createSequentialGroup()
+                        .addGap(3, 3, 3)
+                        .addComponent(jLabel42)))
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGap(18, 18, 18)
@@ -1126,7 +1164,7 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton2)
                     .addComponent(jButton7))
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
 
         jPanel5Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jComboBox1, jComboBox8, jTextField2});
@@ -1519,7 +1557,7 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
                         .addComponent(jButton1)
                         .addGap(42, 42, 42)
                         .addComponent(jButton19)))
-                .addContainerGap(124, Short.MAX_VALUE))
+                .addContainerGap(127, Short.MAX_VALUE))
         );
 
         jPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jButton1, jButton19});
@@ -1601,74 +1639,111 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
                     formateador.setLenient(false);
                     Date fechanac = formateador.parse(jFormattedTextField1.getText());
 
-                    Boolean valor=false;
-                    if(jRadioButton6.isSelected()){
-                        valor= true;
-                    }else if(jRadioButton5.isSelected()){
-                        valor=false;
-                    }
                     Tipodoc tipodoc= (Tipodoc) jComboBox1.getSelectedItem();
                     String nro=jFormattedTextField8.getText();
                     nro = nro.replaceAll("[.-]", "");
                     Personal p=col.getPersonal(tipodoc,nro);
+                    boolean bb=false;
+                    Boolean valor=false;
+                    if(jRadioButton6.isSelected()){
+                        valor= true;
+                        Iterator it=p.getPersonalFamiliarsForIdFamiliar().iterator();
+                        while(it.hasNext()){
+                            PersonalFamiliar perfam=(PersonalFamiliar)it.next();
+                            if(perfam.getId().getIdFamiliar()==p.getIdPersonal()){
+                                if(perfam.getAsignacionFamiliar()==true){
+                                    bb=true;
+                                }
+                            }
 
-                    if(p.getIdPersonal()==null){
-                        int i=col.crearPersonal(tipodoc,null, col, null, nro, jTextField2.getText().toUpperCase(), jTextField3.getText().toUpperCase(), null, null, WIDTH, null, null, null, null, null, null, false, true, fechanac, null, null,null, null, null,null, null, null, null, null);
-                        PersonalFamiliarId id=new PersonalFamiliarId();
-                        id.setIdPersonal(pe.getIdPersonal());
-                        id.setIdFamiliar(i);
-                        Personal fam= col.getPersonal(i);
-                        pe.crearPersonalFamiliar(id, pe, fam, rel, valor);
-                    }
-                    if(p.getIdPersonal()!=null && p.getFamiliar()==false){
-                        p.setFamiliar(true);
-                        p.actualizarPersonal(p);
-                    } 
-                    if(p.getIdPersonal()!=null && p.getEstado()==true){
-                        PersonalFamiliarId id=new PersonalFamiliarId();
-                        id.setIdPersonal(pe.getIdPersonal());
-                        id.setIdFamiliar(p.getIdPersonal());
-                        Personal fam= p;
-                        pe.crearPersonalFamiliar(id, pe, fam, rel, valor);
-                        if(pe.getFamiliar()==false){
-                            pe.setFamiliar(true);
-                            pe.actualizarPersonal(pe);
                         }
+                    }else if(jRadioButton5.isSelected()){
+                        valor=false;
                     }
-                    if(modificar==true){
-                        Controlador au=new Controlador();
-                        Establecimiento ess=au.getPrimerEstablecimiento();
-                        Personal pepe=ess.getPersonal(pe.getIdPersonal());
-                        PersonalFamiliar pp=p.getPersonalFamiliar(pepe, p);
-                        p.setApellido(jTextField2.getText().toUpperCase());
-                        p.setNombre(jTextField3.getText().toUpperCase());
-                        p.setFechaNac(fechanac);
-                        pp.setTiporelacion(rel);
-                        pp.setAsignacionFamiliar(valor);
-                        pp.actualizarPersonalFamiliar(pp);
-                        p.actualizarPersonal(p);
-                    }
+                    
+                    
+                    if(bb==false){
+                        Iterator itt=Drive.PERSISTENCIA.getPerfiles().iterator();
+                        Perfil perf=null;
+                        while(itt.hasNext()){
+                        Perfil per=(Perfil) itt.next();
+                            if(per.getNivel()==4){
+                                perf=per;
+                                break;
+                            }
+                        }
+                        if(p.getIdPersonal()==null){
+                            int i=col.crearPersonal(tipodoc,perf, col, null, nro, jTextField2.getText().toUpperCase(), jTextField3.getText().toUpperCase(), null, null, WIDTH, null, null, null, null, null, null, false, true, fechanac, null, null,null, null, null,null, null, null, null, null);
+                            PersonalFamiliarId id=new PersonalFamiliarId();
+                            id.setIdPersonal(pe.getIdPersonal());
+                            id.setIdFamiliar(i);
+                            Personal fam= col.getPersonal(i);
+                            pe.crearPersonalFamiliar(id, pe, fam, rel, valor);
+                        }else{
+                            PersonalFamiliarId id=new PersonalFamiliarId();
+                            id.setIdPersonal(pe.getIdPersonal());
+                            id.setIdFamiliar(p.getIdPersonal());
+                            pe.crearPersonalFamiliar(id, pe, p, rel, valor);
+                        }
+                        if(p.getIdPersonal()!=null && p.getFamiliar()==false){
+                            p.setFamiliar(true);
+                            p.actualizarPersonal(p);
+                        } 
+                        if(p.getIdPersonal()!=null && p.getEstado()==true){
+                            PersonalFamiliarId id=new PersonalFamiliarId();
+                            id.setIdPersonal(pe.getIdPersonal());
+                            id.setIdFamiliar(p.getIdPersonal());
+                            Personal fam= p;
+                            pe.crearPersonalFamiliar(id, pe, fam, rel, valor);
+                            if(pe.getFamiliar()==false){
+                                pe.setFamiliar(true);
+                                pe.actualizarPersonal(pe);
+                            }
+                        }
+                        if(modificar==true){
+                            Controlador au=new Controlador();
+                            Establecimiento ess=au.getPrimerEstablecimiento();
+                            Personal pepe=ess.getPersonal(pe.getIdPersonal());
+                            PersonalFamiliar pp=p.getPersonalFamiliar(pepe, p);
+                            p.setApellido(jTextField2.getText().toUpperCase());
+                            p.setNombre(jTextField3.getText().toUpperCase());
+                            p.setFechaNac(fechanac);
+                            pp.setTiporelacion(rel);
+                            pp.setAsignacionFamiliar(valor);
+                            pp.actualizarPersonalFamiliar(pp);
+                            p.actualizarPersonal(p);
+                        }
 
-                    Controlador aux=new Controlador();
-                    Establecimiento est=aux.getPrimerEstablecimiento();
-                    Personal ppp=est.getPersonal(pe.getIdPersonal());
-                    Drive.LimpiarTabla(jTable1);
-                    Drive.CargarTablaflia(jTable1, ppp);
+                        Controlador aux=new Controlador();
+                        Establecimiento est=aux.getPrimerEstablecimiento();
+                        Personal ppp=est.getPersonal(pe.getIdPersonal());
+                        Drive.LimpiarTabla(jTable1);
+                        Drive.CargarTablaflia(jTable1, ppp);
+                        jFormattedTextField8.setText("");
+                        jTextField2.setText("");
+                        jTextField3.setText("");
+                        jFormattedTextField1.setText("");
+                        jFormattedTextField8.enable(true);
+                        jComboBox1.enable(true);
+                        modificar=false;
+                    }else{
+                        JOptionPane.showMessageDialog( null, "Otra persona cobra asignación familiar por esta persona","Actualizar Personal", JOptionPane.ERROR_MESSAGE);
+                        jFormattedTextField8.setText("");
+                        jTextField2.setText("");
+                        jTextField3.setText("");
+                        jFormattedTextField1.setText("");
+                    }
+                }else{
+                    JOptionPane.showMessageDialog( null, "YA NO PUEDE ASIGNAR MAS PADRES A ESTA PERSONA","Actualizar Personal", JOptionPane.ERROR_MESSAGE);
                     jFormattedTextField8.setText("");
                     jTextField2.setText("");
                     jTextField3.setText("");
-                    jFormattedTextField1.setText(null);
-                    jFormattedTextField8.enable(true);
-                    jComboBox1.enable(true);
-                    modificar=false;
-                    
-                }else{
-                    JOptionPane.showMessageDialog( null, "YA NO PUEDE ASIGNAR MAS PADRES A ESTA PERSONA","Actualizar Personal", JOptionPane.ERROR_MESSAGE);
+                    jFormattedTextField1.setText("");
                 }
             }else{
                 JOptionPane.showMessageDialog(null,"Los campos con '*' son obligatorios y no pueden tener espacios en blanco","Actualizar Personal", JOptionPane.ERROR_MESSAGE);
-                jFormattedTextField5.setText("");
-                jFormattedTextField2.setText("");
+//                jFormattedTextField5.setText("");
+                jFormattedTextField8.setText("");
                 jFormattedTextField1.setText("");
             }
         } catch (Exception ex) {
@@ -1681,97 +1756,122 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
     }//GEN-LAST:event_jFormattedTextField2ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        try {
-            //Establecimiento col=(Establecimiento) Drive.getPrimerEstablecimiento();
-            
-            String sexo= (String) jComboBox2.getSelectedItem();
-            String civil= (String) jComboBox5.getSelectedItem();
-            Tipodoc tipodoc= (Tipodoc) jComboBox6.getSelectedItem();
-            
-            SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
-            formateador.setLenient(false);
-            Date ingreso = formateador.parse(jFormattedTextField2.getText());
-
-            String validExpression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$"; 
-            Pattern compare = Pattern.compile(validExpression, Pattern.CASE_INSENSITIVE); 
-            Matcher matcher = compare.matcher(jTextField21.getText()); 
-            if(!matcher.matches()) { 
-                Exception noesvalido=new Exception("INGRESE CORRECTAMENTE LA DIRECCION DE CORREO ELECTRONICO");
-                throw noesvalido;
-            }
-            
-            pe.setTipodoc(tipodoc);
-            pe.setApellido(jTextField8.getText().toUpperCase());
-            pe.setNombre(jTextField7.getText().toUpperCase());
-            pe.setCuil(jFormattedTextField5.getText());
-            pe.setCalle(jTextField11.getText().toUpperCase());
-            int i=0;
-            if(!jTextField14.getText().isEmpty()){
-                i=Integer.parseInt(jTextField14.getText());
-            }
-            pe.setAltura(i);
-            pe.setPiso(jTextField18.getText().toUpperCase());
-            pe.setDepto(jTextField19.getText().toUpperCase());
-            pe.setCorreoElectronico(jTextField21.getText().toUpperCase());
-            pe.setSexo(sexo);
-            pe.setEstadoCivil(civil);
-            pe.setIngreso(ingreso);
-            pe.setEstado(true);
-            pe.setFamiliar(false);
-            
-            pe.actualizarPersonal(pe);
-            
-            if(jRadioButton3.isSelected()){
-                Personaldocente perdoc=pe.getPersonaldoc(pe.getIdPersonal());
-                int m=0;
-                if(!jTextField16.getText().isEmpty()){
-                    i=Integer.parseInt(jTextField16.getText());
-                }
-                int n=0;
-                if(!jTextField17.getText().isEmpty()){
-                    i=Integer.parseInt(jTextField17.getText());
-                }
-                if(perdoc.getId()!=null){
-                    if(perdoc.getCargohoras()!=m|| perdoc.getAntiguedadDoc()!=n ){
-                        perdoc.setCargohoras(m);
-                        perdoc.setAntiguedadDoc(n);
-                        perdoc.actualizarPersonaldoc(perdoc);
+        String sexo = (String) jComboBox2.getSelectedItem();
+        String civil = (String) jComboBox5.getSelectedItem();
+        Perfil perf=(Perfil) jComboBox12.getSelectedItem();
+        
+        if (!jFormattedTextField9.getText().contains(" ") && !jFormattedTextField2.getText().contains(" ") && !jTextField7.getText().isEmpty() && !jTextField8.getText().isEmpty()) {
+            try {
+                SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+                formateador.setLenient(false);
+                Date ingreso = formateador.parse(jFormattedTextField2.getText());
+                Date fechanac= formateador.parse(jFormattedTextField9.getText());
+                String validExpression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
+                Pattern compare = Pattern.compile(validExpression, Pattern.CASE_INSENSITIVE);
+                if (!jTextField21.getText().isEmpty()) {
+                    Matcher matcher = compare.matcher(jTextField21.getText());
+                    if (!matcher.matches()) {
+                        Exception noesvalido = new Exception("INGRESE CORRECTAMENTE LA DIRECCION DE CORREO ELECTRONICO");
+                        throw noesvalido;
                     }
-                }else{
-                    PersonaldocenteId iddoc= new PersonaldocenteId();
-                    iddoc.setIdPersonal(pe.getIdPersonal());
-                    pe.crearPersonaldoc(iddoc, pe, m,n);
                 }
-            }else if(jRadioButton3.isSelected()==false){
-                Personaldocente perdoc=pe.getPersonaldoc(pe.getIdPersonal());
-                if(perdoc!=null){perdoc.eliminarPersonaldoc(perdoc);}
-                int c=0;
-                while(modeloLista2.size()!=c){
-                    PersonalDepartamento perdepto=(PersonalDepartamento) modeloLista2.getElementAt(c);
-                    perdepto.eliminarPersonalDepartamento(perdepto);
-                    c++;
-                }
-            }
-            if(jRadioButton4.isSelected()){
-                Personalnodocente pernodoc=pe.getPersonalnodoc(pe.getIdPersonal());
-                if(pernodoc.getId()!=null){
-                    if(pernodoc.getActividad()!=(Actividad)jComboBox7.getSelectedItem()){pernodoc.setActividad((Actividad) jComboBox7.getSelectedItem());}
-                    pernodoc.actualizarPersonalnodoc(pernodoc);
-                }else{
-                    PersonalnodocenteId id=new PersonalnodocenteId();
-                    id.setIdPersonal(pe.getIdPersonal());
-                    pe.crearPersonalnodoc(id, pe, (Actividad)jComboBox7.getSelectedItem());
-                }
-                
-            }else if(jRadioButton4.isSelected()==false){
-                Personalnodocente pernodoc=pe.getPersonalnodoc(pe.getIdPersonal());
-                if(pernodoc!=null){pernodoc.eliminarPersonalnodoc(pernodoc);}
-                
-            }
+                Date hoy=new Date();
+                Calendar cal = new GregorianCalendar();
+                cal.setTimeInMillis(fechanac.getTime());
+                cal.add(Calendar.YEAR, 18);
+                Date aux=new Date(cal.getTimeInMillis());
+                if(aux.compareTo(hoy)<=0){
+                    pe.setPerfil(perf);
+                    //pe.setTipodoc(tipodoc);
+                    pe.setApellido(jTextField8.getText().toUpperCase());
+                    pe.setNombre(jTextField7.getText().toUpperCase());
+                    pe.setCuil(jTextField1.getText());
+                    pe.setCalle(jTextField11.getText().toUpperCase());
+                    int i = 0;
+                    if (!jTextField14.getText().isEmpty()) {
+                        i = Integer.parseInt(jTextField14.getText());
+                    }
+                    pe.setAltura(i);
+                    pe.setPiso(jTextField18.getText().toUpperCase());
+                    pe.setDepto(jTextField19.getText().toUpperCase());
+                    pe.setCorreoElectronico(jTextField21.getText().toUpperCase());
+                    pe.setSexo(sexo);
+                    pe.setEstadoCivil(civil);
+                    pe.setIngreso(ingreso);
+                    pe.setFechaNac(fechanac);
+                    pe.setEstado(true);
+                    pe.setFamiliar(false);
 
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, ex.toString(),"Actualizar Personal", JOptionPane.ERROR_MESSAGE);
-        }        // TODO add your handling code here:
+                    pe.actualizarPersonal(pe);
+
+                    if (jRadioButton3.isSelected()) {
+                        Personaldocente perdoc = pe.getPersonaldoc(pe.getIdPersonal());
+                        int m = 0;
+                        if (!jTextField16.getText().isEmpty()) {
+                            m = Integer.parseInt(jTextField16.getText());
+                        }
+                        int n = 0;
+                        if (!jTextField17.getText().isEmpty()) {
+                            n = Integer.parseInt(jTextField17.getText());
+                        }
+                        if (perdoc.getId() != null) {
+                            if (perdoc.getCargohoras() != m || perdoc.getAntiguedadDoc() != n) {
+                                perdoc.setCargohoras(m);
+                                perdoc.setAntiguedadDoc(n);
+                                perdoc.actualizarPersonaldoc(perdoc);
+                            }
+                        } else {
+                            PersonaldocenteId iddoc = new PersonaldocenteId();
+                            iddoc.setIdPersonal(pe.getIdPersonal());
+                            pe.crearPersonaldoc(iddoc, pe, m, n);
+                        }
+                    } else if (jRadioButton3.isSelected() == false) {
+                        Personaldocente perdoc = pe.getPersonaldoc(pe.getIdPersonal());
+                        if (perdoc.getId() != null) {
+                            perdoc.eliminarPersonaldoc(perdoc);
+                        }
+                        int c = 0;
+                        while (modeloLista2.size() != c) {
+                            PersonalDepartamento perdepto = (PersonalDepartamento) modeloLista2.getElementAt(c);
+                            perdepto.eliminarPersonalDepartamento(perdepto);
+                            c++;
+                        }
+                    }
+                    if (jRadioButton4.isSelected()) {
+                        Personalnodocente pernodoc = pe.getPersonalnodoc(pe.getIdPersonal());
+                        if (pernodoc.getId() != null) {
+                            if (pernodoc.getActividad() != (Actividad) jComboBox7.getSelectedItem()) {
+                                pernodoc.setActividad((Actividad) jComboBox7.getSelectedItem());
+                            }
+                            pernodoc.actualizarPersonalnodoc(pernodoc);
+                        } else {
+                            PersonalnodocenteId id = new PersonalnodocenteId();
+                            id.setIdPersonal(pe.getIdPersonal());
+                            pe.crearPersonalnodoc(id, pe, (Actividad) jComboBox7.getSelectedItem());
+                        }
+
+                    } else if (jRadioButton4.isSelected() == false) {
+                        Personalnodocente pernodoc = pe.getPersonalnodoc(pe.getIdPersonal());
+                        if (pernodoc.getId() != null) {
+                            pernodoc.eliminarPersonalnodoc(pernodoc);
+                        }
+
+                    }
+                    Frame vp=new JFrameConsulta(Drive,adm,idsesion);
+                    this.dispose();
+                    vp.show();
+                }else{
+                    JOptionPane.showMessageDialog(null,"El Personal debe ser mayor de edad","Registrar Personal", JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, ex.toString(), "Actualizar Personal", JOptionPane.ERROR_MESSAGE);
+            }
+        }else{
+            JOptionPane.showMessageDialog(null,"Los campos con '*' son obligatorios y no pueden tener espacios en blanco en la fecha","Registrar Personal", JOptionPane.ERROR_MESSAGE);
+            jTextField1.setText("");
+            jFormattedTextField2.setText("");
+            jFormattedTextField1.setText("");
+        }
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
@@ -1803,7 +1903,7 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
 //            modelo.removeRow(jTable1.getSelectedRow());
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, ex.toString(),"Actualizar Personal", JOptionPane.ERROR_MESSAGE);
-        }// TODO add your handling code here:
+        }
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
@@ -1817,28 +1917,63 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton9ActionPerformed
 
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
+        if(jList1.getSelectedIndex()>=0){    
             Telefono tel=(Telefono) modeloLista.getElementAt(jList1.getSelectedIndex());
             modeloLista.removeElementAt(jList1.getSelectedIndex());// TODO add your handling code here:
             tel.eliminarTelefono(tel);
             jList1.setModel(modeloLista);
+        }
     }//GEN-LAST:event_jButton10ActionPerformed
 
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
-        if(jRadioButton3.isSelected()){
-            PersonalDepartamento perdepto=new PersonalDepartamento();
+        Departamento depto=(Departamento)jComboBox3.getSelectedItem();
+        boolean band=true;
+        int c=0;
+        while(modeloLista2.size()!=c){
+            PersonalDepartamento pdepto=(PersonalDepartamento) modeloLista2.getElementAt(c);
+            if(pdepto.getDepartamento().getIdDepartamento()==depto.getIdDepartamento()){
+                JOptionPane.showMessageDialog(null, "Ya agregó este departamento","Registrar Personal", JOptionPane.ERROR_MESSAGE);
+                break;
+            }
+            c++;
+        }
+        if(jCheckBox1.isSelected()){
+            Iterator it=Drive.PERSISTENCIA.getPersonalDepto().iterator();
+            while(it.hasNext()){
+                PersonalDepartamento pdepto=(PersonalDepartamento) it.next();
+                if(pdepto.getDepartamento().getIdDepartamento()==depto.getIdDepartamento()&&pdepto.getJefe()){
+                    JOptionPane.showMessageDialog(null, "El jefe de este departamento es "+pdepto.getPersonal().toString(),"Registrar Personal", JOptionPane.ERROR_MESSAGE);
+                    band=false;
+                    break;
+                }
+            }
+        }
+        if(band==true){
+            Personal per=new Personal();
             PersonalDepartamentoId id=new PersonalDepartamentoId();
-            Departamento depto=(Departamento)jComboBox3.getSelectedItem();
+            PersonalDepartamento perdepto=new PersonalDepartamento();
             id.setIdDepartamento(depto.getIdDepartamento());
-            id.setIdPersonal(pe.getIdPersonal());
             perdepto.setId(id);
             perdepto.setDepartamento(depto);
-            perdepto.setPersonal(pe);
-            perdepto.setJefe(jCheckBox1.isSelected());
-            modeloLista2.addElement(perdepto);
-            perdepto.guardarPersonalDepartamento(perdepto);
-            jList2.setModel(modeloLista2);
+            perdepto.setPersonal(per);
+            perdepto.setJefe(false);
+            modeloLista2.addElement(perdepto);  
         }
-        // TODO add your handling code here:
+        
+//        if(jRadioButton3.isSelected()){
+//            PersonalDepartamento perdepto=new PersonalDepartamento();
+//            PersonalDepartamentoId id=new PersonalDepartamentoId();
+//            Departamento depto=(Departamento)jComboBox3.getSelectedItem();
+//            id.setIdDepartamento(depto.getIdDepartamento());
+//            id.setIdPersonal(pe.getIdPersonal());
+//            perdepto.setId(id);
+//            perdepto.setDepartamento(depto);
+//            perdepto.setPersonal(pe);
+//            perdepto.setJefe(jCheckBox1.isSelected());
+//            modeloLista2.addElement(perdepto);
+//            perdepto.guardarPersonalDepartamento(perdepto);
+//            jList2.setModel(modeloLista2);
+//        }
     }//GEN-LAST:event_jButton11ActionPerformed
 
     private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
@@ -1947,7 +2082,7 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         Declaracionjurada dec=pe.getDeclaracionjurada();
-        if(jFormattedTextField6.getText().equals("    ")){
+        if(jFormattedTextField6.getText().contains(" ")){
             JOptionPane.showMessageDialog(null, "Ingrese el año de la declaración jurada","Declaración Jurada", JOptionPane.INFORMATION_MESSAGE);
         }else if(Integer.parseInt(jFormattedTextField6.getText())< 2012){
             JOptionPane.showMessageDialog(null, "Ingrese correctamente el año, este tiene que ser mayor a 2011","Declaración Jurada", JOptionPane.INFORMATION_MESSAGE);
@@ -2123,37 +2258,44 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
                 vp.show();}
     }//GEN-LAST:event_jButton15ActionPerformed
 
-    private void jFormattedTextField5FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jFormattedTextField5FocusLost
-        //        if(jFormattedTextField2.getText().isEmpty()){
-            //        }// TODO add your handling code here:
-    }//GEN-LAST:event_jFormattedTextField5FocusLost
-
     private void jTextField21ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField21ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField21ActionPerformed
 
     private void jTextField21FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField21FocusLost
-        if(!jFormattedTextField7.getText().isEmpty()){
+        if(!jTextField21.getText().isEmpty()){
             boolean isValidEmail = false;
             String validExpression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
             Pattern compare = Pattern.compile(validExpression, Pattern.CASE_INSENSITIVE);
-            Matcher matcher = compare.matcher(jFormattedTextField7.getText());
+            Matcher matcher = compare.matcher(jTextField21.getText());
             if(matcher.matches()) {
                 isValidEmail = true;
+            }else {
+                JOptionPane.showMessageDialog(null, "INGRESE CORRECTAMENTE LA DIRECCION DE CORREO ELECTRONICO","Registrar Personal", JOptionPane.ERROR_MESSAGE);
+                jTextField21.setText("");
             }
-            else {JOptionPane.showMessageDialog(null, "INGRESE CORRECTAMENTE LA DIRECCION DE CORREO ELECTRONICO","Actualizar Personal", JOptionPane.ERROR_MESSAGE);} // TODO add your handling code here:
 
         }
     }//GEN-LAST:event_jTextField21FocusLost
 
     private void jTextField16KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField16KeyTyped
         char car = evt.getKeyChar();
-        if((car<'0' || car>'9')) evt.consume();
+        if(jRadioButton3.isSelected()){
+            if((car<'0' || car>'9')) evt.consume();
+        }else{
+            JOptionPane.showMessageDialog(null, "Debe seleccionar 'DOCENTE' ","Registrar Personal", JOptionPane.ERROR_MESSAGE);
+            evt.consume();
+        }
     }//GEN-LAST:event_jTextField16KeyTyped
 
     private void jTextField17KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField17KeyTyped
         char car = evt.getKeyChar();
-        if((car<'0' || car>'9')) evt.consume();
+        if(jRadioButton3.isSelected()){
+            if((car<'0' || car>'9')) evt.consume();
+        }else{
+            JOptionPane.showMessageDialog(null, "Debe seleccionar 'DOCENTE' ","Registrar Personal", JOptionPane.ERROR_MESSAGE);
+            evt.consume();
+        }
     }//GEN-LAST:event_jTextField17KeyTyped
 
     private void jLabel41MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel41MouseClicked
@@ -2277,7 +2419,7 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
 
     private void jTextField14KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField14KeyTyped
         char car = evt.getKeyChar();
-        if((car<'0' || car>'9')) evt.consume();        // TODO add your handling code here:
+        if((car<'0' || car>'9')) evt.consume();
     }//GEN-LAST:event_jTextField14KeyTyped
 
     private void jLabel55MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel55MouseClicked
@@ -2319,6 +2461,107 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
     private void jFormattedTextField9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFormattedTextField9ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jFormattedTextField9ActionPerformed
+
+    private void jRadioButton3ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jRadioButton3ItemStateChanged
+        if(jRadioButton3.isSelected()){
+            jComboBox3.setEnabled(true);
+            jCheckBox1.setEnabled(true);
+            jButton11.setEnabled(true);
+            jButton12.setEnabled(true);
+            jTextField16.setEnabled(true);
+            jTextField17.setEnabled(true);
+        }else{
+            jComboBox3.setEnabled(false);
+            jCheckBox1.setEnabled(false);
+            jButton11.setEnabled(false);
+            jButton12.setEnabled(false);
+            jTextField16.setEnabled(false);
+            jTextField17.setEnabled(false);
+        }
+    }//GEN-LAST:event_jRadioButton3ItemStateChanged
+
+    private void jRadioButton4ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jRadioButton4ItemStateChanged
+        if(jRadioButton4.isSelected()){
+           jComboBox7.setEnabled(true);
+            if(!jTextField16.getText().isEmpty()){
+                if(Integer.parseInt(jTextField16.getText())>21){
+                    JOptionPane.showMessageDialog(null, "El cargo de hora no puede ser mayor a 21","Registrar Cargo/horas", JOptionPane.ERROR_MESSAGE);
+                    jTextField16.setText("");
+                }
+            }
+        }else{
+           jComboBox7.setEnabled(false);
+            if(!jTextField16.getText().isEmpty()){
+                if(Integer.parseInt(jTextField16.getText())>42){
+                    JOptionPane.showMessageDialog(null, "El cargo de hora no puede ser mayor a 42","Registrar Cargo/horas", JOptionPane.ERROR_MESSAGE);
+                    jTextField16.setText("");
+                }
+            }
+        }
+    }//GEN-LAST:event_jRadioButton4ItemStateChanged
+
+    private void jFormattedTextField7FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jFormattedTextField7FocusLost
+        if(!jFormattedTextField7.getText().contains(" ")){
+            Cuit cuil=new Cuit();
+            String d=jFormattedTextField7.getText().replace(".", "");
+            Integer.parseInt(d);
+            char s;
+            if(jComboBox1.getSelectedItem().equals("MASCULINO")){
+                s='m';
+            }else { s='f';}
+            jTextField1.setText(cuil.generar(Integer.parseInt(d),s ));
+        }else{
+            JOptionPane.showMessageDialog(null, "Ingrese correctamente el numero de documento","Registrar Tipo de Documento", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jFormattedTextField7FocusLost
+
+    private void jFormattedTextField9FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jFormattedTextField9FocusLost
+        try{
+            SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+            formateador.setLenient(false);
+            Date fechanac= formateador.parse(jFormattedTextField9.getText());
+            Date hoy=new Date();
+            Calendar cal = new GregorianCalendar();
+            cal.setTimeInMillis(fechanac.getTime());
+            cal.add(Calendar.YEAR, 18);
+            Date aux=new Date(cal.getTimeInMillis());
+            if(aux.compareTo(hoy)>0){
+                JOptionPane.showMessageDialog(null,"El Personal debe ser mayor de edad","Registrar Personal", JOptionPane.ERROR_MESSAGE);
+                jFormattedTextField9.setText("");
+            }
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null,"Ingrese correctamente la fecha","Registrar Personal", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jFormattedTextField9FocusLost
+
+    private void jFormattedTextField2FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jFormattedTextField2FocusLost
+        try{
+            SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+            formateador.setLenient(false);
+            formateador.parse(jFormattedTextField2.getText());
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null,"Ingrese correctamente la fecha","Registrar Personal", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jFormattedTextField2FocusLost
+
+    private void jComboBox2ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox2ItemStateChanged
+        Cuit cuil=new Cuit();
+        try{
+        //if(!jTextField1.getText().isEmpty()){
+            String d=jFormattedTextField7.getText().replace(".", "");
+            Integer.parseInt(d);
+            char s;
+            if(jComboBox2.getSelectedItem().equals("MASCULINO")){
+                s='m';
+            }else { s='f';}
+            jTextField1.setText(cuil.generar(Integer.parseInt(d),s ));
+        }catch(Exception e){}
+        //}
+    }//GEN-LAST:event_jComboBox2ItemStateChanged
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -2389,7 +2632,6 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
     private javax.swing.JFormattedTextField jFormattedTextField2;
     private javax.swing.JFormattedTextField jFormattedTextField3;
     private javax.swing.JFormattedTextField jFormattedTextField4;
-    private javax.swing.JFormattedTextField jFormattedTextField5;
     private javax.swing.JFormattedTextField jFormattedTextField6;
     private javax.swing.JFormattedTextField jFormattedTextField7;
     private javax.swing.JFormattedTextField jFormattedTextField8;
@@ -2483,6 +2725,7 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
     private javax.swing.JTabbedPane jTabbedPane2;
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable3;
+    private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField11;
     private javax.swing.JTextField jTextField12;
     private javax.swing.JTextField jTextField13;

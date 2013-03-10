@@ -439,7 +439,7 @@ public class JFramenuevadeclaracion extends javax.swing.JFrame{
                 }
             }
             if(w==false){
-                cadSalida = salida.getText();
+                cadSalida = salida.getText().toUpperCase();
                 Tipocargo carg= new Tipocargo();
                 carg.setNombre(cadSalida);
                 carg.guardarTipocargo(carg);
@@ -468,7 +468,7 @@ public class JFramenuevadeclaracion extends javax.swing.JFrame{
                 }
             }
             if(w==false){
-                cadSalida = salida.getText();
+                cadSalida = salida.getText().toUpperCase();
                 Tiponivel niv= new Tiponivel();
                 niv.setNombre(cadSalida);
                 niv.guardarTiponivel(niv);

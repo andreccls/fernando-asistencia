@@ -65,9 +65,7 @@ public class ActivoIniciofin  implements java.io.Serializable {
     public void guardarActivoiniciofin(ActivoIniciofin unActivoiniciofin){
         Controlador.getPERSISTENCIA().insert(this);
 
-//        JOptionPane.showMessageDialog(null,"El activo inicio-fin "+ 
-//                String.valueOf(unActivoiniciofin.getIdActivoiniciofin()) +
-//                " se guardo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null,"El activo se guardo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
     }
 
     public void eliminarActivoiniciofin(ActivoIniciofin unActivoiniciofin){
