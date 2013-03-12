@@ -85,6 +85,7 @@ public class JFramePersonal extends javax.swing.JFrame {
         jLabel33.repaint();
         jLabel34.setIcon(icono4);
         jLabel34.repaint();
+        jComboBox7.setSelectedItem("PERSONAL");
     }
 
     /** This method is called from within the constructor to
@@ -183,7 +184,7 @@ public class JFramePersonal extends javax.swing.JFrame {
             }
         });
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos del docente"));
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos del Personal"));
 
         jLabel1.setText("Nombre:");
 
@@ -837,7 +838,7 @@ public class JFramePersonal extends javax.swing.JFrame {
                 if(!jTextField9.getText().isEmpty()){
                     Matcher matcher = compare.matcher(jTextField9.getText());
                     if(!matcher.matches()) { 
-                        Exception noesvalido=new Exception("EL PERSONAL NO FUE DADO DE ALTA. INGRESE CORRECTAMENTE LA DIRECCION DE CORREO ELECTRONICO");
+                        Exception noesvalido=new Exception("El personal no fue dado de alta. Ingrese correctamente la dirección de correo electrónico");
                         throw noesvalido;
                     }
                 }
@@ -904,7 +905,7 @@ public class JFramePersonal extends javax.swing.JFrame {
                                 int ant=Integer.parseInt(jTextField4.getText());
                                 pe.crearPersonaldoc(iddoc, pe, horas, ant);
                             }else{
-                                Exception noesvalido=new Exception("NO INGRESO LAS HORAS Y/O LA ANTIGUEDAD DEL DOCENTE. EL PERSONAL FUE DADO DE ALTA, PARA REALIZAR UN CAMBIO INGRESE A LA ACTUALIZAR PERSONAL");
+                                Exception noesvalido=new Exception("No ingreso las horas y/o la antiguedad del docente. Para realizar algún cambio ingrese a actualizar personal");
                                 throw noesvalido;
                             }
                         }
@@ -916,9 +917,7 @@ public class JFramePersonal extends javax.swing.JFrame {
                             jRadioButton2.setSelected(false);
                         }
                     }else if(pe.getIdPersonal()!=null){
-                        pe.setEstado(true);
-                        pe.actualizarPersonal(pe);
-                        JOptionPane.showMessageDialog(null, "EL PERSONAL YA EXISTE Y FUE DADO DE ALTA, PARA REALIZAR UN CAMBIO INGRESE A LA ACTUALIZAR PERSONAL","Registrar Personal", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "El personal ya existe, para realizar algún cambio ingrese a actualizar personal","Registrar Personal", JOptionPane.ERROR_MESSAGE);
                     }
                     
                     jTextField1.setText("");
@@ -943,9 +942,9 @@ public class JFramePersonal extends javax.swing.JFrame {
                 }
             }else{
                 JOptionPane.showMessageDialog(null,"Los campos con '*' son obligatorios y no pueden tener espacios en blanco en la fecha","Registrar Personal", JOptionPane.ERROR_MESSAGE);
-                jFormattedTextField5.setText("");
-                jFormattedTextField2.setText("");
-                jFormattedTextField1.setText("");
+//                jFormattedTextField5.setText("");
+//                jFormattedTextField2.setText("");
+//                jFormattedTextField1.setText("");
             }
         }catch (Exception ex) {
             JOptionPane.showMessageDialog(null, ex.toString(),"Registrar Personal", JOptionPane.ERROR_MESSAGE);
@@ -1006,7 +1005,7 @@ public class JFramePersonal extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel35MouseClicked
 
     private void jLabel34MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel34MouseClicked
-        int confirmado = JOptionPane.showConfirmDialog(null,"¿Desea eliminar el departamento?","",JOptionPane.YES_NO_OPTION);
+        int confirmado = JOptionPane.showConfirmDialog(null,"¿Desea eliminar el departamento?","Eliminar departamento",JOptionPane.YES_NO_OPTION);
         if (JOptionPane.OK_OPTION == confirmado){
             Departamento depto=(Departamento) jComboBox2.getSelectedItem();
             depto.eliminarDepartamento(depto);
@@ -1016,7 +1015,7 @@ public class JFramePersonal extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel34MouseClicked
 
     private void jLabel33MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel33MouseClicked
-        int confirmado = JOptionPane.showConfirmDialog(null,"¿Desea eliminar la actividad?","",JOptionPane.YES_NO_OPTION);
+        int confirmado = JOptionPane.showConfirmDialog(null,"¿Desea eliminar la actividad?","Eliminar actividad",JOptionPane.YES_NO_OPTION);
         if (JOptionPane.OK_OPTION == confirmado){
             Actividad act=(Actividad) jComboBox6.getSelectedItem();
             act.eliminarActividad(act);
@@ -1026,7 +1025,7 @@ public class JFramePersonal extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel33MouseClicked
 
     private void jLabel32MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel32MouseClicked
-        int confirmado = JOptionPane.showConfirmDialog(null,"¿Desea eliminar el tipo de documento?","",JOptionPane.YES_NO_OPTION);
+        int confirmado = JOptionPane.showConfirmDialog(null,"¿Desea eliminar el tipo de documento?","Eliminar Tipo de Documento",JOptionPane.YES_NO_OPTION);
         if (JOptionPane.OK_OPTION == confirmado){
             Tipodoc doc=(Tipodoc) jComboBox5.getSelectedItem();
             doc.eliminarTipodoc(doc);

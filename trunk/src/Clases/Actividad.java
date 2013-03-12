@@ -59,18 +59,16 @@ public class Actividad  implements java.io.Serializable {
     public void guardarActividad(Actividad unaActividad){
         Controlador.getPERSISTENCIA().insert(this);
 
-//        JOptionPane.showMessageDialog(null,"La Actividad "+ 
-//                String.valueOf(unaActividad.getIdActividad()) +
-//                " se guardo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null,"La Actividad se guardó correctamente","Registrar actividad",JOptionPane.INFORMATION_MESSAGE);
     }
     
     public void eliminarActividad(Actividad unaActividad){
         Iterator it=personalnodocentes.iterator();
         if(it.hasNext()){
-            JOptionPane.showMessageDialog(null,"El Tiporelacion no se puede eliminar porque esta relacionada con otro personal","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null,"La Actividad no se puede eliminar porque esta relacionada con otro personal","Eliminar actividad",JOptionPane.ERROR_MESSAGE);
         }else{
             Controlador.getPERSISTENCIA().delete(this);
-            JOptionPane.showMessageDialog(null,"La Actividad se elimino correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null,"La Actividad se elimino correctamente","Eliminar actividad",JOptionPane.INFORMATION_MESSAGE);
         }
     }
 

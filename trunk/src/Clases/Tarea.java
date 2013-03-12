@@ -135,14 +135,14 @@ public class Tarea  implements java.io.Serializable {
     public int guardarTarea(Tarea unaTarea){
     Controlador.getPERSISTENCIA().insert(this);
     int id=unaTarea.getIdTarea();
-    JOptionPane.showMessageDialog(null,"La tarea se guardó correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+    JOptionPane.showMessageDialog(null,"La tarea se guardó correctamente","Registrar tarea",JOptionPane.INFORMATION_MESSAGE);
     return id;
     }
     
     public void ActualizarTarea(Tarea unaTarea){
     Controlador.getPERSISTENCIA().update(this);
 
-    JOptionPane.showMessageDialog(null,"La tarea se actualizó correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+    JOptionPane.showMessageDialog(null,"La tarea se actualizó correctamente","Actualizar tarea",JOptionPane.INFORMATION_MESSAGE);
     }
     
     public void crearTareaclase(TareaclaseId id, Tarea tarea, String aula, Integer numero){
