@@ -58,20 +58,16 @@ public class Tipodoc  implements java.io.Serializable {
     public void guardarTipodoc(Tipodoc unTipodoc){
         Controlador.getPERSISTENCIA().insert(this);
 
-        JOptionPane.showMessageDialog(null,"El Tipodoc "+ 
-                String.valueOf(unTipodoc.getIdTipodoc()) +
-                " se guardo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null,"El Tipo de documento se guardó correctamente","Registrar tipo documento",JOptionPane.INFORMATION_MESSAGE);
     }
     
     public void eliminarTipodoc(Tipodoc unTipodoc){
         Iterator it=personals.iterator();
         if(it.hasNext()){
-            JOptionPane.showMessageDialog(null,"El Tipo de documento no se puede eliminar porque esta relacionada con otros personales","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null,"El Tipo de documento no se puede eliminar porque esta relacionada con otros personales","Eliminar tipo documento",JOptionPane.ERROR_MESSAGE);
         }else{
         Controlador.getPERSISTENCIA().delete(this);
-        JOptionPane.showMessageDialog(null,"El Tipodoc "+ 
-                String.valueOf(unTipodoc.getIdTipodoc()) +
-                " se elimino correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null,"El Tipo de documento se eliminó correctamente","Eliminar tipo documento",JOptionPane.INFORMATION_MESSAGE);
         }
     }
 

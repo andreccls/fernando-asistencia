@@ -250,7 +250,7 @@ public class JFrameConsulta extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea volver al menú principal?", "", JOptionPane.YES_NO_OPTION);
+        int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea volver al menú principal?", "Consultar Personal", JOptionPane.YES_NO_OPTION);
         if (JOptionPane.OK_OPTION == confirmado) {
             Frame vp = new JFramePrincipal(Drive,adm,idsesion);
             this.dispose();
@@ -320,7 +320,7 @@ public class JFrameConsulta extends javax.swing.JFrame {
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea eliminar el personal y todas sus actividades?", "", JOptionPane.YES_NO_OPTION);
+        int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea eliminar el personal y todas sus actividades?", "Eliminar Personal", JOptionPane.YES_NO_OPTION);
         if (JOptionPane.OK_OPTION == confirmado) {
 //            Establecimiento col = Drive.getPrimerEstablecimiento();
             jTable1.getModel();

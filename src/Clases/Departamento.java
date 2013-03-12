@@ -71,20 +71,16 @@ public class Departamento  implements java.io.Serializable {
     public void guardarDepartamento(Departamento unDepartamento){
         Controlador.getPERSISTENCIA().insert(this);
 
-        JOptionPane.showMessageDialog(null,"El Departamento "+ 
-                String.valueOf(unDepartamento.getIdDepartamento()) +
-                " se guardo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null,"El Departamento se guardó correctamente","Registrar departamento",JOptionPane.INFORMATION_MESSAGE);
     }
     
     public void eliminarDepartamento(Departamento unDepartamento){
         Iterator it=personalDepartamentos.iterator();
         if(it.hasNext()){
-            JOptionPane.showMessageDialog(null,"El Departamento no se puede eliminar porque esta relacionada con otros personales","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null,"El Departamento no se puede eliminar porque esta relacionada con otros personales","Eliminar departamento",JOptionPane.ERROR_MESSAGE);
         }else{
         Controlador.getPERSISTENCIA().delete(this);
-        JOptionPane.showMessageDialog(null,"El Departamento "+ 
-                String.valueOf(unDepartamento.getIdDepartamento()) +
-                " se eliminó correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null,"El Departamento se eliminó correctamente","Eliminar departamento",JOptionPane.INFORMATION_MESSAGE);
         }
     }
 

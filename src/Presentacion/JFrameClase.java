@@ -724,7 +724,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
     
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         if(!jTextField1.getText().isEmpty()||!jTextField2.getText().isEmpty()||!jTextField3.getText().isEmpty()||!jTextField4.getText().isEmpty()||!jFormattedTextField1.getText().isEmpty()||!jFormattedTextField2.getText().isEmpty()){
-            int confirmado = JOptionPane.showConfirmDialog(null,"¿Desea cancelar la registración de la clase?","",JOptionPane.YES_NO_OPTION);
+            int confirmado = JOptionPane.showConfirmDialog(null,"¿Desea cancelar la registración de la clase?","Registrar clase",JOptionPane.YES_NO_OPTION);
             if (JOptionPane.OK_OPTION == confirmado){
                 Frame vp=new JFramePrincipal(Drive,adm,idsesion);
                this.dispose();
@@ -781,7 +781,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                             int[][] cant = person.VerificarDisponibilidadClase(inicioo, finn, aux, dse);
                             int ee = cant[0].length;
                             int eee = cant[1].length;
-                            int confirmado = JOptionPane.showConfirmDialog(null, "El personal " + person.toString() + " tendrá " + ee + " inasistencias debido a actividades y " + eee + " debido a declaración jurada, ¿Desea continuar?", "", JOptionPane.YES_NO_OPTION);
+                            int confirmado = JOptionPane.showConfirmDialog(null, "El personal " + person.toString() + " tendrá " + ee + " inasistencias debido a actividades y " + eee + " debido a declaración jurada, ¿Desea continuar?", "Registrar clase", JOptionPane.YES_NO_OPTION);
                             if (JOptionPane.OK_OPTION == confirmado) {
                                 AgendaId idage = new AgendaId(person.getIdPersonal(), tarr.getIdTarea());
                                 Revista rev = (Revista) modelo.getValueAt(c, 4);
@@ -1137,12 +1137,16 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
     }//GEN-LAST:event_jTextField4KeyTyped
 
     private void jLabel19MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel19MouseClicked
-        int confirmado = JOptionPane.showConfirmDialog(null,"¿Desea eliminar la situación de revista?","",JOptionPane.YES_NO_OPTION);
-        if (JOptionPane.OK_OPTION == confirmado){
-            Revista rev=(Revista) jComboBox2.getSelectedItem();
-            rev.eliminarRevista(rev);
-            Drive.LimpiarCombo(jComboBox2);
-            Drive.CargarComboSituacionRevista(jComboBox2);
+        try{
+            int confirmado = JOptionPane.showConfirmDialog(null,"¿Desea eliminar la situación de revista?","Eliminar situación de revista",JOptionPane.YES_NO_OPTION);
+            if (JOptionPane.OK_OPTION == confirmado){
+                Revista rev=(Revista) jComboBox2.getSelectedItem();
+                rev.eliminarRevista(rev);
+                Drive.LimpiarCombo(jComboBox2);
+                Drive.CargarComboSituacionRevista(jComboBox2);
+            }
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null,"Error al eliminar una situación de revista","Eliminar situación de revista",JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jLabel19MouseClicked
 
@@ -1157,7 +1161,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
         Date inicio=dateChooserCombo1.getSelectedDate().getTime();
         Date fin=dateChooserCombo2.getSelectedDate().getTime();
         if(inicio.compareTo(fin)>0){
-            JOptionPane.showMessageDialog(null,"La fecha de inicio debe ser menor que la fecha de fin","",JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"La fecha de inicio debe ser menor que la fecha de fin","Registrar clase",JOptionPane.ERROR_MESSAGE);
             Calendar cal = Calendar.getInstance();
             dateChooserCombo1.setSelectedDate(cal);
             dateChooserCombo2.setSelectedDate(cal);
@@ -1184,7 +1188,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
         Date inicio=dateChooserCombo1.getSelectedDate().getTime();
         Date fin=dateChooserCombo2.getSelectedDate().getTime();
         if(inicio.compareTo(fin)>0){
-            JOptionPane.showMessageDialog(null,"La fecha de inicio debe ser menor que la fecha de fin","",JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"La fecha de inicio debe ser menor que la fecha de fin","Registrar clase",JOptionPane.ERROR_MESSAGE);
             Calendar cal = Calendar.getInstance();
             //dateChooserCombo1.setSelectedDate(cal);
             dateChooserCombo2.setSelectedDate(cal);
@@ -1222,7 +1226,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                 Drive.CargarpersonalSimple(jTable2,buscar, es.toUpperCase(),lista);
             }
         }catch(Exception e){
-            JOptionPane.showMessageDialog(null, "ERROR","Registrar Tarea Extracurricular", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "ERROR","Registrar clase", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jTextField5KeyTyped
 

@@ -62,20 +62,16 @@ public class Revista  implements java.io.Serializable {
     public void guardarRevista(Revista unaRevista){
         Controlador.getPERSISTENCIA().insert(this);
 
-        JOptionPane.showMessageDialog(null,"La Situación de Revista "+ 
-                String.valueOf(unaRevista.getIdRevista()) +
-                " se guardo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null,"La Situación de Revista se guardó correctamente","Nueva situación de revista",JOptionPane.INFORMATION_MESSAGE);
     }
     
     public void eliminarRevista(Revista unaRevista){
         Iterator it=agendas.iterator();
         if(it.hasNext()){
-            JOptionPane.showMessageDialog(null,"La situación de revista no se puede eliminar porque esta relacionada con otros personales","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null,"La situación de revista no se puede eliminar porque esta relacionada con otros personales","Eliminar situación de revista",JOptionPane.INFORMATION_MESSAGE);
         }else{
         Controlador.getPERSISTENCIA().delete(this);
-        JOptionPane.showMessageDialog(null,"La Situación de Revista "+ 
-                String.valueOf(unaRevista.getIdRevista()) +
-                " se elimino correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null,"La Situación de Revista se eliminó correctamente","Eliminar situación de revista",JOptionPane.INFORMATION_MESSAGE);
         }
     }
 

@@ -72,25 +72,23 @@ public class Cargo  implements java.io.Serializable {
     public void guardarCargo(Cargo unCargo){
         Controlador.getPERSISTENCIA().insert(this);
 
-        JOptionPane.showMessageDialog(null,"El Cargo "+ 
-                String.valueOf(unCargo.getIdCargo()) +
-                " se guardo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+//        JOptionPane.showMessageDialog(null,"El Cargo "+ 
+//                String.valueOf(unCargo.getIdCargo()) +
+//                " se guardo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
     }
     
     public void ActualizarCargo(Cargo unCargo){
         Controlador.getPERSISTENCIA().saveupdate(this);
 
-        JOptionPane.showMessageDialog(null,"El Cargo "+ 
-                String.valueOf(unCargo.getIdCargo()) +
-                " se guardo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+//        JOptionPane.showMessageDialog(null,"El Cargo "+ 
+//                String.valueOf(unCargo.getIdCargo()) +
+//                " se guardo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
     }
     
     public void eliminarCargo(Cargo unCargo){
         Controlador.getPERSISTENCIA().delete(this);
 
-        JOptionPane.showMessageDialog(null,"El Cargo "+ 
-                String.valueOf(unCargo.getIdCargo()) +
-                " se elimino correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null,"El Cargo se elimino correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
     }
 
     public Nivel getNivel(Tiponivel tiponivel) {
