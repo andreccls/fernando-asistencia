@@ -570,10 +570,12 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
                             int cc = 0;
                             boolean est = false;
+                            boolean control;
                             while (jTable1.getRowCount() != cc) {
                                 if (model.getValueAt(cc, 0).equals(true)) {
                                     Personal per = (Personal) model.getValueAt(cc, 1);
-                                    if (per.VerificarDisponibilidad(fecha_inicio, ini, fi, fecha_fin)) {
+                                    control=true;
+                                    if (per.OtrosVerificarDisponibilidad(fecha_inicio, ini, fi, fecha_fin,control)) {
                                         est = true;
                                     }
                                 }
@@ -595,7 +597,8 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                 while (jTable1.getRowCount() != c) {
                                     if (modelo.getValueAt(c, 0).equals(true)) {
                                         Personal per = (Personal) modelo.getValueAt(c, 1);
-                                        if (per.VerificarDisponibilidad(fecha_inicio, ini, fi, fecha_fin)) {
+                                        control=true;
+                                        if (per.OtrosVerificarDisponibilidad(fecha_inicio, ini, fi, fecha_fin,control)) {
                                             AgendaId ida = new AgendaId(per.getIdPersonal(), tarr.getIdTarea());
                                             Agenda age = new Agenda();
                                             age.setId(ida);
@@ -759,7 +762,8 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                         Date fi = new Date();
                                         ini = formateador.parse(i);
                                         fi = formateador.parse(e);
-                                        if (per.VerificarDisponibilidad(fecha_inicio, inicio, fin, fecha_fin)) {
+                                        boolean control=false;
+                                        if (per.OtrosVerificarDisponibilidad(fecha_inicio, inicio, fin, fecha_fin,control)) {
                                             Revista rev = (Revista) Drive.PERSISTENCIA.getSitRevista().get(0);
                                             Agenda age = tar.ObtenerAgenda(per.getIdPersonal(), rev.getIdRevista());
                                             if (age.getId() == null) {

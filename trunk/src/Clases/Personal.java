@@ -509,7 +509,432 @@ public class Personal  implements java.io.Serializable {
     return dia;
     }
     
-    public boolean VerificarDisponibilidad (Date diaini,Date hini,Date hfin,Date diafin){
+    ///REUNIONES
+    // <editor-fold defaultstate="collapsed" desc="REUNIONES"> 
+    public int ReunionVerificarDisponibilidad (Date diaini,Date hini,Date hfin, boolean control){
+        int band=1;
+        try {
+            if (!Controlador.PERSISTENCIA.getAgendas(idPersonal).isEmpty()) {
+                Iterator it = Controlador.PERSISTENCIA.getAgendas(idPersonal).iterator();
+                while (it.hasNext()) {
+                    Agenda age = (Agenda) it.next();
+                    if (age.getPersonal().getEstado() == true && age.getTarea().getEstado() == true) {
+                        if(age.getTarea().getTareaotros().iterator().hasNext()){
+                            Tareaotro tarot=age.getTarea().getTareaotros().iterator().next();
+                            Date inicio=tarot.getDiaInicio();
+                            Date fin=tarot.getDiaFin();
+                            if(diaini.compareTo(inicio)>=0 && diaini.compareTo(fin)<=0){
+                                Date hinicio = tarot.getDiaInicio();
+                                Date hhfin = tarot.getDiaFin();
+                                if(hini.compareTo(hinicio)<=0&&hfin.compareTo(hinicio)>=0){
+                                    band = 1;
+                                    if(control==true){JOptionPane.showMessageDialog(null, "El personal "+ toString() +" tiene otra tarea no obligatoria", "Registrar Reunión", JOptionPane.INFORMATION_MESSAGE);}
+                                    //return band;
+                                }else if(hini.compareTo(hhfin)<=0&&hfin.compareTo(hhfin)>=0){
+                                    band = 1;
+                                    if(control==true){JOptionPane.showMessageDialog(null, "El personal "+ toString() +" tiene otra tarea no obligatoria", "Registrar Reunión", JOptionPane.INFORMATION_MESSAGE);}
+                                    //return band;
+                                }else if(hini.compareTo(hinicio)>=0&&hfin.compareTo(hinicio)>=0&&hini.compareTo(hhfin)<=0&&hfin.compareTo(hhfin)<=0){
+                                    band = 1;
+                                    if(control==true){JOptionPane.showMessageDialog(null, "El personal "+ toString() +" tiene otra tarea no obligatoria", "Registrar Reunión", JOptionPane.INFORMATION_MESSAGE);}
+                                    //return band;
+                                }
+                            }
+                        }else if(age.getTarea().getTareaextracurriculars().iterator().hasNext()){
+                            Tareaextracurricular tarot=age.getTarea().getTareaextracurriculars().iterator().next();
+                            Date inicio=tarot.getDiaInicio();
+                            Date fin=tarot.getDiaFin();
+                            if(diaini.compareTo(inicio)>=0 && diaini.compareTo(fin)<=0){
+                                Date hinicio = tarot.getDiaInicio();
+                                Date hhfin = tarot.getDiaFin();
+                                if(hini.compareTo(hinicio)<=0&&hfin.compareTo(hinicio)>=0){
+                                    band = 0;
+                                    if(control==true){JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para "+ toString() +" porque existe una tarea extracurricular a ese horario", "Registrar Reunión", JOptionPane.ERROR_MESSAGE);}
+                                    return band;
+                                }else if(hini.compareTo(hhfin)<=0&&hfin.compareTo(hhfin)>=0){
+                                    band = 0;
+                                    if(control==true){JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para "+ toString() +" porque existe una tarea extracurricular a ese horario", "Registrar Reunión", JOptionPane.ERROR_MESSAGE);}
+                                    return band;
+                                }else if(hini.compareTo(hinicio)>=0&&hfin.compareTo(hinicio)>=0&&hini.compareTo(hhfin)<=0&&hfin.compareTo(hhfin)<=0){
+                                    band = 0;
+                                    if(control==true){JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para "+ toString() +" porque existe una tarea extracurricular a ese horario", "Registrar Reunión", JOptionPane.ERROR_MESSAGE);}
+                                    return band;
+                                }
+                            }
+                        }else if(age.getTarea().getTareaclases().iterator().hasNext()){
+                            Dia di = age.getDia2(diaini);
+                            if (di.getIdDia() != null) {
+                                Iterator itin = di.getIniciofins().iterator();
+                                while (itin.hasNext()) {
+                                    Iniciofin in = (Iniciofin) itin.next();
+                                    SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
+                                    String i=formateador.format(in.getInicio());
+                                    String ii=formateador.format(in.getFin());
+                                    Date inicio = formateador.parse(i);
+                                    Date fin = formateador.parse(ii);
+                                    if(hini.compareTo(inicio)<=0&&hfin.compareTo(inicio)>=0){
+                                        if(control==true){
+                                            JOptionPane.showMessageDialog(null, "El personal "+ toString() +" continuará con su clase luego de realizar la reunión", "Registrar Reunión", JOptionPane.INFORMATION_MESSAGE);
+                                            band = 1;
+                                            //return band;
+                                        }
+                                        in.setEstadoInicio(true);
+                                        in.actualizarIniciofin(in);
+                                    }else if(hini.compareTo(fin)<=0&&hfin.compareTo(fin)>=0){
+                                        if(control==true){
+                                            JOptionPane.showMessageDialog(null, "El personal "+ toString() +" suspenderá su clase para realizar la reunión", "Registrar Reunión", JOptionPane.INFORMATION_MESSAGE);
+                                            band = 1;
+                                            //return band;
+                                        }
+                                        in.setEstadoFin(true);
+                                        in.actualizarIniciofin(in);
+                                    }else if(hini.compareTo(inicio)>=0&&hfin.compareTo(inicio)>=0&&hini.compareTo(fin)<=0&&hfin.compareTo(fin)<=0){
+                                        if(control==true){
+                                            JOptionPane.showMessageDialog(null, "El personal "+ toString() +" suspenderá su clase para realizar la reunión", "Registrar Reunión", JOptionPane.INFORMATION_MESSAGE);
+                                            band = 2;
+                                            //return band;
+                                        }
+                                    }else if(hini.compareTo(inicio)<=0&&hfin.compareTo(inicio)>=0&&hini.compareTo(fin)<=0&&hfin.compareTo(fin)>=0){
+                                        if(control==true){
+                                            JOptionPane.showMessageDialog(null, "El personal "+ toString() +" suspenderá su clase para realizar la reunión", "Registrar Reunión", JOptionPane.INFORMATION_MESSAGE);
+                                            band = 1;
+                                            //return band;
+                                        }
+                                        in.setEstadoInicio(true);
+                                        in.setEstadoFin(true);
+                                    }
+                                }
+                            }
+                        }else if(age.getTarea().getTareareunions().iterator().hasNext()){
+                            Dia di = age.getDia2(diaini);
+                            if (di.getIdDia() != null) {
+                                Iterator itin = di.getIniciofins().iterator();
+                                while (itin.hasNext()) {
+                                    Iniciofin in = (Iniciofin) itin.next();
+                                    SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
+                                    String i=formateador.format(in.getInicio());
+                                    String ii=formateador.format(in.getFin());
+                                    Date inicio = formateador.parse(i);
+                                    Date fin = formateador.parse(ii);
+                                    if (hini.compareTo(inicio) <= 0 && hfin.compareTo(inicio) >= 0) {
+                                        band = 0;
+                                        if(control==true){JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para " + toString() + " porque existe otra reunión a ese horario", "Registrar Reunión", JOptionPane.ERROR_MESSAGE);}
+                                        return band;
+                                    } else if (hini.compareTo(fin) <= 0 && hfin.compareTo(fin) >= 0) {
+                                        band = 0;
+                                        if(control==true){JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para " + toString() + " porque existe otra reunión a ese horario", "Registrar Reunión", JOptionPane.ERROR_MESSAGE);}
+                                        return band;
+                                    } else if (hini.compareTo(inicio) >= 0 && hfin.compareTo(inicio) >= 0 && hini.compareTo(fin) <= 0 && hfin.compareTo(fin) <= 0) {
+                                        band = 0;
+                                        if(control==true){JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para " + toString() + " porque existe otra reunión a ese horario", "Registrar Reunión", JOptionPane.ERROR_MESSAGE);}
+                                        return band;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            
+            if(!declaracionjuradas.isEmpty()){
+                Date diaux=diaini;
+                    String di= ObtenerDia(diaux.getDay());
+                    Iterator itact=declaracionjuradas.iterator().next().ObtenerActivos(di).iterator();
+                    while(itact.hasNext()){
+                        Activo act=(Activo) itact.next();
+                        Iterator itin=act.getActivoIniciofins().iterator();
+                        while(itin.hasNext()){
+                            ActivoIniciofin in=(ActivoIniciofin) itin.next();
+                            if (hini.compareTo(in.getInicio()) <= 0 && hfin.compareTo(in.getInicio()) >= 0) {
+                                band=0;
+                                if(control==true){JOptionPane.showMessageDialog(null,"no existe disponibilidad por parte de la declaración jurada a ese horario", "Registrar Reunión", JOptionPane.ERROR_MESSAGE);}
+                                return band;
+                            } else if (hini.compareTo(in.getFin()) <= 0 && hfin.compareTo(in.getFin()) >= 0) {
+                                band=0;
+                                if(control==true){JOptionPane.showMessageDialog(null,"no existe disponibilidad por parte de la declaración jurada a ese horario", "Registrar Reunión", JOptionPane.ERROR_MESSAGE);}
+                                return band;
+                            } else if (hini.compareTo(in.getInicio()) >= 0 && hfin.compareTo(in.getInicio()) >= 0 && hini.compareTo(in.getFin()) <= 0 && hfin.compareTo(in.getFin()) <= 0) {
+                                band=0;
+                                if(control==true){JOptionPane.showMessageDialog(null,"no existe disponibilidad por parte de la declaración jurada a ese horario", "Registrar Reunión", JOptionPane.ERROR_MESSAGE);}
+                                return band;
+                            }
+                        }
+                    }
+            }
+        }catch(Exception ex){JOptionPane.showMessageDialog(null, ex.toString());}
+        return band;
+    }
+    // </editor-fold>
+    
+    ///EXTRACURRICULARES
+    // <editor-fold defaultstate="collapsed" desc="EXTRACURRICULARES"> 
+    public int ExtracurricularVerificarDisponibilidad (Date diaini,Date hini,Date hfin,Date diafin,boolean control){
+        int band=1;
+        try {
+            if (!Controlador.PERSISTENCIA.getAgendas(idPersonal).isEmpty()) {
+                Iterator it = Controlador.PERSISTENCIA.getAgendas(idPersonal).iterator();
+                while (it.hasNext()) {
+                    Agenda age = (Agenda) it.next();
+                    if (age.getPersonal().getEstado() == true && age.getTarea().getEstado() == true) {
+                        if(age.getTarea().getTareaotros().iterator().hasNext()){
+                            Tareaotro tarot=age.getTarea().getTareaotros().iterator().next();
+                            Date inicio=tarot.getDiaInicio();
+                            Date fin=tarot.getDiaFin();
+                            if(diaini.compareTo(inicio)>=0 ||diafin.compareTo(inicio)>= 0 && diaini.compareTo(fin)<=0 || diafin.compareTo(fin)<=0){
+                                Date hinicio = tarot.getDiaInicio();
+                                Date hhfin = tarot.getDiaFin();
+                                if(hini.compareTo(hinicio)<=0&&hfin.compareTo(hinicio)>=0){
+                                    band = 1;
+                                    if(control==true){JOptionPane.showMessageDialog(null, "El personal "+ toString() +" tiene una tarea no obligatoria a este horario", "Registrar Tarea Extracurricular", JOptionPane.ERROR_MESSAGE);}
+                                    //return band;
+                                }else if(hini.compareTo(hhfin)<=0&&hfin.compareTo(hhfin)>=0){
+                                    band = 1;
+                                    if(control==true){JOptionPane.showMessageDialog(null, "El personal "+ toString() +" tiene una tarea no obligatoria a este horario", "Registrar Tarea Extracurricular", JOptionPane.ERROR_MESSAGE);}
+                                    //return band;
+                                }else if(hini.compareTo(hinicio)>=0&&hfin.compareTo(hinicio)>=0&&hini.compareTo(hhfin)<=0&&hfin.compareTo(hhfin)<=0){
+                                    band = 1;
+                                    if(control==true){JOptionPane.showMessageDialog(null, "El personal "+ toString() +" tiene una tarea no obligatoria a este horario", "Registrar Tarea Extracurricular", JOptionPane.ERROR_MESSAGE);}
+                                    //return band;
+                                }
+                            }
+                        }else if(age.getTarea().getTareaextracurriculars().iterator().hasNext()){
+                            Tareaextracurricular tarot=age.getTarea().getTareaextracurriculars().iterator().next();
+                            Date inicio=tarot.getDiaInicio();
+                            Date fin=tarot.getDiaFin();
+                            if(diaini.compareTo(inicio)>=0 ||diafin.compareTo(inicio)>= 0 && diaini.compareTo(fin)<=0 || diafin.compareTo(fin)<=0){
+                                Date hinicio = tarot.getDiaInicio();
+                                Date hhfin = tarot.getDiaFin();
+                                if(hini.compareTo(hinicio)<=0&&hfin.compareTo(hinicio)>=0){
+                                    band = 0;
+                                    if(control==true){JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para "+ toString() +" porque existe una tarea extracurricular a ese horario", "Registrar Tarea Extracurricular", JOptionPane.ERROR_MESSAGE);}
+                                    return band;
+                                }else if(hini.compareTo(hhfin)<=0&&hfin.compareTo(hhfin)>=0){
+                                    band = 0;
+                                    if(control==true){JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para "+ toString() +" porque existe una tarea extracurricular a ese horario", "Registrar Tarea Extracurricular", JOptionPane.ERROR_MESSAGE);}
+                                    return band;
+                                }else if(hini.compareTo(hinicio)>=0&&hfin.compareTo(hinicio)>=0&&hini.compareTo(hhfin)<=0&&hfin.compareTo(hhfin)<=0){
+                                    band = 0;
+                                    if(control==true){JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para "+ toString() +" porque existe una tarea extracurricular a ese horario", "Registrar Tarea Extracurricular", JOptionPane.ERROR_MESSAGE);}
+                                    return band;
+                                }
+                            }
+                        }else if(age.getTarea().getTareaclases().iterator().hasNext()){
+                            Date diaaux = diaini;
+                            if (diaini.getYear()==diafin.getYear()&&diaini.getMonth()==diafin.getMonth()&&diaini.getDate()==diafin.getDate()) {
+                                Dia di = age.getDia2(diaaux);
+                                if (di.getIdDia() != null) {
+                                    Iterator itin = di.getIniciofins().iterator();
+                                    while (itin.hasNext()) {
+                                        Iniciofin in = (Iniciofin) itin.next();
+                                        SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
+                                        String i=formateador.format(in.getInicio());
+                                        String ii=formateador.format(in.getFin());
+                                        Date inicio = formateador.parse(i);
+                                        Date fin = formateador.parse(ii);
+                                        if(hini.compareTo(inicio)<=0&&hfin.compareTo(inicio)>=0){
+                                            if(control==true){
+                                                JOptionPane.showMessageDialog(null, "El personal "+ toString() +" continuará con su clase luego de realizar la tarea", "Registrar Tarea Extracurricular", JOptionPane.INFORMATION_MESSAGE);
+                                                band = 1;
+                                                //return band;
+                                            }
+                                            in.setEstadoInicio(true);
+                                            in.actualizarIniciofin(in);
+                                        }else if(hini.compareTo(fin)<=0&&hfin.compareTo(fin)>=0){
+                                            if(control==true){
+                                                JOptionPane.showMessageDialog(null, "El personal "+ toString() +" suspenderá su clase para realizar la tarea", "Registrar Tarea Extracurricular", JOptionPane.INFORMATION_MESSAGE);
+                                                band = 1;
+                                                //return band;
+                                            }
+                                            in.setEstadoFin(true);
+                                            in.actualizarIniciofin(in);
+                                        }else if(hini.compareTo(inicio)>=0&&hfin.compareTo(inicio)>=0&&hini.compareTo(fin)<=0&&hfin.compareTo(fin)<=0){
+                                            if(control==true){
+                                                JOptionPane.showMessageDialog(null, "El personal "+ toString() +" suspenderá su clase para realizar la tarea", "Registrar Tarea Extracurricular", JOptionPane.INFORMATION_MESSAGE);
+                                                band = 2;
+                                                //return band;
+                                            }
+                                        }else if(hini.compareTo(inicio)<=0&&hfin.compareTo(inicio)>=0&&hini.compareTo(fin)<=0&&hfin.compareTo(fin)>=0){
+                                            if(control==true){
+                                                JOptionPane.showMessageDialog(null, "El personal "+ toString() +" suspenderá su clase para realizar la tarea", "Registrar Tarea Extracurricular", JOptionPane.INFORMATION_MESSAGE);
+                                                band = 1;
+                                                //return band;
+                                            }
+                                            in.setEstadoInicio(true);
+                                            in.setEstadoFin(true);
+                                        }
+                                    }
+                                }
+                            } else {
+                                while (diaaux.compareTo(diafin) <= 0) {
+                                    Dia di = age.getDia2(diaaux);
+                                    if (di.getIdDia() != null) {
+                                        Iterator itin = di.getIniciofins().iterator();
+                                        while (itin.hasNext()) {
+                                            Iniciofin in = (Iniciofin) itin.next();
+                                            SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
+                                            String i = formateador.format(in.getInicio());
+                                            String ii = formateador.format(in.getFin());
+                                            Date inicio = formateador.parse(i);
+                                            Date fin = formateador.parse(ii);
+                                            if(diaini.getDate()<di.getDia()&&diafin.getDate()>di.getDia()){
+                                                if(in.getEstadoInicio()!=null || in.getEstadoFin()!=null){
+                                                    if(control==true){
+                                                        JOptionPane.showMessageDialog(null, "El personal " + toString() + " tiene clases pero se suspenderán por la tarea extracurricular", "Registrar Tarea Extracurricular", JOptionPane.INFORMATION_MESSAGE);
+                                                        band = 1;
+                                                        //return band;
+                                                    }
+                                                    in.setEstadoInicio(null);
+                                                    in.setEstadoFin(null);
+                                                    in.actualizarIniciofin(in);
+                                                }
+                                            }else if(diaini.getDate()==di.getDia()){
+                                                if(hini.compareTo(inicio)<=0){
+                                                    if(in.getEstadoInicio()!=null || in.getEstadoFin()!=null){
+                                                        if(control==true){
+                                                            JOptionPane.showMessageDialog(null, "El personal " + toString() + " tiene clases pero se suspenderán por la tarea extracurricular", "Registrar Tarea Extracurricular", JOptionPane.INFORMATION_MESSAGE);
+                                                            band = 1;
+                                                            //return band;
+                                                        }
+                                                        in.setEstadoInicio(null);
+                                                        in.setEstadoFin(null);
+                                                        in.actualizarIniciofin(in);  
+                                                    }
+                                                }else if(hini.compareTo(inicio)>=0&&hini.compareTo(fin)<=0){
+                                                    if(in.getEstadoFin()!=null){
+                                                        if(control==true){
+                                                            JOptionPane.showMessageDialog(null, "El personal " + toString() + " tiene clases pero se suspenderán por la tarea extracurricular", "Registrar Tarea Extracurricular", JOptionPane.INFORMATION_MESSAGE);
+                                                            band = 2;
+                                                            //return band;
+                                                        }
+                                                        in.setEstadoFin(null);
+                                                        in.actualizarIniciofin(in);
+                                                    }
+                                                }
+                                            }else if(diafin.getDate()==di.getDia()){
+                                                if(hfin.compareTo(fin)>=0){
+                                                    if(in.getEstadoInicio()!=null || in.getEstadoFin()!=null){
+                                                        if(control==true){
+                                                            JOptionPane.showMessageDialog(null, "El personal " + toString() + " tiene clases pero se suspenderán por la tarea extracurricular", "Registrar Tarea Extracurricular", JOptionPane.INFORMATION_MESSAGE);
+                                                            band = 1;
+                                                            //return band;
+                                                        }
+                                                        in.setEstadoInicio(null);
+                                                        in.setEstadoFin(null);
+                                                        in.actualizarIniciofin(in);
+                                                    }
+                                                }else if(hini.compareTo(inicio)>=0&&hini.compareTo(fin)<=0){
+                                                    if(in.getEstadoInicio()!=null || in.getEstadoFin()!=null){
+                                                        if(control==true){
+                                                            JOptionPane.showMessageDialog(null, "El personal " + toString() + " tiene clases pero se suspenderán por la tarea extracurricular", "Registrar Tarea Extracurricular", JOptionPane.INFORMATION_MESSAGE);
+                                                            band = 1;
+                                                            //return band;
+                                                        }
+                                                        in.setEstadoInicio(null);
+                                                        in.setEstadoFin(null);
+                                                        in.actualizarIniciofin(in);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    diaaux = Controlador.sumarFechasDias(diaaux, 1);
+                                }
+                            }
+                        }else if(age.getTarea().getTareareunions().iterator().hasNext()){
+                            Dia di = age.getDia2(diaini);
+                            while (di.getIdDia() != null) {
+                                Iterator itin = di.getIniciofins().iterator();
+                                while (itin.hasNext()) {
+                                    Iniciofin in = (Iniciofin) itin.next();
+                                    SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
+                                    String i=formateador.format(in.getInicio());
+                                    String ii=formateador.format(in.getFin());
+                                    Date inicio = formateador.parse(i);
+                                    Date fin = formateador.parse(ii);
+                                    if (diaini.getDate() < di.getDia() && diafin.getDate() > di.getDia()) {
+                                        if (in.getEstadoInicio() != null || in.getEstadoFin() != null) {
+                                            if(control==true){
+                                                JOptionPane.showMessageDialog(null, "El personal " + toString() + " tiene reuniones pero se suspenderán por la tarea extracurricular", "Registrar Tarea Extracurricular", JOptionPane.INFORMATION_MESSAGE);
+                                                band = 1;
+                                                //return band;
+                                            }
+                                            in.setEstadoInicio(null);
+                                            in.actualizarIniciofin(in);
+                                        }
+                                    } else if (diaini.getDate() == di.getDia()) {
+                                        if (hini.compareTo(inicio) <= 0) {
+                                            if (in.getEstadoInicio() != null || in.getEstadoFin() != null) {
+                                                if(control==true){
+                                                    JOptionPane.showMessageDialog(null, "El personal " + toString() + " tiene reuniones pero se suspenderán por la tarea extracurricular", "Registrar Tarea Extracurricular", JOptionPane.INFORMATION_MESSAGE);
+                                                    band = 1;
+                                                    //return band;   
+                                                }
+                                                in.setEstadoInicio(null);
+                                                in.setEstadoFin(null);
+                                                in.actualizarIniciofin(in);
+                                            }
+                                        } else if (hini.compareTo(inicio) >= 0 && hini.compareTo(fin) <= 0) {
+                                            if (in.getEstadoFin() != null) {
+                                                if(control==true){
+                                                    JOptionPane.showMessageDialog(null, "El personal " + toString() + " tiene reuniones pero se suspenderán por la tarea extracurricular", "Registrar Tarea Extracurricular", JOptionPane.INFORMATION_MESSAGE);
+                                                    band = 2;
+                                                    //return band;
+                                                }
+                                                in.setEstadoFin(null);
+                                                in.actualizarIniciofin(in);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            
+//            if(!declaracionjuradas.isEmpty()){
+//                Date diaux=diaini;
+//                while(diaux.compareTo(diafin)<=0) {
+//                    String di= ObtenerDia(diaux.getDay());
+//                    Iterator itact=declaracionjuradas.iterator().next().ObtenerActivos(di).iterator();
+//                    while(itact.hasNext()){
+//                        Activo act=(Activo) itact.next();
+//                        Iterator itin=act.getActivoIniciofins().iterator();
+//                        while(itin.hasNext()){
+//                            ActivoIniciofin in=(ActivoIniciofin) itin.next();
+//                            if (hini.compareTo(in.getInicio()) <= 0 && hfin.compareTo(in.getInicio()) >= 0) {
+//                                //band=0;
+//                                if(control==true){JOptionPane.showMessageDialog(null,"", "Registrar Reunión", JOptionPane.ERROR_MESSAGE);}
+//                                //return band;
+//                            } else if (hini.compareTo(in.getFin()) <= 0 && hfin.compareTo(in.getFin()) >= 0) {
+//                                //band=0;
+//                                if(control==true){JOptionPane.showMessageDialog(null,"no existe disponibilidad por parte de la declaración jurada a ese horario", "Registrar Reunión", JOptionPane.ERROR_MESSAGE);}
+//                                //return band;
+//                            } else if (hini.compareTo(in.getInicio()) >= 0 && hfin.compareTo(in.getInicio()) >= 0 && hini.compareTo(in.getFin()) <= 0 && hfin.compareTo(in.getFin()) <= 0) {
+//                                //band=0;
+//                                if(control==true){JOptionPane.showMessageDialog(null,"no existe disponibilidad por parte de la declaración jurada a ese horario", "Registrar Reunión", JOptionPane.ERROR_MESSAGE);}
+//                                //return band;
+//                            }
+////////                                if(hini.compareTo(in.getFin())<0 || hfin.compareTo(in.getInicio())>0){
+////////                                    band=false;
+////////                                    if(control==true){JOptionPane.showMessageDialog(null,"no existe disponibilidad por parte de la declaración jurada a ese horario", "Registrar Tarea Extracurricular", JOptionPane.ERROR_MESSAGE);}
+////////                                    return band;
+////////                                }
+//                            
+//                        }
+//                    }
+//                    diaux=Controlador.sumarFechasDias(diaux, 1);
+//                }
+//            }
+        }catch(Exception ex){JOptionPane.showMessageDialog(null, ex.toString());}
+        return band;
+    }
+
+    // </editor-fold>
+    
+    ///OTROS
+    // <editor-fold defaultstate="collapsed" desc="OTROS"> 
+    public boolean OtrosVerificarDisponibilidad (Date diaini,Date hini,Date hfin,Date diafin, boolean control){
         boolean band=true;
         try {
             if (!Controlador.PERSISTENCIA.getAgendas(idPersonal).isEmpty()) {
@@ -560,9 +985,8 @@ public class Personal  implements java.io.Serializable {
                                 }
                             }
                         }else if(age.getTarea().getTareaclases().iterator().hasNext()){
-                            Date diaaux = diaini;
-                            while (diaaux.compareTo(diafin) <= 0) {
-                                Dia di = age.getDia2(diaaux);
+                            if (diaini.getYear()==diafin.getYear()&&diaini.getMonth()==diafin.getMonth()&&diaini.getDate()==diafin.getDate()) {
+                                Dia di = age.getDia2(diaini);
                                 if (di.getIdDia() != null) {
                                     Iterator itin = di.getIniciofins().iterator();
                                     while (itin.hasNext()) {
@@ -573,21 +997,66 @@ public class Personal  implements java.io.Serializable {
                                         Date inicio = formateador.parse(i);
                                         Date fin = formateador.parse(ii);
                                         if(hini.compareTo(inicio)<=0&&hfin.compareTo(inicio)>=0){
+                                            if(control==true){JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para " + toString() + " porque existe una clase a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);}
                                             band = false;
-                                            JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para "+ toString() +" porque existe una clase a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);
                                             return band;
                                         }else if(hini.compareTo(fin)<=0&&hfin.compareTo(fin)>=0){
+                                            if(control==true){JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para " + toString() + " porque existe una clase a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);}
                                             band = false;
-                                            JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para "+ toString() +" porque existe una clase a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);
                                             return band;
                                         }else if(hini.compareTo(inicio)>=0&&hfin.compareTo(inicio)>=0&&hini.compareTo(fin)<=0&&hfin.compareTo(fin)<=0){
                                             band = false;
-                                            JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para "+ toString() +" porque existe una clase a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);
+                                            if(control==true){JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para " + toString() + " porque existe una clase a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);}
+                                            return band;
+                                        }else if(hini.compareTo(inicio)<=0&&hfin.compareTo(inicio)>=0&&hini.compareTo(fin)<=0&&hfin.compareTo(fin)>=0){
+                                            band = false;
+                                            if(control==true){JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para " + toString() + " porque existe una clase a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);}
                                             return band;
                                         }
                                     }
                                 }
-                                diaaux = Controlador.sumarFechasDias(diaaux, 1);
+                            } else {
+                                Date diaaux = diaini;
+                                while (diaini.compareTo(diafin) <= 0) {
+                                    Dia di = age.getDia2(diaaux);
+                                    if (di.getIdDia() != null) {
+                                        Iterator itin = di.getIniciofins().iterator();
+                                        while (itin.hasNext()) {
+                                            Iniciofin in = (Iniciofin) itin.next();
+                                            SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
+                                            String i = formateador.format(in.getInicio());
+                                            String ii = formateador.format(in.getFin());
+                                            Date inicio = formateador.parse(i);
+                                            Date fin = formateador.parse(ii);
+                                            if(diaini.getDate()<di.getDia()&&diafin.getDate()>di.getDia()){
+                                                if(control==true){JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para " + toString() + " porque existe una clase a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);}
+                                                band = false;
+                                                return band;
+                                            }else if(diaini.getDate()==di.getDia()){
+                                                if(hini.compareTo(inicio)<=0){
+                                                    if(control==true){JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para " + toString() + " porque existe una clase a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);}
+                                                    band = false;
+                                                    return band;
+                                                }else if(hini.compareTo(inicio)>=0&&hini.compareTo(fin)<=0){
+                                                    if(control==true){JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para " + toString() + " porque existe una clase a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);}
+                                                    band = false;
+                                                    return band;
+                                                }
+                                            }else if(diafin.getDate()==di.getDia()){
+                                                if(hfin.compareTo(fin)>=0){
+                                                    if(control==true){JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para " + toString() + " porque existe una clase a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);}
+                                                    band = false;
+                                                    return band;
+                                                }else if(hini.compareTo(inicio)>=0&&hini.compareTo(fin)<=0){
+                                                    if(control==true){JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para " + toString() + " porque existe una clase a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);}
+                                                    band = false;
+                                                    return band;
+                                                }
+                                            }
+                                        }
+                                    }
+                                    diaaux = Controlador.sumarFechasDias(diaaux, 1);
+                                }
                             }
                         }else if(age.getTarea().getTareareunions().iterator().hasNext()){
                             Dia di = age.getDia2(diaini);
@@ -630,11 +1099,24 @@ public class Personal  implements java.io.Serializable {
                         Iterator itin=act.getActivoIniciofins().iterator();
                         while(itin.hasNext()){
                             ActivoIniciofin in=(ActivoIniciofin) itin.next();
-                                if(hini.compareTo(in.getFin())<0 || hfin.compareTo(in.getInicio())>0){
-                                    band=false;
-                                    JOptionPane.showMessageDialog(null,"no existe disponibilidad por parte de la declaración jurada a ese horario");
-                                    return band;
-                                }
+                            if (hini.compareTo(in.getInicio()) <= 0 && hfin.compareTo(in.getInicio()) >= 0) {
+                                band=false;
+                                if(control==true){JOptionPane.showMessageDialog(null,"no existe disponibilidad por parte de la declaración jurada a ese horario", "Registrar Reunión", JOptionPane.ERROR_MESSAGE);}
+                                return band;
+                            } else if (hini.compareTo(in.getFin()) <= 0 && hfin.compareTo(in.getFin()) >= 0) {
+                                band=false;
+                                if(control==true){JOptionPane.showMessageDialog(null,"no existe disponibilidad por parte de la declaración jurada a ese horario", "Registrar Reunión", JOptionPane.ERROR_MESSAGE);}
+                                return band;
+                            } else if (hini.compareTo(in.getInicio()) >= 0 && hfin.compareTo(in.getInicio()) >= 0 && hini.compareTo(in.getFin()) <= 0 && hfin.compareTo(in.getFin()) <= 0) {
+                                band=false;
+                                if(control==true){JOptionPane.showMessageDialog(null,"no existe disponibilidad por parte de la declaración jurada a ese horario", "Registrar Reunión", JOptionPane.ERROR_MESSAGE);}
+                                return band;
+                            }
+//                                if(hini.compareTo(in.getFin())<0 || hfin.compareTo(in.getInicio())>0){
+//                                    band=false;
+//                                    JOptionPane.showMessageDialog(null,"no existe disponibilidad por parte de la declaración jurada a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);
+//                                    return band;
+//                                }
                             
                         }
                     }
@@ -644,7 +1126,108 @@ public class Personal  implements java.io.Serializable {
         }catch(Exception ex){JOptionPane.showMessageDialog(null, ex.toString());}
         return band;
     }
+    // </editor-fold>
     
+    //CLASES
+    // <editor-fold defaultstate="collapsed" desc="Clase"> 
+    public int[][] VerificarDisponibilidadClase(Date inici, Date finn, Iniciofin ini,String dsem){
+        int a=0;
+        int d=0;
+        Date ot=inici;
+        if(dsem.equals("LUNES")){while(ot.getDay()!=1){ot=Controlador.sumarFechasDias(ot, 1);}
+        }else if(dsem.equals("MARTES")){while(ot.getDay()!=2){ot=Controlador.sumarFechasDias(ot, 1);}
+        }else if(dsem.equals("MIERCOLES")){while(ot.getDay()!=3){ot=Controlador.sumarFechasDias(ot, 1);}
+        }else if(dsem.equals("JUEVES")){while(ot.getDay()!=4){ot=Controlador.sumarFechasDias(ot, 1);}
+        }else if(dsem.equals("VIERNES")){while(ot.getDay()!=5){ot=Controlador.sumarFechasDias(ot, 1);}
+        }else if(dsem.equals("SABADO")){while(ot.getDay()!=6){ot=Controlador.sumarFechasDias(ot, 1);}}
+
+        Date otro = ot;
+        while (otro.compareTo(finn) <= 0) {
+            if (!Controlador.PERSISTENCIA.getAgendas(idPersonal).isEmpty()) {
+                Iterator it = Controlador.PERSISTENCIA.getAgendas(idPersonal).iterator();
+                while (it.hasNext()) {
+                    Agenda age = (Agenda) it.next();
+                    if (age.getPersonal().getEstado() == true && age.getTarea().getEstado() == true) {
+                        if (age.getTarea().getTareaotros().iterator().hasNext()) {
+                            Tareaotro tarot = age.getTarea().getTareaotros().iterator().next();
+                            Date inicio = tarot.getDiaInicio();
+                            Date fin = tarot.getDiaFin();
+                            if (otro.compareTo(inicio) >= 0 && otro.compareTo(fin) <= 0) {
+                                a++;
+                            }
+                        } else if (age.getTarea().getTareaextracurriculars().iterator().hasNext()) {
+                            Tareaextracurricular tarot = age.getTarea().getTareaextracurriculars().iterator().next();
+                            Date inicio = tarot.getDiaInicio();
+                            Date fin = tarot.getDiaFin();
+                            if (otro.compareTo(inicio) >= 0 && otro.compareTo(fin) <= 0) {
+                                a++;
+                            }
+                        } else if (age.getTarea().getTareaclases().iterator().hasNext()) {
+                            Dia di = age.getDia2(otro);
+                            if (di.getIdDia() != null) {
+                                Iterator itin = di.getIniciofins().iterator();
+                                while (itin.hasNext()) {
+                                    Iniciofin in = (Iniciofin) itin.next();
+                                    if (ini.getInicio().compareTo(in.getInicio()) <= 0 && ini.getFin().compareTo(in.getInicio()) >= 0) {
+                                        a++;
+                                    } else if (ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) >= 0) {
+                                        a++;
+                                    } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getInicio()) >= 0 && ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
+                                        a++;
+                                    }
+                                }
+                            }
+                        } else if (age.getTarea().getTareareunions().iterator().hasNext()) {
+                            Dia di = age.getDia2(otro);
+                            if (di.getIdDia() != null) {
+                                Iterator itin = di.getIniciofins().iterator();
+                                while (itin.hasNext()) {
+                                    Iniciofin in = (Iniciofin) itin.next();
+                                    if (ini.getInicio().compareTo(in.getInicio()) <= 0 && ini.getFin().compareTo(in.getInicio()) >= 0) {
+                                        a++;
+                                    } else if (ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) >= 0) {
+                                        a++;
+                                    } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getInicio()) >= 0 && ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
+                                        a++;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            if (!declaracionjuradas.isEmpty()) {
+                Iterator itact = declaracionjuradas.iterator().next().ObtenerActivos(dsem).iterator();
+                while (itact.hasNext()) {
+                    Activo act = (Activo) itact.next();
+                    Iterator itin = act.getActivoIniciofins().iterator();
+                    while (itin.hasNext()) {
+                        ActivoIniciofin in = (ActivoIniciofin) itin.next();
+                        if (ini.getInicio().compareTo(in.getInicio()) <= 0 && ini.getFin().compareTo(in.getInicio()) >= 0) {
+                            d++;
+                        } else if (ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) >= 0) {
+                            d++;
+                        } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getInicio()) >= 0 && ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
+                            d++;
+                        }
+//                        if (in.getInicio().compareTo(ini.getInicio()) > 0 && in.getInicio().compareTo(ini.getFin()) < 0 || in.getFin().compareTo(ini.getInicio()) > 0 && in.getFin().compareTo(ini.getFin()) < 0) {
+//                            d++;
+//                        }
+                    }
+                }
+            }
+            otro = Controlador.sumarFechasDias(otro, 7);
+        }
+        
+
+        int[][] cant = new int[2][];
+        cant[0] = new int[a];
+        cant[1] = new int[d];
+        return cant;
+    }
+    // </editor-fold>
+    
+        
 //    public boolean VerificarDisponibilidadReunion (Date dia, Iniciofin ini){
 //        boolean band=true;
 //        try{
@@ -688,87 +1271,6 @@ public class Personal  implements java.io.Serializable {
 //        return band;
 //    }
 //    
-    
-    public int[][] VerificarDisponibilidadClase(Date inici, Date finn, Iniciofin ini,String dsem){
-        int a=0;
-        int d=0;
-        Date ot=inici;
-        if(dsem.equals("LUNES")){while(ot.getDay()!=1){ot=Controlador.sumarFechasDias(ot, 1);}
-        }else if(dsem.equals("MARTES")){while(ot.getDay()!=2){ot=Controlador.sumarFechasDias(ot, 1);}
-        }else if(dsem.equals("MIERCOLES")){while(ot.getDay()!=3){ot=Controlador.sumarFechasDias(ot, 1);}
-        }else if(dsem.equals("JUEVES")){while(ot.getDay()!=4){ot=Controlador.sumarFechasDias(ot, 1);}
-        }else if(dsem.equals("VIERNES")){while(ot.getDay()!=5){ot=Controlador.sumarFechasDias(ot, 1);}
-        }else if(dsem.equals("SABADO")){while(ot.getDay()!=6){ot=Controlador.sumarFechasDias(ot, 1);}}
-
-        Date otro = ot;
-        while (otro.compareTo(finn) <= 0) {
-            if (!agendas.isEmpty()) {
-                Iterator it = agendas.iterator();
-                while (it.hasNext()) {
-                    Agenda age = (Agenda) it.next();
-                    if (age.getPersonal().getEstado() == true && age.getTarea().getEstado() == true) {
-                        if (age.getTarea().getTareaotros().iterator().hasNext()) {
-                            Tareaotro tarot = age.getTarea().getTareaotros().iterator().next();
-                            Date inicio = tarot.getDiaInicio();
-                            Date fin = tarot.getDiaFin();
-                            if (otro.compareTo(inicio) >= 0 && otro.compareTo(fin) <= 0) {
-                                a++;
-                            }
-                        } else if (age.getTarea().getTareaextracurriculars().iterator().hasNext()) {
-                            Tareaextracurricular tarot = age.getTarea().getTareaextracurriculars().iterator().next();
-                            Date inicio = tarot.getDiaInicio();
-                            Date fin = tarot.getDiaFin();
-                            if (otro.compareTo(inicio) >= 0 && otro.compareTo(fin) <= 0) {
-                                a++;
-                            }
-                        } else if (age.getTarea().getTareaclases().iterator().hasNext()) {
-                            Dia di = age.getDia2(otro);
-                            if (di.getIdDia() != null) {
-                                Iterator itin = di.getIniciofins().iterator();
-                                while (itin.hasNext()) {
-                                    Iniciofin in = (Iniciofin) itin.next();
-                                    if (ini.getInicio().compareTo(in.getInicio()) >= 0 || ini.getFin().compareTo(in.getInicio()) >= 0 && ini.getInicio().compareTo(in.getFin()) <= 0 || ini.getFin().compareTo(in.getFin()) <= 0) {
-                                        a++;
-                                    }
-                                }
-                            }
-                        } else if (age.getTarea().getTareareunions().iterator().hasNext()) {
-                            Dia di = age.getDia2(otro);
-                            if (di.getIdDia() != null) {
-                                Iterator itin = di.getIniciofins().iterator();
-                                while (itin.hasNext()) {
-                                    Iniciofin in = (Iniciofin) itin.next();
-                                    if (ini.getInicio().compareTo(in.getInicio()) >= 0 || ini.getFin().compareTo(in.getInicio()) >= 0 && ini.getInicio().compareTo(in.getFin()) <= 0 || ini.getFin().compareTo(in.getFin()) <= 0) {
-                                        a++;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            if (!declaracionjuradas.isEmpty()) {
-                Iterator itact = declaracionjuradas.iterator().next().ObtenerActivos(dsem).iterator();
-                while (itact.hasNext()) {
-                    Activo act = (Activo) itact.next();
-                    Iterator itin = act.getActivoIniciofins().iterator();
-                    while (itin.hasNext()) {
-                        ActivoIniciofin in = (ActivoIniciofin) itin.next();
-                        if (in.getInicio().compareTo(ini.getInicio()) > 0 && in.getInicio().compareTo(ini.getFin()) < 0 || in.getFin().compareTo(ini.getInicio()) > 0 && in.getFin().compareTo(ini.getFin()) < 0) {
-                            d++;
-                        }
-                    }
-                }
-            }
-            otro = Controlador.sumarFechasDias(otro, 7);
-        }
-        
-
-        int[][] cant = new int[2][];
-        cant[0] = new int[a];
-        cant[1] = new int[d];
-        return cant;
-    }
     
     public Declaracionjurada getDeclaracionjurada() {
         Declaracionjurada dec=new Declaracionjurada();

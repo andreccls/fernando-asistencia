@@ -917,6 +917,10 @@ public class JFramePersonal extends javax.swing.JFrame {
                             jRadioButton2.setSelected(false);
                         }
                     }else if(pe.getIdPersonal()!=null){
+                        if(pe.getEstado()==false){
+                            pe.setEstado(true);
+                            pe.actualizarPersonal(pe);
+                        }
                         JOptionPane.showMessageDialog(null, "El personal ya existe, para realizar algún cambio ingrese a actualizar personal","Registrar Personal", JOptionPane.ERROR_MESSAGE);
                     }
                     
@@ -933,6 +937,7 @@ public class JFramePersonal extends javax.swing.JFrame {
                     jTextField12.setText("");
                     jTextField13.setText("");
                     jFormattedTextField1.setText("");
+                    jFormattedTextField3.setText("");
                     modeloLista.removeAllElements();
                     modeloLista2.removeAllElements();
                     jRadioButton1.setSelected(false);
