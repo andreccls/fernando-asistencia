@@ -228,6 +228,12 @@ public class JFrameClase extends javax.swing.JFrame {
             }
         });
 
+        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField1KeyTyped(evt);
+            }
+        });
+
         try {
             jFormattedTextField1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##:##")));
         } catch (java.text.ParseException ex) {
@@ -279,6 +285,12 @@ public class JFrameClase extends javax.swing.JFrame {
         });
 
         jLabel2.setText("Lugar:");
+
+        jTextField3.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField3KeyTyped(evt);
+            }
+        });
 
         jLabel10.setText("Desde:");
 
@@ -425,6 +437,12 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
     jScrollPane2.setViewportView(jTable1);
 
     jLabel12.setText("Aula:");
+
+    jTextField2.addKeyListener(new java.awt.event.KeyAdapter() {
+        public void keyTyped(java.awt.event.KeyEvent evt) {
+            jTextField2KeyTyped(evt);
+        }
+    });
 
     jLabel13.setText("Nº Aula:");
 
@@ -1109,7 +1127,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
         salida.setText("");
         salida.setSize(25, 25);
         JOptionPane.showMessageDialog(null,salida, "Ingrese nombre de la nueva situación de revista", JOptionPane.INFORMATION_MESSAGE);
-        if(!salida.getText().isEmpty()){
+        if(!salida.getText().isEmpty()&&salida.getText().length()<=45){
             cadSalida = salida.getText().toUpperCase();
             Iterator it=Drive.PERSISTENCIA.getSitRevista().iterator();
             boolean w=false;
@@ -1128,6 +1146,8 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                 Drive.CargarComboSituacionRevista(jComboBox2);
                 jComboBox2.setSelectedItem(tip);
             }
+        }else {
+            JOptionPane.showMessageDialog(null, "La situación de revista no puede estar vacio y puede contener hasta 45 caracteres", "Registrar Tipo de Documento", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jLabel18MouseClicked
 
@@ -1346,6 +1366,18 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
             jFormattedTextField1.setText("");
         }
     }//GEN-LAST:event_jFormattedTextField1FocusLost
+
+    private void jTextField1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyTyped
+        if(jTextField1.getText().length()==20) evt.consume();
+    }//GEN-LAST:event_jTextField1KeyTyped
+
+    private void jTextField3KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField3KeyTyped
+        if(jTextField3.getText().length()==45) evt.consume();
+    }//GEN-LAST:event_jTextField3KeyTyped
+
+    private void jTextField2KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField2KeyTyped
+        if(jTextField2.getText().length()==20) evt.consume();
+    }//GEN-LAST:event_jTextField2KeyTyped
 
     /**
     * @param args the command line arguments

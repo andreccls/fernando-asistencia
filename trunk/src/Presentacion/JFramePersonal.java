@@ -25,6 +25,7 @@ import Clases.PersonaldocenteId;
 import Clases.PersonalnodocenteId;
 import Clases.Telefono;
 import Clases.Tipodoc;
+import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -206,6 +207,24 @@ public class JFramePersonal extends javax.swing.JFrame {
 
         jLabel14.setText("Telefono:");
 
+        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField1KeyTyped(evt);
+            }
+        });
+
+        jTextField2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField2KeyTyped(evt);
+            }
+        });
+
+        jTextField6.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField6KeyTyped(evt);
+            }
+        });
+
         jTextField9.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField9ActionPerformed(evt);
@@ -214,6 +233,11 @@ public class JFramePersonal extends javax.swing.JFrame {
         jTextField9.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 jTextField9FocusLost(evt);
+            }
+        });
+        jTextField9.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField9KeyTyped(evt);
             }
         });
 
@@ -252,6 +276,12 @@ public class JFramePersonal extends javax.swing.JFrame {
         jLabel17.setText("Antiguedad:");
 
         jLabel18.setText("dd/mm/aaaa");
+
+        jTextField12.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField12KeyTyped(evt);
+            }
+        });
 
         jScrollPane2.setViewportView(jList1);
 
@@ -304,7 +334,19 @@ public class JFramePersonal extends javax.swing.JFrame {
 
         jLabel8.setText("Piso:");
 
+        jTextField8.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField8KeyTyped(evt);
+            }
+        });
+
         jLabel12.setText("Depto:");
+
+        jTextField13.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField13KeyTyped(evt);
+            }
+        });
 
         jLabel19.setText("Actividad:");
 
@@ -987,25 +1029,29 @@ public class JFramePersonal extends javax.swing.JFrame {
         salida.setSize(25, 25);
 
         JOptionPane.showMessageDialog(null,salida, "Ingrese un tipo de documento", JOptionPane.INFORMATION_MESSAGE);
-        if(!salida.getText().isEmpty()){
-            cadSalida = salida.getText().toUpperCase();
-            Iterator it=Drive.PERSISTENCIA.getTipodocs().iterator();
-            boolean w=false;
-            while(it.hasNext()){
-                Tipodoc tip=(Tipodoc) it.next();
-                if(tip.getTipodoc().equals(cadSalida)){
-                    JOptionPane.showMessageDialog(null, "El tipo de documento ya existe","Registrar Tipo de Documento", JOptionPane.ERROR_MESSAGE);
-                    w=true;
+        if(salida.getText().length()<=8){
+            if(!salida.getText().isEmpty()){
+                cadSalida = salida.getText().toUpperCase();
+                Iterator it=Drive.PERSISTENCIA.getTipodocs().iterator();
+                boolean w=false;
+                while(it.hasNext()){
+                    Tipodoc tip=(Tipodoc) it.next();
+                    if(tip.getTipodoc().equals(cadSalida)){
+                        JOptionPane.showMessageDialog(null, "El tipo de documento ya existe","Registrar Tipo de Documento", JOptionPane.ERROR_MESSAGE);
+                        w=true;
+                    }
+                }
+                if(w==false){
+                    Tipodoc tip= new Tipodoc();
+                    tip.setTipodoc(cadSalida);
+                    tip.guardarTipodoc(tip);
+                    Drive.LimpiarCombo(jComboBox5);
+                    Drive.CargarComboTipodoc(jComboBox5);
+                    jComboBox5.setSelectedItem(tip);
                 }
             }
-            if(w==false){
-                Tipodoc tip= new Tipodoc();
-                tip.setTipodoc(cadSalida);
-                tip.guardarTipodoc(tip);
-                Drive.LimpiarCombo(jComboBox5);
-                Drive.CargarComboTipodoc(jComboBox5);
-                jComboBox5.setSelectedItem(tip);
-            }
+        }else{
+            JOptionPane.showMessageDialog(null, "El tipo de documento puede contener hasta 8 caracteres","Registrar Tipo de Documento", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jLabel35MouseClicked
 
@@ -1046,27 +1092,31 @@ public class JFramePersonal extends javax.swing.JFrame {
         salida.setSize(25, 25);
 
         JOptionPane.showMessageDialog(null,salida, "Ingrese un nuevo Departamento", JOptionPane.INFORMATION_MESSAGE);
-        if(!salida.getText().isEmpty()){
-            cadSalida = salida.getText().toUpperCase();
-            Iterator it=Drive.PERSISTENCIA.getDepartamentos().iterator();
-            boolean w=false;
-            while(it.hasNext()){
-                Departamento tip=(Departamento) it.next();
-                if(tip.getNombre().equals(cadSalida)){
-                    JOptionPane.showMessageDialog(null, "El departamento ya existe","Registrar Departamento", JOptionPane.ERROR_MESSAGE);
-                    w=true;
+        if (salida.getText().length() <= 45) {
+            if (!salida.getText().isEmpty()) {
+                cadSalida = salida.getText().toUpperCase();
+                Iterator it = Drive.PERSISTENCIA.getDepartamentos().iterator();
+                boolean w = false;
+                while (it.hasNext()) {
+                    Departamento tip = (Departamento) it.next();
+                    if (tip.getNombre().equals(cadSalida)) {
+                        JOptionPane.showMessageDialog(null, "El departamento ya existe", "Registrar Departamento", JOptionPane.ERROR_MESSAGE);
+                        w = true;
+                    }
                 }
+                if (w == false) {
+                    Departamento tip = new Departamento();
+                    tip.setNombre(cadSalida);
+                    tip.setEstablecimiento(Drive.getPrimerEstablecimiento());
+                    tip.guardarDepartamento(tip);
+                    Drive.LimpiarCombo(jComboBox2);
+                    Drive.CargarComboDepartamento(jComboBox2);
+                    jComboBox2.setSelectedItem(tip);
+                }
+            } 
+        }else {
+                JOptionPane.showMessageDialog(null, "El tipo de documento puede contener hasta 45 caracteres", "Registrar Tipo de Documento", JOptionPane.ERROR_MESSAGE);
             }
-            if(w==false){
-                Departamento tip= new Departamento();
-                tip.setNombre(cadSalida);
-                tip.setEstablecimiento(Drive.getPrimerEstablecimiento());
-                tip.guardarDepartamento(tip);
-                Drive.LimpiarCombo(jComboBox2);
-                Drive.CargarComboDepartamento(jComboBox2);
-                jComboBox2.setSelectedItem(tip);
-            }
-        }
     }//GEN-LAST:event_jLabel31MouseClicked
 
     private void jLabel30MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel30MouseClicked
@@ -1075,26 +1125,30 @@ public class JFramePersonal extends javax.swing.JFrame {
         salida.setText("");
         salida.setSize(25, 25);
 
-        JOptionPane.showMessageDialog(null,salida, "Ingrese una nueva actividad", JOptionPane.INFORMATION_MESSAGE);
-        if(!salida.getText().isEmpty()){
-            cadSalida = salida.getText().toUpperCase();
-            Iterator it=Drive.PERSISTENCIA.getActividades().iterator();
-            boolean w=false;
-            while(it.hasNext()){
-                Actividad tip=(Actividad) it.next();
-                if(tip.getActividad().equals(cadSalida)){
-                    JOptionPane.showMessageDialog(null, "La actividad ya existe","Registrar Actividad", JOptionPane.ERROR_MESSAGE);
-                    w=true;
+        JOptionPane.showMessageDialog(null, salida, "Ingrese una nueva actividad", JOptionPane.INFORMATION_MESSAGE);
+        if (salida.getText().length() <= 45) {
+            if (!salida.getText().isEmpty()) {
+                cadSalida = salida.getText().toUpperCase();
+                Iterator it = Drive.PERSISTENCIA.getActividades().iterator();
+                boolean w = false;
+                while (it.hasNext()) {
+                    Actividad tip = (Actividad) it.next();
+                    if (tip.getActividad().equals(cadSalida)) {
+                        JOptionPane.showMessageDialog(null, "La actividad ya existe", "Registrar Actividad", JOptionPane.ERROR_MESSAGE);
+                        w = true;
+                    }
+                }
+                if (w == false) {
+                    Actividad tip = new Actividad();
+                    tip.setActividad(cadSalida);
+                    tip.guardarActividad(tip);
+                    Drive.LimpiarCombo(jComboBox6);
+                    Drive.CargarComboActividad(jComboBox6);
+                    jComboBox6.setSelectedItem(tip);
                 }
             }
-            if(w==false){
-                Actividad tip= new Actividad();
-                tip.setActividad(cadSalida);
-                tip.guardarActividad(tip);
-                Drive.LimpiarCombo(jComboBox6);
-                Drive.CargarComboActividad(jComboBox6);
-                jComboBox6.setSelectedItem(tip);
-            }
+        } else {
+            JOptionPane.showMessageDialog(null, "El tipo de documento puede contener hasta 45 caracteres", "Registrar Tipo de Documento", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jLabel30MouseClicked
 
@@ -1330,6 +1384,34 @@ public class JFramePersonal extends javax.swing.JFrame {
     private void formWindowDeiconified(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowDeiconified
 
     }//GEN-LAST:event_formWindowDeiconified
+
+    private void jTextField2KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField2KeyTyped
+        if(jTextField2.getText().length()==45) evt.consume();
+    }//GEN-LAST:event_jTextField2KeyTyped
+
+    private void jTextField1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyTyped
+        if(jTextField1.getText().length()==45) evt.consume();
+    }//GEN-LAST:event_jTextField1KeyTyped
+
+    private void jTextField12KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField12KeyTyped
+        if(jTextField12.getText().length()==45) evt.consume();
+    }//GEN-LAST:event_jTextField12KeyTyped
+
+    private void jTextField9KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField9KeyTyped
+        if(jTextField9.getText().length()==45) evt.consume();
+    }//GEN-LAST:event_jTextField9KeyTyped
+
+    private void jTextField6KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField6KeyTyped
+        if(jTextField6.getText().length()==20) evt.consume();
+    }//GEN-LAST:event_jTextField6KeyTyped
+
+    private void jTextField8KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField8KeyTyped
+        if(jTextField8.getText().length()==3) evt.consume();
+    }//GEN-LAST:event_jTextField8KeyTyped
+
+    private void jTextField13KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField13KeyTyped
+        if(jTextField13.getText().length()==3) evt.consume();
+    }//GEN-LAST:event_jTextField13KeyTyped
 
     
     /**
