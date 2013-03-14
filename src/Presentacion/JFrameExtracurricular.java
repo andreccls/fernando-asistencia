@@ -587,10 +587,12 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
                             int cc = 0;
                             boolean est = false;
+                            boolean control;
                             while (jTable1.getRowCount() != cc) {
                                 if (model.getValueAt(cc, 0).equals(true)) {
                                     Personal per = (Personal) model.getValueAt(cc, 1);
-                                    if (per.VerificarDisponibilidad(fecha_inicio, ini, fi, fecha_fin)) {
+                                    control=true;
+                                    if (per.ExtracurricularVerificarDisponibilidad(fecha_inicio, ini, fi, fecha_fin,control)==1||per.ExtracurricularVerificarDisponibilidad(fecha_inicio, ini, fi, fecha_fin,control)==2) {
                                         est = true;
                                     }
                                 }
@@ -613,7 +615,8 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                 while (jTable1.getRowCount() != c) {
                                     if (modelo.getValueAt(c, 0).equals(true)) {
                                         Personal per = (Personal) modelo.getValueAt(c, 1);
-                                        if (per.VerificarDisponibilidad(fecha_inicio, inicio, fin, fecha_fin)) {
+                                        control=false;
+                                        if (per.ExtracurricularVerificarDisponibilidad(fecha_inicio, ini, fi, fecha_fin,control)==1) {
                                             AgendaId ida = new AgendaId(per.getIdPersonal(), tarr.getIdTarea());
                                             Agenda age = new Agenda();
                                             age.setId(ida);
@@ -687,6 +690,82 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                                 in.setFin(fin);
                                                 in.guardarIniciofin(in);
                                             }
+                                        }else if(per.ExtracurricularVerificarDisponibilidad(fecha_inicio, inicio, fin, fecha_fin,control)==2){
+                                            AgendaId ida = new AgendaId(per.getIdPersonal(), tarr.getIdTarea());
+                                            Agenda age = new Agenda();
+                                            age.setId(ida);
+                                            age.setPersonal(per);
+                                            Revista rev = (Revista) Drive.PERSISTENCIA.getSitRevista().get(0);
+                                            age.setRevista(rev);
+                                            age.setTarea(tarr);
+                                            age.setComentario(null);
+                                            age.guardarAgenda(age);
+                                            ///Guarda el dia y hora de inicio
+                                            Ano anio = new Ano();
+                                            anio.setAgenda(age);
+                                            anio.setAno(fecha_inicio.getYear() + 1900);
+                                            anio.guardarAno(anio);
+                                            Mes mes = new Mes();
+                                            mes.setAno(anio);
+                                            mes.setMes(fecha_inicio.getMonth());
+                                            mes.guardarMes(mes);
+                                            Dia dia = new Dia();
+                                            dia.setMes(mes);
+                                            dia.setDia(fecha_inicio.getDate());
+                                            dia.guardarDia(dia);
+
+                                            Iniciofin in = new Iniciofin();
+                                            in.setDia(dia);
+                                            in.setInicio(inicio);
+//                                            if (jRadioButton1.isSelected()) {
+//                                                in.setEstadoInicio(false);
+//                                            }
+                                            in.guardarIniciofin(in);
+                                            ///Guarda el dia y hora de fin
+                                            Ano anioo = new Ano();
+                                            Mes mess = new Mes();
+                                            Dia diaa = new Dia();
+                                            if (fecha_inicio.getYear() != fecha_fin.getYear() || fecha_inicio.getMonth() != fecha_fin.getMonth() || fecha_inicio.getDate() != fecha_fin.getDate()) {
+                                                if (fecha_inicio.getYear() != fecha_fin.getYear()) {
+                                                    anioo.setAgenda(age);
+                                                    anioo.setAno(fecha_fin.getYear() + 1900);
+                                                    anioo.guardarAno(anioo);
+                                                    mess.setAno(anioo);
+                                                    mess.setMes(fecha_fin.getMonth());
+                                                    mess.guardarMes(mess);
+                                                    diaa.setMes(mess);
+                                                    diaa.setDia(fecha_fin.getDate());
+                                                    diaa.guardarDia(diaa);
+                                                    Iniciofin finn = new Iniciofin();
+                                                    finn.setDia(diaa);
+                                                    finn.setFin(fin);
+                                                    finn.guardarIniciofin(finn);
+                                                } else if (fecha_inicio.getMonth() != fecha_fin.getMonth()) {
+                                                    mess.setAno(anio);
+                                                    mess.setMes(fecha_fin.getMonth());
+                                                    mess.guardarMes(mess);
+                                                    diaa.setMes(mess);
+                                                    diaa.setDia(fecha_fin.getDate());
+                                                    diaa.guardarDia(diaa);
+                                                    Iniciofin finn = new Iniciofin();
+                                                    finn.setDia(diaa);
+                                                    finn.setFin(fin);
+                                                    finn.guardarIniciofin(finn);
+                                                } else if (fecha_inicio.getDate() != fecha_fin.getDate()) {
+                                                    diaa.setMes(mes);
+                                                    diaa.setDia(fecha_fin.getDate());
+                                                    diaa.guardarDia(diaa);
+                                                    Iniciofin finn = new Iniciofin();
+                                                    finn.setDia(diaa);
+                                                    finn.setFin(fin);
+                                                    finn.guardarIniciofin(finn);
+                                                }
+                                            } else {
+                                                in.setFin(fin);
+                                                in.guardarIniciofin(in);
+                                            }
+                                        }else {
+                                            JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para "+ per+" porque existe una tarea extracurricular a ese horario", "Registrar Tarea Extracurricular", JOptionPane.ERROR_MESSAGE);
                                         }
                                     }
                                     c++;
@@ -718,6 +797,12 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                             fin.setYear(fecha_fin.getYear());
                             fin.setMonth(fecha_fin.getMonth());
                             fin.setDate(fecha_fin.getDate());
+                            String i = formateador.format(inicio);
+                            String e = formateador.format(fin);
+                            Date ini = new Date();
+                            Date fi = new Date();
+                            ini = formateador.parse(i);
+                            fi = formateador.parse(e);
                             tar.setLugar(jTextField4.getText().toUpperCase());
                             tar.guardarTarea(tar);
 
@@ -764,10 +849,8 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                 while (jTable1.getRowCount() != c) {
                                     if (modelo.getValueAt(c, 0).equals(true)) {
                                         Personal per = (Personal) modelo.getValueAt(c, 1);
-                                        Iniciofin aux = new Iniciofin();
-                                        aux.setInicio(inicio);
-                                        aux.setFin(fin);
-                                        if (per.VerificarDisponibilidad(fecha_inicio, inicio, fin, fecha_fin)) {
+                                        boolean control=false;
+                                        if (per.ExtracurricularVerificarDisponibilidad(fecha_inicio, ini, fi, fecha_fin,control)==1) {
                                             AgendaId ida = new AgendaId(per.getIdPersonal(), tar.getIdTarea());
                                             Agenda age = new Agenda();
                                             age.setId(ida);
@@ -841,7 +924,81 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                                 in.setFin(fin);
                                                 in.guardarIniciofin(in);
                                             }
-                                        } else {
+                                        } else if(per.ExtracurricularVerificarDisponibilidad(fecha_inicio, inicio, fin, fecha_fin,control)==2){
+                                            AgendaId ida = new AgendaId(per.getIdPersonal(), tar.getIdTarea());
+                                            Agenda age = new Agenda();
+                                            age.setId(ida);
+                                            age.setPersonal(per);
+                                            Revista rev = (Revista) Drive.PERSISTENCIA.getSitRevista().get(0);
+                                            age.setRevista(rev);
+                                            age.setTarea(tar);
+                                            age.setComentario(null);
+                                            age.guardarAgenda(age);
+                                            ///Guarda el dia y hora de inicio
+                                            Ano anio = new Ano();
+                                            anio.setAgenda(age);
+                                            anio.setAno(fecha_inicio.getYear() + 1900);
+                                            anio.guardarAno(anio);
+                                            Mes mes = new Mes();
+                                            mes.setAno(anio);
+                                            mes.setMes(fecha_inicio.getMonth());
+                                            mes.guardarMes(mes);
+                                            Dia dia = new Dia();
+                                            dia.setMes(mes);
+                                            dia.setDia(fecha_inicio.getDate());
+                                            dia.guardarDia(dia);
+
+                                            Iniciofin in = new Iniciofin();
+                                            in.setDia(dia);
+                                            in.setInicio(inicio);
+//                                            if (jRadioButton1.isSelected()) {
+//                                                in.setEstadoInicio(false);
+//                                            }
+                                            in.guardarIniciofin(in);
+                                            ///Guarda el dia y hora de fin
+                                            Ano anioo = new Ano();
+                                            Mes mess = new Mes();
+                                            Dia diaa = new Dia();
+                                            if (fecha_inicio.getYear() != fecha_fin.getYear() || fecha_inicio.getMonth() != fecha_fin.getMonth() || fecha_inicio.getDate() != fecha_fin.getDate()) {
+                                                if (fecha_inicio.getYear() != fecha_fin.getYear()) {
+                                                    anioo.setAgenda(age);
+                                                    anioo.setAno(fecha_fin.getYear() + 1900);
+                                                    anioo.guardarAno(anioo);
+                                                    mess.setAno(anioo);
+                                                    mess.setMes(fecha_fin.getMonth());
+                                                    mess.guardarMes(mess);
+                                                    diaa.setMes(mess);
+                                                    diaa.setDia(fecha_fin.getDate());
+                                                    diaa.guardarDia(diaa);
+                                                    Iniciofin finn = new Iniciofin();
+                                                    finn.setDia(diaa);
+                                                    finn.setFin(fin);
+                                                    finn.guardarIniciofin(finn);
+                                                } else if (fecha_inicio.getMonth() != fecha_fin.getMonth()) {
+                                                    mess.setAno(anio);
+                                                    mess.setMes(fecha_fin.getMonth());
+                                                    mess.guardarMes(mess);
+                                                    diaa.setMes(mess);
+                                                    diaa.setDia(fecha_fin.getDate());
+                                                    diaa.guardarDia(diaa);
+                                                    Iniciofin finn = new Iniciofin();
+                                                    finn.setDia(diaa);
+                                                    finn.setFin(fin);
+                                                    finn.guardarIniciofin(finn);
+                                                } else if (fecha_inicio.getDate() != fecha_fin.getDate()) {
+                                                    diaa.setMes(mes);
+                                                    diaa.setDia(fecha_fin.getDate());
+                                                    diaa.guardarDia(diaa);
+                                                    Iniciofin finn = new Iniciofin();
+                                                    finn.setDia(diaa);
+                                                    finn.setFin(fin);
+                                                    finn.guardarIniciofin(finn);
+                                                }
+                                            } else {
+                                                in.setFin(fin);
+                                                in.guardarIniciofin(in);
+                                            }
+                                        }else {
                                             JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para: " + per.toString(), "Registrar Tarea extracurricular", JOptionPane.ERROR_MESSAGE);
                                         }
 

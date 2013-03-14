@@ -723,7 +723,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
     }
     
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        if(!jTextField1.getText().isEmpty()||!jTextField2.getText().isEmpty()||!jTextField3.getText().isEmpty()||!jTextField4.getText().isEmpty()||!jFormattedTextField1.getText().isEmpty()||!jFormattedTextField2.getText().isEmpty()){
+        if(!jTextField1.getText().isEmpty()||!jTextField2.getText().isEmpty()||!jTextField3.getText().isEmpty()||!jTextField4.getText().isEmpty()){
             int confirmado = JOptionPane.showConfirmDialog(null,"¿Desea cancelar la registración de la clase?","Registrar clase",JOptionPane.YES_NO_OPTION);
             if (JOptionPane.OK_OPTION == confirmado){
                 Frame vp=new JFramePrincipal(Drive,adm,idsesion);

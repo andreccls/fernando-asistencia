@@ -535,11 +535,13 @@ public class JFrameReunion extends javax.swing.JFrame {
                             fecha = dateChooserCombo1.getSelectedDate().getTime();
                             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
                             int cc = 0;
+                            boolean control;
                             boolean est = false;
                             while (jTable1.getRowCount() != cc) {
                                 if (model.getValueAt(cc, 0).equals(true)) {
                                     Personal per = (Personal) model.getValueAt(cc, 1);
-                                    if (per.VerificarDisponibilidad(fecha, inicio, fin, fecha)) {
+                                    control=true;
+                                    if (per.ReunionVerificarDisponibilidad(fecha, inicio, fin, control)==1||per.ReunionVerificarDisponibilidad(fecha, inicio, fin, control)==2) {
                                         est = true;
                                     }
                                 }
@@ -561,7 +563,8 @@ public class JFrameReunion extends javax.swing.JFrame {
                                 while (jTable1.getRowCount() != c) {
                                     if (modelo.getValueAt(c, 0).equals(true)) {
                                         Personal per = (Personal) modelo.getValueAt(c, 1);
-                                        if (per.VerificarDisponibilidad(fecha, inicio, fin, fecha)) {
+                                        control=false;
+                                        if (per.ReunionVerificarDisponibilidad(fecha, inicio, fin, control)==1) {
                                             AgendaId ida = new AgendaId(per.getIdPersonal(), tarr.getIdTarea());
                                             Agenda age = new Agenda();
                                             age.setId(ida);
@@ -589,6 +592,35 @@ public class JFrameReunion extends javax.swing.JFrame {
                                             in.setDia(dia);
                                             in.setInicio(inicio);
                                             in.setEstadoInicio(false);
+                                            in.setFin(fin);
+                                            in.guardarIniciofin(in);
+                                        }else if(per.ReunionVerificarDisponibilidad(fecha, inicio, fin, control)==2){
+                                            AgendaId ida = new AgendaId(per.getIdPersonal(), tarr.getIdTarea());
+                                            Agenda age = new Agenda();
+                                            age.setId(ida);
+                                            age.setPersonal(per);
+                                            Revista rev = (Revista) Drive.PERSISTENCIA.getSitRevista().get(0);
+                                            age.setRevista(rev);
+                                            age.setTarea(tarr);
+                                            age.setComentario(null);
+                                            age.guardarAgenda(age);
+
+                                            Ano anio = new Ano();
+                                            anio.setAgenda(age);
+                                            anio.setAno(fecha.getYear() + 1900);
+                                            anio.guardarAno(anio);
+                                            Mes mes = new Mes();
+                                            mes.setAno(anio);
+                                            mes.setMes(fecha.getMonth());
+                                            mes.guardarMes(mes);
+                                            Dia dia = new Dia();
+                                            dia.setMes(mes);
+                                            dia.setDia(fecha.getDate());
+                                            dia.guardarDia(dia);
+
+                                            Iniciofin in = new Iniciofin();
+                                            in.setDia(dia);
+                                            in.setInicio(inicio);
                                             in.setFin(fin);
                                             in.guardarIniciofin(in);
                                         }
@@ -665,7 +697,8 @@ public class JFrameReunion extends javax.swing.JFrame {
 //                                        Iniciofin aux = new Iniciofin();
 //                                        aux.setInicio(inicio);
 //                                        aux.setFin(fin);
-                                        if (per.VerificarDisponibilidad(fecha, inicio, fin, fecha)) {
+                                        boolean control=false;
+                                        if (per.ReunionVerificarDisponibilidad(fecha, inicio, fin,control)==1) {
                                             Revista rev = (Revista) Drive.PERSISTENCIA.getSitRevista().get(0);
                                             Agenda age = tar.ObtenerAgenda(per.getIdPersonal(), rev.getIdRevista());
                                             if (age.getId() == null) {
@@ -697,8 +730,40 @@ public class JFrameReunion extends javax.swing.JFrame {
                                             in.setEstadoInicio(false);
                                             in.setFin(fin);
                                             in.guardarIniciofin(in);
-                                        } else {
-                                            JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para: " + per.toString(), "Registrar Reunión", JOptionPane.ERROR_MESSAGE);
+                                        } else if(per.ReunionVerificarDisponibilidad(fecha, inicio, fin,control)==2) {
+                                            Revista rev = (Revista) Drive.PERSISTENCIA.getSitRevista().get(0);
+                                            Agenda age = tar.ObtenerAgenda(per.getIdPersonal(), rev.getIdRevista());
+                                            if (age.getId() == null) {
+                                                AgendaId ida = new AgendaId(per.getIdPersonal(), tar.getIdTarea());
+                                                age.setId(ida);
+                                                age.setPersonal(per);
+                                                age.setRevista(rev);
+                                                age.setTarea(tar);
+                                                age.setComentario(null);
+                                                age.guardarAgenda(age);
+                                            }
+
+                                            Ano anio = new Ano();
+                                            anio.setAgenda(age);
+                                            anio.setAno(fecha.getYear() + 1900);
+                                            anio.guardarAno(anio);
+                                            Mes mes = new Mes();
+                                            mes.setAno(anio);
+                                            mes.setMes(fecha.getMonth());
+                                            mes.guardarMes(mes);
+                                            Dia dia = new Dia();
+                                            dia.setMes(mes);
+                                            dia.setDia(fecha.getDate());
+                                            dia.guardarDia(dia);
+
+                                            Iniciofin in = new Iniciofin();
+                                            in.setDia(dia);
+                                            in.setInicio(inicio);
+                                            in.setEstadoInicio(false);
+                                            in.setFin(fin);
+                                            in.guardarIniciofin(in);
+                                        } else{
+                                            JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para "+ per +" porque existe una tarea extracurricular a ese horario", "Registrar Reunión", JOptionPane.ERROR_MESSAGE);
                                         }
                                     }
                                     c++;
