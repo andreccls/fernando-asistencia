@@ -2,6 +2,7 @@ package Clases;
 // Generated 19/11/2012 14:01:36 by Hibernate Tools 3.2.1.GA
 
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -312,6 +313,150 @@ public class Tarea  implements java.io.Serializable {
             }
         }
         return age;
+    }
+    
+    public void RecuperarAsistencia(Tarea tar) {
+        try {
+            if (tar.getTareaextracurriculars().iterator().hasNext()) {
+                //if (!Controlador.PERSISTENCIA.getAgendas().isEmpty()) {
+                Tareaextracurricular tarex = tar.getTareaextracurriculars().iterator().next();
+                Date diaini = tarex.getDiaInicio();
+                Date diafin = tarex.getDiaFin();
+                Iterator it = Controlador.PERSISTENCIA.getAgendas().iterator();
+                while (it.hasNext()) {
+                    Agenda age = (Agenda) it.next();
+                    if (age.getPersonal().getEstado() == true && age.getTarea().getEstado() == true) {
+                        if (age.getTarea().getTareaclases().iterator().hasNext()) {
+                            if (diaini.getYear() == diafin.getYear() && diaini.getMonth() == diafin.getMonth() && diaini.getDate() == diafin.getDate()) {
+                                Date diaaux = diaini;
+                                Dia di = age.getDia2(diaaux);
+                                if (di.getIdDia() != null) {
+                                    Iterator itin = di.getIniciofins().iterator();
+                                    while (itin.hasNext()) {
+                                        Iniciofin in = (Iniciofin) itin.next();
+                                        SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
+                                        String i = formateador.format(in.getInicio());
+                                        String ii = formateador.format(in.getFin());
+                                        Date inicio = formateador.parse(i);
+                                        Date fin = formateador.parse(ii);
+                                        String e = formateador.format(diaini);
+                                        String ee = formateador.format(diafin);
+                                        Date hini = formateador.parse(e);
+                                        Date hfin = formateador.parse(ee);
+                                        if (hini.compareTo(inicio) <= 0 && hfin.compareTo(inicio) >= 0) {
+                                            if (in.getEstadoFin() == null) {
+                                                //in.setEstadoInicio(false);
+                                                in.setEstadoFin(false);
+                                                in.actualizarIniciofin(in);
+                                            }
+                                        } else if (hini.compareTo(fin) <= 0 && hfin.compareTo(fin) >= 0) {
+                                            if (in.getEstadoInicio() == null) {
+                                                //in.setEstadoInicio(false);
+                                                in.setEstadoInicio(false);
+                                                in.actualizarIniciofin(in);
+                                            }
+                                        } else if (hini.compareTo(inicio) >= 0 && hfin.compareTo(inicio) >= 0 && hini.compareTo(fin) <= 0 && hfin.compareTo(fin) <= 0) {
+                                            if (in.getEstadoFin() == null || in.getEstadoInicio() == null) {
+                                                in.setEstadoInicio(false);
+                                                in.setEstadoFin(false);
+                                                in.actualizarIniciofin(in);
+                                            }
+                                        }
+                                    }
+                                }
+                            } else {
+                                Date diaaux = diaini;
+                                while (diaaux.compareTo(diafin) <= 0) {
+                                    Dia di = age.getDia2(diaaux);
+                                    if (di.getIdDia() != null) {
+                                        Iterator itin = di.getIniciofins().iterator();
+                                        while (itin.hasNext()) {
+                                            Iniciofin in = (Iniciofin) itin.next();
+                                            SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
+                                            String i = formateador.format(in.getInicio());
+                                            String ii = formateador.format(in.getFin());
+                                            Date hini = formateador.parse(i);
+                                            Date hfin = formateador.parse(ii);
+                                            String e = formateador.format(diaini);
+                                            String ee = formateador.format(in.getFin());
+                                            Date inicio = formateador.parse(e);
+                                            Date fin = formateador.parse(ee);
+                                            if (diaini.getDate() < di.getDia() && diafin.getDate() > di.getDia()) {
+                                                if (in.getEstadoFin() == null || in.getEstadoInicio() == null) {
+                                                    in.setEstadoInicio(false);
+                                                    in.setEstadoFin(false);
+                                                    in.actualizarIniciofin(in);
+                                                }
+                                            } else if (diaini.getDate() == di.getDia()) {
+                                                if (hini.compareTo(inicio) <= 0 && hfin.compareTo(inicio) >= 0) {
+                                                    if (in.getEstadoInicio() == null) {
+                                                        //in.setEstadoInicio(false);
+                                                        in.setEstadoInicio(false);
+                                                        in.actualizarIniciofin(in);
+                                                    }
+                                                } else if (hini.compareTo(inicio) >= 0 && hini.compareTo(fin) <= 0) {
+                                                    if (in.getEstadoFin() == null || in.getEstadoInicio() == null) {
+                                                        in.setEstadoInicio(false);
+                                                        in.setEstadoFin(false);
+                                                        in.actualizarIniciofin(in);
+                                                    }
+                                                }
+                                            } else if (diafin.getDate() == di.getDia()) {
+                                                if (hfin.compareTo(fin) >= 0 && hini.compareTo(fin) <= 0) {
+                                                    if (in.getEstadoInicio() == null) {
+                                                        //in.setEstadoInicio(false);
+                                                        in.setEstadoInicio(false);
+                                                        in.actualizarIniciofin(in);
+                                                    }
+                                                } else if (hini.compareTo(inicio) >= 0 && hfin.compareTo(fin) <= 0) {
+                                                    if (in.getEstadoFin() == null || in.getEstadoInicio() == null) {
+                                                        in.setEstadoInicio(false);
+                                                        in.setEstadoFin(false);
+                                                        in.actualizarIniciofin(in);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    diaaux = Controlador.sumarFechasDias(diaaux, 1);
+                                }
+                            }
+                        } else if (age.getTarea().getTareareunions().iterator().hasNext()) {
+                        }
+                    }
+                }
+            } else if (tar.getTareareunions().iterator().hasNext()) {
+                if (!Controlador.PERSISTENCIA.getAgendas(idTarea).isEmpty()) {
+                    Iterator it = Controlador.PERSISTENCIA.getAgendas(idTarea).iterator();
+                    while (it.hasNext()) {
+                        Agenda age = (Agenda) it.next();
+                        if (age.getPersonal().getEstado() == true && age.getTarea().getEstado() == true) {
+                            if (age.getTarea().getTareaotros().iterator().hasNext()) {
+                            } else if (age.getTarea().getTareaextracurriculars().iterator().hasNext()) {
+                            } else if (age.getTarea().getTareaclases().iterator().hasNext()) {
+                            }
+                        }
+                    }
+                }
+            } else if (tar.getTareaotros().iterator().hasNext()) {
+                if (!Controlador.PERSISTENCIA.getAgendas(idTarea).isEmpty()) {
+                    Iterator it = Controlador.PERSISTENCIA.getAgendas(idTarea).iterator();
+                    while (it.hasNext()) {
+                        Agenda age = (Agenda) it.next();
+                        if (age.getPersonal().getEstado() == true && age.getTarea().getEstado() == true) {
+                            if (age.getTarea().getTareaotros().iterator().hasNext()) {
+                            } else if (age.getTarea().getTareaextracurriculars().iterator().hasNext()) {
+                            } else if (age.getTarea().getTareaclases().iterator().hasNext()) {
+                            } else if (age.getTarea().getTareareunions().iterator().hasNext()) {
+                            }
+                        }
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+//        jOptionPane.
+        }
     }
 }
 

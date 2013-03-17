@@ -330,6 +330,8 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         int confirmado = JOptionPane.showConfirmDialog(null,"¿Esta seguro que desea eliminar la tarea y todos sus horarios?","Eliminar tarea",JOptionPane.YES_NO_OPTION);
         if (JOptionPane.OK_OPTION == confirmado){
+            //tar.RecuperarAsistencia(tar);
+
             tar.setEstado(false);
             tar.ActualizarTarea(tar);
             JFrameConsultaActividades vpp=new JFrameConsultaActividades(Drive,adm,idsesion);

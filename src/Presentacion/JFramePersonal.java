@@ -1027,10 +1027,8 @@ public class JFramePersonal extends javax.swing.JFrame {
         String cadSalida;
         salida.setText("");
         salida.setSize(25, 25);
-
         JOptionPane.showMessageDialog(null,salida, "Ingrese un tipo de documento", JOptionPane.INFORMATION_MESSAGE);
-        if(salida.getText().length()<=8){
-            if(!salida.getText().isEmpty()){
+            if(!salida.getText().isEmpty()&&salida.getText().length()<=15){
                 cadSalida = salida.getText().toUpperCase();
                 Iterator it=Drive.PERSISTENCIA.getTipodocs().iterator();
                 boolean w=false;
@@ -1049,9 +1047,8 @@ public class JFramePersonal extends javax.swing.JFrame {
                     Drive.CargarComboTipodoc(jComboBox5);
                     jComboBox5.setSelectedItem(tip);
                 }
-            }
         }else{
-            JOptionPane.showMessageDialog(null, "El tipo de documento puede contener hasta 8 caracteres","Registrar Tipo de Documento", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "El tipo de documento no puede estar vacio y puede contener hasta 15 caracteres","Registrar Tipo de Documento", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jLabel35MouseClicked
 
@@ -1092,8 +1089,7 @@ public class JFramePersonal extends javax.swing.JFrame {
         salida.setSize(25, 25);
 
         JOptionPane.showMessageDialog(null,salida, "Ingrese un nuevo Departamento", JOptionPane.INFORMATION_MESSAGE);
-        if (salida.getText().length() <= 45) {
-            if (!salida.getText().isEmpty()) {
+            if (!salida.getText().isEmpty()&&salida.getText().length() <= 45) {
                 cadSalida = salida.getText().toUpperCase();
                 Iterator it = Drive.PERSISTENCIA.getDepartamentos().iterator();
                 boolean w = false;
@@ -1113,9 +1109,8 @@ public class JFramePersonal extends javax.swing.JFrame {
                     Drive.CargarComboDepartamento(jComboBox2);
                     jComboBox2.setSelectedItem(tip);
                 }
-            } 
         }else {
-                JOptionPane.showMessageDialog(null, "El tipo de documento puede contener hasta 45 caracteres", "Registrar Tipo de Documento", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "El departamento no puede estar vacio y puede contener hasta 45 caracteres", "Registrar Departamento", JOptionPane.ERROR_MESSAGE);
             }
     }//GEN-LAST:event_jLabel31MouseClicked
 
@@ -1126,8 +1121,7 @@ public class JFramePersonal extends javax.swing.JFrame {
         salida.setSize(25, 25);
 
         JOptionPane.showMessageDialog(null, salida, "Ingrese una nueva actividad", JOptionPane.INFORMATION_MESSAGE);
-        if (salida.getText().length() <= 45) {
-            if (!salida.getText().isEmpty()) {
+            if (!salida.getText().isEmpty()&&salida.getText().length() <= 45) {
                 cadSalida = salida.getText().toUpperCase();
                 Iterator it = Drive.PERSISTENCIA.getActividades().iterator();
                 boolean w = false;
@@ -1146,9 +1140,8 @@ public class JFramePersonal extends javax.swing.JFrame {
                     Drive.CargarComboActividad(jComboBox6);
                     jComboBox6.setSelectedItem(tip);
                 }
-            }
         } else {
-            JOptionPane.showMessageDialog(null, "El tipo de documento puede contener hasta 45 caracteres", "Registrar Tipo de Documento", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "La actividad no puede estar vacia y puede contener hasta 45 caracteres", "Registrar Actividad", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jLabel30MouseClicked
 

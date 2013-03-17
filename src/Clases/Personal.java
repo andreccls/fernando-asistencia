@@ -1064,7 +1064,7 @@ public class Personal  implements java.io.Serializable {
                                                 band = false;
                                                 return band;
                                             }else if(diaini.getDate()==di.getDia()){
-                                                if(hini.compareTo(inicio)<=0){
+                                                if(hini.compareTo(inicio)<=0&&hfin.compareTo(inicio)>=0){
                                                     if(control==true){JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para " + toString() + " porque existe una clase a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);}
                                                     band = false;
                                                     return band;
@@ -1078,7 +1078,7 @@ public class Personal  implements java.io.Serializable {
                                                     if(control==true){JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para " + toString() + " porque existe una clase a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);}
                                                     band = false;
                                                     return band;
-                                                }else if(hini.compareTo(inicio)>=0&&hini.compareTo(fin)<=0){
+                                                }else if(hini.compareTo(inicio)>=0&&hfin.compareTo(fin)<=0){
                                                     if(control==true){JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para " + toString() + " porque existe una clase a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);}
                                                     band = false;
                                                     return band;

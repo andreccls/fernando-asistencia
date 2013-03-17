@@ -159,6 +159,11 @@ public class JFramenuevadeclaracion extends javax.swing.JFrame{
                 jTextField1ActionPerformed(evt);
             }
         });
+        jTextField1.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jTextField1FocusLost(evt);
+            }
+        });
 
         jLabel1.setText("N");
         jLabel1.setPreferredSize(new java.awt.Dimension(15, 15));
@@ -565,6 +570,15 @@ public class JFramenuevadeclaracion extends javax.swing.JFrame{
         this.dispose();
         ventdec.show();
     }//GEN-LAST:event_formWindowClosing
+
+    private void jTextField1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField1FocusLost
+        if(!jTextField1.getText().isEmpty()){
+            if(Integer.parseInt(jTextField1.getText())>42){
+                JOptionPane.showMessageDialog(null, "Las horas no puede ser mayor a 42","Nueva Declaración jurada", JOptionPane.ERROR_MESSAGE);
+                jTextField1.setText("");
+            }
+        }
+    }//GEN-LAST:event_jTextField1FocusLost
 
     /**
      * @param args the command line arguments

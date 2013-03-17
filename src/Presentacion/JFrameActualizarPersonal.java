@@ -373,7 +373,19 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
 
         jLabel11.setText("Nombre:");
 
+        jTextField7.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField7KeyTyped(evt);
+            }
+        });
+
         jLabel12.setText("Apellido:");
+
+        jTextField8.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField8KeyTyped(evt);
+            }
+        });
 
         jLabel13.setText("Nro:");
 
@@ -452,6 +464,12 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
 
         jComboBox4.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "CASA", "CEL", "OTRO" }));
 
+        jTextField13.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField13KeyTyped(evt);
+            }
+        });
+
         jButton9.setText("+");
         jButton9.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -500,6 +518,12 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
 
         jLabel17.setText("Calle:");
 
+        jTextField11.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField11KeyTyped(evt);
+            }
+        });
+
         jLabel18.setText("Numero:");
 
         jTextField14.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -510,7 +534,19 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
 
         jLabel22.setText("Piso:");
 
+        jTextField18.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField18KeyTyped(evt);
+            }
+        });
+
         jLabel29.setText("Depto:");
+
+        jTextField19.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField19KeyTyped(evt);
+            }
+        });
 
         jRadioButton3.setText("Docente");
         jRadioButton3.addItemListener(new java.awt.event.ItemListener() {
@@ -552,6 +588,11 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
         jTextField21.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 jTextField21FocusLost(evt);
+            }
+        });
+        jTextField21.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField21KeyTyped(evt);
             }
         });
 
@@ -955,6 +996,18 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
         jLabel8.setText("Fecha nac:");
 
         jLabel9.setText("Asignación familiar:");
+
+        jTextField2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField2KeyTyped(evt);
+            }
+        });
+
+        jTextField3.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField3KeyTyped(evt);
+            }
+        });
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -1412,6 +1465,11 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
         jTextField4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField4ActionPerformed(evt);
+            }
+        });
+        jTextField4.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField4KeyTyped(evt);
             }
         });
 
@@ -2305,7 +2363,7 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
         salida.setSize(25, 25);
         
         JOptionPane.showMessageDialog(null,salida, "Ingrese una nueva relación", JOptionPane.INFORMATION_MESSAGE);
-        if(!salida.getText().isEmpty()){
+        if(!salida.getText().isEmpty()&&salida.getText().length()<=20){
             cadSalida = salida.getText().toUpperCase();
             Iterator it=Drive.PERSISTENCIA.getRelaciones().iterator();
             boolean w=false;
@@ -2324,7 +2382,9 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
                 Drive.CargarComboRelacion(jComboBox8);
                 jComboBox8.setSelectedItem(tip);
             }
-        }
+        }else {
+                JOptionPane.showMessageDialog(null, "La relación no puede estar vacio y puede contener hasta 20 caracteres", "Nueva Relación", JOptionPane.ERROR_MESSAGE);
+            }
     }//GEN-LAST:event_jLabel41MouseClicked
 
     private void jLabel48MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel48MouseClicked
@@ -2335,7 +2395,7 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
         salida.setFocusable(true);
         JOptionPane.showMessageDialog(null,salida, "Ingrese un nuevo Departamento", JOptionPane.INFORMATION_MESSAGE);
         
-        if(!salida.getText().isEmpty()){
+        if(!salida.getText().isEmpty()&&salida.getText().length()<=45){
             cadSalida = salida.getText().toUpperCase();
             Iterator it=Drive.PERSISTENCIA.getDepartamentos().iterator();
             boolean w=false;
@@ -2355,6 +2415,8 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
                 Drive.CargarComboDepartamento(jComboBox3);
                 jComboBox3.setSelectedItem(tip);
             }
+        }else{
+            JOptionPane.showMessageDialog(null, "El departamentono no puede estar vacio y puede contener hasta 45 caracteres","Nuevo Departamento", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jLabel48MouseClicked
 
@@ -2365,7 +2427,7 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
         salida.setSize(25, 25);
         
         JOptionPane.showMessageDialog(null,salida, "Ingrese una nueva actividad", JOptionPane.INFORMATION_MESSAGE);
-        if(!salida.getText().isEmpty()){
+        if(!salida.getText().isEmpty()&&salida.getText().length() <= 45){
             cadSalida = salida.getText().toUpperCase();
             Iterator it=Drive.PERSISTENCIA.getActividades().iterator();
             boolean w=false;
@@ -2384,6 +2446,8 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
                 Drive.CargarComboActividad(jComboBox7);
                 jComboBox6.setSelectedItem(tip);
             }
+        }else{
+            JOptionPane.showMessageDialog(null, "La actividad no puede estar vacio y puede contener hasta 45 caracteres","Nueva Actividad", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jLabel49MouseClicked
 
@@ -2562,6 +2626,46 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField1ActionPerformed
+
+    private void jTextField8KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField8KeyTyped
+        if(jTextField8.getText().length()==45) evt.consume();
+    }//GEN-LAST:event_jTextField8KeyTyped
+
+    private void jTextField7KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField7KeyTyped
+        if(jTextField7.getText().length()==45) evt.consume();
+    }//GEN-LAST:event_jTextField7KeyTyped
+
+    private void jTextField13KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField13KeyTyped
+        if(jTextField13.getText().length()==45) evt.consume();
+    }//GEN-LAST:event_jTextField13KeyTyped
+
+    private void jTextField21KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField21KeyTyped
+        if(jTextField21.getText().length()==45) evt.consume();
+    }//GEN-LAST:event_jTextField21KeyTyped
+
+    private void jTextField11KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField11KeyTyped
+        if(jTextField11.getText().length()==20) evt.consume();
+    }//GEN-LAST:event_jTextField11KeyTyped
+
+    private void jTextField18KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField18KeyTyped
+        if(jTextField18.getText().length()==3) evt.consume();
+    }//GEN-LAST:event_jTextField18KeyTyped
+
+    private void jTextField19KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField19KeyTyped
+        if(jTextField18.getText().length()==3) evt.consume();
+    }//GEN-LAST:event_jTextField19KeyTyped
+
+    private void jTextField2KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField2KeyTyped
+        if(jTextField2.getText().length()==45) evt.consume();
+    }//GEN-LAST:event_jTextField2KeyTyped
+
+    private void jTextField3KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField3KeyTyped
+        if(jTextField3.getText().length()==45) evt.consume();
+    }//GEN-LAST:event_jTextField3KeyTyped
+
+    private void jTextField4KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField4KeyTyped
+        if(jTextField4.getText().length()==50) evt.consume();
+    }//GEN-LAST:event_jTextField4KeyTyped
 
     /**
      * @param args the command line arguments
