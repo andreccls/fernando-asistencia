@@ -128,6 +128,12 @@ public class JFrameFeriados extends javax.swing.JFrame {
 
         jLabel5.setText("Motivo:");
 
+        jTextField4.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField4KeyTyped(evt);
+            }
+        });
+
         jLabel16.setText("Ingrese la fecha:");
 
         jLabel18.setText("dd/mm/aa");
@@ -289,6 +295,10 @@ public class JFrameFeriados extends javax.swing.JFrame {
         this.dispose();
         vp.show();        // TODO add your handling code here:
     }//GEN-LAST:event_formWindowClosing
+
+    private void jTextField4KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField4KeyTyped
+        if(jTextField4.getText().length()==100) evt.consume();
+    }//GEN-LAST:event_jTextField4KeyTyped
 
     /**
      * @param args the command line arguments
