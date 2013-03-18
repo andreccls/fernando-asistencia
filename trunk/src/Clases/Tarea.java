@@ -315,10 +315,9 @@ public class Tarea  implements java.io.Serializable {
         return age;
     }
     
-    public void RecuperarAsistencia(Tarea tar) {
+    public void RecuperarAsistencia(Tarea tar, Date dinicio) {
         try {
             if (tar.getTareaextracurriculars().iterator().hasNext()) {
-                //if (!Controlador.PERSISTENCIA.getAgendas().isEmpty()) {
                 Tareaextracurricular tarex = tar.getTareaextracurriculars().iterator().next();
                 Date diaini = tarex.getDiaInicio();
                 Date diafin = tarex.getDiaFin();
@@ -343,6 +342,7 @@ public class Tarea  implements java.io.Serializable {
                                         String ee = formateador.format(diafin);
                                         Date hini = formateador.parse(e);
                                         Date hfin = formateador.parse(ee);
+//                                        if(hini.compareTo(inicio)<=0 || hini.compareTo(fin)<=0 && hfin.compareTo(inicio)>=0 || hfin.compareTo(fin)>=0){}
                                         if (hini.compareTo(inicio) <= 0 && hfin.compareTo(inicio) >= 0) {
                                             if (in.getEstadoFin() == null) {
                                                 //in.setEstadoInicio(false);
@@ -389,12 +389,12 @@ public class Tarea  implements java.io.Serializable {
                                                 }
                                             } else if (diaini.getDate() == di.getDia()) {
                                                 if (hini.compareTo(inicio) <= 0 && hfin.compareTo(inicio) >= 0) {
-                                                    if (in.getEstadoInicio() == null) {
+                                                    if (in.getEstadoFin() == null) {
                                                         //in.setEstadoInicio(false);
-                                                        in.setEstadoInicio(false);
+                                                        in.setEstadoFin(false);
                                                         in.actualizarIniciofin(in);
                                                     }
-                                                } else if (hini.compareTo(inicio) >= 0 && hini.compareTo(fin) <= 0) {
+                                                } else if (hini.compareTo(inicio) >= 0) {
                                                     if (in.getEstadoFin() == null || in.getEstadoInicio() == null) {
                                                         in.setEstadoInicio(false);
                                                         in.setEstadoFin(false);
@@ -408,7 +408,7 @@ public class Tarea  implements java.io.Serializable {
                                                         in.setEstadoInicio(false);
                                                         in.actualizarIniciofin(in);
                                                     }
-                                                } else if (hini.compareTo(inicio) >= 0 && hfin.compareTo(fin) <= 0) {
+                                                } else if (hfin.compareTo(fin) <= 0) {
                                                     if (in.getEstadoFin() == null || in.getEstadoInicio() == null) {
                                                         in.setEstadoInicio(false);
                                                         in.setEstadoFin(false);
@@ -422,40 +422,95 @@ public class Tarea  implements java.io.Serializable {
                                 }
                             }
                         } else if (age.getTarea().getTareareunions().iterator().hasNext()) {
-                        }
-                    }
-                }
-            } else if (tar.getTareareunions().iterator().hasNext()) {
-                if (!Controlador.PERSISTENCIA.getAgendas(idTarea).isEmpty()) {
-                    Iterator it = Controlador.PERSISTENCIA.getAgendas(idTarea).iterator();
-                    while (it.hasNext()) {
-                        Agenda age = (Agenda) it.next();
-                        if (age.getPersonal().getEstado() == true && age.getTarea().getEstado() == true) {
-                            if (age.getTarea().getTareaotros().iterator().hasNext()) {
-                            } else if (age.getTarea().getTareaextracurriculars().iterator().hasNext()) {
-                            } else if (age.getTarea().getTareaclases().iterator().hasNext()) {
+                            if(age.getTarea().getTareareunions().iterator().next().getCaracter().equals("OBLIGATORIO")){
+                                Date diaaux=diaini;
+                                while (diaaux.compareTo(diafin) <= 0) {
+                                    Dia di = age.getDia2(diaaux);
+                                    if (di.getIdDia() != null) {
+                                        Iterator itin = di.getIniciofins().iterator();
+                                        while (itin.hasNext()) {
+                                            Iniciofin in = (Iniciofin) itin.next();
+                                            SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
+                                            String i = formateador.format(in.getInicio());
+                                            String ii = formateador.format(in.getFin());
+                                            Date hini = formateador.parse(i);
+                                            Date hfin = formateador.parse(ii);
+                                            String e = formateador.format(diaini);
+                                            String ee = formateador.format(in.getFin());
+                                            Date inicio = formateador.parse(e);
+                                            Date fin = formateador.parse(ee);
+                                            if (diaini.getDate() < di.getDia() && diafin.getDate() > di.getDia()) {
+                                                if (in.getEstadoInicio() == null || in.getEstadoFin() == null) {
+                                                    in.setEstadoFin(false);
+                                                    in.setEstadoInicio(false);
+                                                    in.actualizarIniciofin(in);
+                                                }
+                                            } else if (diaini.getDate() == di.getDia()) {
+                                                if (hini.compareTo(inicio) <= 0 && hfin.compareTo(inicio) >= 0) {
+                                                    if (in.getEstadoFin() == null) {
+                                                        in.setEstadoFin(false);
+                                                        in.actualizarIniciofin(in);
+                                                    }
+                                                } else if (hini.compareTo(inicio) >= 0) {
+                                                    if (in.getEstadoInicio()==null) {
+                                                        in.setEstadoInicio(false);
+                                                        in.actualizarIniciofin(in);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    diaaux = Controlador.sumarFechasDias(diaaux, 1);
+                                }
                             }
                         }
                     }
                 }
-            } else if (tar.getTareaotros().iterator().hasNext()) {
-                if (!Controlador.PERSISTENCIA.getAgendas(idTarea).isEmpty()) {
-                    Iterator it = Controlador.PERSISTENCIA.getAgendas(idTarea).iterator();
+            } else if (tar.getTareareunions().iterator().hasNext()) {
+//                Tareareunion reu=;
+                if (tar.getTareareunions().iterator().next().getCaracter().equals("Obligatorio")) {
+                    Date diaini = dinicio;
+                    Dia dia = tar.getAgendas().iterator().next().getDia2(diaini);
+                    Iniciofin inn = dia.getIniciofins().iterator().next();
+                    Date inicio = inn.getInicio();
+                    Date fin = inn.getFin();
+                    Iterator it = Controlador.PERSISTENCIA.getAgendas().iterator();
                     while (it.hasNext()) {
                         Agenda age = (Agenda) it.next();
                         if (age.getPersonal().getEstado() == true && age.getTarea().getEstado() == true) {
-                            if (age.getTarea().getTareaotros().iterator().hasNext()) {
-                            } else if (age.getTarea().getTareaextracurriculars().iterator().hasNext()) {
-                            } else if (age.getTarea().getTareaclases().iterator().hasNext()) {
-                            } else if (age.getTarea().getTareareunions().iterator().hasNext()) {
+                            if (age.getTarea().getTareaclases().iterator().hasNext()) {
+                                Dia di = age.getDia2(diaini);
+                                if (di.getIdDia() != null) {
+                                    Iterator itin = di.getIniciofins().iterator();
+                                    while (itin.hasNext()) {
+                                        Iniciofin in = (Iniciofin) itin.next();
+                                        SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
+                                        String i = formateador.format(in.getInicio());
+                                        String ii = formateador.format(in.getFin());
+                                        Date hini = formateador.parse(i);
+                                        Date hfin = formateador.parse(ii);
+                                        if (hini.compareTo(inicio) <= 0 && hfin.compareTo(inicio) >= 0) {
+                                            in.setEstadoInicio(false);
+                                            in.setEstadoFin(false);
+                                            in.actualizarIniciofin(in);
+                                        } else if (hini.compareTo(fin) <= 0 && hfin.compareTo(fin) >= 0) {
+                                            in.setEstadoInicio(false);
+                                            in.setEstadoFin(false);
+                                            in.actualizarIniciofin(in);
+                                        } else if (hini.compareTo(inicio) >= 0 && hfin.compareTo(inicio) >= 0 && hini.compareTo(fin) <= 0 && hfin.compareTo(fin) <= 0) {
+                                            in.setEstadoInicio(false);
+                                            in.setEstadoFin(false);
+                                            in.actualizarIniciofin(in);
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
                 }
             }
-
         } catch (Exception e) {
-//        jOptionPane.
+            JOptionPane.showMessageDialog(null,"Error al recuperar las asistencias","Eliminar tarea",JOptionPane.ERROR_MESSAGE);
         }
     }
 }
