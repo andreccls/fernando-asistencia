@@ -328,16 +328,56 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        int confirmado = JOptionPane.showConfirmDialog(null,"¿Esta seguro que desea eliminar la tarea y todos sus horarios?","Eliminar tarea",JOptionPane.YES_NO_OPTION);
-        if (JOptionPane.OK_OPTION == confirmado){
-            //tar.RecuperarAsistencia(tar);
-
-            tar.setEstado(false);
-            tar.ActualizarTarea(tar);
-            JFrameConsultaActividades vpp=new JFrameConsultaActividades(Drive,adm,idsesion);
-            this.hide();
-            vpp.show();
-        }        
+        try{
+            int confirmado = JOptionPane.showConfirmDialog(null,"¿Esta seguro que desea eliminar la tarea y todos sus horarios?","Eliminar tarea",JOptionPane.YES_NO_OPTION);
+            if (JOptionPane.OK_OPTION == confirmado){
+                Date fecha=new Date();
+                Date diaini= new Date();
+                SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+                SimpleDateFormat formateador2 = new SimpleDateFormat("HH:mm");
+                if(!tar.getTareaextracurriculars().isEmpty()){
+                    diaini=tar.getTareaextracurriculars().iterator().next().getDiaInicio();
+                }else if(!tar.getTareareunions().isEmpty()){
+                    diaini=formateador.parse(jTable1.getModel().getValueAt(0,4).toString());
+                    Date hini=formateador2.parse(jTable1.getModel().getValueAt(0,5).toString());
+                    diaini.setHours(hini.getHours());
+                    diaini.setMinutes(hini.getMinutes());
+                    diaini.setSeconds(hini.getSeconds());
+                } else if(!tar.getTareaotros().isEmpty()){
+                    diaini=tar.getTareaotros().iterator().next().getDiaInicio();
+                } else if (!tar.getTareaclases().isEmpty()) {
+                    DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+                    int e = 0;
+                    while (modelo.getRowCount() != e) {
+                        Date aux = formateador.parse(jTable1.getModel().getValueAt(e, 4).toString());
+                        Date hini = formateador2.parse(jTable1.getModel().getValueAt(e, 5).toString());
+                        aux.setHours(hini.getHours());
+                        aux.setMinutes(hini.getMinutes());
+                        aux.setSeconds(hini.getSeconds());
+                        if(aux.compareTo(diaini)<0){
+                            diaini=aux;
+                        }
+                        e++;
+                    }
+                }
+                if(fecha.compareTo(diaini)<=0){
+                    tar.RecuperarAsistencia(tar,diaini);
+                    tar.setEstado(false);
+                    tar.ActualizarTarea(tar);
+                    JFrameConsultaActividades vpp=new JFrameConsultaActividades(Drive,adm,idsesion);
+                    this.hide();
+                    vpp.show();
+                }else{
+                    tar.setEstado(false);
+                    tar.ActualizarTarea(tar);
+                    JFrameConsultaActividades vpp=new JFrameConsultaActividades(Drive,adm,idsesion);
+                    this.hide();
+                    vpp.show();
+                }
+            }   
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, "No se ha podido eliminar la tarea","Eliminar Tarea",JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
