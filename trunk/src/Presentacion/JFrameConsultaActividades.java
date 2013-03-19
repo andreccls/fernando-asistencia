@@ -301,7 +301,6 @@ public class JFrameConsultaActividades extends javax.swing.JFrame {
 
     private void jTable1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseReleased
         if(evt.getClickCount()==2){
-            Establecimiento col= Drive.getPrimerEstablecimiento();
             jTable1.getModel();
             tar=(Tarea)jTable1.getValueAt(jTable1.rowAtPoint(evt.getPoint()), 0);
             //int fila = jTable1.rowAtPoint(evt.getPoint());
