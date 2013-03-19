@@ -583,6 +583,24 @@ public class Controlador {
 
         tabla.setModel(model);
     }
+    
+    public void CargarTablaCirculares(JTable tabla,Date dia) {
+        LimpiarTabla(tabla);
+        DefaultTableModel model = (DefaultTableModel) tabla.getModel();
+        Iterator<Circular> it = PERSISTENCIA.getCirculares().iterator();
+        while (it.hasNext()) {
+            Circular cir = it.next();
+            if(cir.getFecha().getYear()==dia.getYear()&&cir.getFecha().getMonth()==dia.getMonth()&&cir.getFecha().getDate()==dia.getDate()){
+                Object[] fila = new Object[4];
+                fila[0] = cir.getCircularpersonals().iterator().next().getDescripcion();
+                fila[1] = cir.getFecha();
+                fila[2] = cir;
+                model.addRow(fila);
+            }
+        }
+        tabla.setModel(model);
+    }
+    
     public void Cargarpersonal(JTable tabla, String buscarpor, String valor) {
         DefaultTableModel model = (DefaultTableModel) tabla.getModel();
         Iterator<Personal> pe = getPrimerEstablecimiento().getPersonals().iterator();
@@ -1330,16 +1348,22 @@ public class Controlador {
 
     }
      
-//     public Registroacceso getRegistroacceso(Personal per,int idreg) {
-//        Registroacceso reg=new Registroacceso();
-//        Iterator it= PERSISTENCIA.getRegistroaccesos(per.getIdPersonal()).iterator();
-//        while(it.hasNext()){
-//            Registroacceso registro=(Registroacceso) it.next();
-//            if(registro.getIdRegistroacceso()==idreg){
-//                reg=registro;
-//            }
-//            
-//        }
-//        return reg;
-//    }
+     public Circular VerificarCircular(Personal per,Date hoy) {
+        Circular circ = new Circular();
+        Iterator it = PERSISTENCIA.getCirculares().iterator();
+        while (it.hasNext()) {
+            Circular cir = (Circular) it.next();
+            if (cir.getFecha().getYear() == hoy.getYear() && cir.getFecha().getMonth() == hoy.getMonth() && cir.getFecha().getDate() == hoy.getDate()) {
+                Iterator itt = PERSISTENCIA.getCircularPersonales(cir.getIdCircular()).iterator();
+                while (itt.hasNext()) {
+                    Circularpersonal cirper = (Circularpersonal) itt.next();
+                    if (cirper.getPersonal().getIdPersonal() == per.getIdPersonal()) {
+                        circ = cir;
+                        break;
+                    }
+                }
+            }
+        }
+        return circ;
+    }
 }

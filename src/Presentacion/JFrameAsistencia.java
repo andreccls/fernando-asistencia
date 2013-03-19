@@ -12,6 +12,7 @@ package Presentacion;
 
 import Clases.Agenda;
 import Clases.Asistencia;
+import Clases.Circular;
 import Clases.Controlador;
 import Clases.Dia;
 import Clases.Establecimiento;
@@ -368,83 +369,87 @@ public class JFrameAsistencia extends javax.swing.JFrame {
                 if (result.isVerified()) {
                     per = pp;
                     Date cal = Calendar.getInstance().getTime();
-                    Iterator itt = pp.getAgendas().iterator();
-                    while (itt.hasNext()) {
-                        Agenda age = (Agenda) itt.next();
-                        Dia d = age.getDia();
-                        Iterator ittt = d.getIniciofins().iterator();
-                        while (ittt.hasNext()) {
-                            Iniciofin cam = (Iniciofin) ittt.next();
-                            String s = new SimpleDateFormat("HH:mm").format(cal.getTime());
-                            SimpleDateFormat fo = new SimpleDateFormat("HH:mm");
-                            Date a = fo.parse(s);
-                            if (cam.getEstadoInicio() != null) {
-                                Calendar cel1 = Calendar.getInstance();
-                                cel1.setTime(cam.getInicio());
-                                cel1.add(Calendar.MINUTE, -30);
-                                System.out.println(cam.getInicio());
-                                System.out.println(a);
-                                Calendar cel2 = Calendar.getInstance();
-                                cel2.setTime(cam.getInicio());
-                                cel2.add(Calendar.MINUTE, 10);
-                                Calendar cel3 = Calendar.getInstance();
-                                cel3.setTime(cam.getFin());
-                                cel3.add(Calendar.MINUTE, -10);
-                                if (cel1.getTime().compareTo(a) <= 0 && cel2.getTime().compareTo(a) >= 0) {
-                                    if (cam.getEstadoInicio() == false) {
-                                        cam.setEstadoInicio(true);
-                                        cam.actualizarIniciofin(cam);
-                                        JOptionPane.showMessageDialog(null, "Usted se ha registrado satisfactoriamente");
-                                        jButton1.setEnabled(true);
-                                    }
-                                } else if (cel2.getTime().compareTo(a) < 0 && cel3.getTime().compareTo(a) <= 0) {
-                                    if (cam.getEstadoInicio() == false) {
-                                        cam.setEstadoInicio(true);
-                                        cam.actualizarIniciofin(cam);
-                                        Asistencia asis = cam.getAsistencias().iterator().next();
-                                        asis.setEstado(true);
-                                        asis.setTardanza(true);
-                                        asis.setIniciofin(cam);
-                                        if (!Drive2.existeAsistencia(cam)) {
-                                            asis.guardarAsistencia(asis);
-                                            JOptionPane.showMessageDialog(null, "Usted se ha registrado satisfactoriamente pero tiene tardanza");
+                    Circular cir =Drive.VerificarCircular(per, cal);
+                    if(cir.getIdCircular()!=null){
+                        JOptionPane.showMessageDialog(null, cir.getDescripcion(),cir.getFirma(),JOptionPane.INFORMATION_MESSAGE);
+                        Iterator itt = pp.getAgendas().iterator();
+                        while (itt.hasNext()) {
+                            Agenda age = (Agenda) itt.next();
+                            Dia d = age.getDia();
+                            Iterator ittt = d.getIniciofins().iterator();
+                            while (ittt.hasNext()) {
+                                Iniciofin cam = (Iniciofin) ittt.next();
+                                String s = new SimpleDateFormat("HH:mm").format(cal.getTime());
+                                SimpleDateFormat fo = new SimpleDateFormat("HH:mm");
+                                Date a = fo.parse(s);
+                                if (cam.getEstadoInicio() != null) {
+                                    Calendar cel1 = Calendar.getInstance();
+                                    cel1.setTime(cam.getInicio());
+                                    cel1.add(Calendar.MINUTE, -30);
+                                    System.out.println(cam.getInicio());
+                                    System.out.println(a);
+                                    Calendar cel2 = Calendar.getInstance();
+                                    cel2.setTime(cam.getInicio());
+                                    cel2.add(Calendar.MINUTE, 10);
+                                    Calendar cel3 = Calendar.getInstance();
+                                    cel3.setTime(cam.getFin());
+                                    cel3.add(Calendar.MINUTE, -10);
+                                    if (cel1.getTime().compareTo(a) <= 0 && cel2.getTime().compareTo(a) >= 0) {
+                                        if (cam.getEstadoInicio() == false) {
+                                            cam.setEstadoInicio(true);
+                                            cam.actualizarIniciofin(cam);
+                                            JOptionPane.showMessageDialog(null, "Usted se ha registrado satisfactoriamente");
                                             jButton1.setEnabled(true);
-                                        } else {
-                                            asis.ActualizarAsistencia(asis);
+                                        }
+                                    } else if (cel2.getTime().compareTo(a) < 0 && cel3.getTime().compareTo(a) <= 0) {
+                                        if (cam.getEstadoInicio() == false) {
+                                            cam.setEstadoInicio(true);
+                                            cam.actualizarIniciofin(cam);
+                                            Asistencia asis = cam.getAsistencias().iterator().next();
+                                            asis.setEstado(true);
+                                            asis.setTardanza(true);
+                                            asis.setIniciofin(cam);
+                                            if (!Drive2.existeAsistencia(cam)) {
+                                                asis.guardarAsistencia(asis);
+                                                JOptionPane.showMessageDialog(null, "Usted se ha registrado satisfactoriamente pero tiene tardanza");
+                                                jButton1.setEnabled(true);
+                                            } else {
+                                                asis.ActualizarAsistencia(asis);
+                                            }
+                                        }
+                                    }
+                                }
+                                if (cam.getEstadoFin() != null) {
+                                    Calendar cel = Calendar.getInstance();
+                                    cel.setTime(cam.getFin());
+                                    cel.add(Calendar.MINUTE, 30);
+                                    System.out.println(cam.getFin());
+                                    System.out.println(a);
+                                    Calendar cel2 = Calendar.getInstance();
+                                    cel2.setTime(cam.getInicio());
+                                    cel2.add(Calendar.MINUTE, -10);
+                                    if (cel.getTime().compareTo(a) >= 0 && cel2.getTime().compareTo(a) <= 0) {
+                                        if (cam.getEstadoFin() == false) {
+                                            cam.setEstadoFin(true);
+                                            cam.actualizarIniciofin(cam);
+                                            JOptionPane.showMessageDialog(null, "Usted se ha registrado satisfactoriamente");
+                                            jButton1.setEnabled(true);
                                         }
                                     }
                                 }
                             }
-                            if (cam.getEstadoFin() != null) {
-                                Calendar cel = Calendar.getInstance();
-                                cel.setTime(cam.getFin());
-                                cel.add(Calendar.MINUTE, 30);
-                                System.out.println(cam.getFin());
-                                System.out.println(a);
-                                Calendar cel2 = Calendar.getInstance();
-                                cel2.setTime(cam.getInicio());
-                                cel2.add(Calendar.MINUTE, -10);
-                                if (cel.getTime().compareTo(a) >= 0 && cel2.getTime().compareTo(a) <= 0) {
-                                    if (cam.getEstadoFin() == false) {
-                                        cam.setEstadoFin(true);
-                                        cam.actualizarIniciofin(cam);
-                                        JOptionPane.showMessageDialog(null, "Usted se ha registrado satisfactoriamente");
-                                        jButton1.setEnabled(true);
-                                    }
-                                }
-                            }
-                        }
 
+                        }
+                        JOptionPane.showMessageDialog(null, "BIENVENIDO " + pp.toString(), "Verificacion de Huella", JOptionPane.INFORMATION_MESSAGE);
+                        t.start();
+                        //t.stop();
+                        jButton1.setEnabled(true);
+                        //setTemplate(null);
+                        //stop();
+                        //Iniciar();
+                        //start();
+                        return;
                     }
-                    JOptionPane.showMessageDialog(null, "BIENVENIDO " + pp.toString(), "Verificacion de Huella", JOptionPane.INFORMATION_MESSAGE);
-                    t.start();
-                    //t.stop();
-                    jButton1.setEnabled(true);
-                    //setTemplate(null);
-                    //stop();
-                    //Iniciar();
-                    //start();
-                    return;
                 }
             }
             JOptionPane.showMessageDialog(null, "La huella no coincide con ningun personal. Por favor dirigirse a secretaria", "Verificacion de Huella", JOptionPane.ERROR_MESSAGE);

@@ -11,6 +11,7 @@
 package Presentacion;
 
 import Clases.Agenda;
+import Clases.Circular;
 import Clases.Controlador;
 import Clases.Declaracionjurada;
 import javax.swing.JOptionPane;
@@ -44,7 +45,7 @@ public class JFramePrincipal extends javax.swing.JFrame {
      Personal adm;
      public int idsesion;
      Tarea tar=new Tarea();
-    
+     Circular cir=new Circular();
     public JFramePrincipal(Controlador unDrive, Personal admin,int id) {
         this.Drive=unDrive;
         this.adm=admin;
@@ -109,11 +110,13 @@ public class JFramePrincipal extends javax.swing.JFrame {
         jMenuItem6 = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenuItem7 = new javax.swing.JMenuItem();
+        jMenuItem11 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem8 = new javax.swing.JMenuItem();
         jMenuItem9 = new javax.swing.JMenuItem();
         jMenuItem10 = new javax.swing.JMenuItem();
+        jMenuItem12 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("SISTEMA DE ASISTENCIA DE PERSONAL EDUCATIVO");
@@ -249,6 +252,14 @@ public class JFramePrincipal extends javax.swing.JFrame {
         });
         jMenu3.add(jMenuItem7);
 
+        jMenuItem11.setText("Circular");
+        jMenuItem11.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem11ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem11);
+
         jMenuBar1.add(jMenu3);
 
         jMenu2.setText("Consultar");
@@ -284,6 +295,14 @@ public class JFramePrincipal extends javax.swing.JFrame {
             }
         });
         jMenu2.add(jMenuItem10);
+
+        jMenuItem12.setText("Circulares");
+        jMenuItem12.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem12ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem12);
 
         jMenuBar1.add(jMenu2);
 
@@ -409,6 +428,18 @@ public class JFramePrincipal extends javax.swing.JFrame {
         
     }//GEN-LAST:event_formWindowClosing
 
+    private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed
+        JFrameCircular vent2 = new JFrameCircular(Drive,adm,idsesion,cir);
+        this.hide();
+        vent2.show();
+    }//GEN-LAST:event_jMenuItem11ActionPerformed
+
+    private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem12ActionPerformed
+        JFrameConsultaCircular vent2 = new JFrameConsultaCircular(Drive,adm,idsesion);
+        this.hide();
+        vent2.show();
+    }//GEN-LAST:event_jMenuItem12ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -431,6 +462,8 @@ public class JFramePrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem10;
+    private javax.swing.JMenuItem jMenuItem11;
+    private javax.swing.JMenuItem jMenuItem12;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;

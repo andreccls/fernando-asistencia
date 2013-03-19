@@ -1,6 +1,10 @@
 package Clases;
 // Generated 21/02/2013 23:49:41 by Hibernate Tools 3.2.1.GA
 
+import java.util.Iterator;
+import javax.swing.JOptionPane;
+
+
 
 
 /**
@@ -28,6 +32,11 @@ public class Circularpersonal  implements java.io.Serializable {
        this.personal = personal;
        this.circular = circular;
        this.descripcion = descripcion;
+    }
+    
+    @Override
+    public String toString() {
+        return descripcion;
     }
    
     public CircularpersonalId getId() {
@@ -59,7 +68,24 @@ public class Circularpersonal  implements java.io.Serializable {
         this.descripcion = descripcion;
     }
 
+//// GENERADO POR GONZALEZ FERNANDO
+    
+    
+    public void guardarCircularpersonal(Circularpersonal unCircularpersonal){
+        Controlador.getPERSISTENCIA().insert(this);
 
+//        JOptionPane.showMessageDialog(null,"El Departamento se guardó correctamente","Registrar departamento",JOptionPane.INFORMATION_MESSAGE);
+    }
+    
+    public void eliminarCircularpersonal(Circularpersonal unCircularpersonal){
+//        Iterator it=personalDepartamentos.iterator();
+//        if(it.hasNext()){
+//            JOptionPane.showMessageDialog(null,"El Departamento no se puede eliminar porque esta relacionada con otros personales","Eliminar departamento",JOptionPane.ERROR_MESSAGE);
+//        }else{
+        Controlador.getPERSISTENCIA().delete(this);
+//        JOptionPane.showMessageDialog(null,"El Departamento se eliminó correctamente","Eliminar departamento",JOptionPane.INFORMATION_MESSAGE);
+//        }
+    }
 
 
 }

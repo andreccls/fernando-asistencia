@@ -146,6 +146,26 @@ public class persistencia {
         return items;
     }
     
+    public List getCirculares() throws ArrayStoreException {
+        String hql = "from Circular";
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
+    }
+    
+    public List getCircularPersonales(int idcir) throws ArrayStoreException {
+        String hql = "from Circularpersonal where id_circular="+idcir;
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
+    }
+    
     public List getDias(int idmes) throws ArrayStoreException {
         String hql = "from Dia where id_mes="+idmes;
         List items = new ArrayList();
