@@ -897,17 +897,33 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        if(!jTextField3.getText().isEmpty()||!jTextField4.getText().isEmpty()||!jFormattedTextField1.getText().contains(" ") ||!jFormattedTextField2.getText().contains(" ")){
-            int confirmado = JOptionPane.showConfirmDialog(null,"¿Desea cancelar la tarea?","Registrar Tarea",JOptionPane.YES_NO_OPTION);
-            if (JOptionPane.OK_OPTION == confirmado){
-                Frame vp=new JFramePrincipal(Drive,adm,idsesion);
+        if (tar.getIdTarea() == null) {
+            if (!jTextField3.getText().isEmpty() || !jTextField4.getText().isEmpty() || !jFormattedTextField1.getText().contains(" ") || !jFormattedTextField2.getText().contains(" ")) {
+                int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea cancelar la tarea?", "Registrar Tarea", JOptionPane.YES_NO_OPTION);
+                if (JOptionPane.OK_OPTION == confirmado) {
+                    Frame vp = new JFramePrincipal(Drive, adm, idsesion);
+                    this.dispose();
+                    vp.show();
+                }
+            } else {
+                Frame vp = new JFramePrincipal(Drive, adm, idsesion);
                 this.dispose();
                 vp.show();
             }
-        }else{
-            Frame vp=new JFramePrincipal(Drive,adm,idsesion);
-            this.dispose();
-            vp.show();}
+        } else {
+            if (!cambio == true) {
+                int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea cancelar la actualización de la tarea?", "", JOptionPane.YES_NO_OPTION);
+                if (JOptionPane.OK_OPTION == confirmado) {
+                    Frame vp = new JFrameConsultaActividades(Drive, adm, idsesion);
+                    this.dispose();
+                    vp.show();
+                }
+            } else {
+                Frame vp = new JFrameConsultaActividades(Drive, adm, idsesion);
+                this.dispose();
+                vp.show();
+            }
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing

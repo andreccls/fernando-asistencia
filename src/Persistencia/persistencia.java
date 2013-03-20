@@ -301,7 +301,7 @@ public class persistencia {
 //    }
     
     public List getTareasClasesTrue(int i) throws ArrayStoreException {
-        String hql = "from Tarea as tar,Tareaclase as tarcla where tar.idTarea=tarcla.tarea.idTarea and estado="+i;
+        String hql = "select tar.nombre as nombre, tar.lugar as lugar, tarcla.aula as aula, tarcla.numero as numero from Tarea tar inner join tar.tareaclases tarcla where tar.estado="+i;
         List items = new ArrayList();
         Transaction tx = session.beginTransaction();
         Query q = session.createQuery(hql);

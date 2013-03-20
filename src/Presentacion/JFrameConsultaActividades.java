@@ -352,23 +352,24 @@ public class JFrameConsultaActividades extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         try{
-            JOptionPane.showMessageDialog(null,"No se puede realizar el reporte","Error de impresion", JOptionPane.ERROR_MESSAGE);
-//            bandera=(String) jComboBox2.getSelectedItem();
-//            if(bandera.equals("Clase")){
-//                List consulta=Controlador.getPERSISTENCIA().getTareasClasesTrue(1);
-//                Drive.mostrarReporte("Clases",consulta,"Lista de Clases");
-//            }else if(bandera.equals("Reunión")){
-//                List consulta=Controlador.getPERSISTENCIA().getTareasReunionTrue(1);
-//                Drive.mostrarReporte("Reuniones",consulta,"Lista de Reuniones");
-//            }else if(bandera.equals("Extracurricular")){
-//                List consulta=Controlador.getPERSISTENCIA().getTareasExtracurricularTrue(1);
-//                Drive.mostrarReporte("Tareas Extracurriculares",consulta,"Lista de Tareas Extracurriculares");
-//            }else if(bandera.equals("Otro")){
-//                List consulta=Controlador.getPERSISTENCIA().getTareasOtroTrue(1);
-//                Drive.mostrarReporte("Otras Actividades",consulta,"Lista de Otras Actividades");
-//            }else if(bandera.equals("Todos")){
-//                JOptionPane.showMessageDialog(null,"No se pueden imprimir todas las actividades, por favor seleccione una actividad en especial","Error de impresión", JOptionPane.ERROR_MESSAGE);
-//            }
+//            JOptionPane.showMessageDialog(null,"No se puede realizar el reporte","Error de impresion", JOptionPane.ERROR_MESSAGE);
+            bandera=(String) jComboBox2.getSelectedItem();
+            if(bandera.equals("Clase")){
+                List consulta=Controlador.getPERSISTENCIA().getTareasClasesTrue(1);
+//                List consulta=Controlador.getPERSISTENCIA().getTareas();
+                Drive.mostrarReporte("Clases",consulta,"Lista de Clases");
+            }else if(bandera.equals("Reunión")){
+                List consulta=Controlador.getPERSISTENCIA().getTareasReunionTrue(1);
+                Drive.mostrarReporte("Reuniones",consulta,"Lista de Reuniones");
+            }else if(bandera.equals("Extracurricular")){
+                List consulta=Controlador.getPERSISTENCIA().getTareasExtracurricularTrue(1);
+                Drive.mostrarReporte("Tareas Extracurriculares",consulta,"Lista de Tareas Extracurriculares");
+            }else if(bandera.equals("Otro")){
+                List consulta=Controlador.getPERSISTENCIA().getTareasOtroTrue(1);
+                Drive.mostrarReporte("Otras Actividades",consulta,"Lista de Otras Actividades");
+            }else if(bandera.equals("Todos")){
+                JOptionPane.showMessageDialog(null,"No se pueden imprimir todas las actividades, por favor seleccione una actividad en especial","Error de impresión", JOptionPane.ERROR_MESSAGE);
+            }
         }catch (Exception e){
             JOptionPane.showMessageDialog(null,"Ingrese correctamente los datos","Error de impresion", JOptionPane.ERROR_MESSAGE);
         }

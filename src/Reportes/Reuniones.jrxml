@@ -1,18 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Reuniones" language="groovy" pageWidth="595" pageHeight="842" columnWidth="511" leftMargin="56" rightMargin="28" topMargin="28" bottomMargin="28">
-	<queryString language="hql">
-		<![CDATA[select tar.nombre as nombre, tar.lugar as lugar, tarreu.caracter as caracter, tarreu.motivo as motivo from Clases.Tarea tar, Tareareunion tarreu where tar.idTarea=tarreu.tarea.idTarea and tar.estado=1]]>
+	<queryString>
+		<![CDATA[SELECT
+     tarea.`Nombre` AS tarea_Nombre,
+     tarea.`Lugar` AS tarea_Lugar,
+     tareareunion.`Motivo` AS tareareunion_Motivo,
+     tareareunion.`Caracter` AS tareareunion_Caracter
+FROM
+     `tarea` tarea INNER JOIN `tareareunion` tareareunion ON tarea.`Id_tarea` = tareareunion.`Id_tarea`
+WHERE
+     tarea.estado = 1]]>
 	</queryString>
-	<field name="nombre" class="java.lang.String">
+	<field name="tarea_Nombre" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="lugar" class="java.lang.String">
+	<field name="tarea_Lugar" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="caracter" class="java.lang.String">
+	<field name="tareareunion_Motivo" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="motivo" class="java.lang.String">
+	<field name="tareareunion_Caracter" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<background>
@@ -111,22 +119,22 @@ Entre Ríos 2245-67 3300 POSADAS-MNES
 			<textField>
 				<reportElement mode="Transparent" x="0" y="0" width="154" height="20"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{nombre}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{tarea_Nombre}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="155" y="0" width="145" height="20"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{lugar}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{tarea_Lugar}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="301" y="0" width="79" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{caracter}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{tareareunion_Caracter}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="381" y="0" width="130" height="20"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{motivo}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{tareareunion_Motivo}]]></textFieldExpression>
 			</textField>
 			<line>
 				<reportElement x="-1" y="-1" width="1" height="21"/>

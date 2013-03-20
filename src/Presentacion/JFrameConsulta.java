@@ -13,12 +13,16 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Frame;
 import java.awt.event.KeyEvent;
+import java.io.FileNotFoundException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
+import net.sf.jasperreports.engine.JRException;
 
 //</editor-fold>
 /**
@@ -365,8 +369,14 @@ public class JFrameConsulta extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField1KeyTyped
     
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        List consulta=Controlador.getPERSISTENCIA().getPersonalesTrue(1);
-        Drive.mostrarReporte("ListaPersonal",consulta,"Lista Personal");
+        try {
+            List consulta=Controlador.getPERSISTENCIA().getPersonalesTrue(1);
+            Drive.mostrarReporte("ListaPersonal",consulta,"Lista Personal");
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(JFrameConsulta.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (JRException ex) {
+            Logger.getLogger(JFrameConsulta.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing

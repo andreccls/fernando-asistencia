@@ -4,6 +4,7 @@ package Clases;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 import javax.swing.JOptionPane;
 
@@ -100,7 +101,24 @@ public class Circular  implements java.io.Serializable {
 //        JOptionPane.showMessageDialog(null,"El Departamento se eliminó correctamente","Eliminar departamento",JOptionPane.INFORMATION_MESSAGE);
 //        }
     }
+    
+    public void actualizarCircular(Circular unCircular){
+//        Iterator it=personalDepartamentos.iterator();
+//        if(it.hasNext()){
+//            JOptionPane.showMessageDialog(null,"El Departamento no se puede eliminar porque esta relacionada con otros personales","Eliminar departamento",JOptionPane.ERROR_MESSAGE);
+//        }else{
+        Controlador.getPERSISTENCIA().update(this);
+//        JOptionPane.showMessageDialog(null,"El Departamento se eliminó correctamente","Eliminar departamento",JOptionPane.INFORMATION_MESSAGE);
+//        }
+    }
 
+    public void BorrarCircularpersonales(){
+        Iterator it = circularpersonals.iterator();
+        while(it.hasNext()){
+            Circularpersonal cirper=(Circularpersonal) it.next();
+            cirper.eliminarCircularpersonal(cirper);
+        }
+    }
 
 }
 

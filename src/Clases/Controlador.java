@@ -7,6 +7,8 @@ package Clases;
 import Persistencia.ConexionJDBC;
 import Persistencia.persistencia;
 import java.awt.Label;
+import java.io.FileNotFoundException;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -18,6 +20,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import javax.swing.JOptionPane;
 import java.util.Set;
 import java.util.logging.Level;
@@ -34,6 +37,7 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
@@ -49,12 +53,11 @@ public class Controlador {
 
     public static persistencia PERSISTENCIA;
     public static ConexionJDBC conexion;
-    
 
     public Controlador() {
         try {
             PERSISTENCIA = new persistencia();
-            conexion= new ConexionJDBC();
+            conexion = new ConexionJDBC();
         } catch (SQLException ex) {
             Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -63,7 +66,7 @@ public class Controlador {
     public static persistencia getPERSISTENCIA() {
         return PERSISTENCIA;
     }
-    
+
     public static ConexionJDBC getConexionJDBC() {
         return conexion;
     }
@@ -80,7 +83,7 @@ public class Controlador {
         Establecimiento col = (Establecimiento) Controlador.getPERSISTENCIA().getEstablecimientos().get(0);
         return col;
     }
-    
+
     public Establecimiento getColegio(int idcol) {
         Establecimiento cole = new Establecimiento();
         Iterator it = Controlador.getPERSISTENCIA().getEstablecimientos().iterator();
@@ -96,7 +99,7 @@ public class Controlador {
 
     public void crearEstablecimiento(String nombre, String calle, Integer altura, String piso, String depto, Set<Feriado> feriados, Set<Tarea> tareas, Set<Departamento> departamentos, Set<Circular> circulars, Set<Personal> personals, Set<DetalleEstablecimiento> detalleEstablecimientos, Set<Declaracionjurada> declaracionjuradas) {
         if (!existeColegio()) {
-            Establecimiento unEstablecimiento = new Establecimiento(nombre, calle, altura, piso, depto, feriados, tareas, departamentos,circulars, personals, detalleEstablecimientos, declaracionjuradas);
+            Establecimiento unEstablecimiento = new Establecimiento(nombre, calle, altura, piso, depto, feriados, tareas, departamentos, circulars, personals, detalleEstablecimientos, declaracionjuradas);
             unEstablecimiento.guardarEstablecimiento(unEstablecimiento);
         } else {
             JOptionPane.showMessageDialog(null, "Ya existe el Colegio");
@@ -125,7 +128,7 @@ public class Controlador {
             Iterator rs = col.getPersonals().iterator();
             while (rs.hasNext()) {
                 Personal per = (Personal) rs.next();
-                if(per.getEstado()==true){
+                if (per.getEstado() == true) {
                     JCombo.addItem(per);
                 }
             }
@@ -158,7 +161,7 @@ public class Controlador {
             JOptionPane.showMessageDialog(null, ex.toString());
         }
     }
-    
+
     public void CargarComboPerfil(JComboBox JCombo) {
         try {
             //Establecimiento col = getPrimerEstablecimiento();
@@ -183,7 +186,7 @@ public class Controlador {
             JOptionPane.showMessageDialog(null, ex.toString());
         }
     }
-    
+
     public void CargarComboArticulo(JComboBox JCombo) {
         try {
             Iterator rs = Controlador.getPERSISTENCIA().getArticulos().iterator();
@@ -220,8 +223,6 @@ public class Controlador {
         }
     }
 
-    
-
     public void CargarComboEstablecimiento(JComboBox JCombo) {
         try {
             JCombo.removeAllItems();
@@ -237,7 +238,7 @@ public class Controlador {
         }
     }
 
-    public void CargarComboEstablecimientoFiltro(JComboBox JCombo,String valor) {
+    public void CargarComboEstablecimientoFiltro(JComboBox JCombo, String valor) {
         try {
             JCombo.removeAllItems();
             Iterator est = Controlador.getPERSISTENCIA().getEstablecimientos().iterator();
@@ -245,7 +246,7 @@ public class Controlador {
                 Establecimiento e = (Establecimiento) est.next();
                 if (getPrimerEstablecimiento().getIdEstablecimiento() != e.getIdEstablecimiento()) {
                     int i = e.getNombre().indexOf(valor);
-                    if(i==1){
+                    if (i == 1) {
                         JCombo.addItem(e);
                     }
                 }
@@ -254,7 +255,7 @@ public class Controlador {
             JOptionPane.showMessageDialog(null, ex.toString());
         }
     }
-    
+
     public void CargarComboTipocargo(JComboBox JCombo) {
         try {
             JCombo.removeAllItems();
@@ -267,15 +268,15 @@ public class Controlador {
             JOptionPane.showMessageDialog(null, ex.toString());
         }
     }
-    
-    public void CargarComboTipocargoFiltro(JComboBox JCombo,String valor) {
+
+    public void CargarComboTipocargoFiltro(JComboBox JCombo, String valor) {
         try {
             JCombo.removeAllItems();
             Iterator est = Controlador.getPERSISTENCIA().getTipocargos().iterator();
             while (est.hasNext()) {
                 Tipocargo e = (Tipocargo) est.next();
                 int i = e.getNombre().indexOf(valor);
-                if(i==1){
+                if (i == 1) {
                     JCombo.addItem(e);
                 }
             }
@@ -297,14 +298,14 @@ public class Controlador {
         }
     }
 
-    public void CargarComboTiponivelFiltro(JComboBox JCombo,String valor) {
+    public void CargarComboTiponivelFiltro(JComboBox JCombo, String valor) {
         try {
             JCombo.removeAllItems();
             Iterator est = Controlador.getPERSISTENCIA().getTiponiveles().iterator();
             while (est.hasNext()) {
                 Tiponivel e = (Tiponivel) est.next();
                 int i = e.getNombre().indexOf(valor);
-                if(i==1){
+                if (i == 1) {
                     JCombo.addItem(e);
                 }
             }
@@ -312,7 +313,7 @@ public class Controlador {
             JOptionPane.showMessageDialog(null, ex.toString());
         }
     }
-    
+
     public void CargarComboCargoPersonal(JComboBox JCombo, DetalleEstablecimiento detalle) {
         try {
             JCombo.removeAllItems();
@@ -353,17 +354,17 @@ public class Controlador {
             modelo.removeRow(0);
         }
     }
-    
-     public List ObtenerListaTabla(JTable Tabla) {
+
+    public List ObtenerListaTabla(JTable Tabla) {
         List lista = new ArrayList();
         DefaultTableModel modelo = (DefaultTableModel) Tabla.getModel();
-        int c=0;
+        int c = 0;
         while (modelo.getRowCount() != c) {
-            boolean check=(Boolean) Tabla.getValueAt(c, 0);
-            if(check==true){
-                Personal per=(Personal) Tabla.getValueAt(c, 1);
+            boolean check = (Boolean) Tabla.getValueAt(c, 0);
+            if (check == true) {
+                Personal per = (Personal) Tabla.getValueAt(c, 1);
                 lista.add(per);
-                
+
             }
             c++;
         }
@@ -375,15 +376,15 @@ public class Controlador {
         Iterator<Agenda> ag = per.getAgendas().iterator();
         while (ag.hasNext()) {
             Agenda agen = (Agenda) ag.next();
-                Iterator<Iniciofin> it = agen.getDia2(di).getIniciofins().iterator();
-                while (it.hasNext()) {
-                    Iniciofin ini = (Iniciofin) it.next();
-                    Object[] fila = new Object[3];
-                    fila[0] = agen.getTarea().getNombre();
-                    fila[1] = ini.getInicio();
-                    fila[2] = ini.getFin();
-                    model.addRow(fila);
-                }
+            Iterator<Iniciofin> it = agen.getDia2(di).getIniciofins().iterator();
+            while (it.hasNext()) {
+                Iniciofin ini = (Iniciofin) it.next();
+                Object[] fila = new Object[3];
+                fila[0] = agen.getTarea().getNombre();
+                fila[1] = ini.getInicio();
+                fila[2] = ini.getFin();
+                model.addRow(fila);
+            }
         }
         tabla.setModel(model);
     }
@@ -406,9 +407,9 @@ public class Controlador {
         }
         tabla.setModel(model);
     }
-    
+
     public Asistencia getAsistencia(int nro) {
-        Asistencia asis=(Asistencia)Controlador.getPERSISTENCIA().getAsistencia(nro).iterator().next();
+        Asistencia asis = (Asistencia) Controlador.getPERSISTENCIA().getAsistencia(nro).iterator().next();
         return asis;
     }
 
@@ -429,7 +430,7 @@ public class Controlador {
         }
         tabla.setModel(model);
     }
-    
+
     public void CargarTablaFeriados(JTable tabla) {
         LimpiarTabla(tabla);
         DefaultTableModel model = (DefaultTableModel) tabla.getModel();
@@ -503,7 +504,7 @@ public class Controlador {
             Iterator<Tareaextracurricular> act = PERSISTENCIA.getTareasExtracurriculares().iterator();
             while (act.hasNext()) {
                 Tareaextracurricular acc = act.next();
-                Tarea ac=acc.getTarea();
+                Tarea ac = acc.getTarea();
                 if (ac.getEstado() == true) {
                     if (buscarpor.equals("Nombre") && ac.getEstado() == true) {
                         int i = ac.getNombre().indexOf(valor);
@@ -530,7 +531,7 @@ public class Controlador {
             Iterator<Tareaotro> act = PERSISTENCIA.getTareasOtros().iterator();
             while (act.hasNext()) {
                 Tareaotro acc = act.next();
-                Tarea ac=acc.getTarea();
+                Tarea ac = acc.getTarea();
                 if (ac.getEstado() == true) {
                     if (buscarpor.equals("Nombre") && ac.getEstado() == true) {
                         int i = ac.getNombre().indexOf(valor);
@@ -556,7 +557,7 @@ public class Controlador {
         } else if (tipo.equals("Todos")) {
             Iterator<Tarea> act = PERSISTENCIA.getTareas().iterator();
             while (act.hasNext()) {
-                Tarea ac=act.next();
+                Tarea ac = act.next();
                 if (ac.getEstado() == true) {
                     if (buscarpor.equals("Nombre") && ac.getEstado() == true) {
                         int i = ac.getNombre().indexOf(valor);
@@ -583,14 +584,14 @@ public class Controlador {
 
         tabla.setModel(model);
     }
-    
-    public void CargarTablaCirculares(JTable tabla,Date dia) {
+
+    public void CargarTablaCirculares(JTable tabla, Date dia) {
         LimpiarTabla(tabla);
         DefaultTableModel model = (DefaultTableModel) tabla.getModel();
         Iterator<Circular> it = PERSISTENCIA.getCirculares().iterator();
         while (it.hasNext()) {
             Circular cir = it.next();
-            if(cir.getFecha().getYear()==dia.getYear()&&cir.getFecha().getMonth()==dia.getMonth()&&cir.getFecha().getDate()==dia.getDate()){
+            if (cir.getFecha().getYear() == dia.getYear() && cir.getFecha().getMonth() == dia.getMonth() && cir.getFecha().getDate() == dia.getDate()) {
                 Object[] fila = new Object[4];
                 fila[0] = cir.getCircularpersonals().iterator().next().getDescripcion();
                 fila[1] = cir.getFecha();
@@ -600,7 +601,7 @@ public class Controlador {
         }
         tabla.setModel(model);
     }
-    
+
     public void Cargarpersonal(JTable tabla, String buscarpor, String valor) {
         DefaultTableModel model = (DefaultTableModel) tabla.getModel();
         Iterator<Personal> pe = getPrimerEstablecimiento().getPersonals().iterator();
@@ -650,74 +651,74 @@ public class Controlador {
         }
         tabla.setModel(model);
     }
-    
+
     public void CargarTablaFiltro(JTable tabla, String buscarpor, String valor) {
         DefaultTableModel model = (DefaultTableModel) tabla.getModel();
         Iterator<Personal> pe = PERSISTENCIA.getPersonales().iterator();
         while (pe.hasNext()) {
             Personal person = (Personal) pe.next();
-                if (buscarpor.equals("Apellido") && person.getEstado() == true) {
-                    int i = person.getApellido().indexOf(valor);
-                    if (i == 0) {
-                       Object[] fila = new Object[7];
-                        fila[0] = person;
-                        fila[1] = person.getDni();
-                        fila[2] = person.getSexo();
-                        SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
-                        fila[3] = formateador.format(person.getIngreso());
-                        fila[4] = person.getCorreoElectronico();
-                        fila[5] = person.getCuil();
-                        fila[6] = person.getEstadoCivil();
-                        model.addRow(fila);
-                    }
-                } else if (buscarpor.equals("Nombre") && person.getEstado() == true) {
-                    int i = person.getNombre().indexOf(valor);
-                    if (i == 0) {
-                        Object[] fila = new Object[7];
-                        fila[0] = person;
-                        fila[1] = person.getDni();
-                        fila[2] = person.getSexo();
-                        SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
-                        fila[3] = formateador.format(person.getIngreso());
-                        fila[4] = person.getCorreoElectronico();
-                        fila[5] = person.getCuil();
-                        fila[6] = person.getEstadoCivil();
-                        model.addRow(fila);
-                    }
-                } else if (buscarpor.equals("Sexo") && person.getEstado() == true) {
-                    int i = person.getSexo().indexOf(valor);
-                    if (i == 0) {
-                        Object[] fila = new Object[7];
-                        fila[0] = person.toString();
-                        fila[1] = person.getDni();
-                        fila[2] = person.getSexo();
-                        SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
-                        fila[3] = formateador.format(person.getIngreso());
-                        fila[4] = person.getCorreoElectronico();
-                        fila[5] = person.getCuil();
-                        fila[6] = person.getEstadoCivil();
-                        model.addRow(fila);
-                    }
-                } else if (buscarpor.equals("Estado civil") && person.getEstado() == true) {
-                    int i = person.getEstadoCivil().indexOf(valor);
-                    if (i == 0) {
-                        Object[] fila = new Object[7];
-                        fila[0] = person.toString();
-                        fila[1] = person.getDni();
-                        fila[2] = person.getSexo();
-                        SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
-                        fila[3] = formateador.format(person.getIngreso());
-                        fila[7] = person.getCorreoElectronico();
-                        fila[5] = person.getCuil();
-                        fila[6] = person.getEstadoCivil();
-                        model.addRow(fila);
-                    }
+            if (buscarpor.equals("Apellido") && person.getEstado() == true) {
+                int i = person.getApellido().indexOf(valor);
+                if (i == 0) {
+                    Object[] fila = new Object[7];
+                    fila[0] = person;
+                    fila[1] = person.getDni();
+                    fila[2] = person.getSexo();
+                    SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+                    fila[3] = formateador.format(person.getIngreso());
+                    fila[4] = person.getCorreoElectronico();
+                    fila[5] = person.getCuil();
+                    fila[6] = person.getEstadoCivil();
+                    model.addRow(fila);
                 }
-            
+            } else if (buscarpor.equals("Nombre") && person.getEstado() == true) {
+                int i = person.getNombre().indexOf(valor);
+                if (i == 0) {
+                    Object[] fila = new Object[7];
+                    fila[0] = person;
+                    fila[1] = person.getDni();
+                    fila[2] = person.getSexo();
+                    SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+                    fila[3] = formateador.format(person.getIngreso());
+                    fila[4] = person.getCorreoElectronico();
+                    fila[5] = person.getCuil();
+                    fila[6] = person.getEstadoCivil();
+                    model.addRow(fila);
+                }
+            } else if (buscarpor.equals("Sexo") && person.getEstado() == true) {
+                int i = person.getSexo().indexOf(valor);
+                if (i == 0) {
+                    Object[] fila = new Object[7];
+                    fila[0] = person.toString();
+                    fila[1] = person.getDni();
+                    fila[2] = person.getSexo();
+                    SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+                    fila[3] = formateador.format(person.getIngreso());
+                    fila[4] = person.getCorreoElectronico();
+                    fila[5] = person.getCuil();
+                    fila[6] = person.getEstadoCivil();
+                    model.addRow(fila);
+                }
+            } else if (buscarpor.equals("Estado civil") && person.getEstado() == true) {
+                int i = person.getEstadoCivil().indexOf(valor);
+                if (i == 0) {
+                    Object[] fila = new Object[7];
+                    fila[0] = person.toString();
+                    fila[1] = person.getDni();
+                    fila[2] = person.getSexo();
+                    SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+                    fila[3] = formateador.format(person.getIngreso());
+                    fila[7] = person.getCorreoElectronico();
+                    fila[5] = person.getCuil();
+                    fila[6] = person.getEstadoCivil();
+                    model.addRow(fila);
+                }
+            }
+
         }
         tabla.setModel(model);
     }
-    
+
     public void CargarTablacheck(JTable tabla, String buscarpor, String valor, List personales) {
         try {
             DefaultTableModel model = (DefaultTableModel) tabla.getModel();
@@ -769,18 +770,18 @@ public class Controlador {
                     } else {
                         band2 = true;
                     }
-                
-                    if (person.getEstado() == true && band2==true) {
+
+                    if (person.getEstado() == true && band2 == true) {
                         int i = person.getApellido().indexOf(valor);
                         int e = person.getNombre().indexOf(valor);
-                        if (i == 0||e==0) {
+                        if (i == 0 || e == 0) {
                             Object fila[] = new Object[3];
                             fila[0] = new Boolean(false);
                             fila[1] = person;
                             fila[2] = person.getDni();
                             model.addRow(fila);
                         }
-                    } 
+                    }
                     tabla.setModel(model);
                 }
             }
@@ -788,23 +789,23 @@ public class Controlador {
             JOptionPane.showMessageDialog(null, ex.toString());
         }
     }
-    
+
     public void CargarpersonalSimple(JTable tabla, String buscarpor, String valor, List personales) {
         DefaultTableModel model = (DefaultTableModel) tabla.getModel();
-        boolean band=true;
+        boolean band = true;
         Iterator<Personal> pe = getPrimerEstablecimiento().getPersonals().iterator();
         while (pe.hasNext()) {
-            band=true;
+            band = true;
             Personal person = (Personal) pe.next();
-            Iterator<Personal> it= personales.iterator();
-            while(it.hasNext()){
-                Personal per=it.next();
-                if(per.getIdPersonal()==person.getIdPersonal()){
-                    band=false;
+            Iterator<Personal> it = personales.iterator();
+            while (it.hasNext()) {
+                Personal per = it.next();
+                if (per.getIdPersonal() == person.getIdPersonal()) {
+                    band = false;
                     break;
                 }
             }
-            if(band==true){
+            if (band == true) {
                 if (buscarpor.equals("Apellido") && person.getEstado() == true) {
                     int i = person.getApellido().indexOf(valor);
                     if (i == 0) {
@@ -825,13 +826,11 @@ public class Controlador {
                         fila[3] = person.getEstadoCivil();
                         model.addRow(fila);
                     }
-                } 
+                }
             }
         }
         tabla.setModel(model);
     }
-    
-    
 
     public void CargarTablaflia(JTable Tabla, Personal per) {
         try {
@@ -866,96 +865,96 @@ public class Controlador {
             JOptionPane.showMessageDialog(null, ex.toString());
         }
     }
-    
+
     public void CargarTablaActividad(JTable Tabla, Tarea tar) {
         try {
             DefaultTableModel modelo = (DefaultTableModel) Tabla.getModel();
-            if(!tar.getTareaclases().isEmpty()){
+            if (!tar.getTareaclases().isEmpty()) {
                 if (tar.getEstado() == true) {
                     Object fila[] = new Object[7];
-                    Iterator it=tar.getAgendas().iterator();
-                    while(it.hasNext()){
-                        Agenda age=(Agenda) it.next();
-                        Iterator ita=age.getAnos().iterator();
-                        while(ita.hasNext()){
-                           Ano an=(Ano) ita.next();
-                           Iterator itm=an.getMeses().iterator();
-                           while(itm.hasNext()){
-                               Mes me=(Mes) itm.next();
-                               Iterator itd=me.getDias().iterator();
-                               while(itd.hasNext()){
-                                   Dia di=(Dia) itd.next();
-                                   Iterator itini=di.getIniciofins().iterator();
-                                   while(itini.hasNext()){                                    
-                                       Iniciofin ini=(Iniciofin)itini.next();
-                                       Tareaclase tarcla=tar.getTareaclases().iterator().next();
-                                       Date fecha=new Date();
-                                       fecha.setYear(an.getAno()-1900);
-                                       fecha.setMonth(me.getMes());
-                                       fecha.setDate(di.getDia());
-                                       fila[0] = age.getPersonal();
-                                       fila[1] = age.getRevista().getNombre();
-                                       fila[2] = tarcla.getAula();
-                                       fila[3] = tarcla.getNumero();
-                                       SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
-                                       SimpleDateFormat formateador2 = new SimpleDateFormat("HH:mm");
-                                       fila[4] = formateador.format(fecha);
-                                       fila[5] = formateador2.format(ini.getInicio());
-                                       fila[6] = formateador2.format(ini.getFin());
-                                       modelo.addRow(fila);
-                                   }
-                               }
-                           }
-                       }
+                    Iterator it = tar.getAgendas().iterator();
+                    while (it.hasNext()) {
+                        Agenda age = (Agenda) it.next();
+                        Iterator ita = age.getAnos().iterator();
+                        while (ita.hasNext()) {
+                            Ano an = (Ano) ita.next();
+                            Iterator itm = an.getMeses().iterator();
+                            while (itm.hasNext()) {
+                                Mes me = (Mes) itm.next();
+                                Iterator itd = me.getDias().iterator();
+                                while (itd.hasNext()) {
+                                    Dia di = (Dia) itd.next();
+                                    Iterator itini = di.getIniciofins().iterator();
+                                    while (itini.hasNext()) {
+                                        Iniciofin ini = (Iniciofin) itini.next();
+                                        Tareaclase tarcla = tar.getTareaclases().iterator().next();
+                                        Date fecha = new Date();
+                                        fecha.setYear(an.getAno() - 1900);
+                                        fecha.setMonth(me.getMes());
+                                        fecha.setDate(di.getDia());
+                                        fila[0] = age.getPersonal();
+                                        fila[1] = age.getRevista().getNombre();
+                                        fila[2] = tarcla.getAula();
+                                        fila[3] = tarcla.getNumero();
+                                        SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+                                        SimpleDateFormat formateador2 = new SimpleDateFormat("HH:mm");
+                                        fila[4] = formateador.format(fecha);
+                                        fila[5] = formateador2.format(ini.getInicio());
+                                        fila[6] = formateador2.format(ini.getFin());
+                                        modelo.addRow(fila);
+                                    }
+                                }
+                            }
+                        }
                     }
-                    
+
                 }
-            }else if(!tar.getTareareunions().isEmpty()){
+            } else if (!tar.getTareareunions().isEmpty()) {
                 if (tar.getEstado() == true) {
                     Object fila[] = new Object[7];
-                    Iterator it=tar.getAgendas().iterator();
-                    while(it.hasNext()){
-                        Agenda age=(Agenda) it.next();
-                        Iterator ita=age.getAnos().iterator();
-                        while(ita.hasNext()){
-                           Ano an=(Ano) ita.next();
-                           Iterator itm=an.getMeses().iterator();
-                           while(itm.hasNext()){
-                               Mes me=(Mes) itm.next();
-                               Iterator itd=me.getDias().iterator();
-                               while(itd.hasNext()){
-                                   Dia di=(Dia) itd.next();
-                                   Iterator itini=di.getIniciofins().iterator();
-                                   while(itini.hasNext()){
-                                       Iniciofin ini=(Iniciofin)itini.next();
-                                       Tareareunion tarreu=tar.getTareareunions().iterator().next();
-                                       Date fecha=new Date();
-                                       fecha.setYear(an.getAno()-1900);
-                                       fecha.setMonth(me.getMes());
-                                       fecha.setDate(di.getDia());
-                                       fila[0] = age.getPersonal();
-                                       fila[1] = tarreu.getMotivo();
-                                       fila[2] = tarreu.getCaracter();
-                                       //fila[4] = 
-                                       SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
-                                       SimpleDateFormat formateador2 = new SimpleDateFormat("HH:mm");
-                                       fila[4] = formateador.format(fecha);
-                                       fila[5] = formateador2.format(ini.getInicio());
-                                       fila[6] = formateador2.format(ini.getFin());
-                                       modelo.addRow(fila);
-                                   }
-                               }
-                           }
-                       }
+                    Iterator it = tar.getAgendas().iterator();
+                    while (it.hasNext()) {
+                        Agenda age = (Agenda) it.next();
+                        Iterator ita = age.getAnos().iterator();
+                        while (ita.hasNext()) {
+                            Ano an = (Ano) ita.next();
+                            Iterator itm = an.getMeses().iterator();
+                            while (itm.hasNext()) {
+                                Mes me = (Mes) itm.next();
+                                Iterator itd = me.getDias().iterator();
+                                while (itd.hasNext()) {
+                                    Dia di = (Dia) itd.next();
+                                    Iterator itini = di.getIniciofins().iterator();
+                                    while (itini.hasNext()) {
+                                        Iniciofin ini = (Iniciofin) itini.next();
+                                        Tareareunion tarreu = tar.getTareareunions().iterator().next();
+                                        Date fecha = new Date();
+                                        fecha.setYear(an.getAno() - 1900);
+                                        fecha.setMonth(me.getMes());
+                                        fecha.setDate(di.getDia());
+                                        fila[0] = age.getPersonal();
+                                        fila[1] = tarreu.getMotivo();
+                                        fila[2] = tarreu.getCaracter();
+                                        //fila[4] = 
+                                        SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+                                        SimpleDateFormat formateador2 = new SimpleDateFormat("HH:mm");
+                                        fila[4] = formateador.format(fecha);
+                                        fila[5] = formateador2.format(ini.getInicio());
+                                        fila[6] = formateador2.format(ini.getFin());
+                                        modelo.addRow(fila);
+                                    }
+                                }
+                            }
+                        }
                     }
-                    
+
                 }
-            }else if(!tar.getTareaextracurriculars().isEmpty()){
+            } else if (!tar.getTareaextracurriculars().isEmpty()) {
                 if (tar.getEstado() == true) {
                     Object fila[] = new Object[7];
-                    Iterator it=tar.getAgendas().iterator();
-                    while(it.hasNext()){
-                        Agenda age=(Agenda) it.next();
+                    Iterator it = tar.getAgendas().iterator();
+                    while (it.hasNext()) {
+                        Agenda age = (Agenda) it.next();
 //                        Iterator ita=age.getAnos().iterator();
 //                        while(ita.hasNext()){
 //                           Ano an=(Ano) ita.next();
@@ -968,24 +967,26 @@ public class Controlador {
 //                                   Iterator itini=di.getIniciofins().iterator();
 //                                   while(itini.hasNext()){
 //                                       Iniciofin ini=(Iniciofin)itini.next();
-                                       Tareaextracurricular tarreu=tar.getTareaextracurriculars().iterator().next();
+                        Tareaextracurricular tarreu = tar.getTareaextracurriculars().iterator().next();
 //                                       Date fecha=new Date();
 //                                       String vacio="";
 //                                       fecha.setYear(an.getAno()-1900);
 //                                       fecha.setMonth(me.getMes());
 //                                       fecha.setDate(di.getDia());
-                                       fila[0] = age.getPersonal();
-                                       fila[1] = tar.getComentario();
-                                       SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
-                                       SimpleDateFormat formateador2 = new SimpleDateFormat("HH:mm");
-                                       Franco fran=age.getFranco(age);
-                                       if(fran.getIdFranco()!=null){fila[3] = formateador.format(fran.getDiaFranco());}
-                                       fila[3] = formateador.format(tarreu.getDiaFin());
-                                       fila[4] = formateador.format(tarreu.getDiaInicio());
-                                       fila[5] = formateador2.format(tarreu.getDiaInicio());
-                                       fila[6] = formateador2.format(tarreu.getDiaFin());
-                                       modelo.addRow(fila);
-                                   }
+                        fila[0] = age.getPersonal();
+                        fila[1] = tar.getComentario();
+                        SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+                        SimpleDateFormat formateador2 = new SimpleDateFormat("HH:mm");
+                        Franco fran = age.getFranco(age);
+                        if (fran.getIdFranco() != null) {
+                            fila[3] = formateador.format(fran.getDiaFranco());
+                        }
+                        fila[3] = formateador.format(tarreu.getDiaFin());
+                        fila[4] = formateador.format(tarreu.getDiaInicio());
+                        fila[5] = formateador2.format(tarreu.getDiaInicio());
+                        fila[6] = formateador2.format(tarreu.getDiaFin());
+                        modelo.addRow(fila);
+                    }
 //                               }
 //                           }
 //                        }
@@ -1017,35 +1018,35 @@ public class Controlador {
             JOptionPane.showMessageDialog(null, ex.toString());
         }
     }
-    
-    public Agenda getAgenda(Tarea tar,int per) {
-        Agenda band=new Agenda();
-        Iterator it= PERSISTENCIA.getAgendas().iterator();
-        while(it.hasNext()){
-            Agenda age=(Agenda) it.next();
-            if(age.getId().getIdTarea()==tar.getIdTarea()&& age.getId().getIdPersonal()==per){
-                band=age;
+
+    public Agenda getAgenda(Tarea tar, int per) {
+        Agenda band = new Agenda();
+        Iterator it = PERSISTENCIA.getAgendas().iterator();
+        while (it.hasNext()) {
+            Agenda age = (Agenda) it.next();
+            if (age.getId().getIdTarea() == tar.getIdTarea() && age.getId().getIdPersonal() == per) {
+                band = age;
                 break;
             }
         }
         return band;
     }
-    
-    public void CargarTablaInasistencias(JTable Tabla,String m,int ano) {
+
+    public void CargarTablaInasistencias(JTable Tabla, String m, int ano) {
         try {
             DefaultTableModel modelo = (DefaultTableModel) Tabla.getModel();
             Establecimiento col = getPrimerEstablecimiento();
-            int mes=ObtenerMes(m);
+            int mes = ObtenerMes(m);
             SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
             Iterator<Asistencia> ita = Controlador.getPERSISTENCIA().ObtenerListaInasistencia(mes, ano).iterator();
             while (ita.hasNext()) {
-                Asistencia asis=ita.next();
-                if(asis.getIniciofin().getDia().getMes().getAno().getAgenda().getTarea().getEstado()==true && asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().getEstado()==true){
-                    Date fecha=new Date();
-                    fecha.setYear(asis.getIniciofin().getDia().getMes().getAno().getAno()-1900);
+                Asistencia asis = ita.next();
+                if (asis.getIniciofin().getDia().getMes().getAno().getAgenda().getTarea().getEstado() == true && asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().getEstado() == true) {
+                    Date fecha = new Date();
+                    fecha.setYear(asis.getIniciofin().getDia().getMes().getAno().getAno() - 1900);
                     fecha.setMonth(asis.getIniciofin().getDia().getMes().getMes());
                     fecha.setDate(asis.getIniciofin().getDia().getDia());
-                    if(asis.getIniciofin().getDia().getMes().getMes()==mes && asis.getIniciofin().getDia().getMes().getAno().getAno()==ano){
+                    if (asis.getIniciofin().getDia().getMes().getMes() == mes && asis.getIniciofin().getDia().getMes().getAno().getAno() == ano) {
                         Object fila[] = new Object[9];
                         fila[0] = asis.getIdAsistencia();
                         fila[1] = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getTarea().getNombre();
@@ -1054,40 +1055,12 @@ public class Controlador {
                         fila[4] = asis.getIniciofin().getInicio();
                         fila[5] = asis.getIniciofin().getFin();
                         fila[6] = new Boolean(false);
-                        if(asis.getTardanza()==true){
+                        if (asis.getTardanza() == true) {
                             fila[7] = new Boolean(true);
-                        }else{fila[7] = new Boolean(false);}
-                        if(asis.getJustificacions().iterator().hasNext()){
-                            fila[8] = asis.getJustificacions().iterator().next().getArticulo();
-                            fila[9] = asis.getJustificacions().iterator().next().getMotivo();
+                        } else {
+                            fila[7] = new Boolean(false);
                         }
-                        modelo.addRow(fila);
-                    }
-            }
-            }
-            Iterator<Asistencia> itaa = Controlador.getPERSISTENCIA().ObtenerListaTardanza(mes, ano).iterator();
-            while (itaa.hasNext()) {
-                Asistencia asis=itaa.next();
-                if(asis.getIniciofin().getDia().getMes().getAno().getAgenda().getTarea().getEstado()==true && asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().getEstado()==true){
-                    Date fecha=new Date();
-                    fecha.setYear(asis.getIniciofin().getDia().getMes().getAno().getAno()-1900);
-                    fecha.setMonth(asis.getIniciofin().getDia().getMes().getMes());
-                    fecha.setDate(asis.getIniciofin().getDia().getDia());
-                    if(asis.getIniciofin().getDia().getMes().getMes()==mes && asis.getIniciofin().getDia().getMes().getAno().getAno()==ano){
-                        Object fila[] = new Object[10];
-                        fila[0] = asis.getIdAsistencia();
-                        fila[1] = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getTarea().getNombre();
-                        fila[2] = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().toString();
-                        fila[3] = formateador.format(fecha);
-                        fila[4] = asis.getIniciofin().getInicio();
-                        fila[5] = asis.getIniciofin().getFin();
-                        if(asis.getTardanza()==true){
-                            fila[6] = new Boolean(true);
-                        }else{fila[6] = new Boolean(false);}
-                        if(asis.getTardanza()==true){
-                            fila[7] = new Boolean(true);
-                        }else{fila[7] = new Boolean(false);}
-                        if(asis.getJustificacions().iterator().hasNext()){
+                        if (asis.getJustificacions().iterator().hasNext()) {
                             fila[8] = asis.getJustificacions().iterator().next().getArticulo();
                             fila[9] = asis.getJustificacions().iterator().next().getMotivo();
                         }
@@ -1095,7 +1068,41 @@ public class Controlador {
                     }
                 }
             }
-            
+            Iterator<Asistencia> itaa = Controlador.getPERSISTENCIA().ObtenerListaTardanza(mes, ano).iterator();
+            while (itaa.hasNext()) {
+                Asistencia asis = itaa.next();
+                if (asis.getIniciofin().getDia().getMes().getAno().getAgenda().getTarea().getEstado() == true && asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().getEstado() == true) {
+                    Date fecha = new Date();
+                    fecha.setYear(asis.getIniciofin().getDia().getMes().getAno().getAno() - 1900);
+                    fecha.setMonth(asis.getIniciofin().getDia().getMes().getMes());
+                    fecha.setDate(asis.getIniciofin().getDia().getDia());
+                    if (asis.getIniciofin().getDia().getMes().getMes() == mes && asis.getIniciofin().getDia().getMes().getAno().getAno() == ano) {
+                        Object fila[] = new Object[10];
+                        fila[0] = asis.getIdAsistencia();
+                        fila[1] = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getTarea().getNombre();
+                        fila[2] = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().toString();
+                        fila[3] = formateador.format(fecha);
+                        fila[4] = asis.getIniciofin().getInicio();
+                        fila[5] = asis.getIniciofin().getFin();
+                        if (asis.getTardanza() == true) {
+                            fila[6] = new Boolean(true);
+                        } else {
+                            fila[6] = new Boolean(false);
+                        }
+                        if (asis.getTardanza() == true) {
+                            fila[7] = new Boolean(true);
+                        } else {
+                            fila[7] = new Boolean(false);
+                        }
+                        if (asis.getJustificacions().iterator().hasNext()) {
+                            fila[8] = asis.getJustificacions().iterator().next().getArticulo();
+                            fila[9] = asis.getJustificacions().iterator().next().getMotivo();
+                        }
+                        modelo.addRow(fila);
+                    }
+                }
+            }
+
             Tabla.setModel(modelo);
             Tabla.getColumnModel().getColumn(0).setWidth(30);
         } catch (Exception ex) {
@@ -1147,7 +1154,6 @@ public class Controlador {
         }
         return t;
     }
-        
 
     public static Date sumarFechasDias(Date fch, int dias) {
         Calendar cal = new GregorianCalendar();
@@ -1157,13 +1163,13 @@ public class Controlador {
     }
 
     public Personal getPersonal(Tipodoc tipo, String dni) {
-        Personal pe= new Personal();
-        if (!PERSISTENCIA.existePersonal(tipo.getIdTipodoc(), dni).isEmpty()){
-           pe = (Personal) PERSISTENCIA.existePersonal(tipo.getIdTipodoc(), dni).get(0);
+        Personal pe = new Personal();
+        if (!PERSISTENCIA.existePersonal(tipo.getIdTipodoc(), dni).isEmpty()) {
+            pe = (Personal) PERSISTENCIA.existePersonal(tipo.getIdTipodoc(), dni).get(0);
         }
-        return  pe;
+        return pe;
     }
-    
+
 //    public void CargarComboEstablecimientosPer(JComboBox JCombo, Personal per) {
 //        if (!PERSISTENCIA.DecjuradaPer(per.getIdPersonal()).isEmpty()){
 //           Declaracionjurada dec= (Declaracionjurada) PERSISTENCIA.DecjuradaPer(per.getIdPersonal()).get(0);
@@ -1174,181 +1180,297 @@ public class Controlador {
 //            }
 //        }
 //    }
-    
     public void CargarComboEstablecimientosPerso(JComboBox JCombo, Personal per) {
-        if (!PERSISTENCIA.DecjuradaPer(per.getIdPersonal()).isEmpty()){
-           Declaracionjurada dec= (Declaracionjurada) PERSISTENCIA.DecjuradaPer(per.getIdPersonal()).get(0);
-           Iterator<DetalleEstablecimiento> car = PERSISTENCIA.DetalledecjuradaPer(dec.getIdDeclaracionjurada()).iterator();
+        if (!PERSISTENCIA.DecjuradaPer(per.getIdPersonal()).isEmpty()) {
+            Declaracionjurada dec = (Declaracionjurada) PERSISTENCIA.DecjuradaPer(per.getIdPersonal()).get(0);
+            Iterator<DetalleEstablecimiento> car = PERSISTENCIA.DetalledecjuradaPer(dec.getIdDeclaracionjurada()).iterator();
             while (car.hasNext()) {
                 DetalleEstablecimiento ca = (DetalleEstablecimiento) car.next();
                 JCombo.addItem(ca);
             }
         }
     }
-    
-    public String ObtenerDia(int i){
-    String dia=null;
-    if(i==0){
-        dia="DOMINGO";
-    }else if(i==1){
-        dia="LUNES";
-    }else if(i==2){
-        dia="MARTES";
-    }else if(i==3){
-        dia="MIERCOLES";
-    }else if(i==4){
-        dia="JUEVES";
-    }else if(i==5){
-        dia="VIERNES";
-    }else if(i==6){
-        dia="SABADO";
+
+    public String ObtenerDia(int i) {
+        String dia = null;
+        if (i == 0) {
+            dia = "DOMINGO";
+        } else if (i == 1) {
+            dia = "LUNES";
+        } else if (i == 2) {
+            dia = "MARTES";
+        } else if (i == 3) {
+            dia = "MIERCOLES";
+        } else if (i == 4) {
+            dia = "JUEVES";
+        } else if (i == 5) {
+            dia = "VIERNES";
+        } else if (i == 6) {
+            dia = "SABADO";
+        }
+        return dia;
     }
-    return dia;
+
+    public int ObtenerMes(String mes) {
+        int m = 0;
+        if (mes.equals("ENERO")) {
+            m = 0;
+        } else if (mes.equals("FEBRERO")) {
+            m = 1;
+        } else if (mes.equals("MARZO")) {
+            m = 2;
+        } else if (mes.equals("ABRIL")) {
+            m = 3;
+        } else if (mes.equals("MAYO")) {
+            m = 4;
+        } else if (mes.equals("JUNIO")) {
+            m = 5;
+        } else if (mes.equals("JULIO")) {
+            m = 6;
+        } else if (mes.equals("AGOSTO")) {
+            m = 7;
+        } else if (mes.equals("SEPTIEMBRE")) {
+            m = 8;
+        } else if (mes.equals("OCTUBRE")) {
+            m = 9;
+        } else if (mes.equals("NOVIEMBRE")) {
+            m = 10;
+        } else if (mes.equals("DICIEMBRE")) {
+            m = 11;
+        }
+        return m;
     }
-    
-    public int ObtenerMes(String mes){
-    int m=0;
-    if(mes.equals("ENERO")){
-        m=0;
-    }else if(mes.equals("FEBRERO")){
-        m=1;
-    }else if(mes.equals("MARZO")){
-        m=2;    
-    }else if(mes.equals("ABRIL")){
-        m=3;    
-    }else if(mes.equals("MAYO")){
-        m=4;    
-    }else if(mes.equals("JUNIO")){
-        m=5;    
-    }else if(mes.equals("JULIO")){
-        m=6;    
-    }else if(mes.equals("AGOSTO")){
-        m=7;    
-    }else if(mes.equals("SEPTIEMBRE")){
-        m=8;    
-    }else if(mes.equals("OCTUBRE")){
-        m=9;    
-    }else if(mes.equals("NOVIEMBRE")){
-        m=10;    
-    }else if(mes.equals("DICIEMBRE")){
-        m=11;    
-    }
-    return m;
-    }
-    
-    public int ObtenerInasistenciaPersonal(Personal per){
-        Date date=new Date();
-        int contador=0;
-        Iterator<Asistencia> ita = Controlador.getPERSISTENCIA().ObtenerListaInasistencia(date.getMonth(), date.getYear()+1900).iterator();
+
+    public int ObtenerInasistenciaPersonal(Personal per) {
+        Date date = new Date();
+        int contador = 0;
+        Iterator<Asistencia> ita = Controlador.getPERSISTENCIA().ObtenerListaInasistencia(date.getMonth(), date.getYear() + 1900).iterator();
         while (ita.hasNext()) {
-            Asistencia asis=ita.next();
-            int id=asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().getIdPersonal();
-            int id2= per.getIdPersonal();
-            if(id==id2){
+            Asistencia asis = ita.next();
+            int id = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().getIdPersonal();
+            int id2 = per.getIdPersonal();
+            if (id == id2) {
                 contador++;
             }
         }
         return contador;
     }
-    
-     public int ObtenerTardanzaPersonal(Personal per){
-        Date date=new Date();
-        int contador=0;
-        Iterator<Asistencia> ita = Controlador.getPERSISTENCIA().ObtenerListaTardanza(date.getMonth(), date.getYear()+1900).iterator();
+
+    public int ObtenerTardanzaPersonal(Personal per) {
+        Date date = new Date();
+        int contador = 0;
+        Iterator<Asistencia> ita = Controlador.getPERSISTENCIA().ObtenerListaTardanza(date.getMonth(), date.getYear() + 1900).iterator();
         while (ita.hasNext()) {
-            Asistencia asis=ita.next();
-            int id=asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().getIdPersonal();
-            int id2= per.getIdPersonal();
-            if(id==id2){
+            Asistencia asis = ita.next();
+            int id = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().getIdPersonal();
+            int id2 = per.getIdPersonal();
+            if (id == id2) {
                 contador++;
             }
         }
         return contador;
     }
-     
-     public boolean existeFeriado(Date unafecha) {
+
+    public boolean existeFeriado(Date unafecha) {
         boolean tmpres = false;
         Iterator it = PERSISTENCIA.getFeriados().iterator();
         while (it.hasNext()) {
             Feriado fer = (Feriado) it.next();
-            if (fer.getDia().compareTo(unafecha)==0) {
+            if (fer.getDia().compareTo(unafecha) == 0) {
                 tmpres = true;
                 break;
             }
         }
         return tmpres;
     }
-     
-     public Feriado getFeriado(int idfer) {
-        Feriado fer=new Feriado();
-        Iterator it=PERSISTENCIA.getFeriados().iterator();
-           while(it.hasNext()){
-           Feriado p=(Feriado) it.next();
-           if(idfer == p.getIdFeriado()){
-               fer=p;
-               break;
-           }
-         }
+
+    public Feriado getFeriado(int idfer) {
+        Feriado fer = new Feriado();
+        Iterator it = PERSISTENCIA.getFeriados().iterator();
+        while (it.hasNext()) {
+            Feriado p = (Feriado) it.next();
+            if (idfer == p.getIdFeriado()) {
+                fer = p;
+                break;
+            }
+        }
         return fer;
     }
-     
-     public boolean VerificarCheckTabla(JTable tabla) {
+
+    public boolean VerificarCheckTabla(JTable tabla) {
         boolean band = false;
-        int c=0;
-        DefaultTableModel modelo = (DefaultTableModel)tabla.getModel();
+        int c = 0;
+        DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
         while (tabla.getRowCount() != c) {
             if (modelo.getValueAt(c, 0).equals(true)) {
-                band=true;
+                band = true;
                 break;
             }
             c++;
         }
         return band;
     }
-     
-     public void mostrarReporte(String report, List consulta,String titulo) {
-        try {
-            String SO = System.getProperty("os.name");
-            String master;
-            if (SO.toUpperCase().equals("LINUX")) {
-                master = System.getProperty("user.dir") + "/src/Reportes/" + report + ".jasper";
-            } else {
-                master = System.getProperty("user.dir") + "\\src\\Reportes\\" + report + ".jasper";
-            }
-            System.out.println("Dirección del Reporte en disco: " + master);
-            if (master == null) {
-                //javax.swing.JOptionPane msj=new javax.swing.JOptionPane() ;
-                JOptionPane.showMessageDialog(null, "No se encontro el Reporte", "Error", 2, null);
-            }
-            //--------------------------------------------------------------------------------------------------------
-            JasperReport masterReport = null;
-            try {
-                masterReport = (JasperReport) JRLoader.loadObject(master);
 
-            } catch (JRException e) {
-                //javax.swing.JOptionPane msj=new javax.swing.JOptionPane() ;
-                JOptionPane.showMessageDialog(null, "Error al cargar el reporte", "Error", 2, null);
-            }
-//            Map parametro = new HashMap();
-//            parametro = null;
-            JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(consulta);
-//            HibernateQueryResultDataSource ds = new HibernateQueryResultDataSource(usuarios,campos);
-            //Reporte diseñado y compilado con iReport
-            JasperPrint jasperPrint = JasperFillManager.fillReport(masterReport, new HashMap(),ds);
-            //Se lanza el Viewer de Jasper, no termina aplicación al salir
-            JasperViewer jviewer = new JasperViewer(jasperPrint, false);
-            jviewer.setTitle(titulo);
-            jviewer.setVisible(true);
-            // CerrarConex();
-        } catch (Exception j) {
-            //javax.swing.JOptionPane msj=new javax.swing.JOptionPane() ;
-            JOptionPane.showMessageDialog(null, j.toString(), "Error", 2, null);
-            System.out.println(j.toString());
-        }
+//     public void mostrarReporte(String report, List consulta,String titulo) {
+//        try {
+//            String SO = System.getProperty("os.name");
+//            String master;
+//            if (SO.toUpperCase().equals("LINUX")) {
+//                master = System.getProperty("user.dir") + "/src/Reportes/" + report + ".jasper";
+//            } else {
+//                master = System.getProperty("user.dir") + "\\src\\Reportes\\" + report + ".jasper";
+//            }
+//            System.out.println("Dirección del Reporte en disco: " + master);
+//            if (master == null) {
+//                //javax.swing.JOptionPane msj=new javax.swing.JOptionPane() ;
+//                JOptionPane.showMessageDialog(null, "No se encontro el Reporte", "Error", 2, null);
+//            }
+//            //--------------------------------------------------------------------------------------------------------
+//            JasperReport masterReport = null;
+//            try {
+//                masterReport = (JasperReport) JRLoader.loadObject(master);
+//
+//            } catch (JRException e) {
+//                //javax.swing.JOptionPane msj=new javax.swing.JOptionPane() ;
+//                JOptionPane.showMessageDialog(null, "Error al cargar el reporte", "Error", 2, null);
+//            }
+////            Map parametro = new HashMap();
+////            parametro = null;
+//            JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(consulta);
+////            HibernateQueryResultDataSource ds = new HibernateQueryResultDataSource(usuarios,campos);
+//            //Reporte diseñado y compilado con iReport
+//            JasperPrint jasperPrint = JasperFillManager.fillReport(masterReport, new HashMap(),ds);
+//            //Se lanza el Viewer de Jasper, no termina aplicación al salir
+//            JasperViewer jviewer = new JasperViewer(jasperPrint, false);
+//            jviewer.setTitle(titulo);
+//            jviewer.setVisible(true);
+//            // CerrarConex();
+//        } catch (Exception j) {
+//            //javax.swing.JOptionPane msj=new javax.swing.JOptionPane() ;
+//            JOptionPane.showMessageDialog(null, j.toString(), "Error", 2, null);
+//            System.out.println(j.toString());
+//        }
+//
+//    }
+    public static void mostrarReporte(String report, List consulta, String titulo) throws FileNotFoundException, JRException {
+
+        //String report = "Clases";
+        JasperReport jasperReport = null;
+//        String path = "D:/JasperTemplates/";
+        String path = System.getProperty("user.dir") + "\\src\\Reportes\\";
+        JasperPrint jasperPrint = null;
+
+        String SO = System.getProperty("os.name");
+//        String path;
+
+//        if (SO.toUpperCase().equals("LINUX")) {
+//            path = System.getProperty("user.dir") + "/src/Reportes/" + report + ".jasper";
+//        } else {
+//            path = System.getProperty("user.dir") + "\\src\\Reportes\\" + report + ".jasper";
+//        }
+//        System.out.println("Dirección del Reporte en disco: " + path);
+//        if (path == null) {
+//            //javax.swing.JOptionPane msj=new javax.swing.JOptionPane() ;
+//            JOptionPane.showMessageDialog(null, "No se encontro el Reporte", "Error", 2, null);
+//        }
+
+
+        //Gettign the connection object
+        Connection conn = ConexionJDBC.getConnection();
+
+
+        //Provide path for your JRXML template.
+//        String templateName = path + "ReportSQL.jrxml";
+        String templateName = path + report + ".jrxml";
+
+        //Provide path for your final pdf file.
+//        String destinationFile = path + "ReportSQL.pdf";
+//        String destinationFile = path + report + ".pdf";
+
+        //Compiling the template.
+        jasperReport = JasperCompileManager.compileReport(templateName);
+
+        //Sending a parameter with the logged in user name as value
+        HashMap parameters = new HashMap();
+        
+
+        // Filling the report template with data
+        jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, conn);
+
+        //Sending a Complete print of the report.
+//        JasperPrintManager.printReport(jasperPrint, true);
+
+        JasperViewer jviewer = new JasperViewer(jasperPrint, false);
+        jviewer.setTitle(report);
+        jviewer.setVisible(true);
+
+        //Exporting it to an PDF
+//        JasperExportManager.exportReportToPdfFile(jasperPrint, destinationFile);
 
     }
-     
-     public Circular VerificarCircular(Personal per,Date hoy) {
+    
+    public static void mostrarReporte(String report, List consulta, String titulo,String estado,String tardanza,String label) throws FileNotFoundException, JRException {
+
+        //String report = "Clases";
+        JasperReport jasperReport = null;
+//        String path = "D:/JasperTemplates/";
+        String path = System.getProperty("user.dir") + "\\src\\Reportes\\";
+        JasperPrint jasperPrint = null;
+
+        String SO = System.getProperty("os.name");
+//        String path;
+
+//        if (SO.toUpperCase().equals("LINUX")) {
+//            path = System.getProperty("user.dir") + "/src/Reportes/" + report + ".jasper";
+//        } else {
+//            path = System.getProperty("user.dir") + "\\src\\Reportes\\" + report + ".jasper";
+//        }
+//        System.out.println("Dirección del Reporte en disco: " + path);
+//        if (path == null) {
+//            //javax.swing.JOptionPane msj=new javax.swing.JOptionPane() ;
+//            JOptionPane.showMessageDialog(null, "No se encontro el Reporte", "Error", 2, null);
+//        }
+
+
+        //Gettign the connection object
+        Connection conn = ConexionJDBC.getConnection();
+
+
+        //Provide path for your JRXML template.
+//        String templateName = path + "ReportSQL.jrxml";
+        String templateName = path + report + ".jrxml";
+
+        //Provide path for your final pdf file.
+//        String destinationFile = path + "ReportSQL.pdf";
+//        String destinationFile = path + report + ".pdf";
+
+        //Compiling the template.
+        jasperReport = JasperCompileManager.compileReport(templateName);
+
+        //Sending a parameter with the logged in user name as value
+//        HashMap parameters = new HashMap();
+        Map<String, String> parametros = new HashMap<String, String>();
+        parametros.put("LabelReport", label);
+        parametros.put("Estado", estado);
+        parametros.put("Tardanza", tardanza);
+        
+
+        // Filling the report template with data
+        jasperPrint = JasperFillManager.fillReport(jasperReport, parametros, conn);
+
+        //Sending a Complete print of the report.
+//        JasperPrintManager.printReport(jasperPrint, true);
+
+        JasperViewer jviewer = new JasperViewer(jasperPrint, false);
+        jviewer.setTitle(report);
+        jviewer.setVisible(true);
+
+        //Exporting it to an PDF
+//        JasperExportManager.exportReportToPdfFile(jasperPrint, destinationFile);
+
+    }
+
+    public Circular VerificarCircular(Personal per, Date hoy) {
         Circular circ = new Circular();
         Iterator it = PERSISTENCIA.getCirculares().iterator();
         while (it.hasNext()) {
