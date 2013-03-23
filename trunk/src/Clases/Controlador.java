@@ -1170,16 +1170,6 @@ public class Controlador {
         return pe;
     }
 
-//    public void CargarComboEstablecimientosPer(JComboBox JCombo, Personal per) {
-//        if (!PERSISTENCIA.DecjuradaPer(per.getIdPersonal()).isEmpty()){
-//           Declaracionjurada dec= (Declaracionjurada) PERSISTENCIA.DecjuradaPer(per.getIdPersonal()).get(0);
-//           Iterator<DetalleEstablecimiento> car = dec.getDetalleEstablecimientos().iterator();
-//            while (car.hasNext()) {
-//                DetalleEstablecimiento ca = (DetalleEstablecimiento) car.next();
-//                JCombo.addItem(ca);
-//            }
-//        }
-//    }
     public void CargarComboEstablecimientosPerso(JComboBox JCombo, Personal per) {
         if (!PERSISTENCIA.DecjuradaPer(per.getIdPersonal()).isEmpty()) {
             Declaracionjurada dec = (Declaracionjurada) PERSISTENCIA.DecjuradaPer(per.getIdPersonal()).get(0);

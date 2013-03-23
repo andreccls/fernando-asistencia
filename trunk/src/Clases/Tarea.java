@@ -3,9 +3,11 @@ package Clases;
 
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 import javax.swing.JOptionPane;
 
@@ -165,6 +167,35 @@ public class Tarea  implements java.io.Serializable {
         Tareaotro unaTareaotro=new Tareaotro(id,tarea,caracteristica,diaInicio,diaFin);
             unaTareaotro.guardarTareaotro(unaTareaotro);
      }
+    
+    public List ObtenerListaDias(){
+        List lista = new ArrayList();
+        Date aux=new Date();
+        Iterator it=agendas.iterator();
+        while(it.hasNext()){
+            Agenda age=(Agenda) it.next();
+            Iterator ita=age.getAnos().iterator();
+            while(ita.hasNext()){
+                Ano an=(Ano) ita.next();
+                    Iterator itm=an.getMeses().iterator();
+                    while(itm.hasNext()){
+                        Mes me=(Mes) itm.next();
+                        aux.setMonth(me.getMes());
+                        Iterator itd=me.getDias().iterator();
+                        while(itd.hasNext()){
+                            Dia di=(Dia) itd.next();
+                            aux.setDate(di.getDia());
+                            int d=aux.getDay();
+                            if(!lista.contains(d)){
+                               lista.add(d);
+                            }
+                        }
+                    }
+            }
+            break;
+        } 
+        return lista;
+    }
     
     public Date ObtenerFechaMayor(int anio){
         Date mayor = new Date();

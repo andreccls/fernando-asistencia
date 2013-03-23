@@ -1,23 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Asistencias" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="786" leftMargin="28" rightMargin="28" topMargin="56" bottomMargin="28">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Asistencias" language="groovy" pageWidth="595" pageHeight="842" columnWidth="539" leftMargin="28" rightMargin="28" topMargin="56" bottomMargin="28">
 	<parameter name="LabelReport" class="java.lang.String"/>
-	<parameter name="Tardanza" class="java.lang.String"/>
-	<parameter name="Estado" class="java.lang.String"/>
+	<parameter name="Dia" class="java.lang.Integer"/>
+	<parameter name="Mes" class="java.lang.Integer"/>
+	<parameter name="Ano" class="java.lang.Integer"/>
 	<queryString>
 		<![CDATA[SELECT
-     personal.`Nombre` AS personal_Nombre,
-     personal.`Apellido` AS personal_Apellido,
      tarea.`Nombre` AS tarea_Nombre,
      ano.`Ano` AS ano_Ano,
      mes.`Mes` AS mes_Mes,
      dia.`Dia` AS dia_Dia,
      iniciofin.`Inicio` AS iniciofin_Inicio,
-     iniciofin.`Fin` AS iniciofin_Fin,
-     justificacion.`Motivo` AS justificacion_Motivo,
-     asistencia.`Estado` AS asistencia_Estado,
-     asistencia.`Tardanza` AS asistencia_Tardanza,
-     articulo.`Nombre` AS articulo_Nombre,
-     articulo.`Nro_articulo` AS articulo_Nro_articulo
+     iniciofin.`Fin` AS iniciofin_Fin
 FROM
      `personal` personal INNER JOIN `agenda` agenda ON personal.`Id_personal` = agenda.`Id_personal`
      INNER JOIN `tarea` tarea ON agenda.`Id_tarea` = tarea.`Id_tarea`
@@ -26,19 +20,12 @@ FROM
      INNER JOIN `mes` mes ON ano.`Id_ano` = mes.`Id_ano`
      INNER JOIN `dia` dia ON mes.`Id_mes` = dia.`Id_mes`
      INNER JOIN `iniciofin` iniciofin ON dia.`Id_dia` = iniciofin.`Id_dia`
-     INNER JOIN `asistencia` asistencia ON iniciofin.`Id_iniciofin` = asistencia.`Id_iniciofin`
-     INNER JOIN `justificacion` justificacion ON asistencia.`Id_asistencia` = justificacion.`Id_asistencia`
-     INNER JOIN `articulo` articulo ON justificacion.`Id_articulo` = articulo.`Id_articulo`
 WHERE
-     asistencia.estado = $P{Estado}
- AND asistencia.tardanza = $P{Tardanza}]]>
+     dia.Dia  = $P{Dia}
+ AND mes.Mes = $P{Mes}
+ AND ano.Ano = $P{Ano}
+]]>
 	</queryString>
-	<field name="personal_Nombre" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="personal_Apellido" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
 	<field name="tarea_Nombre" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -55,21 +42,6 @@ WHERE
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="iniciofin_Fin" class="java.sql.Time">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="justificacion_Motivo" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="asistencia_Estado" class="java.lang.Boolean">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="asistencia_Tardanza" class="java.lang.Boolean">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="articulo_Nombre" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="articulo_Nro_articulo" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<background>
@@ -89,7 +61,7 @@ WHERE
 				<imageExpression class="java.lang.String"><![CDATA["imagenes/gutenberg.png"]]></imageExpression>
 			</image>
 			<textField>
-				<reportElement mode="Opaque" x="504" y="50" width="282" height="63" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement mode="Opaque" x="257" y="50" width="282" height="63" forecolor="#000000" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle" markup="none">
 					<font size="30" isBold="true"/>
 				</textElement>
@@ -103,7 +75,7 @@ Entre Ríos 2245-67 3300 POSADAS-MNES
 ]]></text>
 			</staticText>
 			<line>
-				<reportElement mode="Transparent" x="0" y="113" width="786" height="1"/>
+				<reportElement mode="Transparent" x="0" y="113" width="539" height="1"/>
 				<graphicElement>
 					<pen lineWidth="3.0" lineStyle="Double"/>
 				</graphicElement>
@@ -113,158 +85,71 @@ Entre Ríos 2245-67 3300 POSADAS-MNES
 	<columnHeader>
 		<band height="20" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="0" width="120" height="20"/>
+				<reportElement x="1" y="0" width="187" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Actividad]]></text>
 			</staticText>
+			<line>
+				<reportElement x="0" y="-1" width="539" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="18" width="539" height="1"/>
+				<graphicElement>
+					<pen lineWidth="1.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="188" y="0" width="1" height="19"/>
+			</line>
+			<line>
+				<reportElement x="294" y="0" width="1" height="19"/>
+			</line>
+			<line>
+				<reportElement x="417" y="0" width="1" height="19"/>
+			</line>
+			<line>
+				<reportElement x="-208" y="0" width="1" height="19"/>
+			</line>
 			<staticText>
-				<reportElement x="121" y="0" width="149" height="20"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[Personal]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="271" y="0" width="61" height="20"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[Fecha]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="333" y="0" width="39" height="20"/>
+				<reportElement x="296" y="0" width="120" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Inicio]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="373" y="0" width="39" height="20"/>
+				<reportElement x="418" y="0" width="119" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Fin]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="413" y="0" width="49" height="20"/>
+				<reportElement x="189" y="0" width="104" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[Asist.]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="461" y="0" width="49" height="20"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[Tardanza]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="510" y="0" width="87" height="20"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[Articulo]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="598" y="0" width="188" height="20"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[Motivo]]></text>
+				<text><![CDATA[Fecha]]></text>
 			</staticText>
 			<line>
-				<reportElement x="0" y="0" width="786" height="1"/>
+				<reportElement x="0" y="0" width="1" height="19"/>
 			</line>
 			<line>
-				<reportElement x="0" y="19" width="786" height="1"/>
-				<graphicElement>
-					<pen lineWidth="1.5"/>
-				</graphicElement>
-			</line>
-			<line>
-				<reportElement x="120" y="1" width="1" height="19"/>
-			</line>
-			<line>
-				<reportElement x="270" y="1" width="1" height="19"/>
-			</line>
-			<line>
-				<reportElement x="332" y="1" width="1" height="19"/>
-			</line>
-			<line>
-				<reportElement x="372" y="1" width="1" height="19"/>
-			</line>
-			<line>
-				<reportElement x="461" y="1" width="1" height="19"/>
-			</line>
-			<line>
-				<reportElement x="509" y="0" width="1" height="19"/>
-			</line>
-			<line>
-				<reportElement x="597" y="1" width="1" height="19"/>
-			</line>
-			<line>
-				<reportElement x="785" y="0" width="1" height="19"/>
-			</line>
-			<line>
-				<reportElement x="412" y="1" width="1" height="19"/>
-			</line>
-			<line>
-				<reportElement x="0" y="1" width="1" height="19"/>
+				<reportElement x="538" y="0" width="1" height="19"/>
 			</line>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="35" splitType="Stretch">
 			<textField>
-				<reportElement x="2" y="0" width="118" height="33"/>
+				<reportElement x="1" y="0" width="187" height="33"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{tarea_Nombre}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="122" y="0" width="149" height="33"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{personal_Apellido}+" "+$F{personal_Nombre}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="270" y="0" width="61" height="33"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[($F{dia_Dia}<=9 ? "0"+$F{dia_Dia}:$F{dia_Dia})+"/"+($F{mes_Mes}<=9 ? "0"+$F{mes_Mes}:$F{mes_Mes})+"/"+$F{ano_Ano}]]></textFieldExpression>
-			</textField>
-			<textField pattern="HH:mm">
-				<reportElement x="333" y="0" width="39" height="33"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.sql.Time"><![CDATA[$F{iniciofin_Inicio}]]></textFieldExpression>
-			</textField>
-			<textField pattern="HH:mm">
-				<reportElement x="373" y="0" width="39" height="33"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.sql.Time"><![CDATA[$F{iniciofin_Fin}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="412" y="0" width="49" height="33"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[($F{asistencia_Estado}?"SI":"NO")]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="461" y="0" width="49" height="33"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[($F{asistencia_Tardanza}? "SI":"NO")]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="510" y="0" width="87" height="33"/>
-				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{articulo_Nro_articulo}+" - "+$F{articulo_Nombre}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="598" y="0" width="188" height="33"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{justificacion_Motivo}]]></textFieldExpression>
-			</textField>
 			<line>
-				<reportElement mode="Transparent" x="0" y="33" width="786" height="1"/>
+				<reportElement mode="Transparent" x="0" y="33" width="539" height="1"/>
 				<graphicElement>
 					<pen lineWidth="1.0" lineStyle="Solid"/>
 				</graphicElement>
@@ -272,32 +157,32 @@ Entre Ríos 2245-67 3300 POSADAS-MNES
 			<line>
 				<reportElement x="0" y="0" width="1" height="35"/>
 			</line>
+			<textField pattern="HH:mm">
+				<reportElement x="417" y="0" width="120" height="33"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.sql.Time"><![CDATA[$F{iniciofin_Fin}]]></textFieldExpression>
+			</textField>
+			<textField pattern="HH:mm">
+				<reportElement x="296" y="0" width="120" height="33"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.sql.Time"><![CDATA[$F{iniciofin_Inicio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="189" y="0" width="104" height="33"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[($F{dia_Dia}<=9 ? "0"+$F{dia_Dia}:$F{dia_Dia})+"/"+($F{mes_Mes}<=9 ? "0"+$F{mes_Mes}:$F{mes_Mes})+"/"+$F{ano_Ano}]]></textFieldExpression>
+			</textField>
 			<line>
-				<reportElement x="120" y="0" width="1" height="35"/>
+				<reportElement x="294" y="0" width="1" height="35"/>
 			</line>
 			<line>
-				<reportElement x="270" y="0" width="1" height="35"/>
+				<reportElement x="188" y="0" width="1" height="35"/>
 			</line>
 			<line>
-				<reportElement x="332" y="0" width="1" height="35"/>
+				<reportElement x="417" y="0" width="1" height="35"/>
 			</line>
 			<line>
-				<reportElement x="372" y="0" width="1" height="35"/>
-			</line>
-			<line>
-				<reportElement x="412" y="0" width="1" height="35"/>
-			</line>
-			<line>
-				<reportElement x="461" y="0" width="1" height="35"/>
-			</line>
-			<line>
-				<reportElement x="509" y="0" width="1" height="35"/>
-			</line>
-			<line>
-				<reportElement x="597" y="0" width="1" height="35"/>
-			</line>
-			<line>
-				<reportElement x="785" y="0" width="1" height="35"/>
+				<reportElement x="538" y="0" width="1" height="35"/>
 			</line>
 		</band>
 	</detail>
@@ -312,12 +197,12 @@ Entre Ríos 2245-67 3300 POSADAS-MNES
 				<textFieldExpression class="java.util.Date"><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="664" y="34" width="80" height="20"/>
+				<reportElement x="417" y="34" width="80" height="20"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression class="java.lang.String"><![CDATA["Pagina "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
-				<reportElement x="744" y="34" width="40" height="20"/>
+				<reportElement x="497" y="34" width="40" height="20"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>

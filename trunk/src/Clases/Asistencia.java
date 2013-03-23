@@ -73,18 +73,18 @@ public class Asistencia  implements java.io.Serializable {
     
     public void guardarAsistencia(Asistencia unaAsistencia){
         Controlador.getPERSISTENCIA().insert(this);
-
-        JOptionPane.showMessageDialog(null,"La asistencia "+ 
-                String.valueOf(unaAsistencia.getIdAsistencia()) +
-                " se guardo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+//
+//        JOptionPane.showMessageDialog(null,"La asistencia "+ 
+//                String.valueOf(unaAsistencia.getIdAsistencia()) +
+//                " se guardo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
     }
     
     public void ActualizarAsistencia(Asistencia unaAsistencia){
         Controlador.getPERSISTENCIA().update(this);
-
-        JOptionPane.showMessageDialog(null,"La asistencia "+ 
-                String.valueOf(unaAsistencia.getIdAsistencia()) +
-                " se actualizo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+//
+//        JOptionPane.showMessageDialog(null,"La asistencia "+ 
+//                String.valueOf(unaAsistencia.getIdAsistencia()) +
+//                " se actualizo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
     }
     
     public void eliminarAsistencia(Asistencia unaAsistencia){
