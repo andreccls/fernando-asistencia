@@ -154,6 +154,7 @@ public class JFrameInasistencia extends javax.swing.JFrame {
         jLabel2.setText("Año:");
 
         jTextField1.setEditable(false);
+        jTextField1.setEnabled(false);
 
         jButton1.setText("Salir");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -499,10 +500,10 @@ public class JFrameInasistencia extends javax.swing.JFrame {
                 Drive.mostrarReporte("Asistencias", consulta, "Lista de Asistencias","1","0","Asistencias");
             } else if (cadSalida.equals("Tardanzas")) {
                 List consulta = Controlador.getPERSISTENCIA().getTardanzasReporte();
-                Drive.mostrarReporte("Asistencia y tardanza", consulta, "Lista de Tardanzas","1","1","Tardanzas");
+                Drive.mostrarReporte("Asistencia", consulta, "Lista de Tardanzas","1","1","Tardanzas");
             } else if (cadSalida.equals("Inasistencias")) {
                 List consulta = Controlador.getPERSISTENCIA().getInasistenciasReporte();
-                Drive.mostrarReporte("Inasistencia", consulta, "Lista de Inasistencias","0","0","Inasistencias");
+                Drive.mostrarReporte("Asistencia", consulta, "Lista de Inasistencias","0","0","Inasistencias");
             }
         } catch (Exception Ex) {
             JOptionPane.showMessageDialog(null, "Ingrese correctamente los datos", "Error de impresion", JOptionPane.ERROR_MESSAGE);

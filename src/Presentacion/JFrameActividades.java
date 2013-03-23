@@ -292,7 +292,29 @@ public class JFrameActividades extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosing
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        JOptionPane.showMessageDialog(null,"No se puede realizar el reporte","Error de impresion", JOptionPane.ERROR_MESSAGE);
+//        JOptionPane.showMessageDialog(null,"No se puede realizar el reporte","Error de impresion", JOptionPane.ERROR_MESSAGE);
+        try {
+            JComboBox salida = new JComboBox();
+            String cadSalida;
+            salida.addItem("DIA");
+            salida.addItem("SEMANA");
+            salida.addItem("MES");
+            salida.setSize(25, 25);
+            JOptionPane.showMessageDialog(null, salida, "¿Que desea imprimir?", JOptionPane.INFORMATION_MESSAGE);
+            cadSalida = salida.getSelectedItem().toString();
+            if (cadSalida.equals("DIA")) {
+                List consulta = Controlador.getPERSISTENCIA().getAsistenciasReporte();
+                Drive.mostrarReporte("Actividades", consulta, "Lista del dia","1","0","Lista del dia");
+            } else if (cadSalida.equals("SEMANA")) {
+                List consulta = Controlador.getPERSISTENCIA().getTardanzasReporte();
+                Drive.mostrarReporte("Actividades", consulta, "Lista de la semana","1","1","Lista de la semana");
+            } else if (cadSalida.equals("MES")) {
+                List consulta = Controlador.getPERSISTENCIA().getInasistenciasReporte();
+                Drive.mostrarReporte("Actividades", consulta, "Lista del mes","0","0","Lista del mes");
+            }
+        } catch (Exception Ex) {
+            JOptionPane.showMessageDialog(null, "Ingrese correctamente los datos", "Error de impresion", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**

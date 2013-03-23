@@ -342,7 +342,7 @@ public class JFrameConsultaActividades extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        int confirmado = JOptionPane.showConfirmDialog(null,"¿Desea volver al menú principal?","",JOptionPane.YES_NO_OPTION);
+        int confirmado = JOptionPane.showConfirmDialog(null,"¿Desea volver al menú principal?","Consultar Actividad",JOptionPane.YES_NO_OPTION);
         if (JOptionPane.OK_OPTION == confirmado){
             Frame vp=new JFramePrincipal(Drive,adm,idsesion); 
             this.dispose();

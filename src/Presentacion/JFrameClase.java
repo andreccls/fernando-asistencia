@@ -64,6 +64,7 @@ public class JFrameClase extends javax.swing.JFrame {
     boolean cambio=false;
     Date mayor=new Date();
     Date menor=new Date();
+    List diass=new ArrayList();
     /** Creates new form JFrameClase */
     public JFrameClase(Controlador unDrive, Personal admin,int id,Tarea tarr) {
         this.adm=admin;
@@ -73,13 +74,13 @@ public class JFrameClase extends javax.swing.JFrame {
         initComponents();
 
         Drive.CargarComboSituacionRevista(jComboBox2);
-        int[] anchos1 = {85,65 ,65,200,85};
+        int[] anchos1 = {200,85,65 ,65};
         for(int i = 0; i < jTable1.getColumnCount(); i++) {
             jTable1.getColumnModel().getColumn(i).setPreferredWidth(anchos1[i]);
         }
         DefaultTableCellRenderer modelocentrar = new DefaultTableCellRenderer();
         modelocentrar.setHorizontalAlignment(SwingConstants.CENTER);
-        jTable1.getColumnModel().getColumn(4).setCellRenderer(modelocentrar); 
+        jTable1.getColumnModel().getColumn(1).setCellRenderer(modelocentrar); 
         jTable1.getTableHeader().setDefaultRenderer(new HeaderRenderer(jTable1));
         ///ICONO EDITAR
         ImageIcon fot = new ImageIcon("src\\imagenes\\image.jpg");
@@ -112,8 +113,13 @@ public class JFrameClase extends javax.swing.JFrame {
                 mmenor.setTime(menor);                
                 dateChooserCombo1.setSelectedDate(mmenor);
             }
-            String dia=Drive.ObtenerDia(mayor.getDay());
-            jComboBox3.setSelectedItem(dia);
+            diass=tar.ObtenerListaDias();
+            if(diass.contains(1)){jCheckBox1.setSelected(true);}
+            if(diass.contains(2)){jCheckBox2.setSelected(true);}
+            if(diass.contains(3)){jCheckBox3.setSelected(true);}
+            if(diass.contains(4)){jCheckBox4.setSelected(true);}
+            if(diass.contains(5)){jCheckBox5.setSelected(true);}
+            if(diass.contains(6)){jCheckBox6.setSelected(true);}
             Agenda age=tar.getAgendas().iterator().next();
             Dia d=age.getDia2(mayor);
             Iniciofin ini = d.getIniciofins().iterator().next();
@@ -129,12 +135,11 @@ public class JFrameClase extends javax.swing.JFrame {
                 Agenda agg=(Agenda) it.next();
                 Personal per=agg.getPersonal();
                 Revista rev=agg.getRevista();
-                Object[] fila = new Object[5];
-                fila[0] = dia;
-                fila[1] = formateador.format(inicio);
-                fila[2] = formateador.format(fin);
-                fila[3] = per;
-                fila[4] = rev;
+                Object[] fila = new Object[4];
+                fila[0] = per;
+                fila[1] = rev;
+                fila[2] = formateador.format(inicio);
+                fila[3] = formateador.format(fin);
                 model.addRow(fila);
             }
             jTable1.setModel(model);
@@ -175,7 +180,6 @@ public class JFrameClase extends javax.swing.JFrame {
         dateChooserCombo1 = new datechooser.beans.DateChooserCombo();
         jLabel11 = new javax.swing.JLabel();
         dateChooserCombo2 = new datechooser.beans.DateChooserCombo();
-        jComboBox3 = new javax.swing.JComboBox();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jLabel12 = new javax.swing.JLabel();
@@ -195,6 +199,12 @@ public class JFrameClase extends javax.swing.JFrame {
         jComboBox2 = new javax.swing.JComboBox();
         jLabel18 = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
+        jCheckBox1 = new javax.swing.JCheckBox();
+        jCheckBox2 = new javax.swing.JCheckBox();
+        jCheckBox3 = new javax.swing.JCheckBox();
+        jCheckBox4 = new javax.swing.JCheckBox();
+        jCheckBox5 = new javax.swing.JCheckBox();
+        jCheckBox6 = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("SISTEMA DE ASISTENCIA DE PERSONAL EDUCATIVO");
@@ -212,7 +222,7 @@ public class JFrameClase extends javax.swing.JFrame {
 
         jLabel4.setText("Hora fin:");
 
-        jLabel5.setText("Dia:");
+        jLabel5.setText("Dias:");
 
         jButton1.setText("Aceptar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -392,23 +402,16 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
     }
     });
 
-    jComboBox3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "LUNES", "MARTES", "MIERCOLES", "JUEVES", "VIERNES", "SABADO" }));
-    jComboBox3.addItemListener(new java.awt.event.ItemListener() {
-        public void itemStateChanged(java.awt.event.ItemEvent evt) {
-            jComboBox3ItemStateChanged(evt);
-        }
-    });
-
     jTable1.setModel(new javax.swing.table.DefaultTableModel(
         new Object [][] {
 
         },
         new String [] {
-            "Dia", "Inicio", "Fin", "Profesor", "Sit. Revista"
+            "Profesor", "Sit. Revista", "Inicio", "Fin"
         }
     ) {
         boolean[] canEdit = new boolean [] {
-            false, false, false, false, false
+            false, false, false, false
         };
 
         public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -559,8 +562,20 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                         .addComponent(jLabel6)
                         .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
             .addGap(18, 18, 18)
-            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 89, Short.MAX_VALUE))
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 163, Short.MAX_VALUE))
     );
+
+    jCheckBox1.setText("LUNES");
+
+    jCheckBox2.setText("MARTES");
+
+    jCheckBox3.setText("MIERCOLES");
+
+    jCheckBox4.setText("JUEVES");
+
+    jCheckBox5.setText("VIERNES");
+
+    jCheckBox6.setText("SABADO");
 
     javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
     jPanel1.setLayout(jPanel1Layout);
@@ -588,13 +603,24 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                         .addComponent(jLabel10)
                         .addComponent(jLabel12))
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jTextField1)
-                        .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(dateChooserCombo1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(jLabel14)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jTextField1)
+                                .addComponent(dateChooserCombo1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jLabel14))
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jCheckBox1)
+                                .addComponent(jCheckBox2)
+                                .addComponent(jCheckBox3))
+                            .addGap(18, 18, 18)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jCheckBox4)
+                                .addComponent(jCheckBox5)
+                                .addComponent(jCheckBox6))))
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
@@ -640,13 +666,33 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
         .addGroup(jPanel1Layout.createSequentialGroup()
             .addContainerGap()
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel3)
-                        .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel17))
-                    .addGap(4, 4, 4)
-                    .addComponent(jLabel7))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel17))
+                        .addGap(4, 4, 4)
+                        .addComponent(jLabel7))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                            .addComponent(jLabel2)
+                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel13)
+                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                            .addComponent(jLabel11)
+                            .addComponent(dateChooserCombo2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel4)
+                            .addComponent(jFormattedTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel16))
+                        .addGap(4, 4, 4)
+                        .addComponent(jLabel8)))
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -661,31 +707,24 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                         .addComponent(jLabel10)
                         .addComponent(dateChooserCombo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGap(18, 18, 18)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel5)
-                        .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                        .addComponent(jLabel2)
-                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGap(18, 18, 18)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel13)
-                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGap(18, 18, 18)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                        .addComponent(jLabel11)
-                        .addComponent(dateChooserCombo2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGap(18, 18, 18)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel4)
-                        .addComponent(jFormattedTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel16))
-                    .addGap(4, 4, 4)
-                    .addComponent(jLabel8)))
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGap(34, 34, 34)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel5)
+                                .addComponent(jCheckBox1))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jCheckBox2)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jCheckBox3))
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(jCheckBox4)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jCheckBox5)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jCheckBox6)))))
+            .addGap(18, 18, Short.MAX_VALUE)
+            .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGap(18, 18, 18)
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addComponent(jButton3)
@@ -756,7 +795,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
             }
         } else {
             if (!cambio == true) {
-                int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea cancelar la actualización de la clase?", "", JOptionPane.YES_NO_OPTION);
+                int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea cancelar la actualización de la clase?", "Actualizar clase", JOptionPane.YES_NO_OPTION);
                 if (JOptionPane.OK_OPTION == confirmado) {
                     Frame vp = new JFrameConsultaActividades(Drive, adm, idsesion);
                     this.dispose();
@@ -782,6 +821,10 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
         try {
             if (jTable1.getRowCount() != 0) {
                 if (!jTextField1.getText().isEmpty() && !jFormattedTextField1.getText().contains(" ") && !jFormattedTextField2.getText().contains(" ")) {
+                    jButton1.setEnabled(false);
+                    jButton2.setEnabled(false);
+                    jButton3.setEnabled(false);
+                    jButton4.setEnabled(false);
                     if (tar.getIdTarea() == null) {
                         // <editor-fold defaultstate="collapsed" desc="Guardar tarea nueva"> 
                         Tarea tarr=new Tarea();
@@ -801,23 +844,30 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                         DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
                         int c = 0;
                         while (jTable1.getRowCount() != c) {
-                            Personal person = (Personal) modelo.getValueAt(c, 3);
+                            Personal person = (Personal) modelo.getValueAt(c, 0);
                             SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
-                            Date inn = formateador.parse((String) modelo.getValueAt(c, 1));
-                            Date fii = formateador.parse((String) modelo.getValueAt(c, 2));
+                            Date inn = formateador.parse((String) modelo.getValueAt(c, 2));
+                            Date fii = formateador.parse((String) modelo.getValueAt(c, 3));
                             Iniciofin aux = new Iniciofin();
                             aux.setInicio(inn);
                             aux.setFin(fii);
                             Date inicioo = dateChooserCombo1.getSelectedDate().getTime();
                             Date finn = dateChooserCombo2.getSelectedDate().getTime();
-                            String dse = (String) modelo.getValueAt(c, 0);
-                            int[][] cant = person.VerificarDisponibilidadClase(inicioo, finn, aux, dse);
+//                            String dse = (String) modelo.getValueAt(c, 0);
+                            List items = new ArrayList();
+                            if (jCheckBox1.isSelected()) {items.add("LUNES");}
+                            if (jCheckBox2.isSelected()) {items.add("MARTES");}
+                            if (jCheckBox3.isSelected()) {items.add("MIERCOLES");}
+                            if (jCheckBox4.isSelected()) {items.add("JUEVES");}
+                            if (jCheckBox5.isSelected()) {items.add("VIERNES");}
+                            if (jCheckBox6.isSelected()) {items.add("SABADO");}
+                            int[][] cant = person.VerificarDisponibilidadClase(inicioo, finn, aux, items);
                             int ee = cant[0].length;
                             int eee = cant[1].length;
                             int confirmado = JOptionPane.showConfirmDialog(null, "El personal " + person.toString() + " tendrá " + ee + " inasistencias debido a actividades y " + eee + " debido a declaración jurada, ¿Desea continuar?", "Registrar clase", JOptionPane.YES_NO_OPTION);
                             if (JOptionPane.OK_OPTION == confirmado) {
                                 AgendaId idage = new AgendaId(person.getIdPersonal(), tarr.getIdTarea());
-                                Revista rev = (Revista) modelo.getValueAt(c, 4);
+                                Revista rev = (Revista) modelo.getValueAt(c, 1);
                                 Agenda age = new Agenda();
                                 age.setId(idage);
                                 age.setRevista(rev);
@@ -831,55 +881,37 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                 anio.setAgenda(age);
                                 anio.setAno(inicio.getYear() + 1900);
                                 anio.guardarAno(anio);
-                                String dsem = (String) modelo.getValueAt(c, 0);
-                                Date ot = inicio;
-                                if (dsem.equals("LUNES")) {
-                                    while (ot.getDay() != 1) {
-                                        ot = Controlador.sumarFechasDias(ot, 1);
+                                
+                                
+//                                String dsem = (String) modelo.getValueAt(c, 0);
+                                Date ot1 = inicio;
+                                if (jCheckBox1.isSelected()) {
+                                    while (ot1.getDay() != 1) {
+                                        ot1 = Controlador.sumarFechasDias(ot1, 1);
                                     }
-                                } else if (dsem.equals("MARTES")) {
-                                    while (ot.getDay() != 2) {
-                                        ot = Controlador.sumarFechasDias(ot, 1);
-                                    }
-                                } else if (dsem.equals("MIERCOLES")) {
-                                    while (ot.getDay() != 3) {
-                                        ot = Controlador.sumarFechasDias(ot, 1);
-                                    }
-                                } else if (dsem.equals("JUEVES")) {
-                                    while (ot.getDay() != 4) {
-                                        ot = Controlador.sumarFechasDias(ot, 1);
-                                    }
-                                } else if (dsem.equals("VIERNES")) {
-                                    while (ot.getDay() != 5) {
-                                        ot = Controlador.sumarFechasDias(ot, 1);
-                                    }
-                                } else if (dsem.equals("SABADO")) {
-                                    while (ot.getDay() != 6) {
-                                        ot = Controlador.sumarFechasDias(ot, 1);
-                                    }
-                                }
-                                Date otro = ot;
-                                while (otro.compareTo(fin) <= 0) {
-                                    Mes mes = anio.getMes(otro.getMonth());
+                                    Date otro1 = ot1;
+                                    // <editor-fold defaultstate="collapsed" desc="Guardar meses y dias">
+                                while (otro1.compareTo(fin) <= 0) {
+                                    Mes mes = anio.getMes(otro1.getMonth());
                                     if (mes == null) {
                                         mes = new Mes();
                                         mes.setAno(anio);
-                                        mes.setMes(otro.getMonth());
+                                        mes.setMes(otro1.getMonth());
                                         mes.guardarMes(mes);
                                         int e = mes.getMes();
-                                        while (otro.getMonth() == e && otro.compareTo(fin) <= 0) {
-                                            Dia dia = mes.getDia(otro.getDate());
+                                        while (otro1.getMonth() == e && otro1.compareTo(fin) <= 0) {
+                                            Dia dia = mes.getDia(otro1.getDate());
                                             if (dia == null) {
                                                 dia = new Dia();
                                                 dia.setMes(mes);
-                                                dia.setDia(otro.getDate());
+                                                dia.setDia(otro1.getDate());
                                                 dia.guardarDia(dia);
                                                 int f = dia.getDia();
-                                                while (otro.getDate() == f && otro.compareTo(fin) <= 0) {
+                                                while (otro1.getDate() == f && otro1.compareTo(fin) <= 0) {
                                                     //SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
                                                     formateador.setLenient(false);
-                                                    Date inici = formateador.parse((String) modelo.getValueAt(c, 1));
-                                                    Date fi = formateador.parse((String) modelo.getValueAt(c, 2));
+                                                    Date inici = formateador.parse((String) modelo.getValueAt(c, 2));
+                                                    Date fi = formateador.parse((String) modelo.getValueAt(c, 3));
                                                     Iniciofin in = new Iniciofin();
                                                     in.setDia(dia);
                                                     in.setInicio(inici);
@@ -887,11 +919,228 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                                     in.setFin(fi);
                                                     in.setEstadoFin(false);
                                                     in.guardarIniciofin(in);
-                                                    otro = Drive.sumarFechasDias(otro, 7);
+                                                    otro1 = Drive.sumarFechasDias(otro1, 7);
                                                 }
                                             }
                                         }
                                     }
+                                }
+                                    // </editor-fold>
+                                }
+                                Date ot2 = inicio;
+                                if (jCheckBox2.isSelected()) {
+                                    while (ot2.getDay() != 2) {
+                                        ot2 = Controlador.sumarFechasDias(ot2, 1);
+                                    }
+                                    Date otro2 = ot2;
+                                    // <editor-fold defaultstate="collapsed" desc="Guardar meses y dias">
+                                while (otro2.compareTo(fin) <= 0) {
+                                    Mes mes = anio.getMes(otro2.getMonth());
+                                    if (mes == null) {
+                                        mes = new Mes();
+                                        mes.setAno(anio);
+                                        mes.setMes(otro2.getMonth());
+                                        mes.guardarMes(mes);
+                                        int e = mes.getMes();
+                                        while (otro2.getMonth() == e && otro2.compareTo(fin) <= 0) {
+                                            Dia dia = mes.getDia(otro2.getDate());
+                                            if (dia == null) {
+                                                dia = new Dia();
+                                                dia.setMes(mes);
+                                                dia.setDia(otro2.getDate());
+                                                dia.guardarDia(dia);
+                                                int f = dia.getDia();
+                                                while (otro2.getDate() == f && otro2.compareTo(fin) <= 0) {
+                                                    //SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
+                                                    formateador.setLenient(false);
+                                                    Date inici = formateador.parse((String) modelo.getValueAt(c, 2));
+                                                    Date fi = formateador.parse((String) modelo.getValueAt(c, 3));
+                                                    Iniciofin in = new Iniciofin();
+                                                    in.setDia(dia);
+                                                    in.setInicio(inici);
+                                                    in.setEstadoInicio(false);
+                                                    in.setFin(fi);
+                                                    in.setEstadoFin(false);
+                                                    in.guardarIniciofin(in);
+                                                    otro2 = Drive.sumarFechasDias(otro2, 7);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                    // </editor-fold>
+                                }
+                                Date ot3 = inicio;
+                                if (jCheckBox3.isSelected()) {
+                                    while (ot3.getDay() != 3) {
+                                        ot3 = Controlador.sumarFechasDias(ot3, 1);
+                                    }
+                                    Date otro3 = ot3;
+                                    // <editor-fold defaultstate="collapsed" desc="Guardar meses y dias">
+                                while (otro3.compareTo(fin) <= 0) {
+                                    Mes mes = anio.getMes(otro3.getMonth());
+                                    if (mes == null) {
+                                        mes = new Mes();
+                                        mes.setAno(anio);
+                                        mes.setMes(otro3.getMonth());
+                                        mes.guardarMes(mes);
+                                        int e = mes.getMes();
+                                        while (otro3.getMonth() == e && otro3.compareTo(fin) <= 0) {
+                                            Dia dia = mes.getDia(otro3.getDate());
+                                            if (dia == null) {
+                                                dia = new Dia();
+                                                dia.setMes(mes);
+                                                dia.setDia(otro3.getDate());
+                                                dia.guardarDia(dia);
+                                                int f = dia.getDia();
+                                                while (otro3.getDate() == f && otro3.compareTo(fin) <= 0) {
+                                                    //SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
+                                                    formateador.setLenient(false);
+                                                    Date inici = formateador.parse((String) modelo.getValueAt(c, 2));
+                                                    Date fi = formateador.parse((String) modelo.getValueAt(c, 3));
+                                                    Iniciofin in = new Iniciofin();
+                                                    in.setDia(dia);
+                                                    in.setInicio(inici);
+                                                    in.setEstadoInicio(false);
+                                                    in.setFin(fi);
+                                                    in.setEstadoFin(false);
+                                                    in.guardarIniciofin(in);
+                                                    otro3 = Drive.sumarFechasDias(otro3, 7);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                    // </editor-fold>
+                                }
+                                Date ot4 = inicio;
+                                if (jCheckBox4.isSelected()) {
+                                    while (ot4.getDay() != 4) {
+                                        ot4 = Controlador.sumarFechasDias(ot4, 1);
+                                    }
+                                    Date otro4 = ot4;
+                                    // <editor-fold defaultstate="collapsed" desc="Guardar meses y dias">
+                                while (otro4.compareTo(fin) <= 0) {
+                                    Mes mes = anio.getMes(otro4.getMonth());
+                                    if (mes == null) {
+                                        mes = new Mes();
+                                        mes.setAno(anio);
+                                        mes.setMes(otro4.getMonth());
+                                        mes.guardarMes(mes);
+                                        int e = mes.getMes();
+                                        while (otro4.getMonth() == e && otro4.compareTo(fin) <= 0) {
+                                            Dia dia = mes.getDia(otro4.getDate());
+                                            if (dia == null) {
+                                                dia = new Dia();
+                                                dia.setMes(mes);
+                                                dia.setDia(otro4.getDate());
+                                                dia.guardarDia(dia);
+                                                int f = dia.getDia();
+                                                while (otro4.getDate() == f && otro4.compareTo(fin) <= 0) {
+                                                    //SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
+                                                    formateador.setLenient(false);
+                                                    Date inici = formateador.parse((String) modelo.getValueAt(c, 2));
+                                                    Date fi = formateador.parse((String) modelo.getValueAt(c, 3));
+                                                    Iniciofin in = new Iniciofin();
+                                                    in.setDia(dia);
+                                                    in.setInicio(inici);
+                                                    in.setEstadoInicio(false);
+                                                    in.setFin(fi);
+                                                    in.setEstadoFin(false);
+                                                    in.guardarIniciofin(in);
+                                                    otro4 = Drive.sumarFechasDias(otro4, 7);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                    // </editor-fold>
+                                }
+                                Date ot5 = inicio;
+                                if (jCheckBox5.isSelected()) {
+                                    while (ot5.getDay() != 5) {
+                                        ot5 = Controlador.sumarFechasDias(ot5, 1);
+                                    }
+                                    Date otro5 = ot5;
+                                    // <editor-fold defaultstate="collapsed" desc="Guardar meses y dias">
+                                while (otro5.compareTo(fin) <= 0) {
+                                    Mes mes = anio.getMes(otro5.getMonth());
+                                    if (mes == null) {
+                                        mes = new Mes();
+                                        mes.setAno(anio);
+                                        mes.setMes(otro5.getMonth());
+                                        mes.guardarMes(mes);
+                                        int e = mes.getMes();
+                                        while (otro5.getMonth() == e && otro5.compareTo(fin) <= 0) {
+                                            Dia dia = mes.getDia(otro5.getDate());
+                                            if (dia == null) {
+                                                dia = new Dia();
+                                                dia.setMes(mes);
+                                                dia.setDia(otro5.getDate());
+                                                dia.guardarDia(dia);
+                                                int f = dia.getDia();
+                                                while (otro5.getDate() == f && otro5.compareTo(fin) <= 0) {
+                                                    //SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
+                                                    formateador.setLenient(false);
+                                                    Date inici = formateador.parse((String) modelo.getValueAt(c, 2));
+                                                    Date fi = formateador.parse((String) modelo.getValueAt(c, 3));
+                                                    Iniciofin in = new Iniciofin();
+                                                    in.setDia(dia);
+                                                    in.setInicio(inici);
+                                                    in.setEstadoInicio(false);
+                                                    in.setFin(fi);
+                                                    in.setEstadoFin(false);
+                                                    in.guardarIniciofin(in);
+                                                    otro5 = Drive.sumarFechasDias(otro5, 7);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                    // </editor-fold>
+                                }
+                                Date ot6 = inicio;
+                                if (jCheckBox6.isSelected()) {
+                                    while (ot6.getDay() != 6) {
+                                        ot6 = Controlador.sumarFechasDias(ot6, 1);
+                                    }
+                                    Date otro6 = ot6;
+                                    // <editor-fold defaultstate="collapsed" desc="Guardar meses y dias">
+                                while (otro6.compareTo(fin) <= 0) {
+                                    Mes mes = anio.getMes(otro6.getMonth());
+                                    if (mes == null) {
+                                        mes = new Mes();
+                                        mes.setAno(anio);
+                                        mes.setMes(otro6.getMonth());
+                                        mes.guardarMes(mes);
+                                        int e = mes.getMes();
+                                        while (otro6.getMonth() == e && otro6.compareTo(fin) <= 0) {
+                                            Dia dia = mes.getDia(otro6.getDate());
+                                            if (dia == null) {
+                                                dia = new Dia();
+                                                dia.setMes(mes);
+                                                dia.setDia(otro6.getDate());
+                                                dia.guardarDia(dia);
+                                                int f = dia.getDia();
+                                                while (otro6.getDate() == f && otro6.compareTo(fin) <= 0) {
+                                                    //SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
+                                                    formateador.setLenient(false);
+                                                    Date inici = formateador.parse((String) modelo.getValueAt(c, 2));
+                                                    Date fi = formateador.parse((String) modelo.getValueAt(c, 3));
+                                                    Iniciofin in = new Iniciofin();
+                                                    in.setDia(dia);
+                                                    in.setInicio(inici);
+                                                    in.setEstadoInicio(false);
+                                                    in.setFin(fi);
+                                                    in.setEstadoFin(false);
+                                                    in.guardarIniciofin(in);
+                                                    otro6 = Drive.sumarFechasDias(otro6, 7);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                    // </editor-fold>
                                 }
                             }
                             c++;
@@ -907,11 +1156,18 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                         String buscar=(String) jComboBox4.getSelectedItem();
                         Drive.CargarpersonalSimple(jTable2,buscar, buffer.toString().toUpperCase(),lista);
                         Drive=new Controlador();
+                        jCheckBox1.setSelected(false);
+                        jCheckBox2.setSelected(false);
+                        jCheckBox3.setSelected(false);
+                        jCheckBox4.setSelected(false);
+                        jCheckBox5.setSelected(false);
+                        jCheckBox6.setSelected(false);
                         // </editor-fold>
-                    } else {
+                    } 
+                    else {
                         // <editor-fold defaultstate="collapsed" desc="Actualizar tarea"> 
                         if (!tar.getLugar().equals(jTextField3.getText().toUpperCase())) {
-                            Establecimiento est = Drive.getPrimerEstablecimiento();
+//                            Establecimiento est = Drive.getPrimerEstablecimiento();
                             tar.setLugar(jTextField3.getText().toUpperCase());
                             tar.ActualizarTarea(tar);
                         }
@@ -930,8 +1186,8 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                         boolean bander=false;
                         int cont=tar.getAgendas().size();
                         while (jTable1.getRowCount() != c) {
-                            Personal person = (Personal) modelo.getValueAt(c, 3);
-                            Revista rev = (Revista) modelo.getValueAt(c, 4);
+                            Personal person = (Personal) modelo.getValueAt(c, 0);
+                            Revista rev = (Revista) modelo.getValueAt(c, 1);
                             Iterator it = tar.getAgendas().iterator();
                             bander=false;
                             while (it.hasNext()) {
@@ -952,28 +1208,45 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                         if(cont!=jTable1.getRowCount()){
                             cambio=true;
                         }
+                        List sel = new ArrayList();
+                        if (jCheckBox1.isSelected()) {sel.add(1);}
+                        if (jCheckBox2.isSelected()) {sel.add(2);}
+                        if (jCheckBox3.isSelected()) {sel.add(3);}
+                        if (jCheckBox4.isSelected()) {sel.add(4);}
+                        if (jCheckBox5.isSelected()) {sel.add(5);}
+                        if (jCheckBox6.isSelected()) {sel.add(6);}
+                        if(!sel.containsAll(diass)){
+                            cambio=true;
+                        }
                         if (cambio == true) {
                             tar.BorrarTodo();
                             Drive=new Controlador();
                             tar=(Tarea) Drive.PERSISTENCIA.getTarea(tar.getIdTarea()).iterator().next();
                             c = 0;
                             while (jTable1.getRowCount() != c) {
-                                Personal person = (Personal) modelo.getValueAt(c, 3);
+                                Personal person = (Personal) modelo.getValueAt(c, 0);
                                 SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
-                                Date inn = formateador.parse((String) modelo.getValueAt(c, 1));
-                                Date fii = formateador.parse((String) modelo.getValueAt(c, 2));
+                                Date inn = formateador.parse((String) modelo.getValueAt(c, 2));
+                                Date fii = formateador.parse((String) modelo.getValueAt(c, 3));
                                 Iniciofin aux = new Iniciofin();
                                 aux.setInicio(inn);
                                 aux.setFin(fii);
                                 Date inicioo = dateChooserCombo1.getSelectedDate().getTime();
                                 Date finn = dateChooserCombo2.getSelectedDate().getTime();
-                                String dse = (String) modelo.getValueAt(c, 0);
-                                int[][] cant = person.VerificarDisponibilidadClase(inicioo, finn, aux, dse);
+//                                String dse = (String) modelo.getValueAt(c, 0);
+                                List items = new ArrayList();
+                                if (jCheckBox1.isSelected()) {items.add("LUNES");}
+                                if (jCheckBox2.isSelected()) {items.add("MARTES");}
+                                if (jCheckBox3.isSelected()) {items.add("MIERCOLES");}
+                                if (jCheckBox4.isSelected()) {items.add("JUEVES");}
+                                if (jCheckBox5.isSelected()) {items.add("VIERNES");}
+                                if (jCheckBox6.isSelected()) {items.add("SABADO");}
+                                int[][] cant = person.VerificarDisponibilidadClase(inicioo, finn, aux, items);
                                 int ee = cant[0].length;
                                 int eee = cant[1].length;
                                 int confirmado = JOptionPane.showConfirmDialog(null, "El personal" + person.toString() + " tendrá " + ee + " inasistencias debido a actividades y " + eee + " debido a declaración jurada, ¿Desea continuar?", "", JOptionPane.YES_NO_OPTION);
                                 if (JOptionPane.OK_OPTION == confirmado) {
-                                    Revista rev = (Revista) modelo.getValueAt(c, 4);
+                                    Revista rev = (Revista) modelo.getValueAt(c, 1);
                                     Agenda age=tar.ObtenerAgenda(person.getIdPersonal(),rev.getIdRevista());
                                     if(age.getId()==null){
                                         AgendaId idage = new AgendaId(person.getIdPersonal(), tar.getIdTarea());
@@ -990,55 +1263,34 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                     anio.setAgenda(age);
                                     anio.setAno(inicio.getYear() + 1900);
                                     anio.guardarAno(anio);
-                                    String dsem = (String) modelo.getValueAt(c, 0);
-                                    Date ot = inicio;
-                                    if (dsem.equals("LUNES")) {
-                                        while (ot.getDay() != 1) {
-                                            ot = Controlador.sumarFechasDias(ot, 1);
+                                    Date ot1 = inicio;
+                                    if (jCheckBox1.isSelected()) {
+                                        while (ot1.getDay() != 1) {
+                                            ot1 = Controlador.sumarFechasDias(ot1, 1);
                                         }
-                                    } else if (dsem.equals("MARTES")) {
-                                        while (ot.getDay() != 2) {
-                                            ot = Controlador.sumarFechasDias(ot, 1);
-                                        }
-                                    } else if (dsem.equals("MIERCOLES")) {
-                                        while (ot.getDay() != 3) {
-                                            ot = Controlador.sumarFechasDias(ot, 1);
-                                        }
-                                    } else if (dsem.equals("JUEVES")) {
-                                        while (ot.getDay() != 4) {
-                                            ot = Controlador.sumarFechasDias(ot, 1);
-                                        }
-                                    } else if (dsem.equals("VIERNES")) {
-                                        while (ot.getDay() != 5) {
-                                            ot = Controlador.sumarFechasDias(ot, 1);
-                                        }
-                                    } else if (dsem.equals("SABADO")) {
-                                        while (ot.getDay() != 6) {
-                                            ot = Controlador.sumarFechasDias(ot, 1);
-                                        }
-                                    }
-                                    Date otro = ot;
-                                    while (otro.compareTo(fin) <= 0) {
-                                        Mes mes = anio.getMes(otro.getMonth());
+                                        Date otro1 = ot1;
+                                        // <editor-fold defaultstate="collapsed" desc="Actualiza meses y dias">
+                                    while (otro1.compareTo(fin) <= 0) {
+                                        Mes mes = anio.getMes(otro1.getMonth());
                                         if (mes == null) {
                                             mes = new Mes();
                                             mes.setAno(anio);
-                                            mes.setMes(otro.getMonth());
+                                            mes.setMes(otro1.getMonth());
                                             mes.guardarMes(mes);
                                             int e = mes.getMes();
-                                            while (otro.getMonth() == e && otro.compareTo(fin) <= 0) {
-                                                Dia dia = mes.getDia(otro.getDate());
+                                            while (otro1.getMonth() == e && otro1.compareTo(fin) <= 0) {
+                                                Dia dia = mes.getDia(otro1.getDate());
                                                 if (dia == null) {
                                                     dia = new Dia();
                                                     dia.setMes(mes);
-                                                    dia.setDia(otro.getDate());
+                                                    dia.setDia(otro1.getDate());
                                                     dia.guardarDia(dia);
                                                     int f = dia.getDia();
-                                                    while (otro.getDate() == f && otro.compareTo(fin) <= 0) {
+                                                    while (otro1.getDate() == f && otro1.compareTo(fin) <= 0) {
                                                         //SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
                                                         formateador.setLenient(false);
-                                                        Date inici = formateador.parse((String) modelo.getValueAt(c, 1));
-                                                        Date fi = formateador.parse((String) modelo.getValueAt(c, 2));
+                                                        Date inici = formateador.parse((String) modelo.getValueAt(c, 2));
+                                                        Date fi = formateador.parse((String) modelo.getValueAt(c, 3));
                                                         Iniciofin in = new Iniciofin();
                                                         in.setDia(dia);
                                                         in.setInicio(inici);
@@ -1046,12 +1298,230 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                                         in.setFin(fi);
                                                         in.setEstadoFin(false);
                                                         in.guardarIniciofin(in);
-                                                        otro = Drive.sumarFechasDias(otro, 7);
+                                                        otro1 = Drive.sumarFechasDias(otro1, 7);
                                                     }
                                                 }
                                             }
                                         }
                                     }
+                                    // </editor-fold>
+                                    }
+                                    Date ot2 = inicio;
+                                    if (jCheckBox2.isSelected()) {
+                                        while (ot2.getDay() != 2) {
+                                            ot2 = Controlador.sumarFechasDias(ot2, 1);
+                                        }
+                                        Date otro2 = ot2;
+                                        // <editor-fold defaultstate="collapsed" desc="Actualiza meses y dias">
+                                    while (otro2.compareTo(fin) <= 0) {
+                                        Mes mes = anio.getMes(otro2.getMonth());
+                                        if (mes == null) {
+                                            mes = new Mes();
+                                            mes.setAno(anio);
+                                            mes.setMes(otro2.getMonth());
+                                            mes.guardarMes(mes);
+                                            int e = mes.getMes();
+                                            while (otro2.getMonth() == e && otro2.compareTo(fin) <= 0) {
+                                                Dia dia = mes.getDia(otro2.getDate());
+                                                if (dia == null) {
+                                                    dia = new Dia();
+                                                    dia.setMes(mes);
+                                                    dia.setDia(otro2.getDate());
+                                                    dia.guardarDia(dia);
+                                                    int f = dia.getDia();
+                                                    while (otro2.getDate() == f && otro2.compareTo(fin) <= 0) {
+                                                        //SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
+                                                        formateador.setLenient(false);
+                                                        Date inici = formateador.parse((String) modelo.getValueAt(c, 2));
+                                                        Date fi = formateador.parse((String) modelo.getValueAt(c, 3));
+                                                        Iniciofin in = new Iniciofin();
+                                                        in.setDia(dia);
+                                                        in.setInicio(inici);
+                                                        in.setEstadoInicio(false);
+                                                        in.setFin(fi);
+                                                        in.setEstadoFin(false);
+                                                        in.guardarIniciofin(in);
+                                                        otro2 = Drive.sumarFechasDias(otro2, 7);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    // </editor-fold>
+                                    }
+                                    Date ot3 = inicio;
+                                    if (jCheckBox3.isSelected()) {
+                                        while (ot3.getDay() != 3) {
+                                            ot3 = Controlador.sumarFechasDias(ot3, 1);
+                                        }
+                                        Date otro3 = ot3;
+                                        // <editor-fold defaultstate="collapsed" desc="Actualiza meses y dias">
+                                    while (otro3.compareTo(fin) <= 0) {
+                                        Mes mes = anio.getMes(otro3.getMonth());
+                                        if (mes == null) {
+                                            mes = new Mes();
+                                            mes.setAno(anio);
+                                            mes.setMes(otro3.getMonth());
+                                            mes.guardarMes(mes);
+                                            int e = mes.getMes();
+                                            while (otro3.getMonth() == e && otro3.compareTo(fin) <= 0) {
+                                                Dia dia = mes.getDia(otro3.getDate());
+                                                if (dia == null) {
+                                                    dia = new Dia();
+                                                    dia.setMes(mes);
+                                                    dia.setDia(otro3.getDate());
+                                                    dia.guardarDia(dia);
+                                                    int f = dia.getDia();
+                                                    while (otro3.getDate() == f && otro3.compareTo(fin) <= 0) {
+                                                        //SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
+                                                        formateador.setLenient(false);
+                                                        Date inici = formateador.parse((String) modelo.getValueAt(c, 2));
+                                                        Date fi = formateador.parse((String) modelo.getValueAt(c, 3));
+                                                        Iniciofin in = new Iniciofin();
+                                                        in.setDia(dia);
+                                                        in.setInicio(inici);
+                                                        in.setEstadoInicio(false);
+                                                        in.setFin(fi);
+                                                        in.setEstadoFin(false);
+                                                        in.guardarIniciofin(in);
+                                                        otro3 = Drive.sumarFechasDias(otro3, 7);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    // </editor-fold>
+                                    }
+                                    Date ot4 = inicio;
+                                    if (jCheckBox4.isSelected()) {
+                                        while (ot4.getDay() != 4) {
+                                            ot4 = Controlador.sumarFechasDias(ot4, 1);
+                                        }
+                                        Date otro4 = ot4;
+                                        // <editor-fold defaultstate="collapsed" desc="Actualiza meses y dias">
+                                    while (otro4.compareTo(fin) <= 0) {
+                                        Mes mes = anio.getMes(otro4.getMonth());
+                                        if (mes == null) {
+                                            mes = new Mes();
+                                            mes.setAno(anio);
+                                            mes.setMes(otro4.getMonth());
+                                            mes.guardarMes(mes);
+                                            int e = mes.getMes();
+                                            while (otro4.getMonth() == e && otro4.compareTo(fin) <= 0) {
+                                                Dia dia = mes.getDia(otro4.getDate());
+                                                if (dia == null) {
+                                                    dia = new Dia();
+                                                    dia.setMes(mes);
+                                                    dia.setDia(otro4.getDate());
+                                                    dia.guardarDia(dia);
+                                                    int f = dia.getDia();
+                                                    while (otro4.getDate() == f && otro4.compareTo(fin) <= 0) {
+                                                        //SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
+                                                        formateador.setLenient(false);
+                                                        Date inici = formateador.parse((String) modelo.getValueAt(c, 2));
+                                                        Date fi = formateador.parse((String) modelo.getValueAt(c, 3));
+                                                        Iniciofin in = new Iniciofin();
+                                                        in.setDia(dia);
+                                                        in.setInicio(inici);
+                                                        in.setEstadoInicio(false);
+                                                        in.setFin(fi);
+                                                        in.setEstadoFin(false);
+                                                        in.guardarIniciofin(in);
+                                                        otro4 = Drive.sumarFechasDias(otro4, 7);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    // </editor-fold>
+                                    }
+                                    Date ot5 = inicio;
+                                    if (jCheckBox5.isSelected()) {
+                                        while (ot5.getDay() != 5) {
+                                            ot5 = Controlador.sumarFechasDias(ot5, 1);
+                                        }
+                                        Date otro5 = ot5;
+                                        // <editor-fold defaultstate="collapsed" desc="Actualiza meses y dias">
+                                    while (otro5.compareTo(fin) <= 0) {
+                                        Mes mes = anio.getMes(otro5.getMonth());
+                                        if (mes == null) {
+                                            mes = new Mes();
+                                            mes.setAno(anio);
+                                            mes.setMes(otro5.getMonth());
+                                            mes.guardarMes(mes);
+                                            int e = mes.getMes();
+                                            while (otro5.getMonth() == e && otro5.compareTo(fin) <= 0) {
+                                                Dia dia = mes.getDia(otro5.getDate());
+                                                if (dia == null) {
+                                                    dia = new Dia();
+                                                    dia.setMes(mes);
+                                                    dia.setDia(otro5.getDate());
+                                                    dia.guardarDia(dia);
+                                                    int f = dia.getDia();
+                                                    while (otro5.getDate() == f && otro5.compareTo(fin) <= 0) {
+                                                        //SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
+                                                        formateador.setLenient(false);
+                                                        Date inici = formateador.parse((String) modelo.getValueAt(c, 2));
+                                                        Date fi = formateador.parse((String) modelo.getValueAt(c, 3));
+                                                        Iniciofin in = new Iniciofin();
+                                                        in.setDia(dia);
+                                                        in.setInicio(inici);
+                                                        in.setEstadoInicio(false);
+                                                        in.setFin(fi);
+                                                        in.setEstadoFin(false);
+                                                        in.guardarIniciofin(in);
+                                                        otro5 = Drive.sumarFechasDias(otro5, 7);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    // </editor-fold>
+                                    }
+                                    Date ot6 = inicio;
+                                    if (jCheckBox6.isSelected()) {
+                                        while (ot6.getDay() != 6) {
+                                            ot6 = Controlador.sumarFechasDias(ot6, 1);
+                                        }
+                                        Date otro6 = ot6;
+                                        // <editor-fold defaultstate="collapsed" desc="Actualiza meses y dias">
+                                    while (otro6.compareTo(fin) <= 0) {
+                                        Mes mes = anio.getMes(otro6.getMonth());
+                                        if (mes == null) {
+                                            mes = new Mes();
+                                            mes.setAno(anio);
+                                            mes.setMes(otro6.getMonth());
+                                            mes.guardarMes(mes);
+                                            int e = mes.getMes();
+                                            while (otro6.getMonth() == e && otro6.compareTo(fin) <= 0) {
+                                                Dia dia = mes.getDia(otro6.getDate());
+                                                if (dia == null) {
+                                                    dia = new Dia();
+                                                    dia.setMes(mes);
+                                                    dia.setDia(otro6.getDate());
+                                                    dia.guardarDia(dia);
+                                                    int f = dia.getDia();
+                                                    while (otro6.getDate() == f && otro6.compareTo(fin) <= 0) {
+                                                        //SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
+                                                        formateador.setLenient(false);
+                                                        Date inici = formateador.parse((String) modelo.getValueAt(c, 2));
+                                                        Date fi = formateador.parse((String) modelo.getValueAt(c, 3));
+                                                        Iniciofin in = new Iniciofin();
+                                                        in.setDia(dia);
+                                                        in.setInicio(inici);
+                                                        in.setEstadoInicio(false);
+                                                        in.setFin(fi);
+                                                        in.setEstadoFin(false);
+                                                        in.guardarIniciofin(in);
+                                                        otro6 = Drive.sumarFechasDias(otro6, 7);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    // </editor-fold>
+                                    }
+                                    
                                 }
                                 c++;
                             }
@@ -1061,6 +1531,10 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                         vp.show();
                         // </editor-fold>
                     }
+                    jButton1.setEnabled(true);
+                    jButton2.setEnabled(true);
+                    jButton3.setEnabled(true);
+                    jButton4.setEnabled(true);
                 } else {
                     JOptionPane.showMessageDialog(null, "Los campos con '*' son obligatorios y no puede contener espacios en blanco en los horarios", "Registrar Clase", JOptionPane.ERROR_MESSAGE);
                 }
@@ -1082,37 +1556,37 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                     int c = 0;
                     boolean bandera = true;
                     while (jTable1.getRowCount() != c) {
-                        Revista revista = (Revista) modelo.getValueAt(c, 4);
+                        Revista revista = (Revista) modelo.getValueAt(c, 1);
                         if (revista.getIdRevista() == rev.getIdRevista()) {
                             bandera = false;
                         }
                         c++;
                     }
                     if (bandera == true) {
-                        String dia = (String) jComboBox3.getSelectedItem();
+//                        String dia = (String) jComboBox3.getSelectedItem();
                         SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
                         Date inicio = formateador.parse(jFormattedTextField1.getText());
                         Date fin = formateador.parse(jFormattedTextField2.getText());
                         if (inicio.compareTo(fin) < 0) {
                             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-                            Object[] fila = new Object[5];
-                            fila[0] = dia;
-                            fila[1] = formateador.format(inicio);
-                            fila[2] = formateador.format(fin);
-                            fila[3] = per;
-                            fila[4] = rev;
+                            Object[] fila = new Object[4];
+                            fila[0] = per;
+                            fila[1] = rev;
+                            fila[2] = formateador.format(inicio);
+                            fila[3] = formateador.format(fin);
                             model.addRow(fila);
                             jTable1.setModel(model);
                             Drive.LimpiarTabla(jTable2);
                             jTextField5.setText(buffer.toString());
                             per = new Personal();
-                            
+                            String buscar=(String) jComboBox4.getSelectedItem();
+                            Drive.CargarpersonalSimple(jTable2,buscar, buffer.toString().toUpperCase(),lista);
                         } else {JOptionPane.showMessageDialog(null, "Ingrese correctamente los horarios", "Registrar Clase", JOptionPane.ERROR_MESSAGE);}
                     } else {JOptionPane.showMessageDialog(null, "La situación de revista es unica por personal", "Registrar Clase", JOptionPane.ERROR_MESSAGE);}
                 } else {JOptionPane.showMessageDialog(null, "Debe seleccionar un personal", "Registrar Clase", JOptionPane.ERROR_MESSAGE);}
             } else {JOptionPane.showMessageDialog(null, "Los campos con '*' son obligatorios y no puede contener espacios en blanco en los horarios", "Registrar Clase", JOptionPane.ERROR_MESSAGE);}
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, ex.toString(), "Registrar Clase", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Seleccione una situación de revista para el personal", "Registrar Clase", JOptionPane.ERROR_MESSAGE);
         }        // TODO add your handling code here:
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -1123,9 +1597,9 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
             int c=0;
             modelo.removeRow(jTable1.getSelectedRow());
             while(jTable1.getRowCount()!=c){
-                Personal per=(Personal) modelo.getValueAt(c, 3);
+                Personal per=(Personal) modelo.getValueAt(c, 0);
                lista.add(per); 
-                c++;
+               c++;
             }
             Drive.LimpiarTabla(jTable2);
             String es=buffer.toString();
@@ -1294,10 +1768,11 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
     }//GEN-LAST:event_jTable1AncestorAdded
 
     private void jTable1ComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jTable1ComponentResized
+        try{
         DefaultTableModel modelo = (DefaultTableModel)jTable1.getModel();
         int c=0;
         while(jTable1.getRowCount()!=c){
-            Personal per=(Personal) modelo.getValueAt(c, 3);
+            Personal per=(Personal) modelo.getValueAt(c, 0);
             lista.add(per);
             c++;
         }
@@ -1305,27 +1780,24 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
         String es=buffer.toString();
         String buscar=(String) jComboBox4.getSelectedItem();
         Drive.CargarpersonalSimple(jTable2,buscar, es.toUpperCase(),lista);
-//        if(jTable1.getRowCount()>0){
-//            jTextField1.setEnabled(false);
-//            jTextField2.setEnabled(false);
-//            jTextField3.setEnabled(false);
-//            jTextField4.setEnabled(false);
-//            jFormattedTextField1.setEnabled(false);
-//            jFormattedTextField2.setEnabled(false);
-//            dateChooserCombo1.setEnabled(false);
-//            dateChooserCombo2.setEnabled(false);
-//            jComboBox3.setEnabled(false);
-//        }else{
-//            //jTextField1.setEnabled(true);
-//            jTextField2.setEnabled(true);
-//            jTextField3.setEnabled(true);
-//            jTextField4.setEnabled(true);
-//            //jFormattedTextField1.setEnabled(true);
-//            jFormattedTextField2.setEnabled(true);
-//            dateChooserCombo1.setEnabled(true);
-//            dateChooserCombo2.setEnabled(true);
-//            jComboBox3.setEnabled(true);
-//        }
+        if(modelo.getRowCount()>0){
+            jCheckBox1.setEnabled(false);
+            jCheckBox2.setEnabled(false);
+            jCheckBox3.setEnabled(false);
+            jCheckBox4.setEnabled(false);
+            jCheckBox5.setEnabled(false);
+            jCheckBox6.setEnabled(false);
+        }else{
+            jCheckBox1.setEnabled(true);
+            jCheckBox2.setEnabled(true);
+            jCheckBox3.setEnabled(true);
+            jCheckBox4.setEnabled(true);
+            jCheckBox5.setEnabled(true);
+            jCheckBox6.setEnabled(true);
+        }
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null,"Error","Registrar Clase", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jTable1ComponentResized
 
     private void jFormattedTextField2FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jFormattedTextField2FocusLost
@@ -1352,15 +1824,6 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
         }
             
     }//GEN-LAST:event_jFormattedTextField2FocusLost
-
-    private void jComboBox3ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox3ItemStateChanged
-        if(tar.getIdTarea()!=null){
-            String dia=Drive.ObtenerDia(mayor.getDay());
-            if(!dia.equals((String)jComboBox3.getSelectedItem())){
-                cambio=true;
-            }
-        }
-    }//GEN-LAST:event_jComboBox3ItemStateChanged
 
     private void jFormattedTextField1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jFormattedTextField1FocusLost
         try {
@@ -1406,8 +1869,13 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JCheckBox jCheckBox1;
+    private javax.swing.JCheckBox jCheckBox2;
+    private javax.swing.JCheckBox jCheckBox3;
+    private javax.swing.JCheckBox jCheckBox4;
+    private javax.swing.JCheckBox jCheckBox5;
+    private javax.swing.JCheckBox jCheckBox6;
     private javax.swing.JComboBox jComboBox2;
-    private javax.swing.JComboBox jComboBox3;
     private javax.swing.JComboBox jComboBox4;
     private javax.swing.JFormattedTextField jFormattedTextField1;
     private javax.swing.JFormattedTextField jFormattedTextField2;

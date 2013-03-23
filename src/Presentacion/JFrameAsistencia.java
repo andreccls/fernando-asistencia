@@ -372,6 +372,7 @@ public class JFrameAsistencia extends javax.swing.JFrame {
                     Circular cir =Drive.VerificarCircular(per, cal);
                     if(cir.getIdCircular()!=null){
                         JOptionPane.showMessageDialog(null, cir.getDescripcion(),cir.getFirma(),JOptionPane.INFORMATION_MESSAGE);
+                    }
                         Iterator itt = pp.getAgendas().iterator();
                         while (itt.hasNext()) {
                             Agenda age = (Agenda) itt.next();
@@ -439,8 +440,10 @@ public class JFrameAsistencia extends javax.swing.JFrame {
                                 }
                             }
 
-                        }
-                        JOptionPane.showMessageDialog(null, "BIENVENIDO " + pp.toString(), "Verificacion de Huella", JOptionPane.INFORMATION_MESSAGE);
+                        //}
+                            String s = new SimpleDateFormat("HH:mm").format(cal.getTime());
+                            String tex="BIENVENIDO " + pp.toString()+ "\nHORA: "+ s;
+                        JOptionPane.showMessageDialog(null, tex, "Verificacion de Huella", JOptionPane.INFORMATION_MESSAGE);
                         t.start();
                         //t.stop();
                         jButton1.setEnabled(true);
