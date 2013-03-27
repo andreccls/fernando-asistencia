@@ -718,6 +718,84 @@ public class Controlador {
         }
         tabla.setModel(model);
     }
+    
+    public void CargarTablaRegistro(JTable tabla, Personal per, Date dia, String buscar) {
+        try {
+            DefaultTableModel model = (DefaultTableModel) tabla.getModel();
+            Iterator<Registroacceso> it = per.getRegistroaccesos().iterator();
+            while (it.hasNext()) {
+                Registroacceso reg = (Registroacceso) it.next();
+                if (buscar.equals("DIA")) {
+                    if (reg.getFecha().getYear() == dia.getYear() && reg.getFecha().getMonth() == dia.getMonth() && reg.getFecha().getDate() == dia.getDate()) {
+                        Object fila[] = new Object[3];
+                        SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+                        SimpleDateFormat formateador2 = new SimpleDateFormat("HH:mm");
+                        fila[0] = formateador.format(reg.getFecha());
+                        if (reg.getInicio() != null) {
+                                fila[1] = formateador2.format(reg.getInicio());
+                            }
+                            if (reg.getFin() != null) {
+                                fila[2] = formateador2.format(reg.getFin());
+                            }
+                        model.addRow(fila);
+                    }
+
+                } else if (buscar.equals("SEMANA")) {
+                    int c = 0;
+                    Date aux=dia;
+                    while (c != 7) {
+                        if (reg.getFecha().getYear() == aux.getYear() && reg.getFecha().getMonth() == aux.getMonth() && reg.getFecha().getDate() == aux.getDate()) {
+                            Object fila[] = new Object[3];
+                            SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+                            SimpleDateFormat formateador2 = new SimpleDateFormat("HH:mm");
+                            fila[0] = formateador.format(reg.getFecha());
+                            if (reg.getInicio() != null) {
+                                fila[1] = formateador2.format(reg.getInicio());
+                            }
+                            if (reg.getFin() != null) {
+                                fila[2] = formateador2.format(reg.getFin());
+                            }
+                            model.addRow(fila);
+                        }
+                        aux = restarFechasDias(aux, 1);
+                        c++;
+                    }
+                }else if (buscar.equals("MES")) {
+                    if (reg.getFecha().getYear() == dia.getYear() && reg.getFecha().getMonth() == dia.getMonth()) {
+                        Object fila[] = new Object[3];
+                        SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+                        SimpleDateFormat formateador2 = new SimpleDateFormat("HH:mm");
+                        fila[0] = formateador.format(reg.getFecha());
+                        if (reg.getInicio() != null) {
+                                fila[1] = formateador2.format(reg.getInicio());
+                            }
+                            if (reg.getFin() != null) {
+                                fila[2] = formateador2.format(reg.getFin());
+                            }
+                        model.addRow(fila);
+                    }
+                }else if (buscar.equals("AÑO")) {
+                    if (reg.getFecha().getYear() == dia.getYear()) {
+                        Object fila[] = new Object[3];
+                        SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+                        SimpleDateFormat formateador2 = new SimpleDateFormat("HH:mm");
+                        fila[0] = formateador.format(reg.getFecha());
+                        if (reg.getInicio() != null) {
+                                fila[1] = formateador2.format(reg.getInicio());
+                            }
+                            if (reg.getFin() != null) {
+                                fila[2] = formateador2.format(reg.getFin());
+                            }
+                        model.addRow(fila);
+                    }
+                }
+                
+            }
+            tabla.setModel(model);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.toString());
+        }
+    }
 
     public void CargarTablacheck(JTable tabla, String buscarpor, String valor, List personales) {
         try {
@@ -1159,6 +1237,13 @@ public class Controlador {
         Calendar cal = new GregorianCalendar();
         cal.setTimeInMillis(fch.getTime());
         cal.add(Calendar.DATE, dias);
+        return new Date(cal.getTimeInMillis());
+    }
+    
+    public static Date restarFechasDias(Date fch, int dias) {
+        Calendar cal = new GregorianCalendar();
+        cal.setTimeInMillis(fch.getTime());
+        cal.add(Calendar.DATE, -dias);
         return new Date(cal.getTimeInMillis());
     }
 

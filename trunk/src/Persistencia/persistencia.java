@@ -289,6 +289,8 @@ public class persistencia {
 
     }
     
+
+    
 //    public List getTareasTrue(int i) throws ArrayStoreException {
 //        String hql = "from Tarea where estado="+i;
 //        List items = new ArrayList();

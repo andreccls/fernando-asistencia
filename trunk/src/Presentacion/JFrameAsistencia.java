@@ -18,6 +18,7 @@ import Clases.Dia;
 import Clases.Establecimiento;
 import Clases.Iniciofin;
 import Clases.Personal;
+import Clases.Registroacceso;
 import TareasProgramadas.ControladorTarea;
 import com.digitalpersona.onetouch.DPFPDataPurpose;
 import com.digitalpersona.onetouch.DPFPFeatureSet;
@@ -38,6 +39,7 @@ import com.digitalpersona.onetouch.processing.DPFPFeatureExtraction;
 import com.digitalpersona.onetouch.processing.DPFPImageQualityException;
 import com.digitalpersona.onetouch.verification.DPFPVerification;
 import com.digitalpersona.onetouch.verification.DPFPVerificationResult;
+import java.awt.Frame;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -368,7 +370,31 @@ public class JFrameAsistencia extends javax.swing.JFrame {
                 DPFPVerificationResult result = Verificador.verify(featuresverificacion, getTemplate());
                 if (result.isVerified()) {
                     per = pp;
+                    ////Guardar registro
                     Date cal = Calendar.getInstance().getTime();
+                    SimpleDateFormat forma = new SimpleDateFormat("HH:mm");
+                    Date hora = forma.parse(forma.format(cal));
+                    boolean existe=false;
+                    Iterator iit=Drive.PERSISTENCIA.getRegistroaccesos(per.getIdPersonal()).iterator();
+                    while(iit.hasNext()){
+                        Registroacceso reg=(Registroacceso) iit.next();
+                        if(reg.getFecha().getYear()==cal.getYear() && reg.getFecha().getMonth()==cal.getMonth() && reg.getFecha().getDate()==cal.getDate()){
+                            if(reg.getInicio()!=null &&reg.getFin()==null){
+                                reg.setFin(hora);
+                                reg.actualizarRegistroAcceso(reg);
+                                existe=true;
+                                break;
+                            }
+                        }
+                    }
+                    if (existe == false) {
+                        Registroacceso reg = new Registroacceso();
+                        reg.setPersonal(pp);
+                        reg.setFecha(cal);
+                        reg.setInicio(hora);
+                        reg.guardarRegistroAcceso(reg);
+                    }
+                    ////VERIFICAR CIRCULAR
                     Circular cir =Drive.VerificarCircular(per, cal);
                     if(cir.getIdCircular()!=null){
                         JOptionPane.showMessageDialog(null, cir.getDescripcion(),cir.getFirma(),JOptionPane.INFORMATION_MESSAGE);
@@ -473,12 +499,18 @@ public class JFrameAsistencia extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowOpened
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        JFrameActividades frame=new JFrameActividades(Drive,per);
+        stop();
+        this.dispose();
+        frame.show();
+
     }//GEN-LAST:event_formWindowClosing
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
             jButton1.setEnabled(false);
             t.stop();
+            stop();
             JFrameActividades frame=new JFrameActividades(Drive,per);
             this.dispose();
             frame.show();
@@ -488,7 +520,7 @@ public class JFrameAsistencia extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void formWindowDeactivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowDeactivated
-        stop();
+//        stop();
     }//GEN-LAST:event_formWindowDeactivated
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
