@@ -187,8 +187,6 @@ public class JFrameClase extends javax.swing.JFrame {
         jLabel13 = new javax.swing.JLabel();
         jTextField4 = new javax.swing.JTextField();
         jLabel14 = new javax.swing.JLabel();
-        jLabel16 = new javax.swing.JLabel();
-        jLabel17 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         jLabel15 = new javax.swing.JLabel();
         jComboBox4 = new javax.swing.JComboBox();
@@ -205,6 +203,16 @@ public class JFrameClase extends javax.swing.JFrame {
         jCheckBox4 = new javax.swing.JCheckBox();
         jCheckBox5 = new javax.swing.JCheckBox();
         jCheckBox6 = new javax.swing.JCheckBox();
+        jFormattedTextField3 = new javax.swing.JFormattedTextField();
+        jFormattedTextField4 = new javax.swing.JFormattedTextField();
+        jFormattedTextField5 = new javax.swing.JFormattedTextField();
+        jFormattedTextField6 = new javax.swing.JFormattedTextField();
+        jFormattedTextField7 = new javax.swing.JFormattedTextField();
+        jFormattedTextField8 = new javax.swing.JFormattedTextField();
+        jFormattedTextField9 = new javax.swing.JFormattedTextField();
+        jFormattedTextField10 = new javax.swing.JFormattedTextField();
+        jFormattedTextField11 = new javax.swing.JFormattedTextField();
+        jFormattedTextField12 = new javax.swing.JFormattedTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("SISTEMA DE ASISTENCIA DE PERSONAL EDUCATIVO");
@@ -407,11 +415,11 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
 
         },
         new String [] {
-            "Profesor", "Sit. Revista", "Inicio", "Fin"
+            "Profesor", "Sit. Revista"
         }
     ) {
         boolean[] canEdit = new boolean [] {
-            false, false, false, false
+            false, false
         };
 
         public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -456,10 +464,6 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
     });
 
     jLabel14.setText("*");
-
-    jLabel16.setText("*");
-
-    jLabel17.setText("*");
 
     jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Seleccione el personal"));
 
@@ -530,7 +534,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
         .addGroup(jPanel5Layout.createSequentialGroup()
             .addContainerGap()
             .addComponent(jLabel15)
-            .addGap(18, 18, 18)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addGap(18, 18, 18)
             .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -542,13 +546,13 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
             .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addContainerGap(106, Short.MAX_VALUE))
+            .addContainerGap())
         .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING)
     );
     jPanel5Layout.setVerticalGroup(
         jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
         .addGroup(jPanel5Layout.createSequentialGroup()
-            .addContainerGap()
+            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -562,7 +566,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                         .addComponent(jLabel6)
                         .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
             .addGap(18, 18, 18)
-            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 163, Short.MAX_VALUE))
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
     );
 
     jCheckBox1.setText("LUNES");
@@ -577,6 +581,166 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
 
     jCheckBox6.setText("SABADO");
 
+    try {
+        jFormattedTextField3.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##:##")));
+    } catch (java.text.ParseException ex) {
+        ex.printStackTrace();
+    }
+    jFormattedTextField3.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            jFormattedTextField3ActionPerformed(evt);
+        }
+    });
+    jFormattedTextField3.addFocusListener(new java.awt.event.FocusAdapter() {
+        public void focusLost(java.awt.event.FocusEvent evt) {
+            jFormattedTextField3FocusLost(evt);
+        }
+    });
+
+    try {
+        jFormattedTextField4.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##:##")));
+    } catch (java.text.ParseException ex) {
+        ex.printStackTrace();
+    }
+    jFormattedTextField4.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            jFormattedTextField4ActionPerformed(evt);
+        }
+    });
+    jFormattedTextField4.addFocusListener(new java.awt.event.FocusAdapter() {
+        public void focusLost(java.awt.event.FocusEvent evt) {
+            jFormattedTextField4FocusLost(evt);
+        }
+    });
+
+    try {
+        jFormattedTextField5.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##:##")));
+    } catch (java.text.ParseException ex) {
+        ex.printStackTrace();
+    }
+    jFormattedTextField5.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            jFormattedTextField5ActionPerformed(evt);
+        }
+    });
+    jFormattedTextField5.addFocusListener(new java.awt.event.FocusAdapter() {
+        public void focusLost(java.awt.event.FocusEvent evt) {
+            jFormattedTextField5FocusLost(evt);
+        }
+    });
+
+    try {
+        jFormattedTextField6.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##:##")));
+    } catch (java.text.ParseException ex) {
+        ex.printStackTrace();
+    }
+    jFormattedTextField6.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            jFormattedTextField6ActionPerformed(evt);
+        }
+    });
+    jFormattedTextField6.addFocusListener(new java.awt.event.FocusAdapter() {
+        public void focusLost(java.awt.event.FocusEvent evt) {
+            jFormattedTextField6FocusLost(evt);
+        }
+    });
+
+    try {
+        jFormattedTextField7.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##:##")));
+    } catch (java.text.ParseException ex) {
+        ex.printStackTrace();
+    }
+    jFormattedTextField7.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            jFormattedTextField7ActionPerformed(evt);
+        }
+    });
+    jFormattedTextField7.addFocusListener(new java.awt.event.FocusAdapter() {
+        public void focusLost(java.awt.event.FocusEvent evt) {
+            jFormattedTextField7FocusLost(evt);
+        }
+    });
+
+    try {
+        jFormattedTextField8.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##:##")));
+    } catch (java.text.ParseException ex) {
+        ex.printStackTrace();
+    }
+    jFormattedTextField8.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            jFormattedTextField8ActionPerformed(evt);
+        }
+    });
+    jFormattedTextField8.addFocusListener(new java.awt.event.FocusAdapter() {
+        public void focusLost(java.awt.event.FocusEvent evt) {
+            jFormattedTextField8FocusLost(evt);
+        }
+    });
+
+    try {
+        jFormattedTextField9.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##:##")));
+    } catch (java.text.ParseException ex) {
+        ex.printStackTrace();
+    }
+    jFormattedTextField9.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            jFormattedTextField9ActionPerformed(evt);
+        }
+    });
+    jFormattedTextField9.addFocusListener(new java.awt.event.FocusAdapter() {
+        public void focusLost(java.awt.event.FocusEvent evt) {
+            jFormattedTextField9FocusLost(evt);
+        }
+    });
+
+    try {
+        jFormattedTextField10.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##:##")));
+    } catch (java.text.ParseException ex) {
+        ex.printStackTrace();
+    }
+    jFormattedTextField10.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            jFormattedTextField10ActionPerformed(evt);
+        }
+    });
+    jFormattedTextField10.addFocusListener(new java.awt.event.FocusAdapter() {
+        public void focusLost(java.awt.event.FocusEvent evt) {
+            jFormattedTextField10FocusLost(evt);
+        }
+    });
+
+    try {
+        jFormattedTextField11.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##:##")));
+    } catch (java.text.ParseException ex) {
+        ex.printStackTrace();
+    }
+    jFormattedTextField11.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            jFormattedTextField11ActionPerformed(evt);
+        }
+    });
+    jFormattedTextField11.addFocusListener(new java.awt.event.FocusAdapter() {
+        public void focusLost(java.awt.event.FocusEvent evt) {
+            jFormattedTextField11FocusLost(evt);
+        }
+    });
+
+    try {
+        jFormattedTextField12.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##:##")));
+    } catch (java.text.ParseException ex) {
+        ex.printStackTrace();
+    }
+    jFormattedTextField12.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            jFormattedTextField12ActionPerformed(evt);
+        }
+    });
+    jFormattedTextField12.addFocusListener(new java.awt.event.FocusAdapter() {
+        public void focusLost(java.awt.event.FocusEvent evt) {
+            jFormattedTextField12FocusLost(evt);
+        }
+    });
+
     javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
     jPanel1.setLayout(jPanel1Layout);
     jPanel1Layout.setHorizontalGroup(
@@ -584,80 +748,79 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
         .addGroup(jPanel1Layout.createSequentialGroup()
             .addContainerGap()
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(jButton1)
-                    .addGap(18, 18, 18)
-                    .addComponent(jButton2))
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 520, Short.MAX_VALUE)
-                    .addGap(18, 18, 18)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jButton3)
-                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel5)
-                        .addComponent(jLabel1)
-                        .addComponent(jLabel10)
-                        .addComponent(jLabel12))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jTextField1)
-                                .addComponent(dateChooserCombo1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jLabel14))
+                            .addComponent(jButton1)
+                            .addGap(18, 18, 18)
+                            .addComponent(jButton2))
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel1)
+                                        .addComponent(jLabel10)
+                                        .addComponent(jLabel12))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(jTextField1)
+                                        .addComponent(dateChooserCombo1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jLabel14)
+                                    .addGap(22, 22, 22)
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel2)
+                                        .addComponent(jLabel13)
+                                        .addComponent(jLabel11))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(dateChooserCombo2, javax.swing.GroupLayout.DEFAULT_SIZE, 169, Short.MAX_VALUE)
+                                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jTextField3)))
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jButton3)
+                                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGap(18, 28, Short.MAX_VALUE)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel5)
                                 .addComponent(jCheckBox1)
                                 .addComponent(jCheckBox2)
-                                .addComponent(jCheckBox3))
-                            .addGap(18, 18, 18)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jCheckBox3)
                                 .addComponent(jCheckBox4)
                                 .addComponent(jCheckBox5)
-                                .addComponent(jCheckBox6))))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(jCheckBox6))
+                            .addGap(6, 6, 6)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel11)
-                                .addComponent(jLabel2)
-                                .addComponent(jLabel13))
-                            .addGap(19, 19, 19)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jTextField3)
-                                .addComponent(dateChooserCombo2, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGap(10, 10, 10))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                            .addComponent(jLabel3)
+                                .addComponent(jLabel3)
+                                .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jFormattedTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jFormattedTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jFormattedTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jFormattedTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jFormattedTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel7))
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel7)
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(jLabel17)))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel4)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addComponent(jFormattedTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(jLabel16))
-                                .addComponent(jLabel8))))))
+                                .addComponent(jLabel4)
+                                .addComponent(jFormattedTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jFormattedTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jFormattedTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jFormattedTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jFormattedTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jFormattedTextField12, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel8))))
+                    .addGap(0, 5, Short.MAX_VALUE))
+                .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addContainerGap())
     );
 
     jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jButton3, jButton4});
 
-    jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {dateChooserCombo1, jTextField1, jTextField2, jTextField3});
+    jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {dateChooserCombo1, jTextField1, jTextField2});
 
     jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jButton1, jButton2});
 
@@ -666,33 +829,6 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
         .addGroup(jPanel1Layout.createSequentialGroup()
             .addContainerGap()
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel3)
-                            .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel17))
-                        .addGap(4, 4, 4)
-                        .addComponent(jLabel7))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                            .addComponent(jLabel2)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel13)
-                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                            .addComponent(jLabel11)
-                            .addComponent(dateChooserCombo2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel4)
-                            .addComponent(jFormattedTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel16))
-                        .addGap(4, 4, 4)
-                        .addComponent(jLabel8)))
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -705,37 +841,80 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                     .addGap(18, 18, 18)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                         .addComponent(jLabel10)
-                        .addComponent(dateChooserCombo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(dateChooserCombo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel11)
+                        .addComponent(dateChooserCombo2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                        .addComponent(jLabel2)
+                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGap(18, 18, 18)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel13)
+                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel5)
+                        .addComponent(jLabel4)
+                        .addComponent(jLabel3))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jFormattedTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jCheckBox1)))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(jFormattedTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jFormattedTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel5)
-                                .addComponent(jCheckBox1))
+                                .addComponent(jFormattedTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jCheckBox2))
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jCheckBox2)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jCheckBox3))
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addComponent(jCheckBox4)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jCheckBox5)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jCheckBox6)))))
-            .addGap(18, 18, Short.MAX_VALUE)
-            .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addGap(18, 18, 18)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jFormattedTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jCheckBox3))))))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addComponent(jButton3)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                    .addComponent(jButton4))
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGap(18, 18, 18)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(jButton3)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(jButton4))
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jFormattedTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jCheckBox4))
+                        .addComponent(jFormattedTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jFormattedTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jCheckBox5))
+                        .addComponent(jFormattedTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jFormattedTextField12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jFormattedTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jCheckBox6))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel8)
+                        .addComponent(jLabel7))))
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+            .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addGap(18, 18, 18)
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                 .addComponent(jButton2)
                 .addComponent(jButton1))
-            .addContainerGap())
+            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
     );
 
     jPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jButton3, jButton4});
@@ -753,7 +932,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
     );
     layout.setVerticalGroup(
         layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+        .addGroup(layout.createSequentialGroup()
             .addContainerGap()
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addContainerGap())
@@ -820,11 +999,20 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
             if (jTable1.getRowCount() != 0) {
-                if (!jTextField1.getText().isEmpty() && !jFormattedTextField1.getText().contains(" ") && !jFormattedTextField2.getText().contains(" ")) {
+                boolean verif=true;
+                if (jCheckBox1.isSelected()) {if(jFormattedTextField1.getText().contains(" ") || jFormattedTextField2.getText().contains(" ")){verif=false;}}
+                if (jCheckBox2.isSelected()) {if(jFormattedTextField3.getText().contains(" ") || jFormattedTextField4.getText().contains(" ")){verif=false;}}
+                if (jCheckBox3.isSelected()) {if(jFormattedTextField5.getText().contains(" ") || jFormattedTextField6.getText().contains(" ")){verif=false;}}
+                if (jCheckBox4.isSelected()) {if(jFormattedTextField7.getText().contains(" ") || jFormattedTextField8.getText().contains(" ")){verif=false;}}
+                if (jCheckBox5.isSelected()) {if(jFormattedTextField9.getText().contains(" ") || jFormattedTextField10.getText().contains(" ")){verif=false;}}
+                if (jCheckBox6.isSelected()) {if(jFormattedTextField11.getText().contains(" ") || jFormattedTextField12.getText().contains(" ")){verif=false;}}
+                    
+                if (!jTextField1.getText().isEmpty() && verif==true) {
                     jButton1.setEnabled(false);
                     jButton2.setEnabled(false);
                     jButton3.setEnabled(false);
                     jButton4.setEnabled(false);
+                    
                     if (tar.getIdTarea() == null) {
                         // <editor-fold defaultstate="collapsed" desc="Guardar tarea nueva"> 
                         Tarea tarr=new Tarea();
@@ -846,21 +1034,47 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                         while (jTable1.getRowCount() != c) {
                             Personal person = (Personal) modelo.getValueAt(c, 0);
                             SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
-                            Date inn = formateador.parse((String) modelo.getValueAt(c, 2));
-                            Date fii = formateador.parse((String) modelo.getValueAt(c, 3));
+                            Date inn = new Date();
+                            Date fii = new Date();
+                            List items = new ArrayList();
+                            if (jCheckBox1.isSelected()) {
+                                items.add("LUNES");
+                                inn = formateador.parse(jFormattedTextField1.getText());
+                                fii = formateador.parse(jFormattedTextField2.getText());
+                            }
+                            if (jCheckBox2.isSelected()) {
+                                items.add("MARTES");
+                                inn = formateador.parse(jFormattedTextField3.getText());
+                                fii = formateador.parse(jFormattedTextField4.getText());
+                            }
+                            if (jCheckBox3.isSelected()) {
+                                items.add("MIERCOLES");
+                                inn = formateador.parse(jFormattedTextField5.getText());
+                                fii = formateador.parse(jFormattedTextField6.getText());
+                            }
+                            if (jCheckBox4.isSelected()) {
+                                items.add("JUEVES");
+                                inn = formateador.parse(jFormattedTextField8.getText());
+                                fii = formateador.parse(jFormattedTextField7.getText());
+                            }
+                            if (jCheckBox5.isSelected()) {
+                                items.add("VIERNES");
+                                inn = formateador.parse(jFormattedTextField9.getText());
+                                fii = formateador.parse(jFormattedTextField10.getText());
+                            }
+                            if (jCheckBox6.isSelected()) {
+                                items.add("SABADO");
+                                inn = formateador.parse(jFormattedTextField11.getText());
+                                fii = formateador.parse(jFormattedTextField12.getText());
+                            }
+                            
                             Iniciofin aux = new Iniciofin();
                             aux.setInicio(inn);
                             aux.setFin(fii);
                             Date inicioo = dateChooserCombo1.getSelectedDate().getTime();
                             Date finn = dateChooserCombo2.getSelectedDate().getTime();
 //                            String dse = (String) modelo.getValueAt(c, 0);
-                            List items = new ArrayList();
-                            if (jCheckBox1.isSelected()) {items.add("LUNES");}
-                            if (jCheckBox2.isSelected()) {items.add("MARTES");}
-                            if (jCheckBox3.isSelected()) {items.add("MIERCOLES");}
-                            if (jCheckBox4.isSelected()) {items.add("JUEVES");}
-                            if (jCheckBox5.isSelected()) {items.add("VIERNES");}
-                            if (jCheckBox6.isSelected()) {items.add("SABADO");}
+                            
                             int[][] cant = person.VerificarDisponibilidadClase(inicioo, finn, aux, items);
                             int ee = cant[0].length;
                             int eee = cant[1].length;
@@ -886,6 +1100,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
 //                                String dsem = (String) modelo.getValueAt(c, 0);
                                 Date ot1 = inicio;
                                 if (jCheckBox1.isSelected()) {
+                                    
                                     while (ot1.getDay() != 1) {
                                         ot1 = Controlador.sumarFechasDias(ot1, 1);
                                     }
@@ -908,15 +1123,14 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                                 dia.guardarDia(dia);
                                                 int f = dia.getDia();
                                                 while (otro1.getDate() == f && otro1.compareTo(fin) <= 0) {
-                                                    //SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
                                                     formateador.setLenient(false);
-                                                    Date inici = formateador.parse((String) modelo.getValueAt(c, 2));
-                                                    Date fi = formateador.parse((String) modelo.getValueAt(c, 3));
+                                                    Date hini = formateador.parse(jFormattedTextField1.getText());
+                                                    Date hfin = formateador.parse(jFormattedTextField2.getText());
                                                     Iniciofin in = new Iniciofin();
                                                     in.setDia(dia);
-                                                    in.setInicio(inici);
+                                                    in.setInicio(hini);
                                                     in.setEstadoInicio(false);
-                                                    in.setFin(fi);
+                                                    in.setFin(hfin);
                                                     in.setEstadoFin(false);
                                                     in.guardarIniciofin(in);
                                                     otro1 = Drive.sumarFechasDias(otro1, 7);
@@ -953,13 +1167,13 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                                 while (otro2.getDate() == f && otro2.compareTo(fin) <= 0) {
                                                     //SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
                                                     formateador.setLenient(false);
-                                                    Date inici = formateador.parse((String) modelo.getValueAt(c, 2));
-                                                    Date fi = formateador.parse((String) modelo.getValueAt(c, 3));
+                                                    Date hini = formateador.parse(jFormattedTextField3.getText());
+                                                    Date hfin = formateador.parse(jFormattedTextField4.getText());
                                                     Iniciofin in = new Iniciofin();
                                                     in.setDia(dia);
-                                                    in.setInicio(inici);
+                                                    in.setInicio(hini);
                                                     in.setEstadoInicio(false);
-                                                    in.setFin(fi);
+                                                    in.setFin(hfin);
                                                     in.setEstadoFin(false);
                                                     in.guardarIniciofin(in);
                                                     otro2 = Drive.sumarFechasDias(otro2, 7);
@@ -996,13 +1210,13 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                                 while (otro3.getDate() == f && otro3.compareTo(fin) <= 0) {
                                                     //SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
                                                     formateador.setLenient(false);
-                                                    Date inici = formateador.parse((String) modelo.getValueAt(c, 2));
-                                                    Date fi = formateador.parse((String) modelo.getValueAt(c, 3));
+                                                    Date hini = formateador.parse(jFormattedTextField5.getText());
+                                                    Date hfin = formateador.parse(jFormattedTextField6.getText());
                                                     Iniciofin in = new Iniciofin();
                                                     in.setDia(dia);
-                                                    in.setInicio(inici);
+                                                    in.setInicio(hini);
                                                     in.setEstadoInicio(false);
-                                                    in.setFin(fi);
+                                                    in.setFin(hfin);
                                                     in.setEstadoFin(false);
                                                     in.guardarIniciofin(in);
                                                     otro3 = Drive.sumarFechasDias(otro3, 7);
@@ -1039,13 +1253,13 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                                 while (otro4.getDate() == f && otro4.compareTo(fin) <= 0) {
                                                     //SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
                                                     formateador.setLenient(false);
-                                                    Date inici = formateador.parse((String) modelo.getValueAt(c, 2));
-                                                    Date fi = formateador.parse((String) modelo.getValueAt(c, 3));
+                                                    Date hini = formateador.parse(jFormattedTextField8.getText());
+                                                    Date hfin = formateador.parse(jFormattedTextField7.getText());
                                                     Iniciofin in = new Iniciofin();
                                                     in.setDia(dia);
-                                                    in.setInicio(inici);
+                                                    in.setInicio(hini);
                                                     in.setEstadoInicio(false);
-                                                    in.setFin(fi);
+                                                    in.setFin(hfin);
                                                     in.setEstadoFin(false);
                                                     in.guardarIniciofin(in);
                                                     otro4 = Drive.sumarFechasDias(otro4, 7);
@@ -1082,13 +1296,13 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                                 while (otro5.getDate() == f && otro5.compareTo(fin) <= 0) {
                                                     //SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
                                                     formateador.setLenient(false);
-                                                    Date inici = formateador.parse((String) modelo.getValueAt(c, 2));
-                                                    Date fi = formateador.parse((String) modelo.getValueAt(c, 3));
+                                                    Date hini = formateador.parse(jFormattedTextField9.getText());
+                                                    Date hfin = formateador.parse(jFormattedTextField10.getText());
                                                     Iniciofin in = new Iniciofin();
                                                     in.setDia(dia);
-                                                    in.setInicio(inici);
+                                                    in.setInicio(hini);
                                                     in.setEstadoInicio(false);
-                                                    in.setFin(fi);
+                                                    in.setFin(hfin);
                                                     in.setEstadoFin(false);
                                                     in.guardarIniciofin(in);
                                                     otro5 = Drive.sumarFechasDias(otro5, 7);
@@ -1125,13 +1339,13 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                                 while (otro6.getDate() == f && otro6.compareTo(fin) <= 0) {
                                                     //SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
                                                     formateador.setLenient(false);
-                                                    Date inici = formateador.parse((String) modelo.getValueAt(c, 2));
-                                                    Date fi = formateador.parse((String) modelo.getValueAt(c, 3));
+                                                    Date hini = formateador.parse(jFormattedTextField11.getText());
+                                                    Date hfin = formateador.parse(jFormattedTextField12.getText());
                                                     Iniciofin in = new Iniciofin();
                                                     in.setDia(dia);
-                                                    in.setInicio(inici);
+                                                    in.setInicio(hini);
                                                     in.setEstadoInicio(false);
-                                                    in.setFin(fi);
+                                                    in.setFin(hfin);
                                                     in.setEstadoFin(false);
                                                     in.guardarIniciofin(in);
                                                     otro6 = Drive.sumarFechasDias(otro6, 7);
@@ -1151,6 +1365,16 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                         jTextField4.setText("");
                         jFormattedTextField1.setText("");
                         jFormattedTextField2.setText("");
+                        jFormattedTextField3.setText("");
+                        jFormattedTextField4.setText("");
+                        jFormattedTextField5.setText("");
+                        jFormattedTextField6.setText("");
+                        jFormattedTextField7.setText("");
+                        jFormattedTextField8.setText("");
+                        jFormattedTextField9.setText("");
+                        jFormattedTextField10.setText("");
+                        jFormattedTextField11.setText("");
+                        jFormattedTextField12.setText("");
                         Drive.LimpiarTabla(jTable1);
                         lista.removeAll(lista);
                         String buscar=(String) jComboBox4.getSelectedItem();
@@ -1162,9 +1386,10 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                         jCheckBox4.setSelected(false);
                         jCheckBox5.setSelected(false);
                         jCheckBox6.setSelected(false);
+                        
                         // </editor-fold>
                     } 
-                    else {
+                    else{
                         // <editor-fold defaultstate="collapsed" desc="Actualizar tarea"> 
                         if (!tar.getLugar().equals(jTextField3.getText().toUpperCase())) {
 //                            Establecimiento est = Drive.getPrimerEstablecimiento();
@@ -1289,15 +1514,15 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                                     while (otro1.getDate() == f && otro1.compareTo(fin) <= 0) {
                                                         //SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
                                                         formateador.setLenient(false);
-                                                        Date inici = formateador.parse((String) modelo.getValueAt(c, 2));
-                                                        Date fi = formateador.parse((String) modelo.getValueAt(c, 3));
-                                                        Iniciofin in = new Iniciofin();
-                                                        in.setDia(dia);
-                                                        in.setInicio(inici);
-                                                        in.setEstadoInicio(false);
-                                                        in.setFin(fi);
-                                                        in.setEstadoFin(false);
-                                                        in.guardarIniciofin(in);
+                                                    Date hini = formateador.parse(jFormattedTextField1.getText());
+                                                    Date hfin = formateador.parse(jFormattedTextField2.getText());
+                                                    Iniciofin in = new Iniciofin();
+                                                    in.setDia(dia);
+                                                    in.setInicio(hini);
+                                                    in.setEstadoInicio(false);
+                                                    in.setFin(hfin);
+                                                    in.setEstadoFin(false);
+                                                    in.guardarIniciofin(in);
                                                         otro1 = Drive.sumarFechasDias(otro1, 7);
                                                     }
                                                 }
@@ -1332,15 +1557,15 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                                     while (otro2.getDate() == f && otro2.compareTo(fin) <= 0) {
                                                         //SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
                                                         formateador.setLenient(false);
-                                                        Date inici = formateador.parse((String) modelo.getValueAt(c, 2));
-                                                        Date fi = formateador.parse((String) modelo.getValueAt(c, 3));
-                                                        Iniciofin in = new Iniciofin();
-                                                        in.setDia(dia);
-                                                        in.setInicio(inici);
-                                                        in.setEstadoInicio(false);
-                                                        in.setFin(fi);
-                                                        in.setEstadoFin(false);
-                                                        in.guardarIniciofin(in);
+                                                    Date hini = formateador.parse(jFormattedTextField3.getText());
+                                                    Date hfin = formateador.parse(jFormattedTextField4.getText());
+                                                    Iniciofin in = new Iniciofin();
+                                                    in.setDia(dia);
+                                                    in.setInicio(hini);
+                                                    in.setEstadoInicio(false);
+                                                    in.setFin(hfin);
+                                                    in.setEstadoFin(false);
+                                                    in.guardarIniciofin(in);
                                                         otro2 = Drive.sumarFechasDias(otro2, 7);
                                                     }
                                                 }
@@ -1375,15 +1600,15 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                                     while (otro3.getDate() == f && otro3.compareTo(fin) <= 0) {
                                                         //SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
                                                         formateador.setLenient(false);
-                                                        Date inici = formateador.parse((String) modelo.getValueAt(c, 2));
-                                                        Date fi = formateador.parse((String) modelo.getValueAt(c, 3));
-                                                        Iniciofin in = new Iniciofin();
-                                                        in.setDia(dia);
-                                                        in.setInicio(inici);
-                                                        in.setEstadoInicio(false);
-                                                        in.setFin(fi);
-                                                        in.setEstadoFin(false);
-                                                        in.guardarIniciofin(in);
+                                                    Date hini = formateador.parse(jFormattedTextField5.getText());
+                                                    Date hfin = formateador.parse(jFormattedTextField6.getText());
+                                                    Iniciofin in = new Iniciofin();
+                                                    in.setDia(dia);
+                                                    in.setInicio(hini);
+                                                    in.setEstadoInicio(false);
+                                                    in.setFin(hfin);
+                                                    in.setEstadoFin(false);
+                                                    in.guardarIniciofin(in);
                                                         otro3 = Drive.sumarFechasDias(otro3, 7);
                                                     }
                                                 }
@@ -1418,15 +1643,15 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                                     while (otro4.getDate() == f && otro4.compareTo(fin) <= 0) {
                                                         //SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
                                                         formateador.setLenient(false);
-                                                        Date inici = formateador.parse((String) modelo.getValueAt(c, 2));
-                                                        Date fi = formateador.parse((String) modelo.getValueAt(c, 3));
-                                                        Iniciofin in = new Iniciofin();
-                                                        in.setDia(dia);
-                                                        in.setInicio(inici);
-                                                        in.setEstadoInicio(false);
-                                                        in.setFin(fi);
-                                                        in.setEstadoFin(false);
-                                                        in.guardarIniciofin(in);
+                                                    Date hini = formateador.parse(jFormattedTextField8.getText());
+                                                    Date hfin = formateador.parse(jFormattedTextField7.getText());
+                                                    Iniciofin in = new Iniciofin();
+                                                    in.setDia(dia);
+                                                    in.setInicio(hini);
+                                                    in.setEstadoInicio(false);
+                                                    in.setFin(hfin);
+                                                    in.setEstadoFin(false);
+                                                    in.guardarIniciofin(in);
                                                         otro4 = Drive.sumarFechasDias(otro4, 7);
                                                     }
                                                 }
@@ -1461,15 +1686,15 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                                     while (otro5.getDate() == f && otro5.compareTo(fin) <= 0) {
                                                         //SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
                                                         formateador.setLenient(false);
-                                                        Date inici = formateador.parse((String) modelo.getValueAt(c, 2));
-                                                        Date fi = formateador.parse((String) modelo.getValueAt(c, 3));
-                                                        Iniciofin in = new Iniciofin();
-                                                        in.setDia(dia);
-                                                        in.setInicio(inici);
-                                                        in.setEstadoInicio(false);
-                                                        in.setFin(fi);
-                                                        in.setEstadoFin(false);
-                                                        in.guardarIniciofin(in);
+                                                    Date hini = formateador.parse(jFormattedTextField9.getText());
+                                                    Date hfin = formateador.parse(jFormattedTextField10.getText());
+                                                    Iniciofin in = new Iniciofin();
+                                                    in.setDia(dia);
+                                                    in.setInicio(hini);
+                                                    in.setEstadoInicio(false);
+                                                    in.setFin(hfin);
+                                                    in.setEstadoFin(false);
+                                                    in.guardarIniciofin(in);
                                                         otro5 = Drive.sumarFechasDias(otro5, 7);
                                                     }
                                                 }
@@ -1504,15 +1729,15 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                                     while (otro6.getDate() == f && otro6.compareTo(fin) <= 0) {
                                                         //SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
                                                         formateador.setLenient(false);
-                                                        Date inici = formateador.parse((String) modelo.getValueAt(c, 2));
-                                                        Date fi = formateador.parse((String) modelo.getValueAt(c, 3));
-                                                        Iniciofin in = new Iniciofin();
-                                                        in.setDia(dia);
-                                                        in.setInicio(inici);
-                                                        in.setEstadoInicio(false);
-                                                        in.setFin(fi);
-                                                        in.setEstadoFin(false);
-                                                        in.guardarIniciofin(in);
+                                                    Date hini = formateador.parse(jFormattedTextField11.getText());
+                                                    Date hfin = formateador.parse(jFormattedTextField12.getText());
+                                                    Iniciofin in = new Iniciofin();
+                                                    in.setDia(dia);
+                                                    in.setInicio(hini);
+                                                    in.setEstadoInicio(false);
+                                                    in.setFin(hfin);
+                                                    in.setEstadoFin(false);
+                                                    in.guardarIniciofin(in);
                                                         otro6 = Drive.sumarFechasDias(otro6, 7);
                                                     }
                                                 }
@@ -1535,6 +1760,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                     jButton2.setEnabled(true);
                     jButton3.setEnabled(true);
                     jButton4.setEnabled(true);
+                    
                 } else {
                     JOptionPane.showMessageDialog(null, "Los campos con '*' son obligatorios y no puede contener espacios en blanco en los horarios", "Registrar Clase", JOptionPane.ERROR_MESSAGE);
                 }
@@ -1553,6 +1779,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                 if (per.getIdPersonal() != null) {
                     DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
                     Revista rev = (Revista) jComboBox2.getSelectedItem();
+                    if(rev!=null){
                     int c = 0;
                     boolean bandera = true;
                     while (jTable1.getRowCount() != c) {
@@ -1563,17 +1790,10 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                         c++;
                     }
                     if (bandera == true) {
-//                        String dia = (String) jComboBox3.getSelectedItem();
-                        SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
-                        Date inicio = formateador.parse(jFormattedTextField1.getText());
-                        Date fin = formateador.parse(jFormattedTextField2.getText());
-                        if (inicio.compareTo(fin) < 0) {
                             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
                             Object[] fila = new Object[4];
                             fila[0] = per;
                             fila[1] = rev;
-                            fila[2] = formateador.format(inicio);
-                            fila[3] = formateador.format(fin);
                             model.addRow(fila);
                             jTable1.setModel(model);
                             Drive.LimpiarTabla(jTable2);
@@ -1581,8 +1801,8 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                             per = new Personal();
                             String buscar=(String) jComboBox4.getSelectedItem();
                             Drive.CargarpersonalSimple(jTable2,buscar, buffer.toString().toUpperCase(),lista);
-                        } else {JOptionPane.showMessageDialog(null, "Ingrese correctamente los horarios", "Registrar Clase", JOptionPane.ERROR_MESSAGE);}
                     } else {JOptionPane.showMessageDialog(null, "La situación de revista es unica por personal", "Registrar Clase", JOptionPane.ERROR_MESSAGE);}
+                    }else{JOptionPane.showMessageDialog(null, "Seleccione una situación de revista para el personal", "Registrar Clase", JOptionPane.ERROR_MESSAGE);}
                 } else {JOptionPane.showMessageDialog(null, "Debe seleccionar un personal", "Registrar Clase", JOptionPane.ERROR_MESSAGE);}
             } else {JOptionPane.showMessageDialog(null, "Los campos con '*' son obligatorios y no puede contener espacios en blanco en los horarios", "Registrar Clase", JOptionPane.ERROR_MESSAGE);}
         } catch (Exception ex) {
@@ -1787,6 +2007,18 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
             jCheckBox4.setEnabled(false);
             jCheckBox5.setEnabled(false);
             jCheckBox6.setEnabled(false);
+            jFormattedTextField1.setEnabled(false);
+            jFormattedTextField2.setEnabled(false);
+            jFormattedTextField3.setEnabled(false);
+            jFormattedTextField4.setEnabled(false);
+            jFormattedTextField5.setEnabled(false);
+            jFormattedTextField6.setEnabled(false);
+            jFormattedTextField7.setEnabled(false);
+            jFormattedTextField8.setEnabled(false);
+            jFormattedTextField9.setEnabled(false);
+            jFormattedTextField10.setEnabled(false);
+            jFormattedTextField11.setEnabled(false);
+            jFormattedTextField12.setEnabled(false);
         }else{
             jCheckBox1.setEnabled(true);
             jCheckBox2.setEnabled(true);
@@ -1794,6 +2026,18 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
             jCheckBox4.setEnabled(true);
             jCheckBox5.setEnabled(true);
             jCheckBox6.setEnabled(true);
+            jFormattedTextField1.setEnabled(true);
+            jFormattedTextField2.setEnabled(true);
+            jFormattedTextField3.setEnabled(true);
+            jFormattedTextField4.setEnabled(true);
+            jFormattedTextField5.setEnabled(true);
+            jFormattedTextField6.setEnabled(true);
+            jFormattedTextField7.setEnabled(true);
+            jFormattedTextField8.setEnabled(true);
+            jFormattedTextField9.setEnabled(true);
+            jFormattedTextField10.setEnabled(true);
+            jFormattedTextField11.setEnabled(true);
+            jFormattedTextField12.setEnabled(true);
         }
         }catch(Exception e){
             JOptionPane.showMessageDialog(null,"Error","Registrar Clase", JOptionPane.ERROR_MESSAGE);
@@ -1857,6 +2101,86 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
         if(jTextField2.getText().length()==20) evt.consume();
     }//GEN-LAST:event_jTextField2KeyTyped
 
+    private void jFormattedTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFormattedTextField3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jFormattedTextField3ActionPerformed
+
+    private void jFormattedTextField3FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jFormattedTextField3FocusLost
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jFormattedTextField3FocusLost
+
+    private void jFormattedTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFormattedTextField4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jFormattedTextField4ActionPerformed
+
+    private void jFormattedTextField4FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jFormattedTextField4FocusLost
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jFormattedTextField4FocusLost
+
+    private void jFormattedTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFormattedTextField5ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jFormattedTextField5ActionPerformed
+
+    private void jFormattedTextField5FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jFormattedTextField5FocusLost
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jFormattedTextField5FocusLost
+
+    private void jFormattedTextField6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFormattedTextField6ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jFormattedTextField6ActionPerformed
+
+    private void jFormattedTextField6FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jFormattedTextField6FocusLost
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jFormattedTextField6FocusLost
+
+    private void jFormattedTextField7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFormattedTextField7ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jFormattedTextField7ActionPerformed
+
+    private void jFormattedTextField7FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jFormattedTextField7FocusLost
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jFormattedTextField7FocusLost
+
+    private void jFormattedTextField8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFormattedTextField8ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jFormattedTextField8ActionPerformed
+
+    private void jFormattedTextField8FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jFormattedTextField8FocusLost
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jFormattedTextField8FocusLost
+
+    private void jFormattedTextField9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFormattedTextField9ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jFormattedTextField9ActionPerformed
+
+    private void jFormattedTextField9FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jFormattedTextField9FocusLost
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jFormattedTextField9FocusLost
+
+    private void jFormattedTextField10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFormattedTextField10ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jFormattedTextField10ActionPerformed
+
+    private void jFormattedTextField10FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jFormattedTextField10FocusLost
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jFormattedTextField10FocusLost
+
+    private void jFormattedTextField11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFormattedTextField11ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jFormattedTextField11ActionPerformed
+
+    private void jFormattedTextField11FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jFormattedTextField11FocusLost
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jFormattedTextField11FocusLost
+
+    private void jFormattedTextField12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFormattedTextField12ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jFormattedTextField12ActionPerformed
+
+    private void jFormattedTextField12FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jFormattedTextField12FocusLost
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jFormattedTextField12FocusLost
+
     /**
     * @param args the command line arguments
     */
@@ -1878,7 +2202,17 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
     private javax.swing.JComboBox jComboBox2;
     private javax.swing.JComboBox jComboBox4;
     private javax.swing.JFormattedTextField jFormattedTextField1;
+    private javax.swing.JFormattedTextField jFormattedTextField10;
+    private javax.swing.JFormattedTextField jFormattedTextField11;
+    private javax.swing.JFormattedTextField jFormattedTextField12;
     private javax.swing.JFormattedTextField jFormattedTextField2;
+    private javax.swing.JFormattedTextField jFormattedTextField3;
+    private javax.swing.JFormattedTextField jFormattedTextField4;
+    private javax.swing.JFormattedTextField jFormattedTextField5;
+    private javax.swing.JFormattedTextField jFormattedTextField6;
+    private javax.swing.JFormattedTextField jFormattedTextField7;
+    private javax.swing.JFormattedTextField jFormattedTextField8;
+    private javax.swing.JFormattedTextField jFormattedTextField9;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1886,8 +2220,6 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel16;
-    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;

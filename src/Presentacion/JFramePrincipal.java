@@ -71,6 +71,8 @@ public class JFramePrincipal extends javax.swing.JFrame {
             jMenuItem8.setEnabled(false);//Consultar inasistencia
             jMenuItem9.setEnabled(false);//Consultar actividades
             jMenuItem10.setEnabled(false);//registrar feriados
+//            jMenuItem12.setEnabled(false);//registrar feriados
+//            jMenuItem13.setEnabled(false);//registrar feriados
         }else if(nivel==3){
             jMenuItem1.setEnabled(false);//registrar personal
             jMenuItem2.setEnabled(false);//registrar huella
@@ -78,6 +80,7 @@ public class JFramePrincipal extends javax.swing.JFrame {
             jMenuItem5.setEnabled(false);//registrar clase
             jMenuItem6.setEnabled(false);//registrar reunion
             jMenuItem7.setEnabled(false);//registrar otro
+//            jMenuItem13.setEnabled(false);//registrar feriados
         }
     }
     
@@ -117,6 +120,7 @@ public class JFramePrincipal extends javax.swing.JFrame {
         jMenuItem9 = new javax.swing.JMenuItem();
         jMenuItem10 = new javax.swing.JMenuItem();
         jMenuItem12 = new javax.swing.JMenuItem();
+        jMenuItem13 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("SISTEMA DE ASISTENCIA DE PERSONAL EDUCATIVO");
@@ -304,6 +308,14 @@ public class JFramePrincipal extends javax.swing.JFrame {
         });
         jMenu2.add(jMenuItem12);
 
+        jMenuItem13.setText("Registro");
+        jMenuItem13.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem13ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem13);
+
         jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
@@ -440,6 +452,12 @@ public class JFramePrincipal extends javax.swing.JFrame {
         vent2.show();
     }//GEN-LAST:event_jMenuItem12ActionPerformed
 
+    private void jMenuItem13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem13ActionPerformed
+        JFrameRegistro vent2 = new JFrameRegistro(Drive,adm,idsesion);
+        this.hide();
+        vent2.show();
+    }//GEN-LAST:event_jMenuItem13ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -464,6 +482,7 @@ public class JFramePrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem11;
     private javax.swing.JMenuItem jMenuItem12;
+    private javax.swing.JMenuItem jMenuItem13;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
