@@ -23,8 +23,7 @@ FROM
 WHERE
      dia.Dia  = $P{Dia}
  AND mes.Mes = $P{Mes}
- AND ano.Ano = $P{Ano}
-]]>
+ AND ano.Ano = $P{Ano}]]>
 	</queryString>
 	<field name="tarea_Nombre" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>

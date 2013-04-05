@@ -1125,7 +1125,7 @@ public class Controlador {
                     fecha.setMonth(asis.getIniciofin().getDia().getMes().getMes());
                     fecha.setDate(asis.getIniciofin().getDia().getDia());
                     if (asis.getIniciofin().getDia().getMes().getMes() == mes && asis.getIniciofin().getDia().getMes().getAno().getAno() == ano) {
-                        Object fila[] = new Object[9];
+                        Object fila[] = new Object[10];
                         fila[0] = asis.getIdAsistencia();
                         fila[1] = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getTarea().getNombre();
                         fila[2] = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().toString();
@@ -1484,67 +1484,72 @@ public class Controlador {
 
     }
     
-    public static void mostrarReporte(String report, List consulta, String titulo,String estado,String tardanza,String label) throws FileNotFoundException, JRException {
-
-        //String report = "Clases";
+    public static void mostrarReporte(String report, String titulo,String estado,String tardanza,String mes) throws FileNotFoundException, JRException {
         JasperReport jasperReport = null;
-//        String path = "D:/JasperTemplates/";
+
         String path = System.getProperty("user.dir") + "\\src\\Reportes\\";
         JasperPrint jasperPrint = null;
 
         String SO = System.getProperty("os.name");
-//        String path;
-
-//        if (SO.toUpperCase().equals("LINUX")) {
-//            path = System.getProperty("user.dir") + "/src/Reportes/" + report + ".jasper";
-//        } else {
-//            path = System.getProperty("user.dir") + "\\src\\Reportes\\" + report + ".jasper";
-//        }
-//        System.out.println("Dirección del Reporte en disco: " + path);
-//        if (path == null) {
-//            //javax.swing.JOptionPane msj=new javax.swing.JOptionPane() ;
-//            JOptionPane.showMessageDialog(null, "No se encontro el Reporte", "Error", 2, null);
-//        }
-
-
-        //Gettign the connection object
         Connection conn = ConexionJDBC.getConnection();
-
-
-        //Provide path for your JRXML template.
-//        String templateName = path + "ReportSQL.jrxml";
         String templateName = path + report + ".jrxml";
-
-        //Provide path for your final pdf file.
-//        String destinationFile = path + "ReportSQL.pdf";
-//        String destinationFile = path + report + ".pdf";
-
-        //Compiling the template.
         jasperReport = JasperCompileManager.compileReport(templateName);
-
-        //Sending a parameter with the logged in user name as value
-//        HashMap parameters = new HashMap();
         Map<String, String> parametros = new HashMap<String, String>();
-        parametros.put("LabelReport", label);
+        
+        parametros.put("Titulo", titulo);
         parametros.put("Estado", estado);
         parametros.put("Tardanza", tardanza);
-        
-
-        // Filling the report template with data
+        parametros.put("Mes", mes);
         jasperPrint = JasperFillManager.fillReport(jasperReport, parametros, conn);
-
-        //Sending a Complete print of the report.
-//        JasperPrintManager.printReport(jasperPrint, true);
-
         JasperViewer jviewer = new JasperViewer(jasperPrint, false);
         jviewer.setTitle(report);
         jviewer.setVisible(true);
-
-        //Exporting it to an PDF
-//        JasperExportManager.exportReportToPdfFile(jasperPrint, destinationFile);
-
     }
+    
+    public static void mostrarReporteRegistro(String report, String DNI, String Dia,String Diafin,String Mes,String Ano) throws FileNotFoundException, JRException {
+        JasperReport jasperReport = null;
 
+        String path = System.getProperty("user.dir") + "\\src\\Reportes\\";
+        JasperPrint jasperPrint = null;
+
+        String SO = System.getProperty("os.name");
+        Connection conn = ConexionJDBC.getConnection();
+        String templateName = path + report + ".jrxml";
+        jasperReport = JasperCompileManager.compileReport(templateName);
+        Map<String, String> parametros = new HashMap<String, String>();
+        parametros.put("DNI", DNI);
+        parametros.put("Dia", Dia);
+        parametros.put("Diafin", Diafin);
+        parametros.put("Mes", Mes);
+        parametros.put("Ano", Ano);
+        jasperPrint = JasperFillManager.fillReport(jasperReport, parametros, conn);
+        JasperViewer jviewer = new JasperViewer(jasperPrint, false);
+        jviewer.setTitle(report);
+        jviewer.setVisible(true);
+    }
+//    public static void mostrarReporteActividades(String report, String DNI, String Dia,String Diafin,String Mes,String Ano) throws FileNotFoundException, JRException {
+//        JasperReport jasperReport = null;
+//
+//        String path = System.getProperty("user.dir") + "\\src\\Reportes\\";
+//        JasperPrint jasperPrint = null;
+//
+//        String SO = System.getProperty("os.name");
+//        Connection conn = ConexionJDBC.getConnection();
+//        String templateName = path + report + ".jrxml";
+//        jasperReport = JasperCompileManager.compileReport(templateName);
+//        Map<String, String> parametros = new HashMap<String, String>();
+//        parametros.put("Personal", DNI);
+//        parametros.put("Dia", Dia);
+//        parametros.put("Diafin", Diafin);
+//        parametros.put("Mes", Mes);
+//        parametros.put("Ano", Ano);
+//        jasperPrint = JasperFillManager.fillReport(jasperReport, parametros, conn);
+//        JasperViewer jviewer = new JasperViewer(jasperPrint, false);
+//        jviewer.setTitle(report);
+//        jviewer.setVisible(true);
+//    }
+
+    
     public Circular VerificarCircular(Personal per, Date hoy) {
         Circular circ = new Circular();
         Iterator it = PERSISTENCIA.getCirculares().iterator();

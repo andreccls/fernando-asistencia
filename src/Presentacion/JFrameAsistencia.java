@@ -467,8 +467,8 @@ public class JFrameAsistencia extends javax.swing.JFrame {
                             }
 
                         //}
-                            String s = new SimpleDateFormat("HH:mm").format(cal.getTime());
-                            String tex="BIENVENIDO " + pp.toString()+ "\nHORA: "+ s;
+                            String s = new SimpleDateFormat("dd/MM/yyyy HH:mm").format(cal.getTime());
+                            String tex="BIENVENIDO " + pp.toString()+ "\nHora: "+ s;
                         JOptionPane.showMessageDialog(null, tex, "Verificacion de Huella", JOptionPane.INFORMATION_MESSAGE);
                         t.start();
                         //t.stop();
@@ -499,10 +499,10 @@ public class JFrameAsistencia extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowOpened
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        JFrameActividades frame=new JFrameActividades(Drive,per);
-        stop();
-        this.dispose();
-        frame.show();
+//        JFrameActividades frame=new JFrameActividades(Drive,per);
+//        stop();
+//        this.dispose();
+//        frame.show();
 
     }//GEN-LAST:event_formWindowClosing
 
