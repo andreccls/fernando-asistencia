@@ -441,7 +441,7 @@ public class JFrameInasistencia extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea volver al menu principal?", "", JOptionPane.YES_NO_OPTION);
+        int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea volver al menu principal?", "Registrar Inasistencia", JOptionPane.YES_NO_OPTION);
         if (JOptionPane.OK_OPTION == confirmado) {
             Frame vp = new JFramePrincipal(Drive, adm, idsesion);
             this.dispose();
@@ -487,6 +487,7 @@ public class JFrameInasistencia extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         try {
+            String me=String.valueOf(Drive.ObtenerMes(jComboBox1.getSelectedItem().toString()));
             JComboBox salida = new JComboBox();
             String cadSalida;
             salida.addItem("Asistencias");
@@ -496,14 +497,11 @@ public class JFrameInasistencia extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, salida, "¿Que desea imprimir?", JOptionPane.INFORMATION_MESSAGE);
             cadSalida = salida.getSelectedItem().toString();
             if (cadSalida.equals("Asistencias")) {
-                List consulta = Controlador.getPERSISTENCIA().getAsistenciasReporte();
-                Drive.mostrarReporte("Asistencias", consulta, "Lista de Asistencias","1","0","Asistencias");
+                Drive.mostrarReporte("Inasistencia","Lista de Asistencias","1","0",me);
             } else if (cadSalida.equals("Tardanzas")) {
-                List consulta = Controlador.getPERSISTENCIA().getTardanzasReporte();
-                Drive.mostrarReporte("Asistencia", consulta, "Lista de Tardanzas","1","1","Tardanzas");
+                Drive.mostrarReporte("Inasistencia", "Lista de Tardanzas","1","1",me);
             } else if (cadSalida.equals("Inasistencias")) {
-                List consulta = Controlador.getPERSISTENCIA().getInasistenciasReporte();
-                Drive.mostrarReporte("Asistencia", consulta, "Lista de Inasistencias","0","0","Inasistencias");
+                Drive.mostrarReporte("Inasistencia", "Lista de Inasistencias","0","0",me);
             }
         } catch (Exception Ex) {
             JOptionPane.showMessageDialog(null, "Ingrese correctamente los datos", "Error de impresion", JOptionPane.ERROR_MESSAGE);

@@ -46,6 +46,8 @@ public class JFramePrincipal extends javax.swing.JFrame {
      public int idsesion;
      Tarea tar=new Tarea();
      Circular cir=new Circular();
+     
+     
     public JFramePrincipal(Controlador unDrive, Personal admin,int id) {
         this.Drive=unDrive;
         this.adm=admin;
