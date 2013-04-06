@@ -1113,12 +1113,13 @@ public class Controlador {
     public void CargarTablaInasistencias(JTable Tabla, String m, int ano) {
         try {
             DefaultTableModel modelo = (DefaultTableModel) Tabla.getModel();
-            Establecimiento col = getPrimerEstablecimiento();
+//            Establecimiento col = getPrimerEstablecimiento();
+            Controlador cc=new Controlador();
             int mes = ObtenerMes(m);
             SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
-            Iterator<Asistencia> ita = Controlador.getPERSISTENCIA().ObtenerListaInasistencia(mes, ano).iterator();
+            Iterator ita = cc.PERSISTENCIA.ObtenerListaInasistencia(mes, ano).iterator();
             while (ita.hasNext()) {
-                Asistencia asis = ita.next();
+                Asistencia asis =(Asistencia) ita.next();
                 if (asis.getIniciofin().getDia().getMes().getAno().getAgenda().getTarea().getEstado() == true && asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().getEstado() == true) {
                     Date fecha = new Date();
                     fecha.setYear(asis.getIniciofin().getDia().getMes().getAno().getAno() - 1900);
