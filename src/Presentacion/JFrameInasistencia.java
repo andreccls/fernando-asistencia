@@ -54,7 +54,7 @@ public class JFrameInasistencia extends javax.swing.JFrame {
     /**
      * Creates new form JFrameInasistencia
      */
-    public Controlador Drive;
+    public Controlador Drive=new Controlador();;
     public Personal adm;
     int idsesion;
     JComboBox comboBoxart = new JComboBox();
@@ -140,6 +140,11 @@ public class JFrameInasistencia extends javax.swing.JFrame {
             }
         });
         jTable1.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        jTable1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTable1KeyTyped(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         jLabel1.setText("Mes:");
@@ -192,9 +197,9 @@ public class JFrameInasistencia extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jButton2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jButton1))
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -292,6 +297,13 @@ public class JFrameInasistencia extends javax.swing.JFrame {
             int e = 0;
             while (modelo.getRowCount() != e) {
                 Asistencia asis = Drive.getAsistencia(Integer.parseInt(modelo.getValueAt(e, 0).toString()));
+//                boolean ban=false;
+//                if(asis.getJustificacions().iterator().hasNext()){
+//                    if(!asis.getJustificacions().iterator().next().getMotivo().equals(modelo.getValueAt(e, 9))||!asis.getJustificacions().iterator().next().getArticulo().equals(modelo.getValueAt(e, 8))){
+//                        ban=true;
+//                    }
+//                }
+//                if(!modelo.getValueAt(e, 6).equals(asis.getEstado())||!modelo.getValueAt(e, 7).equals(asis.getTardanza())/*||ban*/){
                 //Object combo= modelo.get;
                 //if(!modelo.getValueAt(e, 6).equals(asis.getEstado()) || !modelo.getValueAt(e, 7).equals(asis.getTardanza())){
                 if (modelo.getValueAt(e, 6).equals(true) && modelo.getValueAt(e, 7).equals(false)) {
@@ -355,44 +367,56 @@ public class JFrameInasistencia extends javax.swing.JFrame {
                     boolean res2 = modelo.getValueAt(e, 7).equals(true);
                     if (asis.getEstado() == res && asis.getTardanza() == res2) {
                         if (a != null && m != null) {
-                            if (m.toString().length() <= 45) {
-                                asis.setEstado(false);
-                                asis.setTardanza(false);
-                                asis.guardarAsistencia(asis);
-                                Justificacion jus = asis.getJustificacion(asis);
-                                jus.setAsistencia(asis);
-                                jus.setMotivo(modelo.getValueAt(e, 9).toString());
-                                Articulo art = (Articulo) modelo.getValueAt(e, 8);
-                                jus.setArticulo(art);
-                                if (jus.getIdJustificacion() != null) {
-                                    jus.actualizarJustificacion(jus);
-                                } else {
-                                    jus.guardarJustificacion(jus);
+                            if(asis.getJustificacions().iterator().hasNext()){
+                                if(!asis.getJustificacions().iterator().next().getMotivo().equals(m)||!asis.getJustificacions().iterator().next().getArticulo().equals(a)){
+                                    if (m.toString().length() <= 45) {
+                                        asis.getJustificacions().iterator().next().setMotivo(modelo.getValueAt(e, 9).toString());
+                                        asis.getJustificacions().iterator().next().setArticulo((Articulo) modelo.getValueAt(e, 8));
+                                        asis.getJustificacions().iterator().next().actualizarJustificacion(asis.getJustificacions().iterator().next());
+                                    } else {
+                                        JOptionPane.showMessageDialog(null, "El motivo es muy largo, por favor reduzcalo", "Registrar Inasistencia", JOptionPane.ERROR_MESSAGE);
+                                    }
                                 }
-                            } else {
-                                JOptionPane.showMessageDialog(null, "El motivo es muy largo, por favor reduzcalo", "Registrar Inasistencia", JOptionPane.ERROR_MESSAGE);
+                            }else{  
+                                if (m.toString().length() <= 45) {
+//                                    asis.setEstado(false);
+//                                    asis.setTardanza(false);
+//                                    asis.ActualizarAsistencia(asis);
+                                    Justificacion jus = asis.getJustificacion(asis);
+                                    jus.setAsistencia(asis);
+                                    jus.setMotivo(modelo.getValueAt(e, 9).toString());
+                                    Articulo art = (Articulo) modelo.getValueAt(e, 8);
+                                    jus.setArticulo(art);
+//                                    if (jus.getIdJustificacion() != null) {
+//                                        jus.actualizarJustificacion(jus);
+//                                    } else {
+                                        jus.guardarJustificacion(jus);
+//                                    }
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "El motivo es muy largo, por favor reduzcalo", "Registrar Inasistencia", JOptionPane.ERROR_MESSAGE);
+                                }
                             }
                         }
                     } else {
                         JOptionPane.showMessageDialog(null, "No se puede cambiar una tardanza por una inasistencia", "Registrar Inasistencia", JOptionPane.ERROR_MESSAGE);
                     }
                 } else if (modelo.getValueAt(e, 6).equals(true) && modelo.getValueAt(e, 7).equals(true)) {
-                    Object a = modelo.getValueAt(e, 8);
-                    Object m = modelo.getValueAt(e, 9);
-                    if (asis.getEstado() != modelo.getValueAt(e, 6).equals(true)) {
-                        if (a != null && m != null) {
-                            if (m.toString().length() <= 18) {
-                                asis.setEstado(true);
-                                asis.setTardanza(true);
-                                asis.guardarAsistencia(asis);
-                                Justificacion jus = asis.getJustificacion(asis);
-                                jus.setAsistencia(asis);
-                                jus.setMotivo("Inasistencia por tardanza: " + modelo.getValueAt(e, 9).toString());
-                                Articulo art = (Articulo) modelo.getValueAt(e, 8);
-                                jus.setArticulo(art);
-                                if (jus.getIdJustificacion() != null) {
-                                    jus.actualizarJustificacion(jus);
-                                } else {
+                        Object a = modelo.getValueAt(e, 8);
+                        Object m = modelo.getValueAt(e, 9);
+                        if (asis.getEstado() != modelo.getValueAt(e, 6).equals(true)) {
+                            if (a != null && m != null) {
+                                if (m.toString().length() <= 18) {
+                                    asis.setEstado(true);
+                                    asis.setTardanza(true);
+                                    asis.guardarAsistencia(asis);
+                                    Justificacion jus = asis.getJustificacion(asis);
+                                    jus.setAsistencia(asis);
+                                    jus.setMotivo("Inasistencia por tardanza: " + modelo.getValueAt(e, 9).toString());
+                                    Articulo art = (Articulo) modelo.getValueAt(e, 8);
+                                    jus.setArticulo(art);
+                                    if (jus.getIdJustificacion() != null) {
+                                        jus.actualizarJustificacion(jus);
+                                    } else {
                                     jus.guardarJustificacion(jus);
                                 }
                             } else {
@@ -402,34 +426,28 @@ public class JFrameInasistencia extends javax.swing.JFrame {
                             JOptionPane.showMessageDialog(null, "Para cambiar una inasistencia por una tardanza, necesita un artículo y un motivo", "Registrar Inasistencia", JOptionPane.ERROR_MESSAGE);
                         }
                     } else {
-                        if (a != null && m != null) {
-                            if (m.toString().length() <= 45) {
-                                Justificacion jus = asis.getJustificacion(asis);
-                                if (!jus.getMotivo().contains("Inasistencia por tardanza")) {
-                                    asis.setEstado(true);
-                                    asis.setTardanza(true);
-                                    asis.guardarAsistencia(asis);
+                        if (asis.getJustificacions().iterator().hasNext()) {
+                            if (!asis.getJustificacions().iterator().next().getMotivo().equals(m) || !asis.getJustificacions().iterator().next().getArticulo().equals(a)) {
+                                JOptionPane.showMessageDialog(null, "No se puede modificar el motivo de esta tardanza", "Registrar Inasistencia", JOptionPane.ERROR_MESSAGE);
+                            }
+                        }else{
+                            if (a != null && m != null) {
+                                if (m.toString().length() <= 45) {
+                                    Justificacion jus=new Justificacion();
                                     jus.setAsistencia(asis);
                                     jus.setMotivo(modelo.getValueAt(e, 9).toString());
-                                    Articulo art = (Articulo) modelo.getValueAt(e, 8);
+                                    Articulo art=(Articulo) modelo.getValueAt(e, 8);
                                     jus.setArticulo(art);
-                                    if (jus.getIdJustificacion() != null) {
-                                        jus.actualizarJustificacion(jus);
-                                    } else {
-                                        jus.guardarJustificacion(jus);
-                                    }
+                                    jus.guardarJustificacion(jus);
                                 } else {
-                                    JOptionPane.showMessageDialog(null, "No se puede modificar el motivo de esta tardanza", "Registrar Inasistencia", JOptionPane.ERROR_MESSAGE);
+                                    JOptionPane.showMessageDialog(null, "El motivo es muy largo, por favor reduzcalo", "Registrar Inasistencia", JOptionPane.ERROR_MESSAGE);
                                 }
-                            } else {
-                                JOptionPane.showMessageDialog(null, "El motivo es muy largo, por favor reduzcalo", "Registrar Inasistencia", JOptionPane.ERROR_MESSAGE);
+//                            }else{
+//                                JOptionPane.showMessageDialog(null, "Para guardar una tardanza, necesita un artículo y un motivo", "Registrar Inasistencia", JOptionPane.ERROR_MESSAGE);
                             }
-                        } else {
-                            JOptionPane.showMessageDialog(null, "Para cambiar una inasistencia por una tardanza, necesita un artículo y un motivo", "Registrar Inasistencia", JOptionPane.ERROR_MESSAGE);
                         }
                     }
                 }
-                //            }
                 e++;
             }
             Drive.LimpiarTabla(jTable1);
@@ -491,18 +509,20 @@ public class JFrameInasistencia extends javax.swing.JFrame {
             JComboBox salida = new JComboBox();
             String cadSalida;
             salida.addItem("Asistencias");
-            salida.addItem("Tardanzas");
-            salida.addItem("Inasistencias");
+            salida.addItem("Asistencias justificadas");
+            salida.addItem("Tardanzas injustifiacadas");
+            salida.addItem("Tardanzas justifiacadas");
+            salida.addItem("Inasistencias injustificadas");
+            salida.addItem("Inasistencias justificacas");
             salida.setSize(25, 25);
             JOptionPane.showMessageDialog(null, salida, "¿Que desea imprimir?", JOptionPane.INFORMATION_MESSAGE);
             cadSalida = salida.getSelectedItem().toString();
-            if (cadSalida.equals("Asistencias")) {
-                Drive.mostrarReporte("Inasistencia","Lista de Asistencias","1","0",me);
-            } else if (cadSalida.equals("Tardanzas")) {
-                Drive.mostrarReporte("Inasistencia", "Lista de Tardanzas","1","1",me);
-            } else if (cadSalida.equals("Inasistencias")) {
-                Drive.mostrarReporte("Inasistencia", "Lista de Inasistencias","0","0",me);
-            }
+            if (cadSalida.equals("Asistencias")) {Drive.mostrarReporte("InasistenciasInjustificadas","Lista de Asistencias","1","0",me);}
+            else if (cadSalida.equals("Asistencias justificadas")) {Drive.mostrarReporte("InasistenciaJustificadas", "Lista de Tardanzas","1","0",me);}
+            else if (cadSalida.equals("Tardanzas injustifiacadas")) {Drive.mostrarReporte("InasistenciasInjustificadas", "Lista de Tardanzas","1","1",me);}
+            else if (cadSalida.equals("Tardanzas justifiacadas")) {Drive.mostrarReporte("InasistenciaJustificadas", "Lista de Tardanzas","1","1",me);}
+            else if (cadSalida.equals("Inasistencias injustificadas")) {Drive.mostrarReporte("InasistenciasInjustificadas", "Lista de Inasistencias","0","0",me);}
+            else if (cadSalida.equals("Inasistencias justificacas")) {Drive.mostrarReporte("InasistenciaJustificadas", "Lista de Tardanzas","0","0",me);}
         } catch (Exception Ex) {
             JOptionPane.showMessageDialog(null, "Ingrese correctamente los datos", "Error de impresion", JOptionPane.ERROR_MESSAGE);
         }
@@ -513,6 +533,10 @@ public class JFrameInasistencia extends javax.swing.JFrame {
         this.dispose();
         vp.show();        // TODO add your handling code here:
     }//GEN-LAST:event_formWindowClosing
+
+    private void jTable1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTable1KeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTable1KeyTyped
     /**
      * @param args the command line arguments
      */
