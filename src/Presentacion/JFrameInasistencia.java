@@ -510,19 +510,19 @@ public class JFrameInasistencia extends javax.swing.JFrame {
             String cadSalida;
             salida.addItem("Asistencias");
             salida.addItem("Asistencias justificadas");
-            salida.addItem("Tardanzas injustifiacadas");
-            salida.addItem("Tardanzas justifiacadas");
+            salida.addItem("Tardanzas injustificadas");
+            salida.addItem("Tardanzas justificadas");
             salida.addItem("Inasistencias injustificadas");
-            salida.addItem("Inasistencias justificacas");
+            salida.addItem("Inasistencias justificadas");
             salida.setSize(25, 25);
             JOptionPane.showMessageDialog(null, salida, "¿Que desea imprimir?", JOptionPane.INFORMATION_MESSAGE);
             cadSalida = salida.getSelectedItem().toString();
             if (cadSalida.equals("Asistencias")) {Drive.mostrarReporte("InasistenciasInjustificadas","Lista de Asistencias","1","0",me);}
-            else if (cadSalida.equals("Asistencias justificadas")) {Drive.mostrarReporte("InasistenciaJustificadas", "Lista de Tardanzas","1","0",me);}
-            else if (cadSalida.equals("Tardanzas injustifiacadas")) {Drive.mostrarReporte("InasistenciasInjustificadas", "Lista de Tardanzas","1","1",me);}
-            else if (cadSalida.equals("Tardanzas justifiacadas")) {Drive.mostrarReporte("InasistenciaJustificadas", "Lista de Tardanzas","1","1",me);}
-            else if (cadSalida.equals("Inasistencias injustificadas")) {Drive.mostrarReporte("InasistenciasInjustificadas", "Lista de Inasistencias","0","0",me);}
-            else if (cadSalida.equals("Inasistencias justificacas")) {Drive.mostrarReporte("InasistenciaJustificadas", "Lista de Tardanzas","0","0",me);}
+            else if (cadSalida.equals("Asistencias justificadas")) {Drive.mostrarReporte("InasistenciasJustificadas", "Lista de Asistencias Justificadas","1","0",me);}
+            else if (cadSalida.equals("Tardanzas injustificadas")) {Drive.mostrarReporte("InasistenciasInjustificadas", "Lista de Tardanzas injustificadas","1","1",me);}
+            else if (cadSalida.equals("Tardanzas justificadas")) {Drive.mostrarReporte("InasistenciasJustificadas", "Lista de Tardanzas justificadas","1","1",me);}
+            else if (cadSalida.equals("Inasistencias injustificadas")) {Drive.mostrarReporte("InasistenciasInjustificadas", "Lista de Inasistencias injustificadas","0","0",me);}
+            else if (cadSalida.equals("Inasistencias justificadas")) {Drive.mostrarReporte("InasistenciasJustificadas", "Lista de Inasistencias justificadas","0","0",me);}
         } catch (Exception Ex) {
             JOptionPane.showMessageDialog(null, "Ingrese correctamente los datos", "Error de impresion", JOptionPane.ERROR_MESSAGE);
         }

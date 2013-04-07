@@ -168,8 +168,11 @@ public class Tarea  implements java.io.Serializable {
             unaTareaotro.guardarTareaotro(unaTareaotro);
      }
     
-    public List ObtenerListaDias(){
+    public List[] ObtenerListaDias(){
         List lista = new ArrayList();
+        List listad = new ArrayList();
+//        Dia da=new Dia();
+        
         Date aux=new Date();
         Iterator it=agendas.iterator();
         while(it.hasNext()){
@@ -186,15 +189,20 @@ public class Tarea  implements java.io.Serializable {
                             Dia di=(Dia) itd.next();
                             aux.setDate(di.getDia());
                             int d=aux.getDay();
-                            if(!lista.contains(d)){
-                               lista.add(d);
+                            if(!listad.contains(d)){
+                               lista.add(di);
+                               listad.add(d);
                             }
                         }
                     }
             }
             break;
         } 
-        return lista;
+        List[] lis = new List[2];
+        lis[0].add(listad);
+        lis[1].add(lista);
+        return lis;
+//        return lista;
     }
     
     public Date ObtenerFechaMayor(int anio){

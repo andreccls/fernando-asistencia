@@ -99,7 +99,7 @@ Entre Ríos 2245-67 3300 POSADAS-MNES
 				<text><![CDATA[Instituto "Gutenberg"]]></text>
 			</staticText>
 			<textField>
-				<reportElement mode="Opaque" x="503" y="44" width="282" height="63" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement mode="Opaque" x="282" y="30" width="503" height="77" forecolor="#000000" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle" markup="none">
 					<font size="30" isBold="true"/>
 				</textElement>
