@@ -8,7 +8,9 @@ import Clases.Agenda;
 import Clases.Asistencia;
 import Clases.Controlador;
 import Clases.Dia;
+import Clases.Establecimiento;
 import Clases.Iniciofin;
+import Clases.Perfil;
 import Clases.Personal;
 import Clases.Registroacceso;
 import TareasProgramadas.Programacion;
@@ -76,6 +78,7 @@ public class JFrameInicio extends javax.swing.JFrame {
         }catch( Exception e ){ e.printStackTrace(); }
         Controlador auxDrive = new Controlador();
         try {
+//            Establecimiento col = (Establecimiento)
             if (auxDrive.getPrimerEstablecimiento()== null) {
                 JOptionPane.showMessageDialog(null, "Debe ingresar Colegio");
             } else {
@@ -83,7 +86,33 @@ public class JFrameInicio extends javax.swing.JFrame {
                 Drive = auxDrive;
             }
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, ex.toString());
+//            JOptionPane.showMessageDialog(null, ex.toString());
+            Establecimiento col = new Establecimiento();
+            col.setNombre("GUTENBERG");
+            col.setCalle("ENTRE RIOS");
+            col.setAltura(2267);
+            col.guardarEstablecimiento(col);
+            Perfil per1=new Perfil();
+            per1.setDescripcion("ADMINISTRADOR");
+            per1.setNivel(1);
+            per1.guardarPerfil(per1);
+            Perfil per2=new Perfil();
+            per2.setDescripcion("AUXILIAR");
+            per2.setNivel(2);
+            per2.guardarPerfil(per2);
+            Perfil per3=new Perfil();
+            per3.setDescripcion("DIRECTOR");
+            per3.setNivel(3);
+            per3.guardarPerfil(per3);
+            Perfil per4=new Perfil();
+            per4.setDescripcion("PERSONAL");
+            per4.setNivel(4);
+            per4.guardarPerfil(per4);
+            Drive.PERSISTENCIA.AlterCodigo();
+//            insert into perfil(descripcion,nivel) values ("ADMINISTRADOR",1);
+//            insert into perfil(descripcion,nivel) values ("AUXILIAR",2);
+//            insert into perfil(descripcion,nivel) values ("DIRECTOR",3);
+//            insert into perfil(descripcion,nivel) values ("PERSONAL",4);
         }
         
         initComponents();
@@ -327,15 +356,6 @@ public class JFrameInicio extends javax.swing.JFrame {
      // </editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc="Identidicadores"> 
-//    Timer t = new Timer(3000, new ActionListener() {
-//        public void actionPerformed(ActionEvent e) {
-//            setTemplate(null);
-//            stop();
-//            start();
-//            t.stop();
-//        }
-//    });
-
     public void identificarHuella() throws IOException {
         try {
             boolean ba=runn();

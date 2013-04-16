@@ -148,8 +148,7 @@ public class Establecimiento  implements java.io.Serializable {
     public void guardarEstablecimiento(Establecimiento unEstablecimiento){
         Controlador.getPERSISTENCIA().insert(this);
 
-        JOptionPane.showMessageDialog(null,"El Establecimiento "+ 
-                String.valueOf(unEstablecimiento.getIdEstablecimiento()) +
+        JOptionPane.showMessageDialog(null,"El Establecimiento "+ unEstablecimiento.getNombre() +
                 " se guardo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
     }
     

@@ -833,16 +833,24 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                     }
                                     c++;
                                 }
+                                jTextField3.setText("");
+                                jTextField4.setText("");
+                                Drive.LimpiarTabla(jTable1);
+                                lista.removeAll(lista);
+                                String buscar = (String) jComboBox1.getSelectedItem();
+                                Drive.CargarTablacheck(jTable1, buscar, buffer.toString().toUpperCase(), lista);
+                                Drive = new Controlador();
                             }
                             jFormattedTextField1.setText("");
                             jFormattedTextField2.setText("");
-                            jTextField3.setText("");
-                            jTextField4.setText("");
-                            Drive.LimpiarTabla(jTable1);
-                            lista.removeAll(lista);
-                            String buscar = (String) jComboBox1.getSelectedItem();
-                            Drive.CargarTablacheck(jTable1, buscar, buffer.toString().toUpperCase(), lista);
-                            Drive = new Controlador();
+
+//                            jTextField3.setText("");
+//                            jTextField4.setText("");
+//                            Drive.LimpiarTabla(jTable1);
+//                            lista.removeAll(lista);
+//                            String buscar = (String) jComboBox1.getSelectedItem();
+//                            Drive.CargarTablacheck(jTable1, buscar, buffer.toString().toUpperCase(), lista);
+//                            Drive = new Controlador();
                         }
                         // </editor-fold>
                     } else {

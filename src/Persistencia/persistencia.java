@@ -45,6 +45,16 @@ public class persistencia {
         return session.connection();
     }
     
+    public void AlterCodigo (){
+        String hql = "ALTER TABLE Personal ALTER COLUMN Codigo BLOB";
+//        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+//        items = q.list();
+        tx.commit();
+//        return items;
+    }
+    
     public void insert(Object unObjeto) {
         Transaction tr = session.beginTransaction();
         session.save(unObjeto);
