@@ -76,7 +76,14 @@ public class JFrameReunion extends javax.swing.JFrame {
         jTable1.getColumnModel().getColumn(2).setCellRenderer(modelocentrar);
         jTable1.getTableHeader().setDefaultRenderer(new HeaderRenderer(jTable1));
         Drive.CargarComboDepartamento(jComboBox1);
-        String buscar = (String) jComboBox1.getSelectedItem();
+        String buscar;
+        Object aux= jComboBox1.getSelectedItem();
+        if(aux.equals("TODOS")){
+            buscar=(String) aux;
+        }else{
+            Departamento dep=(Departamento) aux;
+            buscar=dep.getNombre();
+        }
         Drive.CargarTablacheck(jTable1, buscar, buffer.toString().toUpperCase(), lista);
         ///Verificar si vengo desde principal o desde consultar tarea
         if (tar.getIdTarea() != null) {
@@ -153,6 +160,7 @@ public class JFrameReunion extends javax.swing.JFrame {
         jComboBox1 = new javax.swing.JComboBox();
         jLabel25 = new javax.swing.JLabel();
         jLabel26 = new javax.swing.JLabel();
+        jCheckBox1 = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("SISTEMA DE ASISTENCIA DE PERSONAL EDUCATIVO");
@@ -348,6 +356,8 @@ public class JFrameReunion extends javax.swing.JFrame {
 
     jLabel26.setText("*");
 
+    jCheckBox1.setText("Todos");
+
     javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
     jPanel1.setLayout(jPanel1Layout);
     jPanel1Layout.setHorizontalGroup(
@@ -357,15 +367,20 @@ public class JFrameReunion extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addGap(10, 10, 10)
                     .addComponent(jScrollPane1))
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(jLabel26)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(jLabel25)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton1)
-                    .addGap(18, 18, 18)
-                    .addComponent(jButton2)))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(jCheckBox1)
+                            .addGap(0, 0, Short.MAX_VALUE))
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(jLabel26)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jLabel25)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton1)
+                            .addGap(18, 18, 18)
+                            .addComponent(jButton2)))))
             .addGap(10, 10, 10))
         .addGroup(jPanel1Layout.createSequentialGroup()
             .addContainerGap()
@@ -474,8 +489,10 @@ public class JFrameReunion extends javax.swing.JFrame {
                 .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addComponent(jLabel12)
                 .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(jCheckBox1)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -833,9 +850,33 @@ public class JFrameReunion extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField3ActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        Frame vp=new JFramePrincipal(Drive,adm,idsesion);
-        this.dispose();
-        vp.show();        // TODO add your handling code here:
+        if (tar.getIdTarea()==null) {
+            if (!jTextField1.getText().isEmpty() || !jTextField3.getText().isEmpty() || !jTextField4.getText().isEmpty()) {
+                int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea cancelar la reunión?", "", JOptionPane.YES_NO_OPTION);
+                if (JOptionPane.OK_OPTION == confirmado) {
+                    Frame vp = new JFramePrincipal(Drive, adm, idsesion);
+                    this.dispose();
+                    vp.show();
+                }
+            } else {
+                Frame vp = new JFramePrincipal(Drive, adm, idsesion);
+                this.dispose();
+                vp.show();
+            }
+        } else {
+            if (!cambio==true) {
+                int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea cancelar la actualización de la reunión?", "", JOptionPane.YES_NO_OPTION);
+                if (JOptionPane.OK_OPTION == confirmado) {
+                    Frame vp = new JFrameConsultaActividades(Drive, adm, idsesion);
+                    this.dispose();
+                    vp.show();
+                }
+            } else {
+                Frame vp = new JFrameConsultaActividades(Drive, adm, idsesion);
+                this.dispose();
+                vp.show();
+            }
+        }
     }//GEN-LAST:event_formWindowClosing
 
     private void jTextField2KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField2KeyTyped
@@ -974,6 +1015,7 @@ public class JFrameReunion extends javax.swing.JFrame {
     private datechooser.beans.DateChooserCombo dateChooserCombo1;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JComboBox jComboBox2;
     private javax.swing.JFormattedTextField jFormattedTextField1;

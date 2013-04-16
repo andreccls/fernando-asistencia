@@ -84,7 +84,14 @@ public class JFrameExtracurricular extends javax.swing.JFrame {
         jTable1.getColumnModel().getColumn(2).setCellRenderer(modelocentrar); 
         jTable1.getTableHeader().setDefaultRenderer(new HeaderRenderer(jTable1));
         Drive.CargarComboDepartamento(jComboBox1);
-        String buscar=(String) jComboBox1.getSelectedItem();
+        String buscar;
+        Object aux= jComboBox1.getSelectedItem();
+        if(aux.equals("TODOS")){
+            buscar=(String) aux;
+        }else{
+            Departamento dep=(Departamento) aux;
+            buscar=dep.getNombre();
+        }
         Drive.CargarTablacheck(jTable1,buscar, buffer.toString().toUpperCase(),lista);
         ///Verificar si vengo desde principal o desde consultar tarea
         if(tar.getIdTarea()!=null){
@@ -159,6 +166,7 @@ public class JFrameExtracurricular extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JSeparator();
         jLabel25 = new javax.swing.JLabel();
         jLabel26 = new javax.swing.JLabel();
+        jCheckBox1 = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("SISTEMA DE ASISTENCIA DE PERSONAL EDUCATIVO");
@@ -402,6 +410,18 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
 
     jLabel26.setText("*");
 
+    jCheckBox1.setText("Todos");
+    jCheckBox1.addItemListener(new java.awt.event.ItemListener() {
+        public void itemStateChanged(java.awt.event.ItemEvent evt) {
+            jCheckBox1ItemStateChanged(evt);
+        }
+    });
+    jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            jCheckBox1ActionPerformed(evt);
+        }
+    });
+
     javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
     jPanel1.setLayout(jPanel1Layout);
     jPanel1Layout.setHorizontalGroup(
@@ -410,6 +430,9 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
         .addGroup(jPanel1Layout.createSequentialGroup()
             .addContainerGap()
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addComponent(jCheckBox1)
+                    .addGap(0, 0, Short.MAX_VALUE))
                 .addComponent(jScrollPane1)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                     .addComponent(jLabel26)
@@ -519,7 +542,9 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                 .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGap(11, 11, 11)
             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(jCheckBox1)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                 .addComponent(jButton2)
                 .addComponent(jButton1)
@@ -1062,9 +1087,33 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        Frame vp=new JFramePrincipal(Drive,adm,idsesion);
-        this.dispose();
-        vp.show();        // TODO add your handling code here:
+        if (tar.getIdTarea() == null) {
+            if (!jTextField3.getText().isEmpty() || !jTextField4.getText().isEmpty() || !jFormattedTextField1.getText().contains(" ") || !jFormattedTextField2.getText().contains(" ")) {
+                int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea cancelar la tarea extracurricular?", "Registrar Tarea extracurricular", JOptionPane.YES_NO_OPTION);
+                if (JOptionPane.OK_OPTION == confirmado) {
+                    Frame vp = new JFramePrincipal(Drive, adm, idsesion);
+                    this.dispose();
+                    vp.show();
+                }
+            } else {
+                Frame vp = new JFramePrincipal(Drive, adm, idsesion);
+                this.dispose();
+                vp.show();
+            }
+        } else {
+            if (!cambio == true) {
+                int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea cancelar la actualización de la tarea extracurricular?", "", JOptionPane.YES_NO_OPTION);
+                if (JOptionPane.OK_OPTION == confirmado) {
+                    Frame vp = new JFrameConsultaActividades(Drive, adm, idsesion);
+                    this.dispose();
+                    vp.show();
+                }
+            } else {
+                Frame vp = new JFrameConsultaActividades(Drive, adm, idsesion);
+                this.dispose();
+                vp.show();
+            }
+        }
     }//GEN-LAST:event_formWindowClosing
 
     private void jTextField1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyTyped
@@ -1258,6 +1307,30 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
         if(jTextField4.getText().length()==45) evt.consume();
     }//GEN-LAST:event_jTextField4KeyTyped
 
+    private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
+        
+    }//GEN-LAST:event_jCheckBox1ActionPerformed
+
+    private void jCheckBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCheckBox1ItemStateChanged
+        try{
+            if(jCheckBox1.isSelected()){
+                DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+                int cc=0;
+                while (jTable1.getRowCount() != cc) {
+                    Personal per = (Personal) model.getValueAt(cc, 1);
+                    lista.add(per);
+                    cc++;
+                }
+                Drive.LimpiarTabla(jTable1);
+                Drive.CargarTablacheck(jTable1,buffer.toString(), buffer.toString().toUpperCase(),lista);
+            }else{
+                lista.clear();
+                Drive.LimpiarTabla(jTable1);
+                Drive.CargarTablacheck(jTable1,buffer.toString(), buffer.toString().toUpperCase(),lista);
+            }
+        }catch(Exception e){}
+    }//GEN-LAST:event_jCheckBox1ItemStateChanged
+
     /**
      * @param args the command line arguments
      */
@@ -1298,6 +1371,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
     private datechooser.beans.DateChooserCombo dateChooserCombo2;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JFormattedTextField jFormattedTextField1;
     private javax.swing.JFormattedTextField jFormattedTextField2;

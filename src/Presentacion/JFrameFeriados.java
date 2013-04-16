@@ -48,6 +48,12 @@ public class JFrameFeriados extends javax.swing.JFrame {
             jTable1.getColumnModel().getColumn(i).setPreferredWidth(anchos1[i]);
         }
         jTable1.getTableHeader().setDefaultRenderer(new JFrameFeriados.HeaderRenderer(jTable1));
+        int nivel=adm.getPerfil().getNivel();
+        if(nivel==4||nivel==3){
+            jTable1.setEnabled(false);
+            jButton1.setEnabled(false);
+            jButton2.setEnabled(false);
+        }
     }
 
     /**
@@ -207,8 +213,7 @@ public class JFrameFeriados extends javax.swing.JFrame {
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jLabel18)
-                                .addComponent(dateChooserCombo1, javax.swing.GroupLayout.DEFAULT_SIZE, 104, Short.MAX_VALUE))
-                            .addGap(0, 0, Short.MAX_VALUE))
+                                .addComponent(dateChooserCombo1, javax.swing.GroupLayout.DEFAULT_SIZE, 104, Short.MAX_VALUE)))
                         .addComponent(jTextField4)))
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
@@ -246,7 +251,7 @@ public class JFrameFeriados extends javax.swing.JFrame {
                 .addComponent(jButton3)
                 .addComponent(jButton2)
                 .addComponent(jButton1))
-            .addContainerGap(21, Short.MAX_VALUE))
+            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
     );
 
     javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -262,8 +267,8 @@ public class JFrameFeriados extends javax.swing.JFrame {
         layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
         .addGroup(layout.createSequentialGroup()
             .addContainerGap()
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addContainerGap())
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
     );
 
     pack();
@@ -286,17 +291,18 @@ public class JFrameFeriados extends javax.swing.JFrame {
     }
     
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        if(!jTextField4.getText().isEmpty()){
-            int confirmado = JOptionPane.showConfirmDialog(null,"¿Desea cancelar la registración del feriado?","",JOptionPane.YES_NO_OPTION);
-            if (JOptionPane.OK_OPTION == confirmado){
-               Frame vp=new JFramePrincipal(Drive,adm,idsesion);
+        if (!jTextField4.getText().isEmpty()) {
+            int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea la registración del feriado?", "Registrar Feriado", JOptionPane.YES_NO_OPTION);
+            if (JOptionPane.OK_OPTION == confirmado) {
+                Frame vp = new JFramePrincipal(Drive, adm, idsesion);
                 this.dispose();
-               vp.show();
+                vp.show();
             }
-        }else{
-            Frame vp=new JFramePrincipal(Drive,adm,idsesion);
+        } else {
+            Frame vp = new JFramePrincipal(Drive, adm, idsesion);
             this.dispose();
-                vp.show();}
+            vp.show();
+        }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -340,9 +346,18 @@ public class JFrameFeriados extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        Frame vp=new JFramePrincipal(Drive,adm,idsesion);
-        this.dispose();
-        vp.show();        // TODO add your handling code here:
+        if (!jTextField4.getText().isEmpty()) {
+            int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea la registración del feriado?", "Registrar Feriado", JOptionPane.YES_NO_OPTION);
+            if (JOptionPane.OK_OPTION == confirmado) {
+                Frame vp = new JFramePrincipal(Drive, adm, idsesion);
+                this.dispose();
+                vp.show();
+            }
+        } else {
+            Frame vp = new JFramePrincipal(Drive, adm, idsesion);
+            this.dispose();
+            vp.show();
+        }
     }//GEN-LAST:event_formWindowClosing
 
     private void jTextField4KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField4KeyTyped

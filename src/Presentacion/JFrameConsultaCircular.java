@@ -70,6 +70,11 @@ public class JFrameConsultaCircular extends javax.swing.JFrame {
         jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Consultar Circulares"));
 
@@ -333,6 +338,15 @@ public class JFrameConsultaCircular extends javax.swing.JFrame {
         } catch (Exception e) {
         }
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea salir?", "Consultar Circulares", JOptionPane.YES_NO_OPTION);
+        if (JOptionPane.OK_OPTION == confirmado) {
+            Frame vp = new JFramePrincipal(Drive, adm, idsesion);
+            this.dispose();
+            vp.show();
+        }
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments

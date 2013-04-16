@@ -72,7 +72,10 @@ public class JFramePrincipal extends javax.swing.JFrame {
             jMenuItem7.setEnabled(false);//registrar otro
             jMenuItem8.setEnabled(false);//Consultar inasistencia
             jMenuItem9.setEnabled(false);//Consultar actividades
-            jMenuItem10.setEnabled(false);//registrar feriados
+            jMenuItem11.setEnabled(false);//registrar feriados
+            jMenuItem12.setEnabled(false);//registrar feriados
+            jMenuItem13.setEnabled(false);//registrar feriados
+            jMenuItem14.setEnabled(false);//registrar feriados
 //            jMenuItem12.setEnabled(false);//registrar feriados
 //            jMenuItem13.setEnabled(false);//registrar feriados
         }else if(nivel==3){
@@ -120,9 +123,10 @@ public class JFramePrincipal extends javax.swing.JFrame {
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem8 = new javax.swing.JMenuItem();
         jMenuItem9 = new javax.swing.JMenuItem();
-        jMenuItem10 = new javax.swing.JMenuItem();
         jMenuItem12 = new javax.swing.JMenuItem();
         jMenuItem13 = new javax.swing.JMenuItem();
+        jMenu4 = new javax.swing.JMenu();
+        jMenuItem14 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("SISTEMA DE ASISTENCIA DE PERSONAL EDUCATIVO");
@@ -294,14 +298,6 @@ public class JFramePrincipal extends javax.swing.JFrame {
         });
         jMenu2.add(jMenuItem9);
 
-        jMenuItem10.setText("Feriados");
-        jMenuItem10.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem10ActionPerformed(evt);
-            }
-        });
-        jMenu2.add(jMenuItem10);
-
         jMenuItem12.setText("Circulares");
         jMenuItem12.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -319,6 +315,18 @@ public class JFramePrincipal extends javax.swing.JFrame {
         jMenu2.add(jMenuItem13);
 
         jMenuBar1.add(jMenu2);
+
+        jMenu4.setText("Feriado");
+
+        jMenuItem14.setText("Feriados");
+        jMenuItem14.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem14ActionPerformed(evt);
+            }
+        });
+        jMenu4.add(jMenuItem14);
+
+        jMenuBar1.add(jMenu4);
 
         setJMenuBar(jMenuBar1);
 
@@ -394,12 +402,6 @@ public class JFramePrincipal extends javax.swing.JFrame {
         vent2.show();
     }//GEN-LAST:event_jMenuItem9ActionPerformed
 
-    private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
-        JFrameFeriados vent2 = new JFrameFeriados(Drive,adm,idsesion);
-        this.hide();
-        vent2.show();
-    }//GEN-LAST:event_jMenuItem10ActionPerformed
-
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         try {
             int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea salir?", "Cerrar sesión", JOptionPane.OK_CANCEL_OPTION);
@@ -460,6 +462,12 @@ public class JFramePrincipal extends javax.swing.JFrame {
         vent2.show();
     }//GEN-LAST:event_jMenuItem13ActionPerformed
 
+    private void jMenuItem14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem14ActionPerformed
+        JFrameFeriados vent2 = new JFrameFeriados(Drive,adm,idsesion);
+        this.hide();
+        vent2.show();
+    }//GEN-LAST:event_jMenuItem14ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -479,12 +487,13 @@ public class JFramePrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem11;
     private javax.swing.JMenuItem jMenuItem12;
     private javax.swing.JMenuItem jMenuItem13;
+    private javax.swing.JMenuItem jMenuItem14;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;

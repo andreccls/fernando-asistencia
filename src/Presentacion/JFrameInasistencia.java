@@ -83,6 +83,11 @@ public class JFrameInasistencia extends javax.swing.JFrame {
         Icon icono1 = new ImageIcon(fot.getImage().getScaledInstance(jLabel3.getWidth(), jLabel3.getHeight(), Image.SCALE_DEFAULT));
         jLabel3.setIcon(icono1);
         jLabel3.repaint();
+        int nivel=adm.getPerfil().getNivel();
+        if(nivel==4||nivel==3){
+            jTable1.setEnabled(false);
+            jButton2.setEnabled(false);
+        }
     }
 
     /**
@@ -529,9 +534,12 @@ public class JFrameInasistencia extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        Frame vp = new JFramePrincipal(Drive, adm, idsesion);
-        this.dispose();
-        vp.show();        // TODO add your handling code here:
+        int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea volver al menu principal?", "Registrar Inasistencia", JOptionPane.YES_NO_OPTION);
+        if (JOptionPane.OK_OPTION == confirmado) {
+            Frame vp = new JFramePrincipal(Drive, adm, idsesion);
+            this.dispose();
+            vp.show();
+        }
     }//GEN-LAST:event_formWindowClosing
 
     private void jTable1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTable1KeyTyped

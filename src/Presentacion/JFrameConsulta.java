@@ -380,9 +380,12 @@ public class JFrameConsulta extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        Frame vp = new JFramePrincipal(Drive,adm,idsesion);
-        this.dispose();
-        vp.show();
+        int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea volver al menú principal?", "Consultar Personal", JOptionPane.YES_NO_OPTION);
+        if (JOptionPane.OK_OPTION == confirmado) {
+            Frame vp = new JFramePrincipal(Drive,adm,idsesion);
+            this.dispose();
+            vp.show();
+        }
     }//GEN-LAST:event_formWindowClosing
     
 
