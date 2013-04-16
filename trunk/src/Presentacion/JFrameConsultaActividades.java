@@ -12,6 +12,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Frame;
 import java.awt.event.KeyEvent;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import javax.swing.JLabel;
@@ -20,6 +21,12 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.DefaultTableCellRenderer;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -352,12 +359,21 @@ public class JFrameConsultaActividades extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         try{
+            
 //            JOptionPane.showMessageDialog(null,"No se puede realizar el reporte","Error de impresion", JOptionPane.ERROR_MESSAGE);
             bandera=(String) jComboBox2.getSelectedItem();
             if(bandera.equals("Clase")){
-                List consulta=Controlador.getPERSISTENCIA().getTareasClasesTrue(1);
+                List<Tarea> historial = Controlador.getPERSISTENCIA().getTareasClasesTrue(1);
+                HashMap<String, Object> parametros = new HashMap();
+                parametros.clear();
+
+               JasperReport jasper = JasperCompileManager.compileReport("src/Reportes/Reservas_Salon.jrxml");
+               JasperPrint jasperPrint = JasperFillManager.fillReport(jasper, parametros, new  JRBeanCollectionDataSource(historial));
+               JasperViewer jviewer = new JasperViewer(jasperPrint, false);       
+               jviewer.show();
+//                List consulta=;
 //                List consulta=Controlador.getPERSISTENCIA().getTareas();
-                Drive.mostrarReporte("Clases",consulta,"Lista de Clases");
+//                Drive.mostrarReporte("Clases",consulta,"Lista de Clases");
             }else if(bandera.equals("Reunión")){
                 List consulta=Controlador.getPERSISTENCIA().getTareasReunionTrue(1);
                 Drive.mostrarReporte("Reuniones",consulta,"Lista de Reuniones");
@@ -385,9 +401,12 @@ public class JFrameConsultaActividades extends javax.swing.JFrame {
     }//GEN-LAST:event_jComboBox2ItemStateChanged
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        Frame vp=new JFramePrincipal(Drive,adm,idsesion); 
-        this.dispose();
-        vp.show();        // TODO add your handling code here:
+        int confirmado = JOptionPane.showConfirmDialog(null,"¿Desea volver al menú principal?","Consultar Actividad",JOptionPane.YES_NO_OPTION);
+        if (JOptionPane.OK_OPTION == confirmado){
+            Frame vp=new JFramePrincipal(Drive,adm,idsesion); 
+            this.dispose();
+            vp.show();
+        }        // TODO add your handling code here:
     }//GEN-LAST:event_formWindowClosing
 
     private static class HeaderRenderer implements TableCellRenderer {

@@ -313,13 +313,13 @@ public class Personal  implements java.io.Serializable {
     
     public int guardarPersonal(Personal unPersonal){
         Controlador.getPERSISTENCIA().insertstring(this);
-        JOptionPane.showMessageDialog(null,"El personal fue registrado correctamente","Registro de Personal",JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null,"La persona fue registrada correctamente","Registro de Persona",JOptionPane.INFORMATION_MESSAGE);
         return unPersonal.getIdPersonal();
     }
     
     public void actualizarPersonal(Personal unPersonal){
         Controlador.getPERSISTENCIA().update(this);
-        JOptionPane.showMessageDialog(null,"El personal se actualizó correctamente","Actualización de Personal",JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null,"La persona se actualizó correctamente","Actualización de Persona",JOptionPane.INFORMATION_MESSAGE);
     }
 
     public Personaldocente getPersonaldoc(int idperdoc) {

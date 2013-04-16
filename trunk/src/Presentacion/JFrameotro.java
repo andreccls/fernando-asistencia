@@ -81,7 +81,14 @@ public class JFrameotro extends javax.swing.JFrame {
         jTable1.getColumnModel().getColumn(2).setCellRenderer(modelocentrar); 
         jTable1.getTableHeader().setDefaultRenderer(new HeaderRenderer(jTable1));
         Drive.CargarComboDepartamento(jComboBox1);
-        String buscar=(String) jComboBox1.getSelectedItem();
+        String buscar;
+        Object aux= jComboBox1.getSelectedItem();
+        if(aux.equals("TODOS")){
+            buscar=(String) aux;
+        }else{
+            Departamento dep=(Departamento) aux;
+            buscar=dep.getNombre();
+        }
         Drive.CargarTablacheck(jTable1,buscar, buffer.toString().toUpperCase(),lista);
         ///Verificar si vengo desde principal o desde consultar tarea
         if(tar.getIdTarea()!=null){
@@ -155,6 +162,7 @@ public class JFrameotro extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JSeparator();
         jLabel25 = new javax.swing.JLabel();
         jLabel26 = new javax.swing.JLabel();
+        jCheckBox1 = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("SISTEMA DE ASISTENCIA DE PERSONAL EDUCATIVO");
@@ -387,6 +395,8 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
 
     jLabel26.setText("*");
 
+    jCheckBox1.setText("Todos");
+
     javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
     jPanel1.setLayout(jPanel1Layout);
     jPanel1Layout.setHorizontalGroup(
@@ -433,9 +443,6 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                     .addComponent(jLabel16)))
                             .addGap(0, 0, Short.MAX_VALUE))))
                 .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(jScrollPane1))
-                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                     .addGap(79, 79, 79)
                     .addComponent(jTextField1))
                 .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
@@ -455,7 +462,14 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton1)
                     .addGap(18, 18, 18)
-                    .addComponent(jButton2)))
+                    .addComponent(jButton2))
+                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(jCheckBox1)
+                            .addGap(0, 0, Short.MAX_VALUE))
+                        .addComponent(jScrollPane1))))
             .addContainerGap())
     );
 
@@ -523,9 +537,11 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                 .addComponent(jLabel12)
                 .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addComponent(jLabel4))
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addGap(18, 18, 18)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(jCheckBox1)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton2)
@@ -927,9 +943,33 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        Frame vp=new JFramePrincipal(Drive,adm,idsesion);
-        this.dispose();
-        vp.show();
+        if (tar.getIdTarea() == null) {
+            if (!jTextField3.getText().isEmpty() || !jTextField4.getText().isEmpty() || !jFormattedTextField1.getText().contains(" ") || !jFormattedTextField2.getText().contains(" ")) {
+                int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea cancelar la tarea?", "Registrar Tarea", JOptionPane.YES_NO_OPTION);
+                if (JOptionPane.OK_OPTION == confirmado) {
+                    Frame vp = new JFramePrincipal(Drive, adm, idsesion);
+                    this.dispose();
+                    vp.show();
+                }
+            } else {
+                Frame vp = new JFramePrincipal(Drive, adm, idsesion);
+                this.dispose();
+                vp.show();
+            }
+        } else {
+            if (!cambio == true) {
+                int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea cancelar la actualización de la tarea?", "", JOptionPane.YES_NO_OPTION);
+                if (JOptionPane.OK_OPTION == confirmado) {
+                    Frame vp = new JFrameConsultaActividades(Drive, adm, idsesion);
+                    this.dispose();
+                    vp.show();
+                }
+            } else {
+                Frame vp = new JFrameConsultaActividades(Drive, adm, idsesion);
+                this.dispose();
+                vp.show();
+            }
+        }
     }//GEN-LAST:event_formWindowClosing
 
     private void jTextField2KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField2KeyTyped
@@ -1140,6 +1180,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
     private datechooser.beans.DateChooserCombo dateChooserCombo2;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JFormattedTextField jFormattedTextField1;
     private javax.swing.JFormattedTextField jFormattedTextField2;

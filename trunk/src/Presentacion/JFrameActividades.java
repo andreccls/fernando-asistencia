@@ -428,7 +428,6 @@ dateChooserCombo1.addSelectionChangedListener(new datechooser.events.SelectionCh
     }
     
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        //JFrameAsistencia vpp=new JFrameAsistencia();
         this.dispose();
         vp.show();
 }//GEN-LAST:event_jButton1ActionPerformed

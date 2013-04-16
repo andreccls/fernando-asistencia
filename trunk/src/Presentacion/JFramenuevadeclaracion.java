@@ -567,8 +567,14 @@ public class JFramenuevadeclaracion extends javax.swing.JFrame{
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         JFrameActualizarPersonal ventdec = new JFrameActualizarPersonal(Drive,pe,adm,idsesion);
-        this.dispose();
-        ventdec.show();
+        if(!jTextField1.getText().isEmpty()){
+            int confirmado = JOptionPane.showConfirmDialog(null,"¿Desea cancelar la nueva declaración?","",JOptionPane.YES_NO_OPTION);
+            if (JOptionPane.OK_OPTION == confirmado){
+                this.hide();
+                ventdec.show();
+            }
+        }else{this.dispose();
+            ventdec.show();}
     }//GEN-LAST:event_formWindowClosing
 
     private void jTextField1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField1FocusLost

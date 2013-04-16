@@ -64,7 +64,7 @@ public class JFrameClase extends javax.swing.JFrame {
     boolean cambio=false;
     Date mayor=new Date();
     Date menor=new Date();
-    List[] diass=new List[2];
+    List diass=new ArrayList();
     /** Creates new form JFrameClase */
     public JFrameClase(Controlador unDrive, Personal admin,int id,Tarea tarr) {
         this.adm=admin;
@@ -115,37 +115,40 @@ public class JFrameClase extends javax.swing.JFrame {
             }
             SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
             diass=tar.ObtenerListaDias();
-            if(diass[0].contains(1)){
-                jCheckBox1.setSelected(true);
-                diass[0].indexOf(1);
-                Dia dd=(Dia) diass[1].get(diass[0].indexOf(1));
-                jFormattedTextField1.setValue(formateador.format(dd.getIniciofins().iterator().next().getInicio()));
-                jFormattedTextField2.setValue(formateador.format(dd.getIniciofins().iterator().next().getFin()));
+            Iterator itt=diass.iterator();
+            while(itt.hasNext()){
+                Dia dd=(Dia) itt.next();
+                Date aux=new Date();
+                aux.setDate(dd.getDia());
+                aux.setMonth(dd.getMes().getMes());
+                aux.setYear(dd.getMes().getAno().getAno()-1900);
+                int ii=aux.getDay();
+                if(ii==1){
+                    jCheckBox1.setSelected(true);
+                    jFormattedTextField1.setValue(formateador.format(dd.getIniciofins().iterator().next().getInicio()));
+                    jFormattedTextField2.setValue(formateador.format(dd.getIniciofins().iterator().next().getFin()));
+                }else if(ii==2){
+                    jCheckBox2.setSelected(true);
+                    jFormattedTextField3.setValue(formateador.format(dd.getIniciofins().iterator().next().getInicio()));
+                    jFormattedTextField4.setValue(formateador.format(dd.getIniciofins().iterator().next().getFin()));
+                }else if(ii==3){
+                    jCheckBox3.setSelected(true);
+                    jFormattedTextField5.setValue(formateador.format(dd.getIniciofins().iterator().next().getInicio()));
+                    jFormattedTextField6.setValue(formateador.format(dd.getIniciofins().iterator().next().getFin()));
+                }else if(ii==4){
+                    jCheckBox4.setSelected(true);
+                    jFormattedTextField8.setValue(formateador.format(dd.getIniciofins().iterator().next().getInicio()));
+                    jFormattedTextField7.setValue(formateador.format(dd.getIniciofins().iterator().next().getFin()));
+                }else if(ii==5){
+                    jCheckBox5.setSelected(true);
+                    jFormattedTextField9.setValue(formateador.format(dd.getIniciofins().iterator().next().getInicio()));
+                    jFormattedTextField10.setValue(formateador.format(dd.getIniciofins().iterator().next().getFin()));
+                }else if(ii==6){
+                    jCheckBox6.setSelected(true);
+                    jFormattedTextField11.setValue(formateador.format(dd.getIniciofins().iterator().next().getInicio()));
+                    jFormattedTextField12.setValue(formateador.format(dd.getIniciofins().iterator().next().getFin()));
+                }
             }
-            if(diass[0].contains(2)){jCheckBox2.setSelected(true);}
-            if(diass[0].contains(3)){jCheckBox3.setSelected(true);}
-            if(diass[0].contains(4)){jCheckBox4.setSelected(true);}
-            if(diass[0].contains(5)){jCheckBox5.setSelected(true);}
-            if(diass[0].contains(6)){jCheckBox6.setSelected(true);}
-//            Iterator it=diass[1].iterator();
-//            while(it.hasNext()){
-//                Dia dd=(Dia) it.next();
-//            }
-//            
-//            jFormattedTextField1.setValue(formateador.format(ini.getInicio()));
-//            jFormattedTextField2.setValue(formateador.format(ini.getFin()));
-            
-//            Agenda age=tar.getAgendas().iterator().next();
-//            Dia d=age.getDia2(mayor);
-//            Iniciofin ini = d.getIniciofins().iterator().next();
-//            SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
-//            jFormattedTextField1.setValue(formateador.format(ini.getInicio()));
-//            jFormattedTextField2.setValue(formateador.format(ini.getFin()));
-//            Date inicio = formateador.parse(jFormattedTextField1.getText());
-//            Date fin = formateador.parse(jFormattedTextField2.getText());
-            
-            
-            
             Drive.LimpiarTabla(jTable2);
             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
             Iterator it=tar.getAgendas().iterator();
@@ -156,8 +159,6 @@ public class JFrameClase extends javax.swing.JFrame {
                 Object[] fila = new Object[4];
                 fila[0] = per;
                 fila[1] = rev;
-//                fila[2] = formateador.format(inicio);
-//                fila[3] = formateador.format(fin);
                 model.addRow(fila);
             }
             jTable1.setModel(model);
@@ -1932,9 +1933,33 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
     }//GEN-LAST:event_jLabel19MouseClicked
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        Frame vp=new JFramePrincipal(Drive,adm,idsesion);
-        this.dispose();
-        vp.show();
+        if (tar.getIdTarea() == null) {
+            if (!jTextField1.getText().isEmpty() || !jTextField2.getText().isEmpty() || !jTextField3.getText().isEmpty() || !jTextField4.getText().isEmpty()) {
+                int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea cancelar la registración de la clase?", "Registrar clase", JOptionPane.YES_NO_OPTION);
+                if (JOptionPane.OK_OPTION == confirmado) {
+                    Frame vp = new JFramePrincipal(Drive, adm, idsesion);
+                    this.dispose();
+                    vp.show();
+                }
+            } else {
+                Frame vp = new JFramePrincipal(Drive, adm, idsesion);
+                this.dispose();
+                vp.show();
+            }
+        } else {
+            if (!cambio == true) {
+                int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea cancelar la actualización de la clase?", "Actualizar clase", JOptionPane.YES_NO_OPTION);
+                if (JOptionPane.OK_OPTION == confirmado) {
+                    Frame vp = new JFrameConsultaActividades(Drive, adm, idsesion);
+                    this.dispose();
+                    vp.show();
+                }
+            } else {
+                Frame vp = new JFrameConsultaActividades(Drive, adm, idsesion);
+                this.dispose();
+                vp.show();
+            }
+        }
     }//GEN-LAST:event_formWindowClosing
 
     private void dateChooserCombo1OnSelectionChange(datechooser.events.SelectionChangedEvent evt) {//GEN-FIRST:event_dateChooserCombo1OnSelectionChange

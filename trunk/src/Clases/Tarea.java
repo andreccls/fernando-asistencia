@@ -168,7 +168,7 @@ public class Tarea  implements java.io.Serializable {
             unaTareaotro.guardarTareaotro(unaTareaotro);
      }
     
-    public List[] ObtenerListaDias(){
+    public List ObtenerListaDias(){
         List lista = new ArrayList();
         List listad = new ArrayList();
 //        Dia da=new Dia();
@@ -198,10 +198,7 @@ public class Tarea  implements java.io.Serializable {
             }
             break;
         } 
-        List[] lis = new List[2];
-        lis[0].add(listad);
-        lis[1].add(lista);
-        return lis;
+        return lista;
 //        return lista;
     }
     

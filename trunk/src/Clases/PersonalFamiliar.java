@@ -78,17 +78,17 @@ public class PersonalFamiliar  implements java.io.Serializable {
         Controlador.getPERSISTENCIA().insert(this);
         //Controlador.getPERSISTENCIA().update(this);
 
-        JOptionPane.showMessageDialog(null,"El Personal_Familiar "+ 
-                String.valueOf(unPersonalFamiliar.getId().getIdFamiliar()) +
-                " se guardo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+//        JOptionPane.showMessageDialog(null,"El Personal_Familiar "+ 
+//                String.valueOf(unPersonalFamiliar.getId().getIdFamiliar()) +
+//                " se guardo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
     }
     
     public void actualizarPersonalFamiliar(PersonalFamiliar unPersonalFamiliar){
         Controlador.getPERSISTENCIA().update(this);
 
-        JOptionPane.showMessageDialog(null,"El personal_Familiar "+ 
-                String.valueOf(unPersonalFamiliar.getId().getIdFamiliar()) +
-                " se actualizó correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+//        JOptionPane.showMessageDialog(null,"El personal_Familiar "+ 
+//                String.valueOf(unPersonalFamiliar.getId().getIdFamiliar()) +
+//                " se actualizó correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
     }
 
 
