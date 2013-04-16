@@ -70,6 +70,8 @@ public class Controlador {
     public static ConexionJDBC getConexionJDBC() {
         return conexion;
     }
+    
+    
 
     public boolean existeColegio() {
         boolean col = false;
