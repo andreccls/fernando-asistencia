@@ -22,13 +22,19 @@ import Clases.Registroacceso;
 import Clases.Tarea;
 import Clases.Telefono;
 import TareasProgramadas.Programacion;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.LinearGradientPaint;
+import java.awt.Point;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Set;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
@@ -54,8 +60,8 @@ public class JFramePrincipal extends javax.swing.JFrame {
         this.idsesion=id;
         initComponents();
         ImageIcon fott = new ImageIcon("src\\imagenes\\gutenberg.png");
-        Icon icono4 = new ImageIcon(fott.getImage().getScaledInstance(jLabel1.getWidth(), jLabel1.getHeight(), Image.SCALE_DEFAULT));
-        jLabel1.setIcon(icono4);
+        Icon icono = new ImageIcon(fott.getImage().getScaledInstance(jLabel1.getWidth(), jLabel1.getHeight(), Image.SCALE_DEFAULT));
+        jLabel1.setIcon(icono);
         jLabel1.repaint();
         int nivel=0;
         if(adm.getIdPersonal()==null){
@@ -87,6 +93,51 @@ public class JFramePrincipal extends javax.swing.JFrame {
             jMenuItem7.setEnabled(false);//registrar otro
 //            jMenuItem13.setEnabled(false);//registrar feriados
         }
+        ImageIcon fott1 = new ImageIcon("src\\imagenes\\Personal.jpg");
+        Icon icono1 = new ImageIcon(fott1.getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
+        jMenuItem1.setIcon(icono1);
+        ImageIcon fott2 = new ImageIcon("src\\imagenes\\huella.jpg");
+        Icon icono2 = new ImageIcon(fott2.getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
+        jMenuItem2.setIcon(icono2);
+        ImageIcon fott3 = new ImageIcon("src\\imagenes\\clase.jpg");
+        Icon icono3 = new ImageIcon(fott3.getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
+        jMenuItem5.setIcon(icono3);
+        ImageIcon fott4 = new ImageIcon("src\\imagenes\\reunion.jpg");
+        Icon icono4 = new ImageIcon(fott4.getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
+        jMenuItem6.setIcon(icono4);
+        ImageIcon fott5 = new ImageIcon("src\\imagenes\\extra.jpg");
+        Icon icono5 = new ImageIcon(fott5.getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
+        jMenuItem4.setIcon(icono5);
+        ImageIcon fott6 = new ImageIcon("src\\imagenes\\otros.jpg");
+        Icon icono6 = new ImageIcon(fott6.getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
+        jMenuItem7.setIcon(icono6);
+        ImageIcon fott7 = new ImageIcon("src\\imagenes\\circular.jpg");
+        Icon icono7 = new ImageIcon(fott7.getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
+        jMenuItem11.setIcon(icono7);
+        ImageIcon fott8 = new ImageIcon("src\\imagenes\\consultapersonal.jpg");
+        Icon icono8 = new ImageIcon(fott8.getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
+        jMenuItem3.setIcon(icono8);
+        ImageIcon fott9 = new ImageIcon("src\\imagenes\\inasistencia.jpg");
+        Icon icono9 = new ImageIcon(fott9.getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
+        jMenuItem8.setIcon(icono9);
+        ImageIcon fott10 = new ImageIcon("src\\imagenes\\actividades.jpg");
+        Icon icono10 = new ImageIcon(fott10.getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
+        jMenuItem9.setIcon(icono10);
+        ImageIcon fott11 = new ImageIcon("src\\imagenes\\circulares.jpg");
+        Icon icono11 = new ImageIcon(fott11.getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
+        jMenuItem12.setIcon(icono11);
+        ImageIcon fott12 = new ImageIcon("src\\imagenes\\registro.jpg");
+        Icon icono12 = new ImageIcon(fott12.getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
+        jMenuItem13.setIcon(icono12);
+        ImageIcon fott13 = new ImageIcon("src\\imagenes\\feriado.jpg");
+        Icon icono13 = new ImageIcon(fott13.getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
+        jMenuItem14.setIcon(icono13);
+        
+//        ImageIcon fondo = new ImageIcon("src\\imagenes\\fondo.png");
+//        Icon icon = new ImageIcon(fondo.getImage().getScaledInstance(jPanel1.getWidth(), jPanel1.getHeight(), Image.SCALE_DEFAULT));
+//        jPanel1.setIcon(icon);
+//        jPanel1.repaint();
+
     }
     
 
@@ -343,7 +394,7 @@ public class JFramePrincipal extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
     private void jMenu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenu1ActionPerformed
