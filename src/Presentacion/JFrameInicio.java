@@ -108,7 +108,7 @@ public class JFrameInicio extends javax.swing.JFrame {
             per4.setDescripcion("PERSONAL");
             per4.setNivel(4);
             per4.guardarPerfil(per4);
-            Drive.PERSISTENCIA.AlterCodigo();
+//            Drive.PERSISTENCIA.AlterCodigo();
 //            insert into perfil(descripcion,nivel) values ("ADMINISTRADOR",1);
 //            insert into perfil(descripcion,nivel) values ("AUXILIAR",2);
 //            insert into perfil(descripcion,nivel) values ("DIRECTOR",3);

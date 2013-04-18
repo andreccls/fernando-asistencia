@@ -1090,49 +1090,75 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                             Date inn = new Date();
                             Date fii = new Date();
                             List items = new ArrayList();
+                            List listini = new ArrayList();
                             if (jCheckBox1.isSelected()) {
-                                items.add("LUNES");
+                                items.add(1,"LUNES");
                                 inn = formateador.parse(jFormattedTextField1.getText());
                                 fii = formateador.parse(jFormattedTextField2.getText());
+                                Iniciofin aux = new Iniciofin();
+                                aux.setInicio(inn);
+                                aux.setFin(fii);
+                                listini.add(1,aux);
                             }
                             if (jCheckBox2.isSelected()) {
-                                items.add("MARTES");
+                                items.add(2,"MARTES");
                                 inn = formateador.parse(jFormattedTextField3.getText());
                                 fii = formateador.parse(jFormattedTextField4.getText());
+                                Iniciofin aux = new Iniciofin();
+                                aux.setInicio(inn);
+                                aux.setFin(fii);
+                                listini.add(2,aux);
                             }
                             if (jCheckBox3.isSelected()) {
-                                items.add("MIERCOLES");
+                                items.add(3,"MIERCOLES");
                                 inn = formateador.parse(jFormattedTextField5.getText());
                                 fii = formateador.parse(jFormattedTextField6.getText());
+                                Iniciofin aux = new Iniciofin();
+                                aux.setInicio(inn);
+                                aux.setFin(fii);
+                                listini.add(3,aux);
                             }
                             if (jCheckBox4.isSelected()) {
-                                items.add("JUEVES");
+                                items.add(4,"JUEVES");
                                 inn = formateador.parse(jFormattedTextField8.getText());
                                 fii = formateador.parse(jFormattedTextField7.getText());
+                                Iniciofin aux = new Iniciofin();
+                                aux.setInicio(inn);
+                                aux.setFin(fii);
+                                listini.add(4,aux);
                             }
                             if (jCheckBox5.isSelected()) {
-                                items.add("VIERNES");
+                                items.add(5,"VIERNES");
                                 inn = formateador.parse(jFormattedTextField9.getText());
                                 fii = formateador.parse(jFormattedTextField10.getText());
+                                Iniciofin aux = new Iniciofin();
+                                aux.setInicio(inn);
+                                aux.setFin(fii);
+                                listini.add(5,aux);
                             }
                             if (jCheckBox6.isSelected()) {
-                                items.add("SABADO");
+                                items.add(6,"SABADO");
                                 inn = formateador.parse(jFormattedTextField11.getText());
                                 fii = formateador.parse(jFormattedTextField12.getText());
+                                Iniciofin aux = new Iniciofin();
+                                aux.setInicio(inn);
+                                aux.setFin(fii);
+                                listini.add(6,aux);
                             }
                             
-                            Iniciofin aux = new Iniciofin();
-                            aux.setInicio(inn);
-                            aux.setFin(fii);
+                            
                             Date inicioo = dateChooserCombo1.getSelectedDate().getTime();
                             Date finn = dateChooserCombo2.getSelectedDate().getTime();
 //                            String dse = (String) modelo.getValueAt(c, 0);
                             
-                            int[][] cant = person.VerificarDisponibilidadClase(inicioo, finn, aux, items);
-                            int ee = cant[0].length;
-                            int eee = cant[1].length;
-                            int confirmado = JOptionPane.showConfirmDialog(null, "El personal " + person.toString() + " tendrá " + ee + " inasistencias debido a actividades y " + eee + " debido a declaración jurada, ¿Desea continuar?", "Registrar clase", JOptionPane.YES_NO_OPTION);
-                            if (JOptionPane.OK_OPTION == confirmado) {
+//                            int[][] cant = person.VerificarDisponibilidadClase(inicioo, finn, aux, items);
+//                            int ee = cant[0].length;
+//                            int eee = cant[1].length;
+//                            int confirmado = JOptionPane.showConfirmDialog(null, "El personal " + person.toString() + " tendrá " + ee + " inasistencias debido a actividades y " + eee + " debido a declaración jurada, ¿Desea continuar?", "Registrar clase", JOptionPane.YES_NO_OPTION);
+//                            if (JOptionPane.OK_OPTION == confirmado) {
+                            
+                            if (person.DisponibilidadClase(inicioo, finn, listini, items)) {
+                                
                                 AgendaId idage = new AgendaId(person.getIdPersonal(), tarr.getIdTarea());
                                 Revista rev = (Revista) modelo.getValueAt(c, 1);
                                 Agenda age = new Agenda();
@@ -1409,6 +1435,9 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                 }
                                     // </editor-fold>
                                 }
+                            }else{
+                                JOptionPane.showMessageDialog(null,"No existe disponibilidad para el personal: "+person.toString(), "Registrar clase",JOptionPane.ERROR_MESSAGE);
+                                
                             }
                             c++;
                         }
