@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Tareas Extracurriculares" language="groovy" pageWidth="595" pageHeight="842" columnWidth="511" leftMargin="56" rightMargin="28" topMargin="28" bottomMargin="28">
+	<queryString language="hql">
+		<![CDATA[from Tareaextracurricular]]>
+	</queryString>
+	<field name="tarea" class="Clases.Tarea">
+		<fieldDescription><![CDATA[tarea]]></fieldDescription>
+	</field>
+	<field name="diaInicio" class="java.util.Date">
+		<fieldDescription><![CDATA[diaInicio]]></fieldDescription>
+	</field>
+	<field name="diaFin" class="java.util.Date">
+		<fieldDescription><![CDATA[diaFin]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="122" splitType="Stretch">
+			<image>
+				<reportElement x="0" y="0" width="80" height="58"/>
+				<imageExpression class="java.lang.String"><![CDATA["imagenes/gutenberg.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="-1" y="58" width="139" height="20"/>
+				<textElement>
+					<font size="12" isBold="true" isItalic="true" isUnderline="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[Instituto "Gutenberg"]]></text>
+			</staticText>
+			<line>
+				<reportElement mode="Transparent" x="0" y="115" width="511" height="1"/>
+				<graphicElement>
+					<pen lineWidth="3.0" lineStyle="Double"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement mode="Opaque" x="207" y="38" width="301" height="73" forecolor="#000000" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="25" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tareas Extracurriculares]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-1" y="78" width="208" height="35"/>
+				<textElement/>
+				<text><![CDATA[Incorporado a la Enseñanza oficial N º441
+Entre Ríos 2245-67 3300 POSADAS-MNES
+]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="22" splitType="Stretch">
+			<staticText>
+				<reportElement x="1" y="0" width="190" height="22"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nombre]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="192" y="0" width="158" height="22"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Lugar]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="351" y="0" width="80" height="22"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Inicio]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="431" y="0" width="80" height="22"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fin]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="0" width="511" height="1"/>
+			</line>
+			<line>
+				<reportElement x="191" y="0" width="1" height="22"/>
+			</line>
+			<line>
+				<reportElement x="350" y="0" width="1" height="22"/>
+			</line>
+			<line>
+				<reportElement x="430" y="0" width="1" height="22"/>
+			</line>
+			<line>
+				<reportElement x="510" y="0" width="1" height="22"/>
+			</line>
+			<line>
+				<reportElement x="0" y="0" width="1" height="22"/>
+			</line>
+			<line>
+				<reportElement x="0" y="21" width="511" height="1"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="31" splitType="Stretch">
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="431" y="0" width="80" height="31"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.util.Date"><![CDATA[$F{diaFin}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="351" y="0" width="80" height="31"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.util.Date"><![CDATA[$F{diaInicio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="192" y="0" width="158" height="31"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{tarea}.getLugar()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Transparent" x="1" y="0" width="190" height="31"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{tarea}.getNombre()]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="191" y="0" width="1" height="31"/>
+			</line>
+			<line>
+				<reportElement x="0" y="0" width="1" height="31"/>
+			</line>
+			<line>
+				<reportElement x="510" y="0" width="1" height="31"/>
+			</line>
+			<line>
+				<reportElement x="350" y="0" width="1" height="31"/>
+			</line>
+			<line>
+				<reportElement x="430" y="0" width="1" height="31"/>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="21" splitType="Stretch">
+			<textField>
+				<reportElement x="390" y="0" width="80" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["Pagina "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="-1" y="0" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.util.Date"><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="470" y="0" width="40" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>
