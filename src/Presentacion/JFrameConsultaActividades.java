@@ -8,13 +8,18 @@ import Clases.Controlador;
 import Clases.Establecimiento;
 import Clases.Personal;
 import Clases.Tarea;
+import Clases.Tareaclase;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Frame;
+import java.awt.Image;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -64,7 +69,18 @@ public class JFrameConsultaActividades extends javax.swing.JFrame {
             jTable1.getColumnModel().getColumn(i).setPreferredWidth(anchos1[i]);
         }
         jTable1.getTableHeader().setDefaultRenderer(new JFrameConsultaActividades.HeaderRenderer(jTable1));      
-        
+        ImageIcon fott2 = new ImageIcon("src\\imagenes\\no.png");
+        Icon icono2 = new ImageIcon(fott2.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
+        jButton3.setIcon(icono2);
+        ImageIcon fott3 = new ImageIcon("src\\imagenes\\ok.png");
+        Icon icono3 = new ImageIcon(fott3.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
+        jButton4.setIcon(icono3);
+        ImageIcon fott5 = new ImageIcon("src\\imagenes\\Buscar.png");
+        Icon icono5 = new ImageIcon(fott5.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
+        jButton1.setIcon(icono5);
+        ImageIcon fott6 = new ImageIcon("src\\imagenes\\Imprimir2.png");
+        Icon icono6 = new ImageIcon(fott6.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
+        jButton2.setIcon(icono6);
     }
 
     /**
@@ -139,7 +155,7 @@ public class JFrameConsultaActividades extends javax.swing.JFrame {
                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jButton1)
-                .addContainerGap(41, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -151,7 +167,7 @@ public class JFrameConsultaActividades extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(27, Short.MAX_VALUE))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -214,11 +230,11 @@ public class JFrameConsultaActividades extends javax.swing.JFrame {
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jScrollPane1)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jProgressBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2)
+                        .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jButton4)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton2)
                         .addGap(18, 18, 18)
                         .addComponent(jButton3)))
                 .addContainerGap())
@@ -234,12 +250,11 @@ public class JFrameConsultaActividades extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE)
                 .addGap(13, 13, 13)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE, false)
-                        .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton2))
-                    .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton2)
+                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -359,30 +374,49 @@ public class JFrameConsultaActividades extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         try{
-            
-//            JOptionPane.showMessageDialog(null,"No se puede realizar el reporte","Error de impresion", JOptionPane.ERROR_MESSAGE);
             bandera=(String) jComboBox2.getSelectedItem();
+            List<Tarea> historial = Drive.PERSISTENCIA.getTareas();
             if(bandera.equals("Clase")){
-                List<Tarea> historial = Controlador.getPERSISTENCIA().getTareasClasesTrue(1);
-                HashMap<String, Object> parametros = new HashMap();
-                parametros.clear();
+                Iterator it= historial.iterator();
+                List cl=new ArrayList();
+                while(it.hasNext()){
+                    Tarea tar=(Tarea) it.next();
+                    if(tar.getTareaclases().iterator().hasNext() && tar.getEstado()==true){
+                        cl.add(tar.getTareaclases().iterator().next());
+                    }
 
-               JasperReport jasper = JasperCompileManager.compileReport("src/Reportes/Reservas_Salon.jrxml");
-               JasperPrint jasperPrint = JasperFillManager.fillReport(jasper, parametros, new  JRBeanCollectionDataSource(historial));
-               JasperViewer jviewer = new JasperViewer(jasperPrint, false);       
-               jviewer.show();
-//                List consulta=;
-//                List consulta=Controlador.getPERSISTENCIA().getTareas();
-//                Drive.mostrarReporte("Clases",consulta,"Lista de Clases");
+                }
+                Drive.mostrarReporte("Clases",cl,"Lista de Clases");
             }else if(bandera.equals("Reunión")){
-                List consulta=Controlador.getPERSISTENCIA().getTareasReunionTrue(1);
-                Drive.mostrarReporte("Reuniones",consulta,"Lista de Reuniones");
+                Iterator it= historial.iterator();
+                List cl=new ArrayList();
+                while(it.hasNext()){
+                    Tarea tar=(Tarea) it.next();
+                    if(tar.getTareareunions().iterator().hasNext() && tar.getEstado()==true){
+                        cl.add(tar.getTareareunions().iterator().next());
+                    }
+                }
+                Drive.mostrarReporte("Reuniones",cl,"Lista de Reuniones");
             }else if(bandera.equals("Extracurricular")){
-                List consulta=Controlador.getPERSISTENCIA().getTareasExtracurricularTrue(1);
-                Drive.mostrarReporte("Tareas Extracurriculares",consulta,"Lista de Tareas Extracurriculares");
+                Iterator it= historial.iterator();
+                List cl=new ArrayList();
+                while(it.hasNext()){
+                    Tarea tar=(Tarea) it.next();
+                    if(tar.getTareaextracurriculars().iterator().hasNext() && tar.getEstado()==true){
+                        cl.add(tar.getTareaextracurriculars().iterator().next());
+                    }
+                }
+                Drive.mostrarReporte("TareasExtracurriculares",cl,"Lista de Tareas Extracurriculares");
             }else if(bandera.equals("Otro")){
-                List consulta=Controlador.getPERSISTENCIA().getTareasOtroTrue(1);
-                Drive.mostrarReporte("Otras Actividades",consulta,"Lista de Otras Actividades");
+                Iterator it= historial.iterator();
+                List cl=new ArrayList();
+                while(it.hasNext()){
+                    Tarea tar=(Tarea) it.next();
+                    if(tar.getTareaotros().iterator().hasNext() && tar.getEstado()==true){
+                        cl.add(tar.getTareaotros().iterator().next());
+                    }
+                }
+                Drive.mostrarReporte("OtrasActividades",cl,"Lista de Otras Actividades");
             }else if(bandera.equals("Todos")){
                 JOptionPane.showMessageDialog(null,"No se pueden imprimir todas las actividades, por favor seleccione una actividad en especial","Error de impresión", JOptionPane.ERROR_MESSAGE);
             }

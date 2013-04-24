@@ -12,6 +12,7 @@ import Clases.Departamento;
 import Clases.Personal;
 import Clases.Tarea;
 import java.awt.Frame;
+import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -19,6 +20,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -72,6 +75,12 @@ public class JFrameCircular extends javax.swing.JFrame {
             Drive.LimpiarTabla(jTable2);
             Drive.CargarTablacheck(jTable2, buscar, buffer.toString().toUpperCase(), lista);
         }
+        ImageIcon fott1 = new ImageIcon("src\\imagenes\\no.png");
+        Icon icono1 = new ImageIcon(fott1.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
+        jButton1.setIcon(icono1);
+        ImageIcon fott2 = new ImageIcon("src\\imagenes\\ok.png");
+        Icon icono2 = new ImageIcon(fott2.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
+        jButton2.setIcon(icono2);
     }
 
     /**
@@ -325,11 +334,11 @@ public class JFrameCircular extends javax.swing.JFrame {
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addComponent(jCheckBox1)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                .addComponent(jButton1)
-                .addComponent(jButton2)
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                 .addComponent(jLabel25)
-                .addComponent(jLabel26))
+                .addComponent(jLabel26)
+                .addComponent(jButton2)
+                .addComponent(jButton1))
             .addContainerGap(22, Short.MAX_VALUE))
     );
 

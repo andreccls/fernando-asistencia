@@ -1,59 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Asistencias" language="groovy" pageWidth="595" pageHeight="842" columnWidth="539" leftMargin="28" rightMargin="28" topMargin="56" bottomMargin="28">
-	<parameter name="DNI" class="java.lang.String"/>
-	<parameter name="Dia" class="java.lang.String"/>
-	<parameter name="Diafin" class="java.lang.String"/>
-	<parameter name="Mes" class="java.lang.String"/>
-	<parameter name="Ano" class="java.lang.String"/>
-	<queryString>
-		<![CDATA[SELECT
-     tarea.`Nombre` AS tarea_Nombre,
-     ano.`Ano` AS ano_Ano,
-     mes.`Mes` AS mes_Mes,
-     dia.`Dia` AS dia_Dia,
-     iniciofin.`Inicio` AS iniciofin_Inicio,
-     iniciofin.`Fin` AS iniciofin_Fin,
-     personal.`DNI` AS personal_DNI,
-     tarea.`Estado` AS tarea_Estado
-FROM
-     `tarea` tarea INNER JOIN `agenda` agenda ON tarea.`Id_tarea` = agenda.`Id_tarea`
-     INNER JOIN `ano` ano ON agenda.`Id_personal` = ano.`Id_personal`
-     AND agenda.`Id_tarea` = ano.`Id_tarea`
-     INNER JOIN `personal` personal ON agenda.`Id_personal` = personal.`Id_personal`
-     INNER JOIN `mes` mes ON ano.`Id_ano` = mes.`Id_ano`
-     INNER JOIN `dia` dia ON mes.`Id_mes` = dia.`Id_mes`
-     INNER JOIN `iniciofin` iniciofin ON dia.`Id_dia` = iniciofin.`Id_dia`
-WHERE
-	DNI = $P{DNI}
- AND tarea.Estado=1
- AND Ano = $P{Ano}
- AND Mes = $P{Mes}
- AND Dia between $P{Dia} and $P{Diafin}
-order by Dia]]>
+	<parameter name="Titulo" class="java.lang.String"/>
+	<queryString language="hql">
+		<![CDATA[from Iniciofin]]>
 	</queryString>
-	<field name="tarea_Nombre" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
+	<field name="inicio" class="java.util.Date">
+		<fieldDescription><![CDATA[inicio]]></fieldDescription>
 	</field>
-	<field name="ano_Ano" class="java.lang.Integer">
-		<fieldDescription><![CDATA[]]></fieldDescription>
+	<field name="fin" class="java.util.Date">
+		<fieldDescription><![CDATA[fin]]></fieldDescription>
 	</field>
-	<field name="mes_Mes" class="java.lang.Integer">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="dia_Dia" class="java.lang.Integer">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="iniciofin_Inicio" class="java.sql.Time">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="iniciofin_Fin" class="java.sql.Time">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="personal_DNI" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="tarea_Estado" class="java.lang.Boolean">
-		<fieldDescription><![CDATA[]]></fieldDescription>
+	<field name="dia" class="Clases.Dia">
+		<fieldDescription><![CDATA[dia]]></fieldDescription>
 	</field>
 	<background>
 		<band splitType="Stretch"/>
@@ -71,13 +29,13 @@ order by Dia]]>
 				<reportElement x="0" y="0" width="80" height="58"/>
 				<imageExpression class="java.lang.String"><![CDATA["imagenes/gutenberg.png"]]></imageExpression>
 			</image>
-			<staticText>
+			<textField>
 				<reportElement mode="Opaque" x="257" y="50" width="282" height="63" forecolor="#000000" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle" markup="none">
 					<font size="30" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Actividades]]></text>
-			</staticText>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{Titulo}]]></textFieldExpression>
+			</textField>
 			<staticText>
 				<reportElement x="0" y="78" width="199" height="35"/>
 				<textElement/>
@@ -154,22 +112,22 @@ Entre Ríos 2245-67 3300 POSADAS-MNES
 			<textField>
 				<reportElement x="1" y="0" width="197" height="33"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{tarea_Nombre}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{dia}.getMes().getAno().getAgenda().getTarea().getNombre()]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="199" y="0" width="117" height="33"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[($F{dia_Dia}<=9 ? "0"+$F{dia_Dia}:$F{dia_Dia})+"/"+($F{mes_Mes}<=8 ? "0"+(1+$F{mes_Mes}):1+$F{mes_Mes})+"/"+$F{ano_Ano}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[($F{dia}.getDia()<=9 ? "0"+$F{dia}.getDia():$F{dia}.getDia())+"/"+($F{dia}.getMes().getMes()<=8 ? "0"+(1+$F{dia}.getMes().getMes()):1+$F{dia}.getMes().getMes())+"/"+$F{dia}.getMes().getAno().getAno()]]></textFieldExpression>
 			</textField>
 			<textField pattern="HH:mm">
 				<reportElement x="317" y="0" width="110" height="33"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.sql.Time"><![CDATA[$F{iniciofin_Inicio}]]></textFieldExpression>
+				<textFieldExpression class="java.sql.Time"><![CDATA[$F{inicio}]]></textFieldExpression>
 			</textField>
 			<textField pattern="HH:mm">
 				<reportElement x="428" y="0" width="110" height="33"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.sql.Time"><![CDATA[$F{iniciofin_Fin}]]></textFieldExpression>
+				<textFieldExpression class="java.sql.Time"><![CDATA[$F{fin}]]></textFieldExpression>
 			</textField>
 			<line>
 				<reportElement mode="Transparent" x="0" y="33" width="539" height="1"/>

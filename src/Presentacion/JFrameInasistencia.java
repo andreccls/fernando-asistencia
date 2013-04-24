@@ -9,15 +9,22 @@ import Clases.ActivoIniciofin;
 import Clases.Articulo;
 import Clases.Asistencia;
 import Clases.Controlador;
+import Clases.Dia;
 import Clases.Establecimiento;
+import Clases.Iniciofin;
 import Clases.Justificacion;
+import Clases.Mes;
 import Clases.Personal;
+import Clases.Tarea;
+import Clases.Tareaclase;
 import Clases.Tipodoc;
 import java.awt.Component;
 import java.awt.Frame;
 import java.awt.Image;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
@@ -39,11 +46,14 @@ import javax.swing.table.TableColumn;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRExporter;
 import net.sf.jasperreports.engine.JRExporterParameter;
+import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
 import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -88,6 +98,15 @@ public class JFrameInasistencia extends javax.swing.JFrame {
             jTable1.setEnabled(false);
             jButton2.setEnabled(false);
         }
+        ImageIcon fott2 = new ImageIcon("src\\imagenes\\no.png");
+        Icon icono2 = new ImageIcon(fott2.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
+        jButton1.setIcon(icono2);
+        ImageIcon fott3 = new ImageIcon("src\\imagenes\\ok.png");
+        Icon icono3 = new ImageIcon(fott3.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
+        jButton2.setIcon(icono3);
+        ImageIcon fott6 = new ImageIcon("src\\imagenes\\Imprimir2.png");
+        Icon icono6 = new ImageIcon(fott6.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
+        jButton3.setIcon(icono6);
     }
 
     /**
@@ -199,29 +218,28 @@ public class JFrameInasistencia extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton1))
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(18, 18, 18)
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGap(18, 18, 18)
-                                .addComponent(jTextField1)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 822, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(26, Short.MAX_VALUE))
+                            .addComponent(jLabel1)
+                            .addGap(18, 18, 18)
+                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(jLabel2)
+                            .addGap(18, 18, 18)
+                            .addComponent(jTextField1)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jButton2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jButton3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jButton1))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 822, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
         );
 
         jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jButton1, jButton2, jButton3});
@@ -239,17 +257,18 @@ public class JFrameInasistencia extends javax.swing.JFrame {
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(44, 44, 44)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3))
-                .addContainerGap())
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(18, 18, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton1)
+                            .addComponent(jButton2)
+                            .addComponent(jButton3))
+                        .addContainerGap())))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -258,15 +277,15 @@ public class JFrameInasistencia extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -503,32 +522,180 @@ public class JFrameInasistencia extends javax.swing.JFrame {
                 art.guardarArticulo(art);
                 Drive.LimpiarCombo(comboBoxart);
                 Drive.CargarComboArticulo(comboBoxart);
-                comboBoxart.setSelectedItem(art);
+//                comboBoxart.setSelectedItem(art);
             }
         }
     }//GEN-LAST:event_jLabel3MouseClicked
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         try {
-            String me=String.valueOf(Drive.ObtenerMes(jComboBox1.getSelectedItem().toString()));
+            int me=Drive.ObtenerMes(jComboBox1.getSelectedItem().toString());
             JComboBox salida = new JComboBox();
             String cadSalida;
             salida.addItem("Asistencias");
             salida.addItem("Asistencias justificadas");
-            salida.addItem("Tardanzas injustificadas");
+            salida.addItem("Tardanzas");
             salida.addItem("Tardanzas justificadas");
-            salida.addItem("Inasistencias injustificadas");
+            salida.addItem("Inasistencias");
             salida.addItem("Inasistencias justificadas");
             salida.setSize(25, 25);
             JOptionPane.showMessageDialog(null, salida, "¿Que desea imprimir?", JOptionPane.INFORMATION_MESSAGE);
             cadSalida = salida.getSelectedItem().toString();
-            if (cadSalida.equals("Asistencias")) {Drive.mostrarReporte("InasistenciasInjustificadas","Lista de Asistencias","1","0",me);}
-            else if (cadSalida.equals("Asistencias justificadas")) {Drive.mostrarReporte("InasistenciasJustificadas", "Lista de Asistencias Justificadas","1","0",me);}
-            else if (cadSalida.equals("Tardanzas injustificadas")) {Drive.mostrarReporte("InasistenciasInjustificadas", "Lista de Tardanzas injustificadas","1","1",me);}
-            else if (cadSalida.equals("Tardanzas justificadas")) {Drive.mostrarReporte("InasistenciasJustificadas", "Lista de Tardanzas justificadas","1","1",me);}
-            else if (cadSalida.equals("Inasistencias injustificadas")) {Drive.mostrarReporte("InasistenciasInjustificadas", "Lista de Inasistencias injustificadas","0","0",me);}
-            else if (cadSalida.equals("Inasistencias justificadas")) {Drive.mostrarReporte("InasistenciasJustificadas", "Lista de Inasistencias justificadas","0","0",me);}
-        } catch (Exception Ex) {
+            Iterator it=Drive.PERSISTENCIA.getMes(me).iterator();
+            if (cadSalida.equals("Asistencias")) {
+                List inicio= new ArrayList();
+                while(it.hasNext()){
+                    Mes m=(Mes) it.next();
+                    if(m.getAno().getAgenda().getTarea().getEstado()==true && m.getAno().getAgenda().getPersonal().getEstado()==true){
+                        Iterator itt=m.getDias().iterator();
+                        while(itt.hasNext()){
+                            Dia di=(Dia) itt.next();
+                            Iterator ittt=di.getIniciofins().iterator();
+                            while(ittt.hasNext()){
+                                Iniciofin ini=(Iniciofin) ittt.next();
+                                if(ini.getAsistencias().iterator().hasNext()){
+                                    Asistencia as=ini.getAsistencias().iterator().next();
+                                    if(!as.getJustificacions().iterator().hasNext()){
+                                        if(ini.getAsistencias().iterator().next().getEstado()==true&&ini.getAsistencias().iterator().next().getTardanza()==false){
+                                            inicio.add(ini);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                Drive.mostrarReporte("Injustificadas",inicio,"Lista de Asistencias","Asistencias");
+            }
+            else if (cadSalida.equals("Asistencias justificadas")) {
+                List just= new ArrayList();
+                while(it.hasNext()){
+                    Mes m=(Mes) it.next();
+                    if(m.getAno().getAgenda().getTarea().getEstado()==true && m.getAno().getAgenda().getPersonal().getEstado()==true){
+                        Iterator itt=m.getDias().iterator();
+                        while(itt.hasNext()){
+                            Dia di=(Dia) itt.next();
+                            Iterator ittt=di.getIniciofins().iterator();
+                            while(ittt.hasNext()){
+                                Iniciofin ini=(Iniciofin) ittt.next();
+                                if(ini.getAsistencias().iterator().hasNext()){
+                                    Asistencia as=ini.getAsistencias().iterator().next();
+                                    if(as.getJustificacions().iterator().hasNext()){
+                                        if(ini.getAsistencias().iterator().next().getEstado()==true&&ini.getAsistencias().iterator().next().getTardanza()==false){
+                                            Justificacion ju=as.getJustificacions().iterator().next();
+                                            just.add(ju);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                Drive.mostrarReporte("Justificadas",just,"Lista de Asistencias Justificadas","Asistencias Justificadas");
+            }
+            else if (cadSalida.equals("Tardanzas")) {
+                List inicio= new ArrayList();
+                while(it.hasNext()){
+                    Mes m=(Mes) it.next();
+                    if(m.getAno().getAgenda().getTarea().getEstado()==true && m.getAno().getAgenda().getPersonal().getEstado()==true){
+                        Iterator itt=m.getDias().iterator();
+                        while(itt.hasNext()){
+                            Dia di=(Dia) itt.next();
+                            Iterator ittt=di.getIniciofins().iterator();
+                            while(ittt.hasNext()){
+                                Iniciofin ini=(Iniciofin) ittt.next();
+                                if(ini.getAsistencias().iterator().hasNext()){
+                                    Asistencia as=ini.getAsistencias().iterator().next();
+                                    if(!as.getJustificacions().iterator().hasNext()){
+                                        if(ini.getAsistencias().iterator().next().getEstado()==true&&ini.getAsistencias().iterator().next().getTardanza()==true){
+                                            inicio.add(ini);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                Drive.mostrarReporte("Injustificadas",inicio,"Lista de Tardanzas","Tardanzas");
+            }
+            else if (cadSalida.equals("Tardanzas justificadas")) {
+                List just= new ArrayList();
+                while(it.hasNext()){
+                    Mes m=(Mes) it.next();
+                    if(m.getAno().getAgenda().getTarea().getEstado()==true && m.getAno().getAgenda().getPersonal().getEstado()==true){
+                        Iterator itt=m.getDias().iterator();
+                        while(itt.hasNext()){
+                            Dia di=(Dia) itt.next();
+                            Iterator ittt=di.getIniciofins().iterator();
+                            while(ittt.hasNext()){
+                                Iniciofin ini=(Iniciofin) ittt.next();
+                                if(ini.getAsistencias().iterator().hasNext()){
+                                    Asistencia as=ini.getAsistencias().iterator().next();
+                                    if(as.getJustificacions().iterator().hasNext()){
+                                        if(ini.getAsistencias().iterator().next().getEstado()==true&&ini.getAsistencias().iterator().next().getTardanza()==true){
+                                            Justificacion ju=as.getJustificacions().iterator().next();
+                                            just.add(ju);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                Drive.mostrarReporte("Justificadas",just,"Lista de Tardanzas justificadas","Tardanzas justificadas");
+            }
+            else if (cadSalida.equals("Inasistencias")) {
+                List inicio= new ArrayList();
+                while(it.hasNext()){
+                    Mes m=(Mes) it.next();
+                    if(m.getAno().getAgenda().getTarea().getEstado()==true && m.getAno().getAgenda().getPersonal().getEstado()==true){
+                        Iterator itt=m.getDias().iterator();
+                        while(itt.hasNext()){
+                            Dia di=(Dia) itt.next();
+                            Iterator ittt=di.getIniciofins().iterator();
+                            while(ittt.hasNext()){
+                                Iniciofin ini=(Iniciofin) ittt.next();
+                                if(ini.getAsistencias().iterator().hasNext()){
+                                    Asistencia as=ini.getAsistencias().iterator().next();
+                                    if(!as.getJustificacions().iterator().hasNext()){
+                                        if(ini.getAsistencias().iterator().next().getEstado()==false&&ini.getAsistencias().iterator().next().getTardanza()==false){
+                                            inicio.add(ini);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                Drive.mostrarReporte("Injustificadas",inicio,"Lista de Inasistencias injustificadas","Inasistencias injustificadas");
+            }
+            else if (cadSalida.equals("Inasistencias justificadas")) {
+                List just= new ArrayList();
+                while(it.hasNext()){
+                    Mes m=(Mes) it.next();
+                    if(m.getAno().getAgenda().getTarea().getEstado()==true && m.getAno().getAgenda().getPersonal().getEstado()==true){
+                        Iterator itt=m.getDias().iterator();
+                        while(itt.hasNext()){
+                            Dia di=(Dia) itt.next();
+                            Iterator ittt=di.getIniciofins().iterator();
+                            while(ittt.hasNext()){
+                                Iniciofin ini=(Iniciofin) ittt.next();
+                                if(ini.getAsistencias().iterator().hasNext()){
+                                    Asistencia as=ini.getAsistencias().iterator().next();
+                                    if(as.getJustificacions().iterator().hasNext()){
+                                        if(ini.getAsistencias().iterator().next().getEstado()==false&&ini.getAsistencias().iterator().next().getTardanza()==false){
+                                            Justificacion ju=as.getJustificacions().iterator().next();
+                                            just.add(ju);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                Drive.mostrarReporte("Justificadas",just,"Lista de Inasistencias justificadas","Inasistencias justificadas");
+            }
+        }catch (Exception Ex) {
             JOptionPane.showMessageDialog(null, "Ingrese correctamente los datos", "Error de impresion", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton3ActionPerformed

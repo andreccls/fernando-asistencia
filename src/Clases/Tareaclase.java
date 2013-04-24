@@ -31,6 +31,11 @@ public class Tareaclase  implements java.io.Serializable {
        this.aula = aula;
        this.numero = numero;
     }
+    
+//    @Override
+//    public String toString() {
+//        return aula;
+//    }
    
     public TareaclaseId getId() {
         return this.id;

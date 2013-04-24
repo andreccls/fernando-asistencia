@@ -26,9 +26,11 @@ import Clases.Controlador;
 import Clases.Dia;
 import Clases.Establecimiento;
 import Clases.Iniciofin;
+import Clases.Registroacceso;
 import Persistencia.persistencia;
 import java.awt.Component;
 import java.awt.Frame;
+import java.awt.Image;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -69,6 +71,14 @@ public class JFrameActividades extends javax.swing.JFrame {
         jTable2.getColumnModel().getColumn(2).setCellRenderer(modelocentrar); 
         jTable2.getTableHeader().setDefaultRenderer(new HeaderRenderer(jTable2));
         jTable1.getTableHeader().setDefaultRenderer(new HeaderRenderer(jTable1));
+        
+        ImageIcon fott1 = new ImageIcon("src\\imagenes\\no.png");
+        Icon icono1 = new ImageIcon(fott1.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
+        jButton1.setIcon(icono1);
+        ImageIcon fott2 = new ImageIcon("src\\imagenes\\Imprimir2.png");
+        Icon icono2 = new ImageIcon(fott2.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
+        jButton2.setIcon(icono2);
+        jButton5.setIcon(icono2);
     }
 
     /**
@@ -371,9 +381,9 @@ dateChooserCombo1.addSelectionChangedListener(new datechooser.events.SelectionCh
                     .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
             .addComponent(jButton5)
-            .addContainerGap(15, Short.MAX_VALUE))
+            .addContainerGap())
     );
 
     jTabbedPane2.addTab("Registro de asistencias", jPanel3);
@@ -395,7 +405,7 @@ dateChooserCombo1.addSelectionChangedListener(new datechooser.events.SelectionCh
             .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
             .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jButton1)
             .addContainerGap())
     );
     layout.setVerticalGroup(
@@ -403,9 +413,9 @@ dateChooserCombo1.addSelectionChangedListener(new datechooser.events.SelectionCh
         .addGroup(layout.createSequentialGroup()
             .addContainerGap()
             .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 432, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
             .addComponent(jButton1)
-            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addContainerGap())
     );
 
     pack();
@@ -449,6 +459,8 @@ dateChooserCombo1.addSelectionChangedListener(new datechooser.events.SelectionCh
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         try {
+            jButton2.setEnabled(false);
+            jButton1.setEnabled(false);
             JComboBox salida = new JComboBox();
             String cadSalida;
             salida.addItem("DIA");
@@ -458,25 +470,56 @@ dateChooserCombo1.addSelectionChangedListener(new datechooser.events.SelectionCh
             JOptionPane.showMessageDialog(null, salida, "¿Que desea imprimir?", JOptionPane.INFORMATION_MESSAGE);
             cadSalida = salida.getSelectedItem().toString();
             Date fin= dateChooserPanel1.getSelectedDate().getTime();
-            String dia= String.valueOf(fin.getDate());
-            String mes= String.valueOf(fin.getMonth());
-            String ano= String.valueOf(fin.getYear()+1900);
+            List inifin= new ArrayList();
             if (cadSalida.equals("DIA")) {
-                Drive.mostrarReporteRegistro("Actividades",per.getDni(),dia,dia,mes,ano);
-            } else if (cadSalida.equals("SEMANA")) {
-                int a=Drive.restarFechasDias(fin, 7).getDate();
-                if(a<fin.getDate()){
-                    String aux=String.valueOf(a);
-                    Drive.mostrarReporteRegistro("Actividades",per.getDni(),aux,dia,mes,ano);
-                }else{
-                    String aux=String.valueOf(1);
-                    Drive.mostrarReporteRegistro("Actividades",per.getDni(),aux,dia,mes,ano);
+                Iterator<Agenda> ag = per.getAgendas().iterator();
+                while (ag.hasNext()) {
+                    Agenda agen = ag.next();
+                    Iterator<Iniciofin> it = agen.getDia2(fin).getIniciofins().iterator();
+                    while (it.hasNext()) {
+                        Iniciofin ini = (Iniciofin) it.next();
+                        inifin.add(ini);
+                    }
                 }
-            } else if (cadSalida.equals("MES")) {
-                String aux=String.valueOf(1);
-                String diafin= String.valueOf(31);
-                Drive.mostrarReporteRegistro("Actividades",per.getDni(),aux,diafin,mes,ano);
+                Drive.mostrarReporte("Actividades",inifin,"Registro de Actividades","Actividades");
+            }else if (cadSalida.equals("SEMANA")) {
+                int aa=fin.getDay();
+                int a=0;
+                Date aux=Drive.restarFechasDias(fin, aa);
+                while(a!=6){
+                    Iterator<Agenda> ag = per.getAgendas().iterator();
+                    while (ag.hasNext()) {
+                        Agenda agen = ag.next();
+                        Iterator<Iniciofin> it = agen.getDia2(aux).getIniciofins().iterator();
+                        while (it.hasNext()) {
+                            Iniciofin ini = (Iniciofin) it.next();
+                            inifin.add(ini);
+                        }
+                    }
+                    a++;
+                    aux=Drive.sumarFechasDias(aux, 1);
+                }
+                Drive.mostrarReporte("Actividades",inifin,"Registro de Actividades","Actividades");
+            }else if (cadSalida.equals("MES")) {
+                int aa=fin.getDate()-1;
+                Date aux=Drive.restarFechasDias(fin, aa);
+                while(aux.getMonth()== fin.getMonth()){
+                    Iterator<Agenda> ag = per.getAgendas().iterator();
+                    while (ag.hasNext()) {
+                        Agenda agen = ag.next();
+                        Iterator<Iniciofin> it = agen.getDia2(aux).getIniciofins().iterator();
+                        while (it.hasNext()) {
+                            Iniciofin ini = (Iniciofin) it.next();
+                            inifin.add(ini);
+                        }
+                    }
+                    aux=Drive.sumarFechasDias(aux, 1);
+                }
+                
+                Drive.mostrarReporte("Actividades",inifin,"Registro de Actividades","Actividades");
             }
+            jButton2.setEnabled(true);
+            jButton1.setEnabled(true);
         } catch (Exception Ex) {
             JOptionPane.showMessageDialog(null, "Ingrese correctamente los datos", "Error de impresion", JOptionPane.ERROR_MESSAGE);
         }
@@ -510,27 +553,55 @@ dateChooserCombo1.addSelectionChangedListener(new datechooser.events.SelectionCh
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         try {
+            jButton5.setEnabled(false);
+            jButton1.setEnabled(false);
             String combo=jComboBox2.getSelectedItem().toString();
             Date fin= dateChooserCombo1.getSelectedDate().getTime();
-            String dia= String.valueOf(fin.getDate());
-            String mes= String.valueOf(fin.getMonth()+1);
-            String ano= String.valueOf(fin.getYear()+1900);
+            List reg=new ArrayList();
             if (combo.equals("DIA")) {
-                Drive.mostrarReporteRegistro("Registro",per.getDni(),dia,dia,mes,ano);
-            } else if (combo.equals("SEMANA")) {
-                int a=Drive.restarFechasDias(fin, 7).getDate();
-                if(a<fin.getDate()){
-                    String aux=String.valueOf(a);
-                    Drive.mostrarReporteRegistro("Registro",per.getDni(),aux,dia,mes,ano);
-                }else{
-                    String aux=String.valueOf(1);
-                    Drive.mostrarReporteRegistro("Registro",per.getDni(),aux,dia,mes,ano);
+                java.sql.Date sqlDate = new java.sql.Date(fin.getTime());
+                Iterator it= Drive.PERSISTENCIA.getRegistroaccesoss(sqlDate,per.getIdPersonal()).iterator();
+                while(it.hasNext()){
+                    Registroacceso re=(Registroacceso) it.next();
+                    if(re.getFecha().getDate()==fin.getDate()&&re.getFecha().getMonth()==fin.getMonth()&&re.getFecha().getYear()==fin.getYear()){
+                        reg.add(re);
+                    }
                 }
-            } else if (combo.equals("MES")) {
-                String aux=String.valueOf(1);
-                String diafin= String.valueOf(31);
-                Drive.mostrarReporteRegistro("Registro",per.getDni(),aux,diafin,mes,ano);
+                Drive.mostrarReporte("Registro",reg,"Registro de acceso");   
+            }else if (combo.equals("SEMANA")) {
+                Date aux=Drive.restarFechasDias(fin, 7);
+                while(aux.compareTo(fin)<=0){
+                    java.sql.Date sqlDate = new java.sql.Date(aux.getTime());
+                    Iterator it= Drive.PERSISTENCIA.getRegistroaccesoss(sqlDate,per.getIdPersonal()).iterator();
+                    while(it.hasNext()){
+                        Registroacceso re=(Registroacceso) it.next();
+                        if(re.getFecha().getDate()==aux.getDate()&&re.getFecha().getMonth()==aux.getMonth()&&re.getFecha().getYear()==aux.getYear()){
+                            reg.add(re);
+                        }
+                    }
+                    aux=Drive.sumarFechasDias(aux, 1);
+                }
+                Drive.mostrarReporte("Registro",reg,"Registro de acceso");
+            }else if (combo.equals("MES")) {
+                Date aux=fin;
+                while(aux.compareTo(fin)<=0){
+                    if(aux.getMonth()==fin.getMonth()){
+                        java.sql.Date sqlDate = new java.sql.Date(aux.getTime());
+                        Iterator it= Drive.PERSISTENCIA.getRegistroaccesoss(sqlDate,per.getIdPersonal()).iterator();
+                        while(it.hasNext()){
+                            Registroacceso re=(Registroacceso) it.next();
+                            if(re.getFecha().getDate()==aux.getDate()&&re.getFecha().getMonth()==aux.getMonth()&&re.getFecha().getYear()==aux.getYear()){
+                                reg.add(re);
+                            }
+                        }
+                        aux=Drive.restarFechasDias(aux, 1);
+                    }else{break;}
+                }
+                
+                Drive.mostrarReporte("Registro",reg,"Registro de acceso");
             }
+            jButton5.setEnabled(true);
+            jButton1.setEnabled(true);
         } catch (Exception Ex) {
             JOptionPane.showMessageDialog(null, "Ingrese correctamente los datos", "Error de impresion", JOptionPane.ERROR_MESSAGE);
         }

@@ -1,37 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Asistencias" language="groovy" pageWidth="595" pageHeight="842" columnWidth="539" leftMargin="28" rightMargin="28" topMargin="56" bottomMargin="28">
-	<parameter name="DNI" class="java.lang.String"/>
-	<parameter name="Dia" class="java.lang.String"/>
-	<parameter name="Diafin" class="java.lang.String"/>
-	<parameter name="Mes" class="java.lang.String"/>
-	<parameter name="Ano" class="java.lang.String"/>
-	<queryString>
-		<![CDATA[SELECT
-     registroacceso.`Inicio` AS registroacceso_Inicio,
-     registroacceso.`Fin` AS registroacceso_Fin,
-     registroacceso.`Fecha` AS registroacceso_Fecha,
-     personal.`DNI` AS personal_DNI
-FROM
-     `personal` personal INNER JOIN `registroacceso` registroacceso ON personal.`Id_personal` = registroacceso.`Id_personal`
-WHERE
-	DNI= $P{DNI}
- AND Year(Fecha) = $P{Ano}
- AND month(Fecha) = $P{Mes}
- AND day(Fecha) between $P{Dia} and $P{Diafin}
-ORDER BY
-     Fecha ASC]]>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Registro" language="groovy" pageWidth="595" pageHeight="842" columnWidth="539" leftMargin="28" rightMargin="28" topMargin="56" bottomMargin="28">
+	<queryString language="hql">
+		<![CDATA[from Registroacceso]]>
 	</queryString>
-	<field name="registroacceso_Inicio" class="java.sql.Time">
-		<fieldDescription><![CDATA[]]></fieldDescription>
+	<field name="personal" class="Clases.Personal">
+		<fieldDescription><![CDATA[personal]]></fieldDescription>
 	</field>
-	<field name="registroacceso_Fin" class="java.sql.Time">
-		<fieldDescription><![CDATA[]]></fieldDescription>
+	<field name="inicio" class="java.util.Date">
+		<fieldDescription><![CDATA[inicio]]></fieldDescription>
 	</field>
-	<field name="registroacceso_Fecha" class="java.sql.Date">
-		<fieldDescription><![CDATA[]]></fieldDescription>
+	<field name="fin" class="java.util.Date">
+		<fieldDescription><![CDATA[fin]]></fieldDescription>
 	</field>
-	<field name="personal_DNI" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
+	<field name="fecha" class="java.util.Date">
+		<fieldDescription><![CDATA[fecha]]></fieldDescription>
 	</field>
 	<background>
 		<band splitType="Stretch"/>
@@ -134,12 +116,12 @@ Entre Ríos 2245-67 3300 POSADAS-MNES
 			<textField pattern="HH:mm">
 				<reportElement x="370" y="0" width="168" height="18"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.sql.Time"><![CDATA[$F{registroacceso_Fin}]]></textFieldExpression>
+				<textFieldExpression class="java.sql.Time"><![CDATA[($F{fin} == null) ? $F{inicio} : $F{fin}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy">
 				<reportElement x="1" y="0" width="198" height="18"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.util.Date"><![CDATA[$F{registroacceso_Fecha}]]></textFieldExpression>
+				<textFieldExpression class="java.util.Date"><![CDATA[$F{fecha}]]></textFieldExpression>
 			</textField>
 			<line>
 				<reportElement x="199" y="0" width="1" height="18"/>
@@ -153,7 +135,7 @@ Entre Ríos 2245-67 3300 POSADAS-MNES
 			<textField pattern="HH:mm">
 				<reportElement x="200" y="0" width="170" height="18"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.sql.Time"><![CDATA[$F{registroacceso_Inicio}]]></textFieldExpression>
+				<textFieldExpression class="java.sql.Time"><![CDATA[$F{inicio}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

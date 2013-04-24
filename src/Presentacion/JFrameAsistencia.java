@@ -107,6 +107,9 @@ public class JFrameAsistencia extends javax.swing.JFrame {
         jLabel5.repaint();
         Iniciar();
 	start();
+        ImageIcon fott1 = new ImageIcon("src\\imagenes\\Actividades.png");
+        Icon icono1 = new ImageIcon(fott1.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
+        jButton1.setIcon(icono1);
 //        try {
 //            boolean s=Drive.PERSISTENCIA.getUsuarios();
 //            boolean x=s;
