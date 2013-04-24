@@ -156,6 +156,16 @@ public class persistencia {
         return items;
     }
     
+    public List getMes(int mes) throws ArrayStoreException {
+        String hql = "from Mes where mes="+mes;
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
+    }
+    
     public List getCirculares() throws ArrayStoreException {
         String hql = "from Circular";
         List items = new ArrayList();
@@ -186,15 +196,34 @@ public class persistencia {
         return items;
     }
     
-    public List getRegistroaccesos(int id) throws ArrayStoreException {
-        String hql = "from Registroacceso where id_personal="+id;
+//    public List getDiass(int idmes) throws ArrayStoreException {
+//        String hql = "select d.idDia as idDia,d.dia as dia,d.mes  from Dia as d,Mes as m where d.mes.idMes=m.idMes and m.mes="+idmes;
+//        List items = new ArrayList();
+//        Transaction tx = session.beginTransaction();
+//        Query q = session.createQuery(hql);
+//        items = q.list();
+//        tx.commit();
+//        return items;
+//    }
+    
+    public List getRegistroaccesos(int idper) throws ArrayStoreException {
+        String hql = "from Registroacceso where id_personal="+idper;
         List items = new ArrayList();
         Transaction tx = session.beginTransaction();
         Query q = session.createQuery(hql);
         items = q.list();
         tx.commit();
         return items;
-
+    }
+    
+    public List getRegistroaccesoss(Date fecha, int idper) throws ArrayStoreException {
+        String hql = "from Registroacceso where fecha='"+fecha+"' and id_personal="+idper;
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
     }
 
     public List getTareas() throws ArrayStoreException {

@@ -89,6 +89,15 @@ public class jDigitalPersona extends javax.swing.JFrame {
         }
         jTable1.getTableHeader().setDefaultRenderer(new HeaderRenderer(jTable1));
         Drive.Cargarpersonal(jTable1, buffer.toString(), jTextField4.getText().toUpperCase());
+        ImageIcon fott2 = new ImageIcon("src\\imagenes\\no.png");
+        Icon icono2 = new ImageIcon(fott2.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
+        jButton4.setIcon(icono2);
+        ImageIcon fott3 = new ImageIcon("src\\imagenes\\ok.png");
+        Icon icono3 = new ImageIcon(fott3.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
+        jButton12.setIcon(icono3);
+        ImageIcon fott4 = new ImageIcon("src\\imagenes\\Buscar.png");
+        Icon icono4 = new ImageIcon(fott4.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
+        jButton11.setIcon(icono4);
     }
 
     /**
@@ -319,6 +328,8 @@ public class jDigitalPersona extends javax.swing.JFrame {
 
         jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jLabel10, jLabel7, jLabel8, jLabel9});
 
+        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jButton12, jButton4});
+
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
@@ -349,6 +360,8 @@ public class jDigitalPersona extends javax.swing.JFrame {
         );
 
         jPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jLabel10, jLabel7, jLabel8, jLabel9});
+
+        jPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jButton12, jButton4});
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

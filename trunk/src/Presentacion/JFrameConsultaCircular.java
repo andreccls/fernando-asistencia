@@ -11,7 +11,10 @@ import Clases.Personal;
 import Clases.Tarea;
 import java.awt.Component;
 import java.awt.Frame;
+import java.awt.Image;
 import java.util.Iterator;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -47,7 +50,19 @@ public class JFrameConsultaCircular extends javax.swing.JFrame {
         for(int i = 0; i < jTable1.getColumnCount(); i++) {
             jTable1.getColumnModel().getColumn(i).setPreferredWidth(anchos1[i]);
         }
-        jTable1.getTableHeader().setDefaultRenderer(new JFrameConsultaCircular.HeaderRenderer(jTable1));      
+        jTable1.getTableHeader().setDefaultRenderer(new JFrameConsultaCircular.HeaderRenderer(jTable1));    
+        ImageIcon fott2 = new ImageIcon("src\\imagenes\\no.png");
+        Icon icono2 = new ImageIcon(fott2.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
+        jButton2.setIcon(icono2);
+        ImageIcon fott3 = new ImageIcon("src\\imagenes\\ok.png");
+        Icon icono3 = new ImageIcon(fott3.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
+        jButton3.setIcon(icono3);
+        ImageIcon fott4 = new ImageIcon("src\\imagenes\\Eliminar.png");
+        Icon icono4 = new ImageIcon(fott4.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
+        jButton4.setIcon(icono4);
+        ImageIcon fott5 = new ImageIcon("src\\imagenes\\Buscar.png");
+        Icon icono5 = new ImageIcon(fott5.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
+        jButton1.setIcon(icono5);
     }
 
     /**
@@ -202,13 +217,13 @@ public class JFrameConsultaCircular extends javax.swing.JFrame {
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                            .addComponent(jButton4)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                             .addComponent(jButton3)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(jButton2)))))
+                            .addGap(18, 18, 18)
+                            .addComponent(jButton4)
+                            .addGap(18, 18, 18)
+                            .addComponent(jButton2))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE))))
             .addContainerGap())
     );
 

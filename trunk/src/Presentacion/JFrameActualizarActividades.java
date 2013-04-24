@@ -11,6 +11,7 @@ import Clases.Personal;
 import Clases.Tarea;
 import java.awt.Component;
 import java.awt.Frame;
+import java.awt.Image;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -18,6 +19,8 @@ import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultCellEditor;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
@@ -132,6 +135,18 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
             jTable1.setEnabled(false);
         }
         Drive.CargarTablaActividad(jTable1, tar);
+        ImageIcon fott1 = new ImageIcon("src\\imagenes\\no.png");
+        Icon icono1 = new ImageIcon(fott1.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
+        jButton2.setIcon(icono1);
+        ImageIcon fott2 = new ImageIcon("src\\imagenes\\ok.png");
+        Icon icono2 = new ImageIcon(fott2.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
+        jButton1.setIcon(icono2);
+        ImageIcon fott3 = new ImageIcon("src\\imagenes\\Editar.png");
+        Icon icono3 = new ImageIcon(fott3.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
+        jButton4.setIcon(icono3);
+        ImageIcon fott4 = new ImageIcon("src\\imagenes\\Eliminar.png");
+        Icon icono4 = new ImageIcon(fott4.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
+        jButton3.setIcon(icono4);
     }
 
     

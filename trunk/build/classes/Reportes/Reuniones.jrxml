@@ -1,27 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Reuniones" language="groovy" pageWidth="595" pageHeight="842" columnWidth="511" leftMargin="56" rightMargin="28" topMargin="28" bottomMargin="28">
-	<queryString>
-		<![CDATA[SELECT
-     tarea.`Nombre` AS tarea_Nombre,
-     tarea.`Lugar` AS tarea_Lugar,
-     tareareunion.`Motivo` AS tareareunion_Motivo,
-     tareareunion.`Caracter` AS tareareunion_Caracter
-FROM
-     `tarea` tarea INNER JOIN `tareareunion` tareareunion ON tarea.`Id_tarea` = tareareunion.`Id_tarea`
-WHERE
-     tarea.estado = 1]]>
+	<queryString language="hql">
+		<![CDATA[from Tareareunion]]>
 	</queryString>
-	<field name="tarea_Nombre" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
+	<field name="tarea" class="Clases.Tarea">
+		<fieldDescription><![CDATA[tarea]]></fieldDescription>
 	</field>
-	<field name="tarea_Lugar" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
+	<field name="caracter" class="java.lang.String">
+		<fieldDescription><![CDATA[caracter]]></fieldDescription>
 	</field>
-	<field name="tareareunion_Motivo" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="tareareunion_Caracter" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
+	<field name="motivo" class="java.lang.String">
+		<fieldDescription><![CDATA[motivo]]></fieldDescription>
 	</field>
 	<background>
 		<band splitType="Stretch"/>
@@ -64,92 +53,92 @@ Entre Ríos 2245-67 3300 POSADAS-MNES
 	<columnHeader>
 		<band height="23" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="1" width="154" height="20"/>
+				<reportElement x="0" y="0" width="154" height="23"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Nombre]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="154" y="2" width="147" height="20"/>
+				<reportElement x="154" y="0" width="117" height="23"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Lugar]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="301" y="2" width="79" height="20"/>
+				<reportElement x="272" y="0" width="79" height="23"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Caracter]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="381" y="2" width="130" height="20"/>
+				<reportElement x="352" y="0" width="159" height="23"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Motivo]]></text>
 			</staticText>
 			<line>
-				<reportElement x="0" y="1" width="511" height="1"/>
+				<reportElement x="0" y="0" width="511" height="1"/>
 			</line>
 			<line>
-				<reportElement x="154" y="1" width="1" height="20"/>
+				<reportElement x="154" y="0" width="1" height="23"/>
 			</line>
 			<line>
-				<reportElement x="300" y="1" width="1" height="20"/>
+				<reportElement x="271" y="0" width="1" height="23"/>
 			</line>
 			<line>
-				<reportElement x="380" y="1" width="1" height="20"/>
+				<reportElement x="351" y="0" width="1" height="23"/>
 			</line>
 			<line>
-				<reportElement x="510" y="1" width="1" height="20"/>
+				<reportElement x="510" y="0" width="1" height="23"/>
 			</line>
 			<line>
-				<reportElement x="-1" y="1" width="1" height="20"/>
+				<reportElement x="-1" y="0" width="1" height="23"/>
 			</line>
 			<line>
-				<reportElement x="0" y="21" width="511" height="1"/>
+				<reportElement x="0" y="22" width="511" height="1"/>
 			</line>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="20" splitType="Stretch">
+		<band height="32" splitType="Stretch">
 			<textField>
-				<reportElement mode="Transparent" x="0" y="0" width="154" height="20"/>
+				<reportElement mode="Transparent" x="0" y="0" width="154" height="32"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{tarea_Nombre}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{tarea}.getNombre()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="155" y="0" width="145" height="20"/>
+				<reportElement x="155" y="0" width="116" height="32"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{tarea_Lugar}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{tarea}.getLugar()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="301" y="0" width="79" height="20"/>
+				<reportElement x="272" y="0" width="79" height="32"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{tareareunion_Caracter}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{caracter}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="381" y="0" width="130" height="20"/>
+				<reportElement x="352" y="0" width="159" height="32"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{tareareunion_Motivo}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{motivo}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="-1" y="-1" width="1" height="21"/>
+				<reportElement x="-1" y="0" width="1" height="32"/>
 			</line>
 			<line>
-				<reportElement x="510" y="-1" width="1" height="21"/>
+				<reportElement x="510" y="0" width="1" height="32"/>
 			</line>
 			<line>
-				<reportElement x="300" y="-1" width="1" height="21"/>
+				<reportElement x="271" y="0" width="1" height="32"/>
 			</line>
 			<line>
-				<reportElement x="154" y="-1" width="1" height="21"/>
+				<reportElement x="154" y="0" width="1" height="32"/>
 			</line>
 			<line>
-				<reportElement x="380" y="-1" width="1" height="21"/>
+				<reportElement x="351" y="0" width="1" height="32"/>
 			</line>
 		</band>
 	</detail>

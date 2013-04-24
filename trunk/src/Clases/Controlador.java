@@ -4,7 +4,6 @@
  */
 package Clases;
 
-import Persistencia.ConexionJDBC;
 import Persistencia.persistencia;
 import java.awt.Label;
 import java.io.FileNotFoundException;
@@ -52,24 +51,18 @@ import net.sf.jasperreports.view.JasperViewer;
 public class Controlador {
 
     public static persistencia PERSISTENCIA;
-    public static ConexionJDBC conexion;
 
     public Controlador() {
-        try {
+        
             PERSISTENCIA = new persistencia();
-            conexion = new ConexionJDBC();
-        } catch (SQLException ex) {
-            Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
     }
 
     public static persistencia getPERSISTENCIA() {
         return PERSISTENCIA;
     }
 
-    public static ConexionJDBC getConexionJDBC() {
-        return conexion;
-    }
+    
     
     
 
@@ -743,9 +736,8 @@ public class Controlador {
                     }
 
                 } else if (buscar.equals("SEMANA")) {
-                    int c = 0;
-                    Date aux=dia;
-                    while (c != 7) {
+                    Date aux=restarFechasDias(dia, 7);
+                    while (aux.compareTo(dia)<=0) {
                         if (reg.getFecha().getYear() == aux.getYear() && reg.getFecha().getMonth() == aux.getMonth() && reg.getFecha().getDate() == aux.getDate()) {
                             Object fila[] = new Object[3];
                             SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
@@ -759,8 +751,7 @@ public class Controlador {
                             }
                             model.addRow(fila);
                         }
-                        aux = restarFechasDias(aux, 1);
-                        c++;
+                        aux = sumarFechasDias(aux, 1);
                     }
                 }else if (buscar.equals("MES")) {
                     if (reg.getFecha().getYear() == dia.getYear() && reg.getFecha().getMonth() == dia.getMonth()) {
@@ -1388,170 +1379,38 @@ public class Controlador {
         }
         return band;
     }
-
-//     public void mostrarReporte(String report, List consulta,String titulo) {
-//        try {
-//            String SO = System.getProperty("os.name");
-//            String master;
-//            if (SO.toUpperCase().equals("LINUX")) {
-//                master = System.getProperty("user.dir") + "/src/Reportes/" + report + ".jasper";
-//            } else {
-//                master = System.getProperty("user.dir") + "\\src\\Reportes\\" + report + ".jasper";
-//            }
-//            System.out.println("Dirección del Reporte en disco: " + master);
-//            if (master == null) {
-//                //javax.swing.JOptionPane msj=new javax.swing.JOptionPane() ;
-//                JOptionPane.showMessageDialog(null, "No se encontro el Reporte", "Error", 2, null);
-//            }
-//            //--------------------------------------------------------------------------------------------------------
-//            JasperReport masterReport = null;
-//            try {
-//                masterReport = (JasperReport) JRLoader.loadObject(master);
-//
-//            } catch (JRException e) {
-//                //javax.swing.JOptionPane msj=new javax.swing.JOptionPane() ;
-//                JOptionPane.showMessageDialog(null, "Error al cargar el reporte", "Error", 2, null);
-//            }
-////            Map parametro = new HashMap();
-////            parametro = null;
-//            JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(consulta);
-////            HibernateQueryResultDataSource ds = new HibernateQueryResultDataSource(usuarios,campos);
-//            //Reporte diseñado y compilado con iReport
-//            JasperPrint jasperPrint = JasperFillManager.fillReport(masterReport, new HashMap(),ds);
-//            //Se lanza el Viewer de Jasper, no termina aplicación al salir
-//            JasperViewer jviewer = new JasperViewer(jasperPrint, false);
-//            jviewer.setTitle(titulo);
-//            jviewer.setVisible(true);
-//            // CerrarConex();
-//        } catch (Exception j) {
-//            //javax.swing.JOptionPane msj=new javax.swing.JOptionPane() ;
-//            JOptionPane.showMessageDialog(null, j.toString(), "Error", 2, null);
-//            System.out.println(j.toString());
-//        }
-//
-//    }
+  
     public static void mostrarReporte(String report, List consulta, String titulo) throws FileNotFoundException, JRException {
-
-        //String report = "Clases";
-        JasperReport jasperReport = null;
-//        String path = "D:/JasperTemplates/";
         String path = System.getProperty("user.dir") + "\\src\\Reportes\\";
-        JasperPrint jasperPrint = null;
-
-        String SO = System.getProperty("os.name");
-//        String path;
-
-//        if (SO.toUpperCase().equals("LINUX")) {
-//            path = System.getProperty("user.dir") + "/src/Reportes/" + report + ".jasper";
-//        } else {
-//            path = System.getProperty("user.dir") + "\\src\\Reportes\\" + report + ".jasper";
-//        }
-//        System.out.println("Dirección del Reporte en disco: " + path);
-//        if (path == null) {
-//            //javax.swing.JOptionPane msj=new javax.swing.JOptionPane() ;
-//            JOptionPane.showMessageDialog(null, "No se encontro el Reporte", "Error", 2, null);
-//        }
-
-
-        //Gettign the connection object
-        Connection conn = ConexionJDBC.getConnection();
-
-
-        //Provide path for your JRXML template.
-//        String templateName = path + "ReportSQL.jrxml";
         String templateName = path + report + ".jrxml";
+        HashMap parametros = new HashMap();
+        parametros.clear();
 
-        //Provide path for your final pdf file.
-//        String destinationFile = path + "ReportSQL.pdf";
-//        String destinationFile = path + report + ".pdf";
-
-        //Compiling the template.
-        jasperReport = JasperCompileManager.compileReport(templateName);
-
-        //Sending a parameter with the logged in user name as value
-        HashMap parameters = new HashMap();
-        
-
-        // Filling the report template with data
-        jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, conn);
-
-        //Sending a Complete print of the report.
-//        JasperPrintManager.printReport(jasperPrint, true);
-
+        JasperReport jasper = JasperCompileManager.compileReport(templateName);
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasper, parametros, new JRBeanCollectionDataSource(consulta));
         JasperViewer jviewer = new JasperViewer(jasperPrint, false);
-        jviewer.setTitle(report);
-        jviewer.setVisible(true);
-
-        //Exporting it to an PDF
-//        JasperExportManager.exportReportToPdfFile(jasperPrint, destinationFile);
-
+        if(jasperPrint.getPages().iterator().hasNext()){
+            jviewer.setTitle(titulo);
+            jviewer.show();
+        }
     }
     
-    public static void mostrarReporte(String report, String titulo,String estado,String tardanza,String mes) throws FileNotFoundException, JRException {
-        JasperReport jasperReport = null;
-
+    public static void mostrarReporte(String report, List consulta, String titulo, String label) throws FileNotFoundException, JRException {
         String path = System.getProperty("user.dir") + "\\src\\Reportes\\";
-        JasperPrint jasperPrint = null;
-
-        String SO = System.getProperty("os.name");
-        Connection conn = ConexionJDBC.getConnection();
         String templateName = path + report + ".jrxml";
-        jasperReport = JasperCompileManager.compileReport(templateName);
-        Map<String, String> parametros = new HashMap<String, String>();
+        HashMap parametros = new HashMap();
+        parametros.clear();
+        parametros.put("Titulo", label);
+
+        JasperReport jasper = JasperCompileManager.compileReport(templateName);
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasper, parametros, new JRBeanCollectionDataSource(consulta));
+        JasperViewer jviewer = new JasperViewer(jasperPrint, false);
+        if(jasperPrint.getPages().iterator().hasNext()){
+            jviewer.setTitle(titulo);
+            jviewer.show();
+        }
         
-        parametros.put("Titulo", titulo);
-        parametros.put("Estado", estado);
-        parametros.put("Tardanza", tardanza);
-        parametros.put("Mes", mes);
-        jasperPrint = JasperFillManager.fillReport(jasperReport, parametros, conn);
-        JasperViewer jviewer = new JasperViewer(jasperPrint, false);
-        jviewer.setTitle(report);
-        jviewer.setVisible(true);
     }
-    
-    public static void mostrarReporteRegistro(String report, String DNI, String Dia,String Diafin,String Mes,String Ano) throws FileNotFoundException, JRException {
-        JasperReport jasperReport = null;
-
-        String path = System.getProperty("user.dir") + "\\src\\Reportes\\";
-        JasperPrint jasperPrint = null;
-
-        String SO = System.getProperty("os.name");
-        Connection conn = ConexionJDBC.getConnection();
-        String templateName = path + report + ".jrxml";
-        jasperReport = JasperCompileManager.compileReport(templateName);
-        Map<String, String> parametros = new HashMap<String, String>();
-        parametros.put("DNI", DNI);
-        parametros.put("Dia", Dia);
-        parametros.put("Diafin", Diafin);
-        parametros.put("Mes", Mes);
-        parametros.put("Ano", Ano);
-        jasperPrint = JasperFillManager.fillReport(jasperReport, parametros, conn);
-        JasperViewer jviewer = new JasperViewer(jasperPrint, false);
-        jviewer.setTitle(report);
-        jviewer.setVisible(true);
-    }
-//    public static void mostrarReporteActividades(String report, String DNI, String Dia,String Diafin,String Mes,String Ano) throws FileNotFoundException, JRException {
-//        JasperReport jasperReport = null;
-//
-//        String path = System.getProperty("user.dir") + "\\src\\Reportes\\";
-//        JasperPrint jasperPrint = null;
-//
-//        String SO = System.getProperty("os.name");
-//        Connection conn = ConexionJDBC.getConnection();
-//        String templateName = path + report + ".jrxml";
-//        jasperReport = JasperCompileManager.compileReport(templateName);
-//        Map<String, String> parametros = new HashMap<String, String>();
-//        parametros.put("Personal", DNI);
-//        parametros.put("Dia", Dia);
-//        parametros.put("Diafin", Diafin);
-//        parametros.put("Mes", Mes);
-//        parametros.put("Ano", Ano);
-//        jasperPrint = JasperFillManager.fillReport(jasperReport, parametros, conn);
-//        JasperViewer jviewer = new JasperViewer(jasperPrint, false);
-//        jviewer.setTitle(report);
-//        jviewer.setVisible(true);
-//    }
-
     
     public Circular VerificarCircular(Personal per, Date hoy) {
         Circular circ = new Circular();

@@ -11,9 +11,12 @@ import Clases.Feriado;
 import Clases.Personal;
 import java.awt.Component;
 import java.awt.Frame;
+import java.awt.Image;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -54,6 +57,16 @@ public class JFrameFeriados extends javax.swing.JFrame {
             jButton1.setEnabled(false);
             jButton2.setEnabled(false);
         }
+        ImageIcon fott2 = new ImageIcon("src\\imagenes\\no.png");
+        Icon icono2 = new ImageIcon(fott2.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
+        jButton3.setIcon(icono2);
+        ImageIcon fott3 = new ImageIcon("src\\imagenes\\ok.png");
+        Icon icono3 = new ImageIcon(fott3.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
+        jButton1.setIcon(icono3);
+        ImageIcon fott4 = new ImageIcon("src\\imagenes\\Eliminar.png");
+        Icon icono4 = new ImageIcon(fott4.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
+        jButton2.setIcon(icono4);
+        
     }
 
     /**

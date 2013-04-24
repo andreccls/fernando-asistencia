@@ -6,9 +6,12 @@ package Presentacion;
 
 import Clases.Controlador;
 import Clases.Personal;
+import Clases.Registroacceso;
 import java.awt.Frame;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import javax.swing.JOptionPane;
 
@@ -384,10 +387,52 @@ public class JFrameRegistro extends javax.swing.JFrame {
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         try {
-//            List consulta=Controlador.getPERSISTENCIA().getPersonalesTrue(1);
-//            Drive.mostrarReporte("ListaPersonal",consulta,"Lista Personal");
-        } catch (Exception ex) {
-            JOptionPane.showConfirmDialog(null, "¿Desea volver al menú principal?", "Consultar Personal", JOptionPane.ERROR_MESSAGE);
+            String combo=jComboBox2.getSelectedItem().toString();
+            Date fin= dateChooserCombo1.getSelectedDate().getTime();
+            List reg=new ArrayList();
+            if (combo.equals("DIA")) {
+                java.sql.Date sqlDate = new java.sql.Date(fin.getTime());
+                Iterator it= Drive.PERSISTENCIA.getRegistroaccesoss(sqlDate,per.getIdPersonal()).iterator();
+                while(it.hasNext()){
+                    Registroacceso re=(Registroacceso) it.next();
+                    if(re.getFecha().getDate()==fin.getDate()&&re.getFecha().getMonth()==fin.getMonth()&&re.getFecha().getYear()==fin.getYear()){
+                        reg.add(re);
+                    }
+                }
+                Drive.mostrarReporte("Registro",reg,"Registro de acceso");   
+            }else if (combo.equals("SEMANA")) {
+                Date aux=Drive.restarFechasDias(fin, 7);
+                while(aux.compareTo(fin)<=0){
+                    java.sql.Date sqlDate = new java.sql.Date(aux.getTime());
+                    Iterator it= Drive.PERSISTENCIA.getRegistroaccesoss(sqlDate,per.getIdPersonal()).iterator();
+                    while(it.hasNext()){
+                        Registroacceso re=(Registroacceso) it.next();
+                        if(re.getFecha().getDate()==aux.getDate()&&re.getFecha().getMonth()==aux.getMonth()&&re.getFecha().getYear()==aux.getYear()){
+                            reg.add(re);
+                        }
+                    }
+                    aux=Drive.sumarFechasDias(aux, 1);
+                }
+                Drive.mostrarReporte("Registro",reg,"Registro de acceso");
+            }else if (combo.equals("MES")) {
+                Date aux=fin;
+                while(aux.compareTo(fin)<=0){
+                    if(aux.getMonth()==fin.getMonth()){
+                        java.sql.Date sqlDate = new java.sql.Date(aux.getTime());
+                        Iterator it= Drive.PERSISTENCIA.getRegistroaccesoss(sqlDate,per.getIdPersonal()).iterator();
+                        while(it.hasNext()){
+                            Registroacceso re=(Registroacceso) it.next();
+                            if(re.getFecha().getDate()==aux.getDate()&&re.getFecha().getMonth()==aux.getMonth()&&re.getFecha().getYear()==aux.getYear()){
+                                reg.add(re);
+                            }
+                        }
+                        aux=Drive.restarFechasDias(aux, 1);
+                    }else{break;}
+                }
+                Drive.mostrarReporte("Registro",reg,"Registro de acceso");
+            }
+        } catch (Exception Ex) {
+            JOptionPane.showMessageDialog(null, "Ingrese correctamente los datos", "Error de impresion", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton5ActionPerformed
 
