@@ -635,8 +635,8 @@ public class JFrameReunion extends javax.swing.JFrame {
                                             Agenda age = new Agenda();
                                             age.setId(ida);
                                             age.setPersonal(per);
-                                            Revista rev = (Revista) Drive.PERSISTENCIA.getSitRevista().get(0);
-                                            age.setRevista(rev);
+//                                            Revista rev = (Revista) Drive.PERSISTENCIA.getSitRevista().get(0);
+//                                            age.setRevista(rev);
                                             age.setTarea(tarr);
                                             age.setComentario(null);
                                             age.guardarAgenda(age);
