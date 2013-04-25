@@ -47,8 +47,6 @@
     <mapping resource="Mapeo/Telefono.hbm.xml"/>
     <mapping resource="Mapeo/Tiporelacion.hbm.xml"/>
     <mapping resource="Mapeo/PersonalFamiliar.hbm.xml"/>
-    <mapping resource="Mapeo/Personalnodocente.hbm.xml"/>
     <mapping resource="Mapeo/Tareaotro.hbm.xml"/>
-    <mapping resource="Mapeo/Tiponivel.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>
