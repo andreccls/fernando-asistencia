@@ -1,5 +1,5 @@
 package Clases;
-// Generated 13/11/2012 05:20:48 by Hibernate Tools 3.2.1.GA
+// Generated 25-abr-2013 1:29:18 by Hibernate Tools 3.2.1.GA
 
 
 import java.util.HashSet;
@@ -16,6 +16,7 @@ public class Departamento  implements java.io.Serializable {
      private Integer idDepartamento;
      private Establecimiento establecimiento;
      private String nombre;
+     private Set<Auditoria> auditorias = new HashSet<Auditoria>(0);
      private Set<PersonalDepartamento> personalDepartamentos = new HashSet<PersonalDepartamento>(0);
 
     public Departamento() {
@@ -25,17 +26,18 @@ public class Departamento  implements java.io.Serializable {
     public Departamento(Establecimiento establecimiento) {
         this.establecimiento = establecimiento;
     }
-    public Departamento(Establecimiento establecimiento, String nombre, Set<PersonalDepartamento> personalDepartamentos) {
+    public Departamento(Establecimiento establecimiento, String nombre, Set<Auditoria> auditorias, Set<PersonalDepartamento> personalDepartamentos) {
        this.establecimiento = establecimiento;
        this.nombre = nombre;
+       this.auditorias = auditorias;
        this.personalDepartamentos = personalDepartamentos;
     }
-    
-     @Override
+   
+    @Override
     public String toString() {
         return nombre;
     }
-   
+    
     public Integer getIdDepartamento() {
         return this.idDepartamento;
     }
@@ -57,6 +59,13 @@ public class Departamento  implements java.io.Serializable {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
+    public Set<Auditoria> getAuditorias() {
+        return this.auditorias;
+    }
+    
+    public void setAuditorias(Set<Auditoria> auditorias) {
+        this.auditorias = auditorias;
+    }
     public Set<PersonalDepartamento> getPersonalDepartamentos() {
         return this.personalDepartamentos;
     }
@@ -66,7 +75,6 @@ public class Departamento  implements java.io.Serializable {
     }
 
 //// GENERADO POR GONZALEZ FERNANDO
-    
     
     public void guardarDepartamento(Departamento unDepartamento){
         Controlador.getPERSISTENCIA().insert(this);

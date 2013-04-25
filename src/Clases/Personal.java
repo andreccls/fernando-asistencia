@@ -1,5 +1,5 @@
 package Clases;
-// Generated 23/02/2013 16:02:09 by Hibernate Tools 3.2.1.GA
+// Generated 25-abr-2013 1:29:18 by Hibernate Tools 3.2.1.GA
 
 
 import java.text.SimpleDateFormat;
@@ -47,7 +47,9 @@ public class Personal  implements java.io.Serializable {
      private Set<PersonalFamiliar> personalFamiliarsForIdFamiliar = new HashSet<PersonalFamiliar>(0);
      private Set<Personaldocente> personaldocentes = new HashSet<Personaldocente>(0);
      private Set<Agenda> agendas = new HashSet<Agenda>(0);
+     private Set<Auditoria> auditoriasForIdAuditor = new HashSet<Auditoria>(0);
      private Set<Telefono> telefonos = new HashSet<Telefono>(0);
+     private Set<Auditoria> auditoriasForIdPersonal = new HashSet<Auditoria>(0);
 
     public Personal() {
     }
@@ -61,7 +63,7 @@ public class Personal  implements java.io.Serializable {
         this.apellido = apellido;
         this.nombre = nombre;
     }
-    public Personal(Tipodoc tipodoc, Perfil perfil, Establecimiento establecimiento, byte[] codigo, String dni, String apellido, String nombre, String cuil, String calle, Integer altura, String piso, String depto, String correoElectronico, String sexo, String estadoCivil, Date ingreso, Boolean estado, Boolean familiar, Date fechaNac, Set<PersonalDepartamento> personalDepartamentos, Set<Registroacceso> registroaccesos, Set<Declaracionjurada> declaracionjuradas, Set<Circularpersonal> circularpersonals, Set<Personalnodocente> personalnodocentes, Set<PersonalFamiliar> personalFamiliarsForIdPersonal, Set<PersonalFamiliar> personalFamiliarsForIdFamiliar, Set<Personaldocente> personaldocentes, Set<Agenda> agendas, Set<Telefono> telefonos) {
+    public Personal(Tipodoc tipodoc, Perfil perfil, Establecimiento establecimiento, byte[] codigo, String dni, String apellido, String nombre, String cuil, String calle, Integer altura, String piso, String depto, String correoElectronico, String sexo, String estadoCivil, Date ingreso, Boolean estado, Boolean familiar, Date fechaNac, Set<PersonalDepartamento> personalDepartamentos, Set<Registroacceso> registroaccesos, Set<Declaracionjurada> declaracionjuradas, Set<Circularpersonal> circularpersonals, Set<Personalnodocente> personalnodocentes, Set<PersonalFamiliar> personalFamiliarsForIdPersonal, Set<PersonalFamiliar> personalFamiliarsForIdFamiliar, Set<Personaldocente> personaldocentes, Set<Agenda> agendas, Set<Auditoria> auditoriasForIdAuditor, Set<Telefono> telefonos, Set<Auditoria> auditoriasForIdPersonal) {
        this.tipodoc = tipodoc;
        this.perfil = perfil;
        this.establecimiento = establecimiento;
@@ -90,7 +92,9 @@ public class Personal  implements java.io.Serializable {
        this.personalFamiliarsForIdFamiliar = personalFamiliarsForIdFamiliar;
        this.personaldocentes = personaldocentes;
        this.agendas = agendas;
+       this.auditoriasForIdAuditor = auditoriasForIdAuditor;
        this.telefonos = telefonos;
+       this.auditoriasForIdPersonal = auditoriasForIdPersonal;
     }
    
     @Override
@@ -301,12 +305,26 @@ public class Personal  implements java.io.Serializable {
     public void setAgendas(Set<Agenda> agendas) {
         this.agendas = agendas;
     }
+    public Set<Auditoria> getAuditoriasForIdAuditor() {
+        return this.auditoriasForIdAuditor;
+    }
+    
+    public void setAuditoriasForIdAuditor(Set<Auditoria> auditoriasForIdAuditor) {
+        this.auditoriasForIdAuditor = auditoriasForIdAuditor;
+    }
     public Set<Telefono> getTelefonos() {
         return this.telefonos;
     }
     
     public void setTelefonos(Set<Telefono> telefonos) {
         this.telefonos = telefonos;
+    }
+    public Set<Auditoria> getAuditoriasForIdPersonal() {
+        return this.auditoriasForIdPersonal;
+    }
+    
+    public void setAuditoriasForIdPersonal(Set<Auditoria> auditoriasForIdPersonal) {
+        this.auditoriasForIdPersonal = auditoriasForIdPersonal;
     }
 
 // GENERADO POR GONZALEZ FERNANDO

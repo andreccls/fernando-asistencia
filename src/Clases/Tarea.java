@@ -1,5 +1,5 @@
 package Clases;
-// Generated 19/11/2012 14:01:36 by Hibernate Tools 3.2.1.GA
+// Generated 25-abr-2013 1:29:18 by Hibernate Tools 3.2.1.GA
 
 
 import java.text.SimpleDateFormat;
@@ -24,6 +24,7 @@ public class Tarea  implements java.io.Serializable {
      private String comentario;
      private Boolean estado;
      private Set<Tareareunion> tareareunions = new HashSet<Tareareunion>(0);
+     private Set<Auditoria> auditorias = new HashSet<Auditoria>(0);
      private Set<Agenda> agendas = new HashSet<Agenda>(0);
      private Set<Tareaotro> tareaotros = new HashSet<Tareaotro>(0);
      private Set<Tareaextracurricular> tareaextracurriculars = new HashSet<Tareaextracurricular>(0);
@@ -37,24 +38,25 @@ public class Tarea  implements java.io.Serializable {
         this.establecimiento = establecimiento;
         this.nombre = nombre;
     }
-    public Tarea(Establecimiento establecimiento, String nombre, String lugar, String comentario, Boolean estado, Set<Tareareunion> tareareunions, Set<Agenda> agendas, Set<Tareaotro> tareaotros, Set<Tareaextracurricular> tareaextracurriculars, Set<Tareaclase> tareaclases) {
+    public Tarea(Establecimiento establecimiento, String nombre, String lugar, String comentario, Boolean estado, Set<Tareareunion> tareareunions, Set<Auditoria> auditorias, Set<Agenda> agendas, Set<Tareaotro> tareaotros, Set<Tareaextracurricular> tareaextracurriculars, Set<Tareaclase> tareaclases) {
        this.establecimiento = establecimiento;
        this.nombre = nombre;
        this.lugar = lugar;
        this.comentario = comentario;
        this.estado = estado;
        this.tareareunions = tareareunions;
+       this.auditorias = auditorias;
        this.agendas = agendas;
        this.tareaotros = tareaotros;
        this.tareaextracurriculars = tareaextracurriculars;
        this.tareaclases = tareaclases;
     }
-    
+   
     @Override
     public String toString() {
         return nombre;
     }
-   
+    
     public Integer getIdTarea() {
         return this.idTarea;
     }
@@ -103,6 +105,13 @@ public class Tarea  implements java.io.Serializable {
     
     public void setTareareunions(Set<Tareareunion> tareareunions) {
         this.tareareunions = tareareunions;
+    }
+    public Set<Auditoria> getAuditorias() {
+        return this.auditorias;
+    }
+    
+    public void setAuditorias(Set<Auditoria> auditorias) {
+        this.auditorias = auditorias;
     }
     public Set<Agenda> getAgendas() {
         return this.agendas;
@@ -549,6 +558,8 @@ public class Tarea  implements java.io.Serializable {
             JOptionPane.showMessageDialog(null,"Error al recuperar las asistencias","Eliminar tarea",JOptionPane.ERROR_MESSAGE);
         }
     }
+
+
 }
 
 

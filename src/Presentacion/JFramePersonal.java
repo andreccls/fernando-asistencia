@@ -850,7 +850,7 @@ public class JFramePersonal extends javax.swing.JFrame {
                         byte[] bit=new byte[0];
                         int alt=0;
                         if(!jTextField7.getText().isEmpty()){alt=Integer.parseInt(jTextField7.getText());} 
-                        int i=col.crearPersonal(tipo,perf,col,bit,nro,jTextField2.getText().toUpperCase(), jTextField1.getText().toUpperCase(), jFormattedTextField2.getText(), jTextField6.getText().toUpperCase(),alt,jTextField8.getText().toUpperCase(),jTextField13.getText().toUpperCase(), jTextField9.getText(),sexo,civil,ingreso,true,false,fechanac,null,null,null,null,null,null,null,null,null,null); 
+                        int i=col.crearPersonal(tipo,perf,col,bit,nro,jTextField2.getText().toUpperCase(), jTextField1.getText().toUpperCase(), jFormattedTextField2.getText(), jTextField6.getText().toUpperCase(),alt,jTextField8.getText().toUpperCase(),jTextField13.getText().toUpperCase(), jTextField9.getText(),sexo,civil,ingreso,true,false,fechanac,null,null,null,null,null,null,null,null,null,null,null,null); 
                         pe.setIdPersonal(i);
                         pe.setEstablecimiento(col);
                         pe.setTipodoc(tipo);

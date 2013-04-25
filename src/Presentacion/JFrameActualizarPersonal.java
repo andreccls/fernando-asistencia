@@ -1629,7 +1629,7 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
                             }
                         }
                         if(p.getIdPersonal()==null){
-                            int i=col.crearPersonal(tipodoc,perf, col, null, nro, jTextField2.getText().toUpperCase(), jTextField3.getText().toUpperCase(), null, null, WIDTH, null, null, null, null, null, null, false, true, fechanac, null, null,null, null, null,null, null, null, null, null);
+                            int i=col.crearPersonal(tipodoc,perf, col, null, nro, jTextField2.getText().toUpperCase(), jTextField3.getText().toUpperCase(), null, null, WIDTH, null, null, null, null, null, null, false, true, fechanac, null, null,null, null, null,null, null, null,null,null, null, null);
                             PersonalFamiliarId id=new PersonalFamiliarId();
                             id.setIdPersonal(pe.getIdPersonal());
                             id.setIdFamiliar(i);
