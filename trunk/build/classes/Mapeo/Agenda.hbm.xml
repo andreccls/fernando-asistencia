@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 25-abr-2013 1:29:18 by Hibernate Tools 3.2.1.GA -->
+<!-- Generated 25-abr-2013 3:26:36 by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
   <class catalog="asistencia" name="Clases.Agenda" table="agenda">
     <composite-id class="Clases.AgendaId" name="id">
@@ -12,7 +12,7 @@
       </key-property>
     </composite-id>
     <many-to-one class="Clases.Revista" fetch="select" name="revista">
-      <column name="Id_revista" not-null="true"/>
+      <column name="Id_revista"/>
     </many-to-one>
     <many-to-one class="Clases.Personal" fetch="select" insert="false" name="personal" update="false">
       <column name="Id_personal" not-null="true"/>
