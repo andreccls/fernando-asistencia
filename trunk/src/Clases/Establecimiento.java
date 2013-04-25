@@ -1,5 +1,5 @@
 package Clases;
-// Generated 21/02/2013 23:16:10 by Hibernate Tools 3.2.1.GA
+// Generated 25-abr-2013 1:29:18 by Hibernate Tools 3.2.1.GA
 
 
 import java.util.Date;
@@ -20,6 +20,7 @@ public class Establecimiento  implements java.io.Serializable {
      private Integer altura;
      private String piso;
      private String depto;
+     private Set<Auditoria> auditorias = new HashSet<Auditoria>(0);
      private Set<Feriado> feriados = new HashSet<Feriado>(0);
      private Set<Tarea> tareas = new HashSet<Tarea>(0);
      private Set<Departamento> departamentos = new HashSet<Departamento>(0);
@@ -31,12 +32,13 @@ public class Establecimiento  implements java.io.Serializable {
     public Establecimiento() {
     }
 
-    public Establecimiento(String nombre, String calle, Integer altura, String piso, String depto, Set<Feriado> feriados, Set<Tarea> tareas, Set<Departamento> departamentos, Set<Circular> circulars, Set<Personal> personals, Set<DetalleEstablecimiento> detalleEstablecimientos, Set<Declaracionjurada> declaracionjuradas) {
+    public Establecimiento(String nombre, String calle, Integer altura, String piso, String depto, Set<Auditoria> auditorias, Set<Feriado> feriados, Set<Tarea> tareas, Set<Departamento> departamentos, Set<Circular> circulars, Set<Personal> personals, Set<DetalleEstablecimiento> detalleEstablecimientos, Set<Declaracionjurada> declaracionjuradas) {
        this.nombre = nombre;
        this.calle = calle;
        this.altura = altura;
        this.piso = piso;
        this.depto = depto;
+       this.auditorias = auditorias;
        this.feriados = feriados;
        this.tareas = tareas;
        this.departamentos = departamentos;
@@ -45,12 +47,12 @@ public class Establecimiento  implements java.io.Serializable {
        this.detalleEstablecimientos = detalleEstablecimientos;
        this.declaracionjuradas = declaracionjuradas;
     }
-    
+   
     @Override
     public String toString() {
         return nombre;
     }
-   
+    
     public Integer getIdEstablecimiento() {
         return this.idEstablecimiento;
     }
@@ -92,6 +94,13 @@ public class Establecimiento  implements java.io.Serializable {
     
     public void setDepto(String depto) {
         this.depto = depto;
+    }
+    public Set<Auditoria> getAuditorias() {
+        return this.auditorias;
+    }
+    
+    public void setAuditorias(Set<Auditoria> auditorias) {
+        this.auditorias = auditorias;
     }
     public Set<Feriado> getFeriados() {
         return this.feriados;
@@ -206,8 +215,8 @@ public class Establecimiento  implements java.io.Serializable {
          return tmpres;
      }
 
-    public int crearPersonal(Tipodoc tipodoc, Perfil perfil, Establecimiento establecimiento, byte[] codigo, String dni, String apellido, String nombre, String cuil, String calle, Integer altura, String piso, String depto, String correoElectronico, String sexo, String estadoCivil, Date ingreso, Boolean estado, Boolean familiar, Date fechaNac, Set<PersonalDepartamento> personalDepartamentos, Set<Registroacceso> registroaccesos, Set<Declaracionjurada> declaracionjuradas, Set<Circularpersonal> circularpersonals, Set<Personalnodocente> personalnodocentes, Set<PersonalFamiliar> personalFamiliarsForIdPersonal, Set<PersonalFamiliar> personalFamiliarsForIdFamiliar, Set<Personaldocente> personaldocentes, Set<Agenda> agendas, Set<Telefono> telefonos){
-        Personal unPersonal=new Personal(tipodoc,perfil, establecimiento, codigo, dni, apellido, nombre, cuil, calle,altura,piso,depto, correoElectronico,sexo, estadoCivil, ingreso, estado, familiar, fechaNac, personalDepartamentos,registroaccesos,declaracionjuradas, circularpersonals, personalnodocentes, personalFamiliarsForIdPersonal, personalFamiliarsForIdFamiliar, personaldocentes, agendas, telefonos);
+    public int crearPersonal(Tipodoc tipodoc, Perfil perfil, Establecimiento establecimiento, byte[] codigo, String dni, String apellido, String nombre, String cuil, String calle, Integer altura, String piso, String depto, String correoElectronico, String sexo, String estadoCivil, Date ingreso, Boolean estado, Boolean familiar, Date fechaNac, Set<PersonalDepartamento> personalDepartamentos, Set<Registroacceso> registroaccesos, Set<Declaracionjurada> declaracionjuradas, Set<Circularpersonal> circularpersonals, Set<Personalnodocente> personalnodocentes, Set<PersonalFamiliar> personalFamiliarsForIdPersonal, Set<PersonalFamiliar> personalFamiliarsForIdFamiliar, Set<Personaldocente> personaldocentes, Set<Agenda> agendas, Set<Auditoria> auditoriasForIdAuditor, Set<Telefono> telefonos, Set<Auditoria> auditoriasForIdPersonal){
+        Personal unPersonal=new Personal(tipodoc,perfil, establecimiento, codigo, dni, apellido, nombre, cuil, calle,altura,piso,depto, correoElectronico,sexo, estadoCivil, ingreso, estado, familiar, fechaNac, personalDepartamentos,registroaccesos,declaracionjuradas, circularpersonals, personalnodocentes, personalFamiliarsForIdPersonal, personalFamiliarsForIdFamiliar, personaldocentes, agendas,auditoriasForIdAuditor, telefonos,auditoriasForIdPersonal);
         int per=0;
         if(!existePersonal(unPersonal)){
             unPersonal.guardarPersonal(unPersonal);
@@ -256,8 +265,8 @@ public class Establecimiento  implements java.io.Serializable {
          return tmpres;
      }
          
-    public Tarea crearTarea(Establecimiento establecimiento, String nombre, String lugar, String comentario, Boolean estado, Set<Tareareunion> tareareunions, Set<Agenda> agendas, Set<Tareaotro> tareaotros, Set<Tareaextracurricular> tareaextracurriculars, Set<Tareaclase> tareaclases){
-        Tarea unaTarea=new Tarea(establecimiento, nombre, lugar,comentario, estado, tareareunions, agendas,tareaotros, tareaextracurriculars, tareaclases);
+    public Tarea crearTarea(Establecimiento establecimiento, String nombre, String lugar, String comentario, Boolean estado, Set<Tareareunion> tareareunions,Set<Auditoria> auditorias, Set<Agenda> agendas, Set<Tareaotro> tareaotros, Set<Tareaextracurricular> tareaextracurriculars, Set<Tareaclase> tareaclases){
+        Tarea unaTarea=new Tarea(establecimiento, nombre, lugar,comentario, estado, tareareunions,auditorias, agendas,tareaotros, tareaextracurriculars, tareaclases);
         Tarea aux=existeTarea(unaTarea);
         if(aux==null){
             unaTarea.guardarTarea(unaTarea);
@@ -270,8 +279,8 @@ public class Establecimiento  implements java.io.Serializable {
         
      }   
     
-    public void crearDepartamento(Establecimiento establecimiento, String nombre, Set<PersonalDepartamento> personalDepartamentos){
-        Departamento unDepartamento =new Departamento (establecimiento, nombre, personalDepartamentos);
+    public void crearDepartamento(Establecimiento establecimiento, String nombre,Set<Auditoria> auditorias, Set<PersonalDepartamento> personalDepartamentos){
+        Departamento unDepartamento =new Departamento (establecimiento, nombre,auditorias, personalDepartamentos);
             unDepartamento.guardarDepartamento(unDepartamento);
             //agregarReserva(unaReserva);
      }
@@ -296,8 +305,6 @@ public class Establecimiento  implements java.io.Serializable {
         }
         return tmpres;
     }
-
-
 
 }
 

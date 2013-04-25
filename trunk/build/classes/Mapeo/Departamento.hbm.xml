@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 23/02/2013 16:02:11 by Hibernate Tools 3.2.1.GA -->
+<!-- Generated 25-abr-2013 1:29:18 by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
   <class catalog="asistencia" name="Clases.Departamento" table="departamento">
     <id name="idDepartamento" type="java.lang.Integer">
@@ -13,6 +13,12 @@
     <property name="nombre" type="string">
       <column length="45" name="Nombre"/>
     </property>
+    <set inverse="true" name="auditorias">
+      <key>
+        <column name="Id_departamento"/>
+      </key>
+      <one-to-many class="Clases.Auditoria"/>
+    </set>
     <set inverse="true" name="personalDepartamentos">
       <key>
         <column name="Id_departamento" not-null="true"/>
