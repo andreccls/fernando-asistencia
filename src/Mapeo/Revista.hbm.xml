@@ -1,21 +1,20 @@
-<?xml version="1.0"?>
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 25-abr-2013 3:26:36 by Hibernate Tools 3.2.1.GA -->
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 25-abr-2013 4:06:38 by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
-    <class name="Mapeo.Revista" table="revista" catalog="asistencia">
-        <id name="idRevista" type="java.lang.Integer">
-            <column name="Id_revista" />
-            <generator class="identity" />
-        </id>
-        <property name="nombre" type="string">
-            <column name="Nombre" length="45" not-null="true" />
-        </property>
-        <set name="agendas" inverse="true">
-            <key>
-                <column name="Id_revista" />
-            </key>
-            <one-to-many class="Mapeo.Agenda" />
-        </set>
-    </class>
+  <class catalog="asistencia" name="Clases.Revista" table="revista">
+    <id name="idRevista" type="java.lang.Integer">
+      <column name="Id_revista"/>
+      <generator class="identity"/>
+    </id>
+    <property name="nombre" type="string">
+      <column length="45" name="Nombre" not-null="true"/>
+    </property>
+    <set inverse="true" name="agendas">
+      <key>
+        <column name="Id_revista"/>
+      </key>
+      <one-to-many class="Clases.Agenda"/>
+    </set>
+  </class>
 </hibernate-mapping>
