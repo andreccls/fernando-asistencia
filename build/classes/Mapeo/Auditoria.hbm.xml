@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 25-abr-2013 4:06:38 by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+  <class catalog="asistencia" name="Clases.Auditoria" table="auditoria">
+    <composite-id class="Clases.AuditoriaId" name="id">
+      <key-property name="idAuditoria" type="int">
+        <column name="Id_auditoria"/>
+      </key-property>
+      <key-property name="idAuditor" type="int">
+        <column name="Id_auditor"/>
+      </key-property>
+    </composite-id>
+    <many-to-one class="Clases.Personal" fetch="select" insert="false" name="personalByIdAuditor" update="false">
+      <column name="Id_auditor" not-null="true"/>
+    </many-to-one>
+    <many-to-one class="Clases.Departamento" fetch="select" name="departamento">
+      <column name="Id_departamento"/>
+    </many-to-one>
+    <many-to-one class="Clases.Personal" fetch="select" name="personalByIdPersonal">
+      <column name="Id_personal"/>
+    </many-to-one>
+    <many-to-one class="Clases.Tarea" fetch="select" name="tarea">
+      <column name="Id_tarea"/>
+    </many-to-one>
+    <many-to-one class="Clases.Establecimiento" fetch="select" name="establecimiento">
+      <column name="Id_establecimiento"/>
+    </many-to-one>
+    <property name="fecha" type="timestamp">
+      <column length="19" name="Fecha" not-null="true"/>
+    </property>
+    <property name="operacion" type="string">
+      <column length="45" name="Operacion" not-null="true"/>
+    </property>
+  </class>
+</hibernate-mapping>
