@@ -5,6 +5,7 @@
 package Presentacion;
 
 import Clases.Agenda;
+import Clases.Auditoria;
 import Clases.Controlador;
 import Clases.Franco;
 import Clases.Personal;
@@ -379,12 +380,24 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
                     tar.RecuperarAsistencia(tar,diaini);
                     tar.setEstado(false);
                     tar.ActualizarTarea(tar);
+                    Auditoria audi=new Auditoria();
+                    audi.setPersonalByIdAuditor(adm);
+                    audi.setTarea(tar);
+                    audi.setOperacion("Eliminar");
+                    audi.setFecha(new Date());
+                    audi.guardarAuditoria(audi);
                     JFrameConsultaActividades vpp=new JFrameConsultaActividades(Drive,adm,idsesion);
                     this.hide();
                     vpp.show();
                 }else{
                     tar.setEstado(false);
                     tar.ActualizarTarea(tar);
+                    Auditoria audi=new Auditoria();
+                    audi.setPersonalByIdAuditor(adm);
+                    audi.setTarea(tar);
+                    audi.setOperacion("Eliminar");
+                    audi.setFecha(new Date());
+                    audi.guardarAuditoria(audi);
                     JFrameConsultaActividades vpp=new JFrameConsultaActividades(Drive,adm,idsesion);
                     this.hide();
                     vpp.show();
