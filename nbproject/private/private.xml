@@ -11,14 +11,6 @@
             </bookmark>
         </file>
         <file>
-            <url>src/Presentacion/JFrameActualizarPersonal.java</url>
-            <bookmark id="2">
-                <name/>
-                <line>2311</line>
-                <key/>
-            </bookmark>
-        </file>
-        <file>
             <url>src/Clases/Controlador.java</url>
             <bookmark id="1">
                 <name/>
@@ -28,6 +20,14 @@
             <bookmark id="4">
                 <name/>
                 <line>1478</line>
+                <key/>
+            </bookmark>
+        </file>
+        <file>
+            <url>src/Presentacion/JFrameActualizarPersonal.java</url>
+            <bookmark id="2">
+                <name/>
+                <line>2311</line>
                 <key/>
             </bookmark>
         </file>

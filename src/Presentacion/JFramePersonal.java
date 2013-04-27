@@ -1161,6 +1161,7 @@ jPanel1Layout.setHorizontalGroup(
                         tip.setEstablecimiento(Drive.getPrimerEstablecimiento());
                         tip.guardarDepartamento(tip);
                         Auditoria audi = new Auditoria();
+                        audi.setPersonalByIdAuditor(adm);
                         audi.setOperacion("Insertar");
                         audi.setFecha(new Date());
                         audi.setDepartamento(tip);
