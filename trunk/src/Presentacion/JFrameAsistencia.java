@@ -88,13 +88,13 @@ public class JFrameAsistencia extends javax.swing.JFrame {
         Controlador auxDrive = new Controlador();
         try {
             if (auxDrive.getPrimerEstablecimiento()== null) {
-                JOptionPane.showMessageDialog(null, "Debe ingresar Colegio");
+                JOptionPane.showMessageDialog(null, "Debe ingresar Colegio","Error de Inicio",JOptionPane.ERROR_MESSAGE);
             } else {
                 auxDrive.getPrimerEstablecimiento();
                 Drive = auxDrive;
             }
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, ex.toString());
+            JOptionPane.showMessageDialog(null, ex.toString(),"Error de Inicio",JOptionPane.ERROR_MESSAGE);
         }
         ImageIcon fott = new ImageIcon("src\\imagenes\\gutenberg.png");
         Icon icono4 = new ImageIcon(fott.getImage().getScaledInstance(jLabel1.getWidth(), jLabel1.getHeight(), Image.SCALE_DEFAULT));

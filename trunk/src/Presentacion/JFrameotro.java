@@ -6,6 +6,7 @@ package Presentacion;
 import Clases.Agenda;
 import Clases.AgendaId;
 import Clases.Ano;
+import Clases.Auditoria;
 import Clases.Controlador;
 import Clases.Departamento;
 import Clases.Dia;
@@ -647,6 +648,14 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                 TareaotroId id = new TareaotroId();
                                 id.setIdTarea(idtar);
                                 tarr.crearTareaotro(id, tarr, jTextField1.getText().toUpperCase(), inicio, fin);
+                                 // <editor-fold defaultstate="collapsed" desc="Auditoria"> 
+                                Auditoria audi=new Auditoria();
+                                audi.setPersonalByIdAuditor(adm);
+                                audi.setOperacion("Insertar");
+                                audi.setFecha(new Date());
+                                audi.setTarea(tarr);
+                                audi.guardarAuditoria(audi);
+                                // </editor-fold>
                                 DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
                                 int c = 0;
                                 while (jTable1.getRowCount() != c) {
@@ -658,8 +667,6 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                             Agenda age = new Agenda();
                                             age.setId(ida);
                                             age.setPersonal(per);
-                                            Revista rev = (Revista) Drive.PERSISTENCIA.getSitRevista().get(0);
-                                            age.setRevista(rev);
                                             age.setTarea(tarr);
                                             age.setComentario(null);
                                             age.guardarAgenda(age);
@@ -743,18 +750,11 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                             }
                             jFormattedTextField1.setText("");
                             jFormattedTextField2.setText("");
-//                            jTextField1.setText("");
-//                            jTextField3.setText("");
-//                            jTextField4.setText("");
-//                            Drive.LimpiarTabla(jTable1);
-//                            lista.removeAll(lista);
-//                            String buscar = (String) jComboBox1.getSelectedItem();
-//                            Drive.CargarTablacheck(jTable1, buscar, buffer.toString().toUpperCase(), lista);
-//                            Drive = new Controlador();
                         }
                         // </editor-fold>
                     } else {
                         // <editor-fold defaultstate="collapsed" desc="Actualizar tarea"> 
+                        boolean band2=false;
                         SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
                         formateador.setLenient(false);
                         Date inicio = formateador.parse(jFormattedTextField1.getText());
@@ -768,18 +768,22 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                             fin.setYear(fecha_fin.getYear());
                             fin.setMonth(fecha_fin.getMonth());
                             fin.setDate(fecha_fin.getDate());
-//                    SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
-//                    formateador.setLenient(false);
-//                    Date ini=formateador.parse(jFormattedTextField1.getText());
-//                    Date fi=formateador.parse(jFormattedTextField2.getText());
-                            tar.setLugar(jTextField4.getText().toUpperCase());
-                            tar.ActualizarTarea(tar);
+                            if (!tar.getLugar().equals(jTextField4.getText().toUpperCase())) {
+                                tar.setLugar(jTextField4.getText().toUpperCase());
+                                tar.ActualizarTarea(tar);
+                                jTextField4.setText(tar.getLugar());
+                                band2=true;
+                            }
 
                             Tareaotro tarot = tar.getTareaotros().iterator().next();
                             tarot.setDiaInicio(inicio);
                             tarot.setDiaFin(fin);
+                            if (!tarot.getCaracteristica().equals(jTextField1.getText().toUpperCase())) {
+                                band2=true;
+                            }
                             tarot.setCaracteristica(jTextField1.getText().toUpperCase());
                             tarot.actualizarTareaotro(tarot);
+                            jTextField1.setText(tarot.getCaracteristica());
 
                             DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
                             int c = 0;
@@ -811,6 +815,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                 cambio = true;
                             }
                             if (cambio == true) {
+                                band2=true;
                                 tar.BorrarTodo();
                                 Drive=new Controlador();
                                 tar=(Tarea) Drive.PERSISTENCIA.getTarea(tar.getIdTarea()).iterator().next();
@@ -829,13 +834,11 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                         fi = formateador.parse(e);
                                         boolean control=false;
                                         if (per.OtrosVerificarDisponibilidad(fecha_inicio, inicio, fin, fecha_fin,control)) {
-                                            Revista rev = (Revista) Drive.PERSISTENCIA.getSitRevista().get(0);
-                                            Agenda age = tar.ObtenerAgenda(per.getIdPersonal(), rev.getIdRevista());
+                                            Agenda age = tar.ObtenerAgenda(per.getIdPersonal());
                                             if (age.getId() == null) {
                                                 AgendaId ida = new AgendaId(per.getIdPersonal(), tar.getIdTarea());
                                                 age.setId(ida);
                                                 age.setPersonal(per);
-                                                age.setRevista(rev);
                                                 age.setTarea(tar);
                                                 age.setComentario(null);
                                                 age.guardarAgenda(age);
@@ -856,9 +859,6 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                             Iniciofin in = new Iniciofin();
                                             in.setDia(dia);
                                             in.setInicio(inicio);
-                                            ////                        if(jRadioButton1.isSelected()){
-                                            ////                            in.setEstadoInicio(false);
-                                            ////                        }
                                             in.guardarIniciofin(in);
                                             ///Guarda el dia y hora de fin
                                             Ano anioo = new Ano();
@@ -910,6 +910,16 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                     }
                                     c++;
                                 }
+                            }
+                            if(band2==true){
+                               // <editor-fold defaultstate="collapsed" desc="Auditoria"> 
+                                Auditoria audi=new Auditoria();
+                                audi.setPersonalByIdAuditor(adm);
+                                audi.setOperacion("Actualizar");
+                                audi.setFecha(new Date());
+                                audi.setTarea(tar);
+                                audi.guardarAuditoria(audi);
+                                // </editor-fold>  
                             }
                         }
                         Frame vp = new JFrameConsultaActividades(Drive, adm, idsesion);

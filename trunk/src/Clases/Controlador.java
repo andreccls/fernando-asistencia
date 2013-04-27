@@ -789,6 +789,103 @@ public class Controlador {
             JOptionPane.showMessageDialog(null, e.toString());
         }
     }
+    
+    public void CargarTablaAuditoria(JTable tabla, Date dia, String buscar) {
+        try {
+            DefaultTableModel model = (DefaultTableModel) tabla.getModel();
+            SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+            Iterator<Auditoria> it = PERSISTENCIA.getAuditoria().iterator();
+            while (it.hasNext()) {
+                Auditoria reg = (Auditoria) it.next();
+                if (buscar.equals("DIA")) {
+                    if (reg.getFecha().getYear() == dia.getYear() && reg.getFecha().getMonth() == dia.getMonth() && reg.getFecha().getDate() == dia.getDate()) {
+                        Object fila[] = new Object[4];
+                        if(reg.getEstablecimiento()!=null){
+                            fila[0] = "Colegio: "+reg.getEstablecimiento().getNombre();
+                        }else if(reg.getPersonalByIdPersonal()!=null){
+                            fila[0] = "Personal: "+reg.getPersonalByIdPersonal().getApellido()+" "+reg.getPersonalByIdPersonal().getNombre();
+                        }else if(reg.getTarea()!=null){
+                            fila[0] = "Tarea: "+reg.getTarea().getNombre();
+                        }else if(reg.getDepartamento()!=null){
+                            fila[0] = "Departamento: "+reg.getDepartamento().getNombre();
+                        }
+                        
+                        fila[1] = reg.getOperacion();
+                        fila[2] = formateador.format(reg.getFecha());
+                        fila[3] = reg.getPersonalByIdAuditor().getApellido()+" "+reg.getPersonalByIdAuditor().getNombre();
+                            
+                        model.addRow(fila);
+                    }
+
+                } else if (buscar.equals("SEMANA")) {
+                    Date aux=restarFechasDias(dia, 7);
+                    while (aux.compareTo(dia)<=0) {
+                        if (reg.getFecha().getYear() == aux.getYear() && reg.getFecha().getMonth() == aux.getMonth() && reg.getFecha().getDate() == aux.getDate()) {
+                            Object fila[] = new Object[4];
+                            if(reg.getEstablecimiento()!=null){
+                                fila[0] = "Colegio: "+reg.getEstablecimiento().getNombre();
+                            }else if(reg.getPersonalByIdPersonal()!=null){
+                                fila[0] = "Personal: "+reg.getPersonalByIdPersonal().getApellido()+" "+reg.getPersonalByIdPersonal().getNombre();
+                            }else if(reg.getTarea()!=null){
+                                fila[0] = "Tarea: "+reg.getTarea().getNombre();
+                            }else if(reg.getDepartamento()!=null){
+                                fila[0] = "Departamento: "+reg.getDepartamento().getNombre();
+                            }
+
+                            fila[1] = reg.getOperacion();
+                            fila[2] = formateador.format(reg.getFecha());
+                            fila[3] = reg.getPersonalByIdAuditor().getApellido()+" "+reg.getPersonalByIdAuditor().getNombre();
+
+                            model.addRow(fila);
+                        }
+                        aux = sumarFechasDias(aux, 1);
+                    }
+                }else if (buscar.equals("MES")) {
+                    if (reg.getFecha().getYear() == dia.getYear() && reg.getFecha().getMonth() == dia.getMonth()) {
+                        Object fila[] = new Object[4];
+                        if(reg.getEstablecimiento()!=null){
+                            fila[0] = "Colegio: "+reg.getEstablecimiento().getNombre();
+                        }else if(reg.getPersonalByIdPersonal()!=null){
+                            fila[0] = "Personal: "+reg.getPersonalByIdPersonal().getApellido()+" "+reg.getPersonalByIdPersonal().getNombre();
+                        }else if(reg.getTarea()!=null){
+                            fila[0] = "Tarea: "+reg.getTarea().getNombre();
+                        }else if(reg.getDepartamento()!=null){
+                            fila[0] = "Departamento: "+reg.getDepartamento().getNombre();
+                        }
+                        
+                        fila[1] = reg.getOperacion();
+                        fila[2] = formateador.format(reg.getFecha());
+                        fila[3] = reg.getPersonalByIdAuditor().getApellido()+" "+reg.getPersonalByIdAuditor().getNombre();
+                            
+                        model.addRow(fila);
+                    }
+                }else if (buscar.equals("AÑO")) {
+                    if (reg.getFecha().getYear() == dia.getYear()) {
+                        Object fila[] = new Object[4];
+                        if(reg.getEstablecimiento()!=null){
+                            fila[0] = "Colegio: "+reg.getEstablecimiento().getNombre();
+                        }else if(reg.getPersonalByIdPersonal()!=null){
+                            fila[0] = "Personal: "+reg.getPersonalByIdPersonal().getApellido()+" "+reg.getPersonalByIdPersonal().getNombre();
+                        }else if(reg.getTarea()!=null){
+                            fila[0] = "Tarea: "+reg.getTarea().getNombre();
+                        }else if(reg.getDepartamento()!=null){
+                            fila[0] = "Departamento: "+reg.getDepartamento().getNombre();
+                        }
+                        
+                        fila[1] = reg.getOperacion();
+                        fila[2] = formateador.format(reg.getFecha());
+                        fila[3] = reg.getPersonalByIdAuditor().getApellido()+" "+reg.getPersonalByIdAuditor().getNombre();
+                            
+                        model.addRow(fila);
+                    }
+                }
+                
+            }
+            tabla.setModel(model);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.toString());
+        }
+    }
 
     public void CargarTablacheck(JTable tabla, String buscarpor, String valor, List personales) {
         try {

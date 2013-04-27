@@ -180,8 +180,7 @@ public class Tarea  implements java.io.Serializable {
     public List ObtenerListaDias(){
         List lista = new ArrayList();
         List listad = new ArrayList();
-//        Dia da=new Dia();
-        
+
         Date aux=new Date();
         Iterator it=agendas.iterator();
         while(it.hasNext()){
@@ -208,6 +207,39 @@ public class Tarea  implements java.io.Serializable {
             break;
         } 
         return lista;
+//        return lista;
+    }
+    
+    public List ObtenerListaDiass(){
+        List lista = new ArrayList();
+        List listad = new ArrayList();
+
+        Date aux=new Date();
+        Iterator it=agendas.iterator();
+        while(it.hasNext()){
+            Agenda age=(Agenda) it.next();
+            Iterator ita=age.getAnos().iterator();
+            while(ita.hasNext()){
+                Ano an=(Ano) ita.next();
+                    Iterator itm=an.getMeses().iterator();
+                    while(itm.hasNext()){
+                        Mes me=(Mes) itm.next();
+                        aux.setMonth(me.getMes());
+                        Iterator itd=me.getDias().iterator();
+                        while(itd.hasNext()){
+                            Dia di=(Dia) itd.next();
+                            aux.setDate(di.getDia());
+                            int d=aux.getDay();
+                            if(!listad.contains(d)){
+                               lista.add(di);
+                               listad.add(d);
+                            }
+                        }
+                    }
+            }
+            break;
+        } 
+        return listad;
 //        return lista;
     }
     
@@ -353,6 +385,18 @@ public class Tarea  implements java.io.Serializable {
         while(it.hasNext()){
             Agenda ag=(Agenda) it.next();
             if(ag.getId().getIdPersonal()==idper && ag.getRevista().getIdRevista()==idrev){
+                age=ag;
+                break;
+            }
+        }
+        return age;
+    }
+    public Agenda ObtenerAgenda(int idper) {
+        Agenda age = new Agenda();
+        Iterator it=agendas.iterator();
+        while(it.hasNext()){
+            Agenda ag=(Agenda) it.next();
+            if(ag.getId().getIdPersonal()==idper){
                 age=ag;
                 break;
             }

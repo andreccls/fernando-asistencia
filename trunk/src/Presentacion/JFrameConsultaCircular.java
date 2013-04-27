@@ -335,12 +335,12 @@ public class JFrameConsultaCircular extends javax.swing.JFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         try {
+            jTable1.getModel();
+            cir = (Circular) jTable1.getValueAt(jTable1.getSelectedRow(), 2);
             int confirmado = JOptionPane.showConfirmDialog(null, "¿Esta seguro que desea eliminar la circular?", "", JOptionPane.YES_NO_OPTION);
             if (JOptionPane.OK_OPTION == confirmado) {
-                jTable1.getModel();
-                int i = jTable1.getSelectedRow();
-                if (i >= 0) {
-                    cir = (Circular) jTable1.getValueAt(i, 2);
+                if (jTable1.getSelectedRow() >= 0) {
+
                     Iterator it=cir.getCircularpersonals().iterator();
                     while(it.hasNext()){
                         Circularpersonal cirper=(Circularpersonal)it.next();
@@ -350,7 +350,9 @@ public class JFrameConsultaCircular extends javax.swing.JFrame {
                 }
                 Drive.CargarTablaCirculares(jTable1,dateChooserCombo1.getSelectedDate().getTime());
             }
+            
         } catch (Exception e) {
+            JOptionPane.showMessageDialog(null,"Seleccione una circular","Consultar Circulares",JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton4ActionPerformed
 

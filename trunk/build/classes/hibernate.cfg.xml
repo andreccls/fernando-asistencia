@@ -17,8 +17,8 @@
     <mapping resource="Mapeo/Iniciofin.hbm.xml"/>
     <mapping resource="Mapeo/Ano.hbm.xml"/>
     <mapping resource="Mapeo/Franco.hbm.xml"/>
-    <mapping resource="Mapeo/Departamento.hbm.xml"/>
     <mapping resource="Mapeo/Tareaclase.hbm.xml"/>
+    <mapping resource="Mapeo/Departamento.hbm.xml"/>
     <mapping resource="Mapeo/Tarea.hbm.xml"/>
     <mapping resource="Mapeo/Asistencia.hbm.xml"/>
     <mapping resource="Mapeo/Justificacion.hbm.xml"/>
@@ -31,12 +31,13 @@
     <mapping resource="Mapeo/Declaracionjurada.hbm.xml"/>
     <mapping resource="Mapeo/Dia.hbm.xml"/>
     <mapping resource="Mapeo/Establecimiento.hbm.xml"/>
+    <mapping resource="Mapeo/PersonalDepartamento.hbm.xml"/>
     <mapping resource="Mapeo/Inactivo.hbm.xml"/>
     <mapping resource="Mapeo/Personaldocente.hbm.xml"/>
     <mapping resource="Mapeo/Circular.hbm.xml"/>
     <mapping resource="Mapeo/Agenda.hbm.xml"/>
-    <mapping resource="Mapeo/Tipocargo.hbm.xml"/>
     <mapping resource="Mapeo/Cargo.hbm.xml"/>
+    <mapping resource="Mapeo/Tipocargo.hbm.xml"/>
     <mapping resource="Mapeo/Activo.hbm.xml"/>
     <mapping resource="Mapeo/Revista.hbm.xml"/>
     <mapping resource="Mapeo/Circularpersonal.hbm.xml"/>

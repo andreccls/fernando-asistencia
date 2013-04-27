@@ -1,17 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 25-abr-2013 4:06:38 by Hibernate Tools 3.2.1.GA -->
+<!-- Generated 25-abr-2013 14:00:45 by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
   <class catalog="asistencia" name="Clases.Auditoria" table="auditoria">
-    <composite-id class="Clases.AuditoriaId" name="id">
-      <key-property name="idAuditoria" type="int">
-        <column name="Id_auditoria"/>
-      </key-property>
-      <key-property name="idAuditor" type="int">
-        <column name="Id_auditor"/>
-      </key-property>
-    </composite-id>
-    <many-to-one class="Clases.Personal" fetch="select" insert="false" name="personalByIdAuditor" update="false">
+    <id name="idAuditoria" type="java.lang.Integer">
+      <column name="Id_auditoria"/>
+      <generator class="identity"/>
+    </id>
+    <many-to-one class="Clases.Personal" fetch="select" name="personalByIdAuditor">
       <column name="Id_auditor" not-null="true"/>
     </many-to-one>
     <many-to-one class="Clases.Departamento" fetch="select" name="departamento">

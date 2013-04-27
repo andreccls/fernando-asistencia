@@ -136,6 +136,26 @@ public class persistencia {
 
     }
     
+    public List getAuditoria() throws ArrayStoreException {
+        String hql = "from Auditoria";
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
+    }
+    
+    public List getAuditoria(Date fecha) throws ArrayStoreException {
+        String hql = "from Auditoria where day(fecha)='"+fecha.getDate()+"' and month(fecha)='"+(fecha.getMonth()+1)+"' and year(fecha)='"+(fecha.getYear()+1900)+"'";
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
+    }
+    
     public List getAnos(int idper, int idtar) throws ArrayStoreException {
         String hql = "from Ano where id_personal="+idper+" and id_tarea="+idtar;
         List items = new ArrayList();

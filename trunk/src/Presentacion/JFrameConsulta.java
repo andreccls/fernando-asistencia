@@ -6,6 +6,7 @@ package Presentacion;
 
 //<editor-fold defaultstate="collapsed" desc="import">
 
+import Clases.Auditoria;
 import Clases.Controlador;
 import Clases.Establecimiento;
 import Clases.Personal;
@@ -15,6 +16,7 @@ import java.awt.Frame;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.io.FileNotFoundException;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -239,7 +241,7 @@ public class JFrameConsulta extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jButton3, jButton4});
+        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jButton2, jButton3, jButton4});
 
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -251,11 +253,13 @@ public class JFrameConsulta extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton4)
+                    .addComponent(jButton3)
                     .addComponent(jButton2))
                 .addGap(13, 13, 13))
         );
+
+        jPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jButton2, jButton3, jButton4});
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -357,6 +361,12 @@ public class JFrameConsulta extends javax.swing.JFrame {
             if (per.getEstado() == true) {
                 per.setEstado(false);
                 per.actualizarPersonal(per);
+                Auditoria audi=new Auditoria();
+                audi.setPersonalByIdAuditor(adm);
+                audi.setOperacion("Eliminar");
+                audi.setFecha(new Date());
+                audi.setPersonalByIdPersonal(per);
+                audi.guardarAuditoria(audi);
             }
             Drive.LimpiarTabla(jTable1);
             String buscar = (String) jComboBox1.getSelectedItem();

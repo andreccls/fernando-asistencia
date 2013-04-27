@@ -15,6 +15,7 @@ import Clases.Agenda;
 import Clases.AgendaId;
 import Clases.Ano;
 import Clases.Articulo;
+import Clases.Auditoria;
 import Clases.Controlador;
 import Clases.Dia;
 import Clases.Establecimiento;
@@ -36,6 +37,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import javax.swing.DefaultListModel;
@@ -294,6 +296,7 @@ public class JFrameClase extends javax.swing.JFrame {
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
+        jFormattedTextField1.setEnabled(false);
         jFormattedTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jFormattedTextField1ActionPerformed(evt);
@@ -310,6 +313,7 @@ public class JFrameClase extends javax.swing.JFrame {
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
+        jFormattedTextField2.setEnabled(false);
         jFormattedTextField2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jFormattedTextField2ActionPerformed(evt);
@@ -340,6 +344,11 @@ public class JFrameClase extends javax.swing.JFrame {
 
         jLabel2.setText("Lugar:");
 
+        jTextField3.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jTextField3FocusLost(evt);
+            }
+        });
         jTextField3.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 jTextField3KeyTyped(evt);
@@ -475,10 +484,10 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
     jTable1.addAncestorListener(new javax.swing.event.AncestorListener() {
         public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
         }
+        public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+        }
         public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
             jTable1AncestorAdded(evt);
-        }
-        public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
         }
     });
     jScrollPane2.setViewportView(jTable1);
@@ -605,22 +614,53 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
     );
 
     jCheckBox1.setText("LUNES");
+    jCheckBox1.addItemListener(new java.awt.event.ItemListener() {
+        public void itemStateChanged(java.awt.event.ItemEvent evt) {
+            jCheckBox1ItemStateChanged(evt);
+        }
+    });
 
     jCheckBox2.setText("MARTES");
+    jCheckBox2.addItemListener(new java.awt.event.ItemListener() {
+        public void itemStateChanged(java.awt.event.ItemEvent evt) {
+            jCheckBox2ItemStateChanged(evt);
+        }
+    });
 
     jCheckBox3.setText("MIERCOLES");
+    jCheckBox3.addItemListener(new java.awt.event.ItemListener() {
+        public void itemStateChanged(java.awt.event.ItemEvent evt) {
+            jCheckBox3ItemStateChanged(evt);
+        }
+    });
 
     jCheckBox4.setText("JUEVES");
+    jCheckBox4.addItemListener(new java.awt.event.ItemListener() {
+        public void itemStateChanged(java.awt.event.ItemEvent evt) {
+            jCheckBox4ItemStateChanged(evt);
+        }
+    });
 
     jCheckBox5.setText("VIERNES");
+    jCheckBox5.addItemListener(new java.awt.event.ItemListener() {
+        public void itemStateChanged(java.awt.event.ItemEvent evt) {
+            jCheckBox5ItemStateChanged(evt);
+        }
+    });
 
     jCheckBox6.setText("SABADO");
+    jCheckBox6.addItemListener(new java.awt.event.ItemListener() {
+        public void itemStateChanged(java.awt.event.ItemEvent evt) {
+            jCheckBox6ItemStateChanged(evt);
+        }
+    });
 
     try {
         jFormattedTextField3.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##:##")));
     } catch (java.text.ParseException ex) {
         ex.printStackTrace();
     }
+    jFormattedTextField3.setEnabled(false);
     jFormattedTextField3.addActionListener(new java.awt.event.ActionListener() {
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             jFormattedTextField3ActionPerformed(evt);
@@ -637,6 +677,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
     } catch (java.text.ParseException ex) {
         ex.printStackTrace();
     }
+    jFormattedTextField4.setEnabled(false);
     jFormattedTextField4.addActionListener(new java.awt.event.ActionListener() {
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             jFormattedTextField4ActionPerformed(evt);
@@ -653,6 +694,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
     } catch (java.text.ParseException ex) {
         ex.printStackTrace();
     }
+    jFormattedTextField5.setEnabled(false);
     jFormattedTextField5.addActionListener(new java.awt.event.ActionListener() {
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             jFormattedTextField5ActionPerformed(evt);
@@ -669,6 +711,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
     } catch (java.text.ParseException ex) {
         ex.printStackTrace();
     }
+    jFormattedTextField6.setEnabled(false);
     jFormattedTextField6.addActionListener(new java.awt.event.ActionListener() {
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             jFormattedTextField6ActionPerformed(evt);
@@ -685,6 +728,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
     } catch (java.text.ParseException ex) {
         ex.printStackTrace();
     }
+    jFormattedTextField7.setEnabled(false);
     jFormattedTextField7.addActionListener(new java.awt.event.ActionListener() {
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             jFormattedTextField7ActionPerformed(evt);
@@ -701,6 +745,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
     } catch (java.text.ParseException ex) {
         ex.printStackTrace();
     }
+    jFormattedTextField8.setEnabled(false);
     jFormattedTextField8.addActionListener(new java.awt.event.ActionListener() {
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             jFormattedTextField8ActionPerformed(evt);
@@ -717,6 +762,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
     } catch (java.text.ParseException ex) {
         ex.printStackTrace();
     }
+    jFormattedTextField9.setEnabled(false);
     jFormattedTextField9.addActionListener(new java.awt.event.ActionListener() {
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             jFormattedTextField9ActionPerformed(evt);
@@ -733,6 +779,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
     } catch (java.text.ParseException ex) {
         ex.printStackTrace();
     }
+    jFormattedTextField10.setEnabled(false);
     jFormattedTextField10.addActionListener(new java.awt.event.ActionListener() {
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             jFormattedTextField10ActionPerformed(evt);
@@ -749,6 +796,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
     } catch (java.text.ParseException ex) {
         ex.printStackTrace();
     }
+    jFormattedTextField11.setEnabled(false);
     jFormattedTextField11.addActionListener(new java.awt.event.ActionListener() {
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             jFormattedTextField11ActionPerformed(evt);
@@ -765,6 +813,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
     } catch (java.text.ParseException ex) {
         ex.printStackTrace();
     }
+    jFormattedTextField12.setEnabled(false);
     jFormattedTextField12.addActionListener(new java.awt.event.ActionListener() {
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             jFormattedTextField12ActionPerformed(evt);
@@ -1090,97 +1139,111 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                     
                     if (tar.getIdTarea() == null) {
                         // <editor-fold defaultstate="collapsed" desc="Guardar tarea nueva"> 
-                        Tarea tarr=new Tarea();
-                        tarr.setEstablecimiento(Drive.getPrimerEstablecimiento());
-                        tarr.setNombre(jTextField1.getText().toUpperCase());
-                        tarr.setLugar(jTextField3.getText().toUpperCase());
-                        tarr.setComentario("CLASE");
-                        tarr.setEstado(true);
-                        int idtar=tarr.guardarTarea(tarr);
-                        TareaclaseId id = new TareaclaseId();
-                        id.setIdTarea(idtar);
-                        int i = 0;
-                        if (!jTextField4.getText().isEmpty()) {
-                            i = Integer.parseInt(jTextField4.getText());
-                        }
-                        tarr.crearTareaclase(id, tarr, jTextField2.getText().toUpperCase(), i);
+                        boolean band=true;
                         DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+                        SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
                         int c = 0;
                         while (jTable1.getRowCount() != c) {
                             Personal person = (Personal) modelo.getValueAt(c, 0);
-                            SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
+                            // <editor-fold defaultstate="collapsed" desc="verificar">
                             Date inn = new Date();
                             Date fii = new Date();
-                            List items = new ArrayList();
-                            List listini = new ArrayList();
+                            HashMap items= new HashMap();
+//                            List items = new ArrayList(6);
+                            HashMap listini = new HashMap();
                             if (jCheckBox1.isSelected()) {
-                                items.add(1,"LUNES");
+                                items.put(1,"LUNES");
                                 inn = formateador.parse(jFormattedTextField1.getText());
                                 fii = formateador.parse(jFormattedTextField2.getText());
                                 Iniciofin aux = new Iniciofin();
                                 aux.setInicio(inn);
                                 aux.setFin(fii);
-                                listini.add(1,aux);
+                                listini.put(1,aux);
                             }
                             if (jCheckBox2.isSelected()) {
-                                items.add(2,"MARTES");
+                                items.put(2,"MARTES");
                                 inn = formateador.parse(jFormattedTextField3.getText());
                                 fii = formateador.parse(jFormattedTextField4.getText());
                                 Iniciofin aux = new Iniciofin();
                                 aux.setInicio(inn);
                                 aux.setFin(fii);
-                                listini.add(2,aux);
+                                listini.put(2,aux);
                             }
                             if (jCheckBox3.isSelected()) {
-                                items.add(3,"MIERCOLES");
+                                items.put(3,"MIERCOLES");
                                 inn = formateador.parse(jFormattedTextField5.getText());
                                 fii = formateador.parse(jFormattedTextField6.getText());
                                 Iniciofin aux = new Iniciofin();
                                 aux.setInicio(inn);
                                 aux.setFin(fii);
-                                listini.add(3,aux);
+                                listini.put(3,aux);
                             }
                             if (jCheckBox4.isSelected()) {
-                                items.add(4,"JUEVES");
+                                items.put(4,"JUEVES");
                                 inn = formateador.parse(jFormattedTextField8.getText());
                                 fii = formateador.parse(jFormattedTextField7.getText());
                                 Iniciofin aux = new Iniciofin();
                                 aux.setInicio(inn);
                                 aux.setFin(fii);
-                                listini.add(4,aux);
+                                listini.put(4,aux);
                             }
                             if (jCheckBox5.isSelected()) {
-                                items.add(5,"VIERNES");
+                                items.put(5,"VIERNES");
                                 inn = formateador.parse(jFormattedTextField9.getText());
                                 fii = formateador.parse(jFormattedTextField10.getText());
                                 Iniciofin aux = new Iniciofin();
                                 aux.setInicio(inn);
                                 aux.setFin(fii);
-                                listini.add(5,aux);
+                                listini.put(5,aux);
                             }
                             if (jCheckBox6.isSelected()) {
-                                items.add(6,"SABADO");
+                                items.put(6,"SABADO");
                                 inn = formateador.parse(jFormattedTextField11.getText());
                                 fii = formateador.parse(jFormattedTextField12.getText());
                                 Iniciofin aux = new Iniciofin();
                                 aux.setInicio(inn);
                                 aux.setFin(fii);
-                                listini.add(6,aux);
+                                listini.put(6,aux);
                             }
-                            
-                            
                             Date inicioo = dateChooserCombo1.getSelectedDate().getTime();
                             Date finn = dateChooserCombo2.getSelectedDate().getTime();
-//                            String dse = (String) modelo.getValueAt(c, 0);
-                            
-//                            int[][] cant = person.VerificarDisponibilidadClase(inicioo, finn, aux, items);
-//                            int ee = cant[0].length;
-//                            int eee = cant[1].length;
-//                            int confirmado = JOptionPane.showConfirmDialog(null, "El personal " + person.toString() + " tendrá " + ee + " inasistencias debido a actividades y " + eee + " debido a declaración jurada, ¿Desea continuar?", "Registrar clase", JOptionPane.YES_NO_OPTION);
-//                            if (JOptionPane.OK_OPTION == confirmado) {
-                            
+                            // </editor-fold>
                             if (person.DisponibilidadClase(inicioo, finn, listini, items)) {
-                                
+                                band=true;
+                            }else{
+                                band=false;
+                                JOptionPane.showMessageDialog(null,"No existe disponibilidad", "Registrar clase",JOptionPane.ERROR_MESSAGE);
+                                break;
+                            }
+                            c++;
+                        }
+                        if(band==true){
+                            Tarea tarr=new Tarea();
+                            tarr.setEstablecimiento(Drive.getPrimerEstablecimiento());
+                            tarr.setNombre(jTextField1.getText().toUpperCase());
+                            tarr.setLugar(jTextField3.getText().toUpperCase());
+                            tarr.setComentario("CLASE");
+                            tarr.setEstado(true);
+                            int idtar=tarr.guardarTarea(tarr);                            
+                            TareaclaseId id = new TareaclaseId();
+                            id.setIdTarea(idtar);
+                            int i = 0;
+                            if (!jTextField4.getText().isEmpty()) {
+                                i = Integer.parseInt(jTextField4.getText());
+                            }
+                            tarr.crearTareaclase(id, tarr, jTextField2.getText().toUpperCase(), i);
+
+                            // <editor-fold defaultstate="collapsed" desc="Auditoria"> 
+                            Auditoria audi= new Auditoria();
+                            audi.setPersonalByIdAuditor(adm);
+                            audi.setOperacion("Insertar");
+                            audi.setFecha(new Date());
+                            audi.setTarea(tarr);
+                            audi.guardarAuditoria(audi);
+                            // </editor-fold>
+                            c = 0;
+                            while (jTable1.getRowCount() != c) {
+                                Personal person = (Personal) modelo.getValueAt(c, 0);
                                 AgendaId idage = new AgendaId(person.getIdPersonal(), tarr.getIdTarea());
                                 Revista rev = (Revista) modelo.getValueAt(c, 1);
                                 Agenda age = new Agenda();
@@ -1196,18 +1259,15 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                 anio.setAgenda(age);
                                 anio.setAno(inicio.getYear() + 1900);
                                 anio.guardarAno(anio);
-                                
-                                
-//                                String dsem = (String) modelo.getValueAt(c, 0);
+
                                 Date ot1 = inicio;
                                 if (jCheckBox1.isSelected()) {
-                                    
                                     while (ot1.getDay() != 1) {
                                         ot1 = Controlador.sumarFechasDias(ot1, 1);
                                     }
                                     Date otro1 = ot1;
                                     // <editor-fold defaultstate="collapsed" desc="Guardar meses y dias">
-                                while (otro1.compareTo(fin) <= 0) {
+                                    while (otro1.compareTo(fin) <= 0) {
                                     Mes mes = anio.getMes(otro1.getMonth());
                                     if (mes == null) {
                                         mes = new Mes();
@@ -1457,48 +1517,45 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                 }
                                     // </editor-fold>
                                 }
-                            }else{
-                                JOptionPane.showMessageDialog(null,"No existe disponibilidad para el personal: "+person.toString(), "Registrar clase",JOptionPane.ERROR_MESSAGE);
-                                
+                                c++;
                             }
-                            c++;
+                            jTextField1.setText("");
+                            jTextField2.setText("");
+                            jTextField3.setText("");
+                            jTextField4.setText("");
+                            jFormattedTextField1.setText("");
+                            jFormattedTextField2.setText("");
+                            jFormattedTextField3.setText("");
+                            jFormattedTextField4.setText("");
+                            jFormattedTextField5.setText("");
+                            jFormattedTextField6.setText("");
+                            jFormattedTextField7.setText("");
+                            jFormattedTextField8.setText("");
+                            jFormattedTextField9.setText("");
+                            jFormattedTextField10.setText("");
+                            jFormattedTextField11.setText("");
+                            jFormattedTextField12.setText("");
+                            Drive.LimpiarTabla(jTable1);
+                            lista.removeAll(lista);
+                            String buscar=(String) jComboBox4.getSelectedItem();
+                            Drive.CargarpersonalSimple(jTable2,buscar, buffer.toString().toUpperCase(),lista);
+                            Drive=new Controlador();
+                            jCheckBox1.setSelected(false);
+                            jCheckBox2.setSelected(false);
+                            jCheckBox3.setSelected(false);
+                            jCheckBox4.setSelected(false);
+                            jCheckBox5.setSelected(false);
+                            jCheckBox6.setSelected(false);
                         }
-                        jTextField1.setText("");
-                        jTextField2.setText("");
-                        jTextField3.setText("");
-                        jTextField4.setText("");
-                        jFormattedTextField1.setText("");
-                        jFormattedTextField2.setText("");
-                        jFormattedTextField3.setText("");
-                        jFormattedTextField4.setText("");
-                        jFormattedTextField5.setText("");
-                        jFormattedTextField6.setText("");
-                        jFormattedTextField7.setText("");
-                        jFormattedTextField8.setText("");
-                        jFormattedTextField9.setText("");
-                        jFormattedTextField10.setText("");
-                        jFormattedTextField11.setText("");
-                        jFormattedTextField12.setText("");
-                        Drive.LimpiarTabla(jTable1);
-                        lista.removeAll(lista);
-                        String buscar=(String) jComboBox4.getSelectedItem();
-                        Drive.CargarpersonalSimple(jTable2,buscar, buffer.toString().toUpperCase(),lista);
-                        Drive=new Controlador();
-                        jCheckBox1.setSelected(false);
-                        jCheckBox2.setSelected(false);
-                        jCheckBox3.setSelected(false);
-                        jCheckBox4.setSelected(false);
-                        jCheckBox5.setSelected(false);
-                        jCheckBox6.setSelected(false);
-                        
                         // </editor-fold>
-                    } 
-                    else{
+                    }else{
                         // <editor-fold defaultstate="collapsed" desc="Actualizar tarea"> 
+                        boolean band2=false;
                         if (!tar.getLugar().equals(jTextField3.getText().toUpperCase())) {
-//                            Establecimiento est = Drive.getPrimerEstablecimiento();
                             tar.setLugar(jTextField3.getText().toUpperCase());
                             tar.ActualizarTarea(tar);
+                            jTextField3.setText(tar.getLugar());
+                            band2=true;
                         }
                         Tareaclase clase = tar.getTareaclases().iterator().next();
                         int i = 0;
@@ -1509,7 +1566,11 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                             clase.setAula(jTextField2.getText().toUpperCase());
                             clase.setNumero(i);
                             clase.actualizarTareaclase(clase);
+                            jTextField2.setText(clase.getAula());
+                            jTextField4.setText(String.valueOf(clase.getNumero()));
+                            band2=true;
                         }
+                        
                         DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
                         int c = 0;
                         boolean bander=false;
@@ -1526,8 +1587,6 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                     bander=true;
                                     break;
                                 }
-                                //bander=false;
-                                //cambio = true;
                             }
                             if(bander==false){
                                 cambio=true;
@@ -1537,6 +1596,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                         if(cont!=jTable1.getRowCount()){
                             cambio=true;
                         }
+                        List day = tar.ObtenerListaDiass();
                         List sel = new ArrayList();
                         if (jCheckBox1.isSelected()) {sel.add(1);}
                         if (jCheckBox2.isSelected()) {sel.add(2);}
@@ -1544,37 +1604,95 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                         if (jCheckBox4.isSelected()) {sel.add(4);}
                         if (jCheckBox5.isSelected()) {sel.add(5);}
                         if (jCheckBox6.isSelected()) {sel.add(6);}
-                        if(!sel.containsAll(diass)){
+                        
+                        if(!sel.containsAll(day)){
                             cambio=true;
                         }
                         if (cambio == true) {
-                            tar.BorrarTodo();
-                            Drive=new Controlador();
-                            tar=(Tarea) Drive.PERSISTENCIA.getTarea(tar.getIdTarea()).iterator().next();
                             c = 0;
+                            boolean band=true;
+                            SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
                             while (jTable1.getRowCount() != c) {
                                 Personal person = (Personal) modelo.getValueAt(c, 0);
-                                SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
-                                Date inn = formateador.parse((String) modelo.getValueAt(c, 2));
-                                Date fii = formateador.parse((String) modelo.getValueAt(c, 3));
-                                Iniciofin aux = new Iniciofin();
-                                aux.setInicio(inn);
-                                aux.setFin(fii);
+                                // <editor-fold defaultstate="collapsed" desc="verificar">
+                                Date inn = new Date();
+                                Date fii = new Date();
+                                HashMap items = new HashMap();
+                                HashMap listini = new HashMap();
+                                if (jCheckBox1.isSelected()) {
+                                    items.put(1,"LUNES");
+                                    inn = formateador.parse(jFormattedTextField1.getText());
+                                    fii = formateador.parse(jFormattedTextField2.getText());
+                                    Iniciofin aux = new Iniciofin();
+                                    aux.setInicio(inn);
+                                    aux.setFin(fii);
+                                    listini.put(1,aux);
+                                }
+                                if (jCheckBox2.isSelected()) {
+                                    items.put(2,"MARTES");
+                                    inn = formateador.parse(jFormattedTextField3.getText());
+                                    fii = formateador.parse(jFormattedTextField4.getText());
+                                    Iniciofin aux = new Iniciofin();
+                                    aux.setInicio(inn);
+                                    aux.setFin(fii);
+                                    listini.put(2,aux);
+                                }
+                                if (jCheckBox3.isSelected()) {
+                                    items.put(3,"MIERCOLES");
+                                    inn = formateador.parse(jFormattedTextField5.getText());
+                                    fii = formateador.parse(jFormattedTextField6.getText());
+                                    Iniciofin aux = new Iniciofin();
+                                    aux.setInicio(inn);
+                                    aux.setFin(fii);
+                                    listini.put(3,aux);
+                                }
+                                if (jCheckBox4.isSelected()) {
+                                    items.put(4,"JUEVES");
+                                    inn = formateador.parse(jFormattedTextField8.getText());
+                                    fii = formateador.parse(jFormattedTextField7.getText());
+                                    Iniciofin aux = new Iniciofin();
+                                    aux.setInicio(inn);
+                                    aux.setFin(fii);
+                                    listini.put(4,aux);
+                                }
+                                if (jCheckBox5.isSelected()) {
+                                    items.put(5,"VIERNES");
+                                    inn = formateador.parse(jFormattedTextField9.getText());
+                                    fii = formateador.parse(jFormattedTextField10.getText());
+                                    Iniciofin aux = new Iniciofin();
+                                    aux.setInicio(inn);
+                                    aux.setFin(fii);
+                                    listini.put(5,aux);
+                                }
+                                if (jCheckBox6.isSelected()) {
+                                    items.put(6,"SABADO");
+                                    inn = formateador.parse(jFormattedTextField11.getText());
+                                    fii = formateador.parse(jFormattedTextField12.getText());
+                                    Iniciofin aux = new Iniciofin();
+                                    aux.setInicio(inn);
+                                    aux.setFin(fii);
+                                    listini.put(6,aux);
+                                }
                                 Date inicioo = dateChooserCombo1.getSelectedDate().getTime();
                                 Date finn = dateChooserCombo2.getSelectedDate().getTime();
-//                                String dse = (String) modelo.getValueAt(c, 0);
-                                List items = new ArrayList();
-                                if (jCheckBox1.isSelected()) {items.add("LUNES");}
-                                if (jCheckBox2.isSelected()) {items.add("MARTES");}
-                                if (jCheckBox3.isSelected()) {items.add("MIERCOLES");}
-                                if (jCheckBox4.isSelected()) {items.add("JUEVES");}
-                                if (jCheckBox5.isSelected()) {items.add("VIERNES");}
-                                if (jCheckBox6.isSelected()) {items.add("SABADO");}
-                                int[][] cant = person.VerificarDisponibilidadClase(inicioo, finn, aux, items);
-                                int ee = cant[0].length;
-                                int eee = cant[1].length;
-                                int confirmado = JOptionPane.showConfirmDialog(null, "El personal" + person.toString() + " tendrá " + ee + " inasistencias debido a actividades y " + eee + " debido a declaración jurada, ¿Desea continuar?", "", JOptionPane.YES_NO_OPTION);
-                                if (JOptionPane.OK_OPTION == confirmado) {
+                                // </editor-fold>
+                                if (person.DisponibilidadClase(inicioo, finn, listini, items)) {
+                                    band=true;
+                                }else{
+                                    band=false;
+                                    JOptionPane.showMessageDialog(null,"No existe disponibilidad", "Actualizar clase",JOptionPane.ERROR_MESSAGE);
+                                    break;
+                                }
+                                c++;
+                            }
+                            if(band==true){
+                                band2=true;
+                                tar.BorrarTodo();
+                                Drive=new Controlador();
+                                tar=(Tarea) Drive.PERSISTENCIA.getTarea(tar.getIdTarea()).iterator().next();
+                                c = 0;
+                                while (jTable1.getRowCount() != c) {
+                                    Personal person = (Personal) modelo.getValueAt(c, 0);
                                     Revista rev = (Revista) modelo.getValueAt(c, 1);
                                     Agenda age=tar.ObtenerAgenda(person.getIdPersonal(),rev.getIdRevista());
                                     if(age.getId()==null){
@@ -1850,21 +1968,33 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                     }
                                     // </editor-fold>
                                     }
-                                    
+                                    c++;
                                 }
-                                c++;
+                                Frame vp = new JFrameConsultaActividades(Drive, adm, idsesion);
+                                this.dispose();
+                                vp.show();
+                            }else{
+                                Frame vp = new JFrameConsultaActividades(Drive, adm, idsesion);
+                                this.dispose();
+                                vp.show();
                             }
                         }
-                        Frame vp = new JFrameConsultaActividades(Drive, adm, idsesion);
-                        this.dispose();
-                        vp.show();
+                        if (band2==true){
+                             // <editor-fold defaultstate="collapsed" desc="Auditoria"> 
+                                Auditoria audi=new Auditoria();
+                                audi.setPersonalByIdAuditor(adm);
+                                audi.setOperacion("Actualizar");
+                                audi.setFecha(new Date());
+                                audi.setTarea(tar);
+                                audi.guardarAuditoria(audi);
+                                // </editor-fold>
+                        }
                         // </editor-fold>
                     }
                     jButton1.setEnabled(true);
                     jButton2.setEnabled(true);
                     jButton3.setEnabled(true);
                     jButton4.setEnabled(true);
-                    
                 } else {
                     JOptionPane.showMessageDialog(null, "Los campos con '*' son obligatorios y no puede contener espacios en blanco en los horarios", "Registrar Clase", JOptionPane.ERROR_MESSAGE);
                 }
@@ -1879,7 +2009,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         try {
-            if (!jTextField1.getText().isEmpty() && !jFormattedTextField1.getText().contains(" ") && !jFormattedTextField2.getText().contains(" ")) {
+            if (!jTextField1.getText().isEmpty()) {
                 if (per.getIdPersonal() != null) {
                     DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
                     Revista rev = (Revista) jComboBox2.getSelectedItem();
@@ -1947,7 +2077,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
             while(it.hasNext()){
                 Revista tip=(Revista) it.next();
                 if(tip.getNombre().equals(cadSalida)){
-                    JOptionPane.showMessageDialog(null, "La situación de revista ya existe","Nueva Situación de Revista", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "La situación de revista ya existe","Registrar Situación de Revista", JOptionPane.ERROR_MESSAGE);
                     w=true;
                 }
             }
@@ -2083,7 +2213,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                 Drive.CargarpersonalSimple(jTable2,buscar, es.toUpperCase(),lista);
             }
         }catch(Exception e){
-            JOptionPane.showMessageDialog(null, "ERROR","Registrar clase", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, e.toString(),"Registrar clase", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jTextField5KeyTyped
 
@@ -2205,8 +2335,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                 Iniciofin ini = d.getIniciofins().iterator().next();
                 SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
                 Date inicio = formateador.parse(jFormattedTextField1.getText());
-                String est = formateador.format(ini.getInicio());
-                Date aux = formateador.parse(est);
+                Date aux = formateador.parse(formateador.format(ini.getInicio()));
                 if (!inicio.equals(aux)) {
                     cambio = true;
                 }
@@ -2234,7 +2363,22 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
     }//GEN-LAST:event_jFormattedTextField3ActionPerformed
 
     private void jFormattedTextField3FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jFormattedTextField3FocusLost
-        // TODO add your handling code here:
+        try {
+            if (tar.getIdTarea() != null) {
+                Agenda age = tar.getAgendas().iterator().next();
+                Dia d = age.getDia2(mayor);
+                Iniciofin ini = d.getIniciofins().iterator().next();
+                SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
+                Date inicio = formateador.parse(jFormattedTextField3.getText());
+                Date aux = formateador.parse(formateador.format(ini.getInicio()));
+                if (!inicio.equals(aux)) {
+                    cambio = true;
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Ingrese correctamente la hora", "Registrar Clase", JOptionPane.ERROR_MESSAGE);
+            jFormattedTextField1.setText("");
+        }
     }//GEN-LAST:event_jFormattedTextField3FocusLost
 
     private void jFormattedTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFormattedTextField4ActionPerformed
@@ -2250,7 +2394,22 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
     }//GEN-LAST:event_jFormattedTextField5ActionPerformed
 
     private void jFormattedTextField5FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jFormattedTextField5FocusLost
-        // TODO add your handling code here:
+        try {
+            if (tar.getIdTarea() != null) {
+                Agenda age = tar.getAgendas().iterator().next();
+                Dia d = age.getDia2(mayor);
+                Iniciofin ini = d.getIniciofins().iterator().next();
+                SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
+                Date inicio = formateador.parse(jFormattedTextField5.getText());
+                Date aux = formateador.parse(formateador.format(ini.getInicio()));
+                if (!inicio.equals(aux)) {
+                    cambio = true;
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Ingrese correctamente la hora", "Registrar Clase", JOptionPane.ERROR_MESSAGE);
+            jFormattedTextField1.setText("");
+        }
     }//GEN-LAST:event_jFormattedTextField5FocusLost
 
     private void jFormattedTextField6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFormattedTextField6ActionPerformed
@@ -2274,7 +2433,22 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
     }//GEN-LAST:event_jFormattedTextField8ActionPerformed
 
     private void jFormattedTextField8FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jFormattedTextField8FocusLost
-        // TODO add your handling code here:
+        try {
+            if (tar.getIdTarea() != null) {
+                Agenda age = tar.getAgendas().iterator().next();
+                Dia d = age.getDia2(mayor);
+                Iniciofin ini = d.getIniciofins().iterator().next();
+                SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
+                Date inicio = formateador.parse(jFormattedTextField8.getText());
+                Date aux = formateador.parse(formateador.format(ini.getInicio()));
+                if (!inicio.equals(aux)) {
+                    cambio = true;
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Ingrese correctamente la hora", "Registrar Clase", JOptionPane.ERROR_MESSAGE);
+            jFormattedTextField1.setText("");
+        }
     }//GEN-LAST:event_jFormattedTextField8FocusLost
 
     private void jFormattedTextField9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFormattedTextField9ActionPerformed
@@ -2282,7 +2456,22 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
     }//GEN-LAST:event_jFormattedTextField9ActionPerformed
 
     private void jFormattedTextField9FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jFormattedTextField9FocusLost
-        // TODO add your handling code here:
+        try {
+            if (tar.getIdTarea() != null) {
+                Agenda age = tar.getAgendas().iterator().next();
+                Dia d = age.getDia2(mayor);
+                Iniciofin ini = d.getIniciofins().iterator().next();
+                SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
+                Date inicio = formateador.parse(jFormattedTextField9.getText());
+                Date aux = formateador.parse(formateador.format(ini.getInicio()));
+                if (!inicio.equals(aux)) {
+                    cambio = true;
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Ingrese correctamente la hora", "Registrar Clase", JOptionPane.ERROR_MESSAGE);
+            jFormattedTextField1.setText("");
+        }
     }//GEN-LAST:event_jFormattedTextField9FocusLost
 
     private void jFormattedTextField10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFormattedTextField10ActionPerformed
@@ -2298,7 +2487,22 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
     }//GEN-LAST:event_jFormattedTextField11ActionPerformed
 
     private void jFormattedTextField11FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jFormattedTextField11FocusLost
-        // TODO add your handling code here:
+        try {
+            if (tar.getIdTarea() != null) {
+                Agenda age = tar.getAgendas().iterator().next();
+                Dia d = age.getDia2(mayor);
+                Iniciofin ini = d.getIniciofins().iterator().next();
+                SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
+                Date inicio = formateador.parse(jFormattedTextField11.getText());
+                Date aux = formateador.parse(formateador.format(ini.getInicio()));
+                if (!inicio.equals(aux)) {
+                    cambio = true;
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Ingrese correctamente la hora", "Registrar Clase", JOptionPane.ERROR_MESSAGE);
+            jFormattedTextField1.setText("");
+        }
     }//GEN-LAST:event_jFormattedTextField11FocusLost
 
     private void jFormattedTextField12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFormattedTextField12ActionPerformed
@@ -2308,6 +2512,70 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
     private void jFormattedTextField12FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jFormattedTextField12FocusLost
         // TODO add your handling code here:
     }//GEN-LAST:event_jFormattedTextField12FocusLost
+
+    private void jCheckBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCheckBox1ItemStateChanged
+        if(jCheckBox1.isSelected()){
+            jFormattedTextField1.setEnabled(true);
+            jFormattedTextField2.setEnabled(true);
+        }else{
+            jFormattedTextField1.setEnabled(false);
+            jFormattedTextField2.setEnabled(false);
+        }
+    }//GEN-LAST:event_jCheckBox1ItemStateChanged
+
+    private void jCheckBox2ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCheckBox2ItemStateChanged
+        if(jCheckBox2.isSelected()){
+            jFormattedTextField3.setEnabled(true);
+            jFormattedTextField4.setEnabled(true);
+        }else{
+            jFormattedTextField3.setEnabled(false);
+            jFormattedTextField4.setEnabled(false);
+        }
+    }//GEN-LAST:event_jCheckBox2ItemStateChanged
+
+    private void jCheckBox3ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCheckBox3ItemStateChanged
+        if(jCheckBox3.isSelected()){
+            jFormattedTextField5.setEnabled(true);
+            jFormattedTextField6.setEnabled(true);
+        }else{
+            jFormattedTextField5.setEnabled(false);
+            jFormattedTextField6.setEnabled(false);
+        }
+    }//GEN-LAST:event_jCheckBox3ItemStateChanged
+
+    private void jCheckBox4ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCheckBox4ItemStateChanged
+        if(jCheckBox4.isSelected()){
+            jFormattedTextField7.setEnabled(true);
+            jFormattedTextField8.setEnabled(true);
+        }else{
+            jFormattedTextField7.setEnabled(false);
+            jFormattedTextField8.setEnabled(false);
+        }
+    }//GEN-LAST:event_jCheckBox4ItemStateChanged
+
+    private void jCheckBox5ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCheckBox5ItemStateChanged
+        if(jCheckBox5.isSelected()){
+            jFormattedTextField10.setEnabled(true);
+            jFormattedTextField9.setEnabled(true);
+        }else{
+            jFormattedTextField10.setEnabled(false);
+            jFormattedTextField9.setEnabled(false);
+        }
+    }//GEN-LAST:event_jCheckBox5ItemStateChanged
+
+    private void jCheckBox6ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCheckBox6ItemStateChanged
+        if(jCheckBox6.isSelected()){
+            jFormattedTextField11.setEnabled(true);
+            jFormattedTextField12.setEnabled(true);
+        }else{
+            jFormattedTextField11.setEnabled(false);
+            jFormattedTextField12.setEnabled(false);
+        }
+    }//GEN-LAST:event_jCheckBox6ItemStateChanged
+
+    private void jTextField3FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField3FocusLost
+        
+    }//GEN-LAST:event_jTextField3FocusLost
 
     /**
     * @param args the command line arguments

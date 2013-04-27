@@ -435,7 +435,7 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
             this.hide();
             vpp.show();
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, "Ingrese correctamente la fecha de franco","Ingresar Franco", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Ingrese correctamente la fecha de franco","Registrar Franco", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -446,7 +446,7 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosing
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea modificar la Tarea?", "Modificar Tarea", JOptionPane.YES_NO_OPTION);
+        int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea modificar la Tarea?", "Actualizar Tarea", JOptionPane.YES_NO_OPTION);
         if (JOptionPane.OK_OPTION == confirmado) {
             if (tar.getComentario().equals("EXTRACURRICULAR")) {
                 try {
@@ -462,7 +462,7 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
                         fecha.setMinutes(hora.getMinutes());
                         Date aux = new Date();
                         if (aux.compareTo(fecha) > 0) {
-                            JOptionPane.showMessageDialog(null, "No puede modificar una tarea que ya ocurrió", "Modificar Tarea", JOptionPane.ERROR_MESSAGE);
+                            JOptionPane.showMessageDialog(null, "No puede modificar una tarea que ya ocurrió", "Actualizar Tarea", JOptionPane.ERROR_MESSAGE);
                         } else {
                             JFrameExtracurricular vent2 = new JFrameExtracurricular(Drive, adm, idsesion,tar);
                             this.hide();
@@ -486,7 +486,7 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
                         fecha.setMinutes(hora.getMinutes());
                         Date aux = new Date();
                         if (aux.compareTo(fecha) > 0) {
-                            JOptionPane.showMessageDialog(null, "No puede modificar una tarea que ya ocurrió", "Modificar Tarea", JOptionPane.ERROR_MESSAGE);
+                            JOptionPane.showMessageDialog(null, "No puede modificar una tarea que ya ocurrió", "Actualizar Tarea", JOptionPane.ERROR_MESSAGE);
                         } else {
                             JFrameotro vent2 = new JFrameotro(Drive, adm, idsesion, tar);
                             this.hide();
@@ -513,7 +513,7 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
                         fecha.setMinutes(hora.getMinutes());
                         Date aux = new Date();
                         if (aux.compareTo(fecha) > 0) {
-                            JOptionPane.showMessageDialog(null, "No puede modificar una tarea que ya ocurrió", "Modificar Tarea", JOptionPane.ERROR_MESSAGE);
+                            JOptionPane.showMessageDialog(null, "No puede modificar una tarea que ya ocurrió", "Actualizar Tarea", JOptionPane.ERROR_MESSAGE);
                         } else {
                             JFrameReunion vent2 = new JFrameReunion(Drive, adm, idsesion,tar);
                             this.hide();
