@@ -14,6 +14,7 @@ package Presentacion;
 import Clases.Agenda;
 import Clases.AgendaId;
 import Clases.Ano;
+import Clases.Auditoria;
 import Clases.Controlador;
 import Clases.Departamento;
 import Clases.Dia;
@@ -570,7 +571,7 @@ public class JFrameReunion extends javax.swing.JFrame {
                 vp.show();
             }
         } else {
-            if (!cambio==true) {
+            if (cambio==true) {
                 int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea cancelar la actualización de la reunión?", "", JOptionPane.YES_NO_OPTION);
                 if (JOptionPane.OK_OPTION == confirmado) {
                     Frame vp = new JFrameConsultaActividades(Drive, adm, idsesion);
@@ -621,6 +622,14 @@ public class JFrameReunion extends javax.swing.JFrame {
                                 tarr.setComentario("REUNION");
                                 tarr.setEstado(true);
                                 int idtar = tarr.guardarTarea(tarr);
+                                // <editor-fold defaultstate="collapsed" desc="Auditoria"> 
+                                Auditoria audi=new Auditoria();
+                                audi.setPersonalByIdAuditor(adm);
+                                audi.setOperacion("Insertar");
+                                audi.setFecha(new Date());
+                                audi.setTarea(tarr);
+                                audi.guardarAuditoria(audi);
+                                // </editor-fold>
                                 TareareunionId id = new TareareunionId();
                                 id.setIdTarea(idtar);
                                 tarr.crearTareareunion(id, tarr, jTextField1.getText().toUpperCase(), jcombo2);
@@ -635,8 +644,6 @@ public class JFrameReunion extends javax.swing.JFrame {
                                             Agenda age = new Agenda();
                                             age.setId(ida);
                                             age.setPersonal(per);
-//                                            Revista rev = (Revista) Drive.PERSISTENCIA.getSitRevista().get(0);
-//                                            age.setRevista(rev);
                                             age.setTarea(tarr);
                                             age.setComentario(null);
                                             age.guardarAgenda(age);
@@ -704,19 +711,11 @@ public class JFrameReunion extends javax.swing.JFrame {
                             }
                             jFormattedTextField1.setText("");
                             jFormattedTextField2.setText("");
-                            
-//                            jTextField3.setText("");
-//                            jTextField4.setText("");
-//                            jTextField1.setText("");
-//                            Drive.LimpiarTabla(jTable1);
-//                            lista.removeAll(lista);
-//                            String buscar = (String) jComboBox1.getSelectedItem();
-//                            Drive.CargarTablacheck(jTable1, buscar, buffer.toString().toUpperCase(), lista);
-//                            Drive = new Controlador();
                         }
                         // </editor-fold>
                     } else {
                         // <editor-fold defaultstate="collapsed" desc="Actualizar tarea"> 
+                        boolean band2=false;
                         SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
                         formateador.setLenient(false);
                         Date inicio = formateador.parse(jFormattedTextField1.getText());
@@ -724,14 +723,22 @@ public class JFrameReunion extends javax.swing.JFrame {
                         if (inicio.compareTo(fin) < 0) {
                             String caracter = (String) jComboBox2.getSelectedItem();
                             fecha = dateChooserCombo1.getSelectedDate().getTime();
-                            tar.setLugar(jTextField4.getText().toUpperCase());
-                            tar.ActualizarTarea(tar);
-
+                            if (!tar.getLugar().equals(jTextField4.getText().toUpperCase())) {
+                                tar.setLugar(jTextField4.getText().toUpperCase());
+                                tar.ActualizarTarea(tar);
+                                jTextField4.setText(tar.getLugar());
+                                band2=true;
+                            }
                             Tareareunion tareu = tar.getTareareunions().iterator().next();
-                            tareu.setMotivo(jTextField4.getText().toUpperCase());
-                            tareu.setCaracter(caracter);
-                            tareu.actualizarTareareunion(tareu);
-
+                            if (!tareu.getMotivo().equals(jTextField1.getText().toUpperCase())||!tareu.getCaracter().equals(caracter)) {
+                                tareu.setMotivo(jTextField1.getText().toUpperCase());
+                                tareu.setCaracter(caracter);
+                                tareu.actualizarTareareunion(tareu);
+                                jTextField1.setText(tareu.getMotivo());
+                                jComboBox2.setSelectedItem(tareu.getCaracter());
+                                band2=true;
+                            }
+                            
                             DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
                             int c = 0;
                             boolean bander = false;
@@ -762,6 +769,7 @@ public class JFrameReunion extends javax.swing.JFrame {
                                 cambio = true;
                             }
                             if (cambio == true) {
+                                band2=true;
                                 tar.BorrarTodo();
                                 Drive=new Controlador();
                                 tar=(Tarea) Drive.PERSISTENCIA.getTarea(tar.getIdTarea()).iterator().next();
@@ -769,18 +777,13 @@ public class JFrameReunion extends javax.swing.JFrame {
                                 while (jTable1.getRowCount() != c) {
                                     if (modelo.getValueAt(c, 0).equals(true)) {
                                         Personal per = (Personal) modelo.getValueAt(c, 1);
-//                                        Iniciofin aux = new Iniciofin();
-//                                        aux.setInicio(inicio);
-//                                        aux.setFin(fin);
                                         boolean control=false;
                                         if (per.ReunionVerificarDisponibilidad(fecha, inicio, fin,control)==1) {
-                                            Revista rev = (Revista) Drive.PERSISTENCIA.getSitRevista().get(0);
-                                            Agenda age = tar.ObtenerAgenda(per.getIdPersonal(), rev.getIdRevista());
+                                            Agenda age = tar.ObtenerAgenda(per.getIdPersonal());
                                             if (age.getId() == null) {
                                                 AgendaId ida = new AgendaId(per.getIdPersonal(), tar.getIdTarea());
                                                 age.setId(ida);
                                                 age.setPersonal(per);
-                                                age.setRevista(rev);
                                                 age.setTarea(tar);
                                                 age.setComentario(null);
                                                 age.guardarAgenda(age);
@@ -806,13 +809,11 @@ public class JFrameReunion extends javax.swing.JFrame {
                                             in.setFin(fin);
                                             in.guardarIniciofin(in);
                                         } else if(per.ReunionVerificarDisponibilidad(fecha, inicio, fin,control)==2) {
-                                            Revista rev = (Revista) Drive.PERSISTENCIA.getSitRevista().get(0);
-                                            Agenda age = tar.ObtenerAgenda(per.getIdPersonal(), rev.getIdRevista());
+                                            Agenda age = tar.ObtenerAgenda(per.getIdPersonal());
                                             if (age.getId() == null) {
                                                 AgendaId ida = new AgendaId(per.getIdPersonal(), tar.getIdTarea());
                                                 age.setId(ida);
                                                 age.setPersonal(per);
-                                                age.setRevista(rev);
                                                 age.setTarea(tar);
                                                 age.setComentario(null);
                                                 age.guardarAgenda(age);
@@ -843,6 +844,16 @@ public class JFrameReunion extends javax.swing.JFrame {
                                     }
                                     c++;
                                 }
+                            }
+                            if(band2==true){
+                                // <editor-fold defaultstate="collapsed" desc="Auditoria"> 
+                                Auditoria audi=new Auditoria();
+                                audi.setPersonalByIdAuditor(adm);
+                                audi.setOperacion("Actualizar");
+                                audi.setFecha(new Date());
+                                audi.setTarea(tar);
+                                audi.guardarAuditoria(audi);
+                                    // </editor-fold>
                             }
                         }
                         Frame vp = new JFrameConsultaActividades(Drive, adm, idsesion);

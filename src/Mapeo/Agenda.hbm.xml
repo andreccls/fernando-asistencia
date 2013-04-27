@@ -1,42 +1,41 @@
-<?xml version="1.0"?>
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 25-abr-2013 4:06:38 by Hibernate Tools 3.2.1.GA -->
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 25-abr-2013 14:00:45 by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
-    <class name="Mapeo.Agenda" table="agenda" catalog="asistencia">
-        <composite-id name="id" class="Mapeo.AgendaId">
-            <key-property name="idPersonal" type="int">
-                <column name="Id_personal" />
-            </key-property>
-            <key-property name="idTarea" type="int">
-                <column name="Id_tarea" />
-            </key-property>
-        </composite-id>
-        <many-to-one name="revista" class="Mapeo.Revista" fetch="select">
-            <column name="Id_revista" />
-        </many-to-one>
-        <many-to-one name="personal" class="Mapeo.Personal" update="false" insert="false" fetch="select">
-            <column name="Id_personal" not-null="true" />
-        </many-to-one>
-        <many-to-one name="tarea" class="Mapeo.Tarea" update="false" insert="false" fetch="select">
-            <column name="Id_tarea" not-null="true" />
-        </many-to-one>
-        <property name="comentario" type="string">
-            <column name="Comentario" length="45" />
-        </property>
-        <set name="francos" inverse="true">
-            <key>
-                <column name="Id_personal" not-null="true" />
-                <column name="Id_tarea" not-null="true" />
-            </key>
-            <one-to-many class="Mapeo.Franco" />
-        </set>
-        <set name="anos" inverse="true">
-            <key>
-                <column name="Id_personal" not-null="true" />
-                <column name="Id_tarea" not-null="true" />
-            </key>
-            <one-to-many class="Mapeo.Ano" />
-        </set>
-    </class>
+  <class catalog="asistencia" name="Clases.Agenda" table="agenda">
+    <composite-id class="Clases.AgendaId" name="id">
+      <key-property name="idPersonal" type="int">
+        <column name="Id_personal"/>
+      </key-property>
+      <key-property name="idTarea" type="int">
+        <column name="Id_tarea"/>
+      </key-property>
+    </composite-id>
+    <many-to-one class="Clases.Revista" fetch="select" name="revista">
+      <column name="Id_revista"/>
+    </many-to-one>
+    <many-to-one class="Clases.Personal" fetch="select" insert="false" name="personal" update="false">
+      <column name="Id_personal" not-null="true"/>
+    </many-to-one>
+    <many-to-one class="Clases.Tarea" fetch="select" insert="false" name="tarea" update="false">
+      <column name="Id_tarea" not-null="true"/>
+    </many-to-one>
+    <property name="comentario" type="string">
+      <column length="45" name="Comentario"/>
+    </property>
+    <set inverse="true" name="francos">
+      <key>
+        <column name="Id_personal" not-null="true"/>
+        <column name="Id_tarea" not-null="true"/>
+      </key>
+      <one-to-many class="Clases.Franco"/>
+    </set>
+    <set inverse="true" name="anos">
+      <key>
+        <column name="Id_personal" not-null="true"/>
+        <column name="Id_tarea" not-null="true"/>
+      </key>
+      <one-to-many class="Clases.Ano"/>
+    </set>
+  </class>
 </hibernate-mapping>

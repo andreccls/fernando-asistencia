@@ -7,6 +7,7 @@ package Presentacion;
 import Clases.Agenda;
 import Clases.AgendaId;
 import Clases.Ano;
+import Clases.Auditoria;
 import Clases.Controlador;
 import Clases.Departamento;
 import Clases.Dia;
@@ -678,10 +679,18 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                 tarr.setComentario("EXTRACURRICULAR");
                                 tarr.setEstado(true);
                                 int idtar = tarr.guardarTarea(tarr);
+                                
                                 TareaextracurricularId id = new TareaextracurricularId();
                                 id.setIdTarea(idtar);
                                 tarr.crearTareaextracurricular(id, tarr, inicio, fin);
-
+                                // <editor-fold defaultstate="collapsed" desc="Auditoria"> 
+                                Auditoria audi=new Auditoria();
+                                audi.setPersonalByIdAuditor(adm);
+                                audi.setOperacion("Insertar");
+                                audi.setFecha(new Date());
+                                audi.setTarea(tarr);
+                                audi.guardarAuditoria(audi);
+                                // </editor-fold>
                                 DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
                                 int c = 0;
                                 while (jTable1.getRowCount() != c) {
@@ -693,8 +702,6 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                             Agenda age = new Agenda();
                                             age.setId(ida);
                                             age.setPersonal(per);
-                                            Revista rev = (Revista) Drive.PERSISTENCIA.getSitRevista().get(0);
-                                            age.setRevista(rev);
                                             age.setTarea(tarr);
                                             age.setComentario(null);
                                             age.guardarAgenda(age);
@@ -864,6 +871,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                         // </editor-fold>
                     } else {
                         // <editor-fold defaultstate="collapsed" desc="Actualizar tarea">
+                        boolean band2=false;
                         SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
                         formateador.setLenient(false);
                         Date inicio = formateador.parse(jFormattedTextField1.getText());
@@ -883,15 +891,17 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                             Date fi = new Date();
                             ini = formateador.parse(i);
                             fi = formateador.parse(e);
-                            tar.setLugar(jTextField4.getText().toUpperCase());
-                            tar.guardarTarea(tar);
-
+                            if (!tar.getLugar().equals(jTextField4.getText().toUpperCase())) {
+                                tar.setLugar(jTextField4.getText().toUpperCase());
+                                tar.ActualizarTarea(tar);
+                                jTextField4.setText(tar.getLugar());
+                                band2=true;
+                            }
                             Tareaextracurricular tarext = tar.getTareaextracurriculars().iterator().next();
                             tarext.setDiaInicio(inicio);
                             tarext.setDiaFin(fin);
                             tarext.actualizarTareaextracurricular(tarext);
-
-
+                            
                             DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
                             int c = 0;
                             boolean bander = false;
@@ -922,6 +932,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                 cambio = true;
                             }
                             if (cambio == true) {
+                                band2=true;
                                 tar.BorrarTodo();
                                 Drive=new Controlador();
                                 tar=(Tarea) Drive.PERSISTENCIA.getTarea(tar.getIdTarea()).iterator().next();
@@ -935,8 +946,6 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                             Agenda age = new Agenda();
                                             age.setId(ida);
                                             age.setPersonal(per);
-                                            Revista rev = (Revista) Drive.PERSISTENCIA.getSitRevista().get(0);
-                                            age.setRevista(rev);
                                             age.setTarea(tar);
                                             age.setComentario(null);
                                             age.guardarAgenda(age);
@@ -1009,8 +1018,6 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                             Agenda age = new Agenda();
                                             age.setId(ida);
                                             age.setPersonal(per);
-                                            Revista rev = (Revista) Drive.PERSISTENCIA.getSitRevista().get(0);
-                                            age.setRevista(rev);
                                             age.setTarea(tar);
                                             age.setComentario(null);
                                             age.guardarAgenda(age);
@@ -1085,6 +1092,16 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                     }
                                     c++;
                                 }
+                            }
+                            if(band2==true){
+                                // <editor-fold defaultstate="collapsed" desc="Auditoria"> 
+                                Auditoria audi=new Auditoria();
+                                audi.setPersonalByIdAuditor(adm);
+                                audi.setOperacion("Actualizar");
+                                audi.setFecha(new Date());
+                                audi.setTarea(tar);
+                                audi.guardarAuditoria(audi);
+                                // </editor-fold>
                             }
                         }
                         Frame vp = new JFrameConsultaActividades(Drive, adm, idsesion);

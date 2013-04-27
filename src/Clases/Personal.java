@@ -1,9 +1,10 @@
 package Clases;
-// Generated 25-abr-2013 1:29:18 by Hibernate Tools 3.2.1.GA
+// Generated 25-abr-2013 14:00:44 by Hibernate Tools 3.2.1.GA
 
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -1172,16 +1173,16 @@ public class Personal  implements java.io.Serializable {
     
     //CLASES
     // <editor-fold defaultstate="collapsed" desc="Clase"> 
-    public boolean DisponibilidadClase(Date inici, Date finn, List<Iniciofin> inic,List dsem){
+    public boolean DisponibilidadClase(Date inici, Date finn, HashMap inic,HashMap dsem){
         boolean a=true;
 //        int d=0;
         Date ot1 = inici;
-        if (dsem.contains("LUNES")) {
+        if (dsem.containsValue("LUNES")) {
             while (ot1.getDay() != 1) {
                 ot1 = Controlador.sumarFechasDias(ot1, 1);
             }
              Date otro = ot1;
-             Iniciofin ini= inic.get(1);
+             Iniciofin ini= (Iniciofin) inic.get(1);
             // <editor-fold defaultstate="collapsed" desc="Guarda meses y dias">
         while (otro.compareTo(finn) <= 0) {
             if (!Controlador.PERSISTENCIA.getAgendas(idPersonal).isEmpty()) {
@@ -1237,12 +1238,12 @@ public class Personal  implements java.io.Serializable {
         
         }
         Date ot2 = inici;
-        if (dsem.contains("MARTES")) {
+        if (dsem.containsValue("MARTES")) {
             while (ot2.getDay() != 2) {
                 ot2 = Controlador.sumarFechasDias(ot2, 1);
             }
              Date otro = ot2;
-             Iniciofin ini= inic.get(2);
+             Iniciofin ini=  (Iniciofin) inic.get(2);
             // <editor-fold defaultstate="collapsed" desc="Guardar meses y dias">
         while (otro.compareTo(finn) <= 0) {
             if (!Controlador.PERSISTENCIA.getAgendas(idPersonal).isEmpty()) {
@@ -1297,12 +1298,12 @@ public class Personal  implements java.io.Serializable {
         // </editor-fold>
         }
         Date ot3 = inici;
-        if (dsem.contains("MIERCOLES")) {
+        if (dsem.containsValue("MIERCOLES")) {
             while (ot3.getDay() != 3) {
                 ot3 = Controlador.sumarFechasDias(ot3, 1);
             }
              Date otro = ot3;
-             Iniciofin ini= inic.get(3);
+             Iniciofin ini= (Iniciofin) inic.get(3);
             // <editor-fold defaultstate="collapsed" desc="Guarda meses y dias">
         while (otro.compareTo(finn) <= 0) {
             if (!Controlador.PERSISTENCIA.getAgendas(idPersonal).isEmpty()) {
@@ -1358,12 +1359,12 @@ public class Personal  implements java.io.Serializable {
         
         }
         Date ot4 = inici;
-        if (dsem.contains("JUEVES")) {
+        if (dsem.containsValue("JUEVES")) {
             while (ot4.getDay() != 4) {
                 ot4= Controlador.sumarFechasDias(ot4, 1);
             }
              Date otro = ot4;
-             Iniciofin ini= inic.get(4);
+             Iniciofin ini= (Iniciofin) inic.get(4);
             // <editor-fold defaultstate="collapsed" desc="Guarda meses y dias">
         while (otro.compareTo(finn) <= 0) {
             if (!Controlador.PERSISTENCIA.getAgendas(idPersonal).isEmpty()) {
@@ -1419,12 +1420,12 @@ public class Personal  implements java.io.Serializable {
         
         }
         Date ot5 = inici;
-        if (dsem.contains("VIERNES")) {
+        if (dsem.containsValue("VIERNES")) {
             while (ot5.getDay() != 5) {
                 ot5 = Controlador.sumarFechasDias(ot5, 1);
             }
              Date otro = ot5;
-             Iniciofin ini= inic.get(5);
+             Iniciofin ini= (Iniciofin) inic.get(5);
              // <editor-fold defaultstate="collapsed" desc="Guarda meses y dias">
         while (otro.compareTo(finn) <= 0) {
             if (!Controlador.PERSISTENCIA.getAgendas(idPersonal).isEmpty()) {
@@ -1480,12 +1481,12 @@ public class Personal  implements java.io.Serializable {
         
         }
         Date ot6 = inici;
-        if (dsem.contains("SABADO")) {
+        if (dsem.containsValue("SABADO")) {
             while (ot6.getDay() != 6) {
                 ot6 = Controlador.sumarFechasDias(ot6, 1);
             }
              Date otro = ot6;
-             Iniciofin ini= inic.get(6);
+             Iniciofin ini= (Iniciofin) inic.get(6);
              // <editor-fold defaultstate="collapsed" desc="Guarda meses y dias">
         while (otro.compareTo(finn) <= 0) {
             if (!Controlador.PERSISTENCIA.getAgendas(idPersonal).isEmpty()) {
@@ -1543,528 +1544,528 @@ public class Personal  implements java.io.Serializable {
 
         return a;
     }
-    
-    public int[][] VerificarDisponibilidadClase(Date inici, Date finn, Iniciofin ini,List dsem){
-        int a=0;
-        int d=0;
-        Date ot1 = inici;
-        if (dsem.contains("LUNES")) {
-            while (ot1.getDay() != 1) {
-                ot1 = Controlador.sumarFechasDias(ot1, 1);
-            }
-             Date otro = ot1;
-            // <editor-fold defaultstate="collapsed" desc="Guarda meses y dias">
-        while (otro.compareTo(finn) <= 0) {
-            if (!Controlador.PERSISTENCIA.getAgendas(idPersonal).isEmpty()) {
-                Iterator it = Controlador.PERSISTENCIA.getAgendas(idPersonal).iterator();
-                while (it.hasNext()) {
-                    Agenda age = (Agenda) it.next();
-                    if (age.getPersonal().getEstado() == true && age.getTarea().getEstado() == true) {
-                        if (age.getTarea().getTareaotros().iterator().hasNext()) {
-                            Tareaotro tarot = age.getTarea().getTareaotros().iterator().next();
-                            Date inicio = tarot.getDiaInicio();
-                            Date fin = tarot.getDiaFin();
-                            if (otro.compareTo(inicio) >= 0 && otro.compareTo(fin) <= 0) {
-                                a++;
-                            }
-                        } else if (age.getTarea().getTareaextracurriculars().iterator().hasNext()) {
-                            Tareaextracurricular tarot = age.getTarea().getTareaextracurriculars().iterator().next();
-                            Date inicio = tarot.getDiaInicio();
-                            Date fin = tarot.getDiaFin();
-                            if (otro.compareTo(inicio) >= 0 && otro.compareTo(fin) <= 0) {
-                                a++;
-                            }
-                        } else if (age.getTarea().getTareaclases().iterator().hasNext()) {
-                            Dia di = age.getDia2(otro);
-                            if (di.getIdDia() != null) {
-                                Iterator itin = di.getIniciofins().iterator();
-                                while (itin.hasNext()) {
-                                    Iniciofin in = (Iniciofin) itin.next();
-                                    if (ini.getInicio().compareTo(in.getInicio()) <= 0 && ini.getFin().compareTo(in.getInicio()) >= 0) {
-                                        a++;
-                                    } else if (ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) >= 0) {
-                                        a++;
-                                    } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getInicio()) >= 0 && ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
-                                        a++;
-                                    }
-                                }
-                            }
-                        } else if (age.getTarea().getTareareunions().iterator().hasNext()) {
-                            Dia di = age.getDia2(otro);
-                            if (di.getIdDia() != null) {
-                                Iterator itin = di.getIniciofins().iterator();
-                                while (itin.hasNext()) {
-                                    Iniciofin in = (Iniciofin) itin.next();
-                                    if (ini.getInicio().compareTo(in.getInicio()) <= 0 && ini.getFin().compareTo(in.getInicio()) >= 0) {
-                                        a++;
-                                    } else if (ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) >= 0) {
-                                        a++;
-                                    } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getInicio()) >= 0 && ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
-                                        a++;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            if (!declaracionjuradas.isEmpty()) {
-                Iterator itact = declaracionjuradas.iterator().next().ObtenerActivos("LUNES").iterator();
-                while (itact.hasNext()) {
-                    Activo act = (Activo) itact.next();
-                    Iterator itin = act.getActivoIniciofins().iterator();
-                    while (itin.hasNext()) {
-                        ActivoIniciofin in = (ActivoIniciofin) itin.next();
-                        if (ini.getInicio().compareTo(in.getInicio()) <= 0 && ini.getFin().compareTo(in.getInicio()) >= 0) {
-                            d++;
-                        } else if (ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) >= 0) {
-                            d++;
-                        } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getInicio()) >= 0 && ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
-                            d++;
-                        }
-//                        if (in.getInicio().compareTo(ini.getInicio()) > 0 && in.getInicio().compareTo(ini.getFin()) < 0 || in.getFin().compareTo(ini.getInicio()) > 0 && in.getFin().compareTo(ini.getFin()) < 0) {
-//                            d++;
-//                        }
-                    }
-                }
-            }
-            otro = Controlador.sumarFechasDias(otro, 7);
-        }
-        // </editor-fold>
-        }
-        Date ot2 = inici;
-        if (dsem.contains("MARTES")) {
-            while (ot2.getDay() != 2) {
-                ot2 = Controlador.sumarFechasDias(ot2, 1);
-            }
-             Date otro = ot2;
-            // <editor-fold defaultstate="collapsed" desc="Guardar meses y dias">
-        while (otro.compareTo(finn) <= 0) {
-            if (!Controlador.PERSISTENCIA.getAgendas(idPersonal).isEmpty()) {
-                Iterator it = Controlador.PERSISTENCIA.getAgendas(idPersonal).iterator();
-                while (it.hasNext()) {
-                    Agenda age = (Agenda) it.next();
-                    if (age.getPersonal().getEstado() == true && age.getTarea().getEstado() == true) {
-                        if (age.getTarea().getTareaotros().iterator().hasNext()) {
-                            Tareaotro tarot = age.getTarea().getTareaotros().iterator().next();
-                            Date inicio = tarot.getDiaInicio();
-                            Date fin = tarot.getDiaFin();
-                            if (otro.compareTo(inicio) >= 0 && otro.compareTo(fin) <= 0) {
-                                a++;
-                            }
-                        } else if (age.getTarea().getTareaextracurriculars().iterator().hasNext()) {
-                            Tareaextracurricular tarot = age.getTarea().getTareaextracurriculars().iterator().next();
-                            Date inicio = tarot.getDiaInicio();
-                            Date fin = tarot.getDiaFin();
-                            if (otro.compareTo(inicio) >= 0 && otro.compareTo(fin) <= 0) {
-                                a++;
-                            }
-                        } else if (age.getTarea().getTareaclases().iterator().hasNext()) {
-                            Dia di = age.getDia2(otro);
-                            if (di.getIdDia() != null) {
-                                Iterator itin = di.getIniciofins().iterator();
-                                while (itin.hasNext()) {
-                                    Iniciofin in = (Iniciofin) itin.next();
-                                    if (ini.getInicio().compareTo(in.getInicio()) <= 0 && ini.getFin().compareTo(in.getInicio()) >= 0) {
-                                        a++;
-                                    } else if (ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) >= 0) {
-                                        a++;
-                                    } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getInicio()) >= 0 && ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
-                                        a++;
-                                    }
-                                }
-                            }
-                        } else if (age.getTarea().getTareareunions().iterator().hasNext()) {
-                            Dia di = age.getDia2(otro);
-                            if (di.getIdDia() != null) {
-                                Iterator itin = di.getIniciofins().iterator();
-                                while (itin.hasNext()) {
-                                    Iniciofin in = (Iniciofin) itin.next();
-                                    if (ini.getInicio().compareTo(in.getInicio()) <= 0 && ini.getFin().compareTo(in.getInicio()) >= 0) {
-                                        a++;
-                                    } else if (ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) >= 0) {
-                                        a++;
-                                    } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getInicio()) >= 0 && ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
-                                        a++;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            if (!declaracionjuradas.isEmpty()) {
-                Iterator itact = declaracionjuradas.iterator().next().ObtenerActivos("MARTES").iterator();
-                while (itact.hasNext()) {
-                    Activo act = (Activo) itact.next();
-                    Iterator itin = act.getActivoIniciofins().iterator();
-                    while (itin.hasNext()) {
-                        ActivoIniciofin in = (ActivoIniciofin) itin.next();
-                        if (ini.getInicio().compareTo(in.getInicio()) <= 0 && ini.getFin().compareTo(in.getInicio()) >= 0) {
-                            d++;
-                        } else if (ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) >= 0) {
-                            d++;
-                        } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getInicio()) >= 0 && ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
-                            d++;
-                        }
-//                        if (in.getInicio().compareTo(ini.getInicio()) > 0 && in.getInicio().compareTo(ini.getFin()) < 0 || in.getFin().compareTo(ini.getInicio()) > 0 && in.getFin().compareTo(ini.getFin()) < 0) {
-//                            d++;
-//                        }
-                    }
-                }
-            }
-            otro = Controlador.sumarFechasDias(otro, 7);
-        }
-        // </editor-fold>
-        }
-        Date ot3 = inici;
-        if (dsem.contains("MIERCOLES")) {
-            while (ot3.getDay() != 3) {
-                ot3 = Controlador.sumarFechasDias(ot3, 1);
-            }
-             Date otro = ot3;
-            // <editor-fold defaultstate="collapsed" desc="Guardar meses y dias">
-        while (otro.compareTo(finn) <= 0) {
-            if (!Controlador.PERSISTENCIA.getAgendas(idPersonal).isEmpty()) {
-                Iterator it = Controlador.PERSISTENCIA.getAgendas(idPersonal).iterator();
-                while (it.hasNext()) {
-                    Agenda age = (Agenda) it.next();
-                    if (age.getPersonal().getEstado() == true && age.getTarea().getEstado() == true) {
-                        if (age.getTarea().getTareaotros().iterator().hasNext()) {
-                            Tareaotro tarot = age.getTarea().getTareaotros().iterator().next();
-                            Date inicio = tarot.getDiaInicio();
-                            Date fin = tarot.getDiaFin();
-                            if (otro.compareTo(inicio) >= 0 && otro.compareTo(fin) <= 0) {
-                                a++;
-                            }
-                        } else if (age.getTarea().getTareaextracurriculars().iterator().hasNext()) {
-                            Tareaextracurricular tarot = age.getTarea().getTareaextracurriculars().iterator().next();
-                            Date inicio = tarot.getDiaInicio();
-                            Date fin = tarot.getDiaFin();
-                            if (otro.compareTo(inicio) >= 0 && otro.compareTo(fin) <= 0) {
-                                a++;
-                            }
-                        } else if (age.getTarea().getTareaclases().iterator().hasNext()) {
-                            Dia di = age.getDia2(otro);
-                            if (di.getIdDia() != null) {
-                                Iterator itin = di.getIniciofins().iterator();
-                                while (itin.hasNext()) {
-                                    Iniciofin in = (Iniciofin) itin.next();
-                                    if (ini.getInicio().compareTo(in.getInicio()) <= 0 && ini.getFin().compareTo(in.getInicio()) >= 0) {
-                                        a++;
-                                    } else if (ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) >= 0) {
-                                        a++;
-                                    } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getInicio()) >= 0 && ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
-                                        a++;
-                                    }
-                                }
-                            }
-                        } else if (age.getTarea().getTareareunions().iterator().hasNext()) {
-                            Dia di = age.getDia2(otro);
-                            if (di.getIdDia() != null) {
-                                Iterator itin = di.getIniciofins().iterator();
-                                while (itin.hasNext()) {
-                                    Iniciofin in = (Iniciofin) itin.next();
-                                    if (ini.getInicio().compareTo(in.getInicio()) <= 0 && ini.getFin().compareTo(in.getInicio()) >= 0) {
-                                        a++;
-                                    } else if (ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) >= 0) {
-                                        a++;
-                                    } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getInicio()) >= 0 && ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
-                                        a++;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            if (!declaracionjuradas.isEmpty()) {
-                Iterator itact = declaracionjuradas.iterator().next().ObtenerActivos("MIERCOLES").iterator();
-                while (itact.hasNext()) {
-                    Activo act = (Activo) itact.next();
-                    Iterator itin = act.getActivoIniciofins().iterator();
-                    while (itin.hasNext()) {
-                        ActivoIniciofin in = (ActivoIniciofin) itin.next();
-                        if (ini.getInicio().compareTo(in.getInicio()) <= 0 && ini.getFin().compareTo(in.getInicio()) >= 0) {
-                            d++;
-                        } else if (ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) >= 0) {
-                            d++;
-                        } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getInicio()) >= 0 && ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
-                            d++;
-                        }
-//                        if (in.getInicio().compareTo(ini.getInicio()) > 0 && in.getInicio().compareTo(ini.getFin()) < 0 || in.getFin().compareTo(ini.getInicio()) > 0 && in.getFin().compareTo(ini.getFin()) < 0) {
-//                            d++;
-//                        }
-                    }
-                }
-            }
-            otro = Controlador.sumarFechasDias(otro, 7);
-        }
-        // </editor-fold>
-        }
-        Date ot4 = inici;
-        if (dsem.contains("JUEVES")) {
-            while (ot4.getDay() != 4) {
-                ot4= Controlador.sumarFechasDias(ot4, 1);
-            }
-             Date otro = ot4;
-            // <editor-fold defaultstate="collapsed" desc="Guardar meses y dias">
-        while (otro.compareTo(finn) <= 0) {
-            if (!Controlador.PERSISTENCIA.getAgendas(idPersonal).isEmpty()) {
-                Iterator it = Controlador.PERSISTENCIA.getAgendas(idPersonal).iterator();
-                while (it.hasNext()) {
-                    Agenda age = (Agenda) it.next();
-                    if (age.getPersonal().getEstado() == true && age.getTarea().getEstado() == true) {
-                        if (age.getTarea().getTareaotros().iterator().hasNext()) {
-                            Tareaotro tarot = age.getTarea().getTareaotros().iterator().next();
-                            Date inicio = tarot.getDiaInicio();
-                            Date fin = tarot.getDiaFin();
-                            if (otro.compareTo(inicio) >= 0 && otro.compareTo(fin) <= 0) {
-                                a++;
-                            }
-                        } else if (age.getTarea().getTareaextracurriculars().iterator().hasNext()) {
-                            Tareaextracurricular tarot = age.getTarea().getTareaextracurriculars().iterator().next();
-                            Date inicio = tarot.getDiaInicio();
-                            Date fin = tarot.getDiaFin();
-                            if (otro.compareTo(inicio) >= 0 && otro.compareTo(fin) <= 0) {
-                                a++;
-                            }
-                        } else if (age.getTarea().getTareaclases().iterator().hasNext()) {
-                            Dia di = age.getDia2(otro);
-                            if (di.getIdDia() != null) {
-                                Iterator itin = di.getIniciofins().iterator();
-                                while (itin.hasNext()) {
-                                    Iniciofin in = (Iniciofin) itin.next();
-                                    if (ini.getInicio().compareTo(in.getInicio()) <= 0 && ini.getFin().compareTo(in.getInicio()) >= 0) {
-                                        a++;
-                                    } else if (ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) >= 0) {
-                                        a++;
-                                    } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getInicio()) >= 0 && ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
-                                        a++;
-                                    }
-                                }
-                            }
-                        } else if (age.getTarea().getTareareunions().iterator().hasNext()) {
-                            Dia di = age.getDia2(otro);
-                            if (di.getIdDia() != null) {
-                                Iterator itin = di.getIniciofins().iterator();
-                                while (itin.hasNext()) {
-                                    Iniciofin in = (Iniciofin) itin.next();
-                                    if (ini.getInicio().compareTo(in.getInicio()) <= 0 && ini.getFin().compareTo(in.getInicio()) >= 0) {
-                                        a++;
-                                    } else if (ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) >= 0) {
-                                        a++;
-                                    } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getInicio()) >= 0 && ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
-                                        a++;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            if (!declaracionjuradas.isEmpty()) {
-                Iterator itact = declaracionjuradas.iterator().next().ObtenerActivos("JUEVES").iterator();
-                while (itact.hasNext()) {
-                    Activo act = (Activo) itact.next();
-                    Iterator itin = act.getActivoIniciofins().iterator();
-                    while (itin.hasNext()) {
-                        ActivoIniciofin in = (ActivoIniciofin) itin.next();
-                        if (ini.getInicio().compareTo(in.getInicio()) <= 0 && ini.getFin().compareTo(in.getInicio()) >= 0) {
-                            d++;
-                        } else if (ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) >= 0) {
-                            d++;
-                        } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getInicio()) >= 0 && ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
-                            d++;
-                        }
-//                        if (in.getInicio().compareTo(ini.getInicio()) > 0 && in.getInicio().compareTo(ini.getFin()) < 0 || in.getFin().compareTo(ini.getInicio()) > 0 && in.getFin().compareTo(ini.getFin()) < 0) {
-//                            d++;
-//                        }
-                    }
-                }
-            }
-            otro = Controlador.sumarFechasDias(otro, 7);
-        }
-        // </editor-fold>
-        }
-        Date ot5 = inici;
-        if (dsem.contains("VIERNES")) {
-            while (ot5.getDay() != 5) {
-                ot5 = Controlador.sumarFechasDias(ot5, 1);
-            }
-             Date otro = ot5;
-            // <editor-fold defaultstate="collapsed" desc="Guardar meses y dias">
-        while (otro.compareTo(finn) <= 0) {
-            if (!Controlador.PERSISTENCIA.getAgendas(idPersonal).isEmpty()) {
-                Iterator it = Controlador.PERSISTENCIA.getAgendas(idPersonal).iterator();
-                while (it.hasNext()) {
-                    Agenda age = (Agenda) it.next();
-                    if (age.getPersonal().getEstado() == true && age.getTarea().getEstado() == true) {
-                        if (age.getTarea().getTareaotros().iterator().hasNext()) {
-                            Tareaotro tarot = age.getTarea().getTareaotros().iterator().next();
-                            Date inicio = tarot.getDiaInicio();
-                            Date fin = tarot.getDiaFin();
-                            if (otro.compareTo(inicio) >= 0 && otro.compareTo(fin) <= 0) {
-                                a++;
-                            }
-                        } else if (age.getTarea().getTareaextracurriculars().iterator().hasNext()) {
-                            Tareaextracurricular tarot = age.getTarea().getTareaextracurriculars().iterator().next();
-                            Date inicio = tarot.getDiaInicio();
-                            Date fin = tarot.getDiaFin();
-                            if (otro.compareTo(inicio) >= 0 && otro.compareTo(fin) <= 0) {
-                                a++;
-                            }
-                        } else if (age.getTarea().getTareaclases().iterator().hasNext()) {
-                            Dia di = age.getDia2(otro);
-                            if (di.getIdDia() != null) {
-                                Iterator itin = di.getIniciofins().iterator();
-                                while (itin.hasNext()) {
-                                    Iniciofin in = (Iniciofin) itin.next();
-                                    if (ini.getInicio().compareTo(in.getInicio()) <= 0 && ini.getFin().compareTo(in.getInicio()) >= 0) {
-                                        a++;
-                                    } else if (ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) >= 0) {
-                                        a++;
-                                    } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getInicio()) >= 0 && ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
-                                        a++;
-                                    }
-                                }
-                            }
-                        } else if (age.getTarea().getTareareunions().iterator().hasNext()) {
-                            Dia di = age.getDia2(otro);
-                            if (di.getIdDia() != null) {
-                                Iterator itin = di.getIniciofins().iterator();
-                                while (itin.hasNext()) {
-                                    Iniciofin in = (Iniciofin) itin.next();
-                                    if (ini.getInicio().compareTo(in.getInicio()) <= 0 && ini.getFin().compareTo(in.getInicio()) >= 0) {
-                                        a++;
-                                    } else if (ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) >= 0) {
-                                        a++;
-                                    } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getInicio()) >= 0 && ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
-                                        a++;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            if (!declaracionjuradas.isEmpty()) {
-                Iterator itact = declaracionjuradas.iterator().next().ObtenerActivos("VIERNES").iterator();
-                while (itact.hasNext()) {
-                    Activo act = (Activo) itact.next();
-                    Iterator itin = act.getActivoIniciofins().iterator();
-                    while (itin.hasNext()) {
-                        ActivoIniciofin in = (ActivoIniciofin) itin.next();
-                        if (ini.getInicio().compareTo(in.getInicio()) <= 0 && ini.getFin().compareTo(in.getInicio()) >= 0) {
-                            d++;
-                        } else if (ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) >= 0) {
-                            d++;
-                        } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getInicio()) >= 0 && ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
-                            d++;
-                        }
-//                        if (in.getInicio().compareTo(ini.getInicio()) > 0 && in.getInicio().compareTo(ini.getFin()) < 0 || in.getFin().compareTo(ini.getInicio()) > 0 && in.getFin().compareTo(ini.getFin()) < 0) {
-//                            d++;
-//                        }
-                    }
-                }
-            }
-            otro = Controlador.sumarFechasDias(otro, 7);
-        }
-        // </editor-fold>
-        }
-        Date ot6 = inici;
-        if (dsem.contains("SABADO")) {
-            while (ot6.getDay() != 6) {
-                ot6 = Controlador.sumarFechasDias(ot6, 1);
-            }
-             Date otro = ot6;
-            // <editor-fold defaultstate="collapsed" desc="Guardar meses y dias">
-        while (otro.compareTo(finn) <= 0) {
-            if (!Controlador.PERSISTENCIA.getAgendas(idPersonal).isEmpty()) {
-                Iterator it = Controlador.PERSISTENCIA.getAgendas(idPersonal).iterator();
-                while (it.hasNext()) {
-                    Agenda age = (Agenda) it.next();
-                    if (age.getPersonal().getEstado() == true && age.getTarea().getEstado() == true) {
-                        if (age.getTarea().getTareaotros().iterator().hasNext()) {
-                            Tareaotro tarot = age.getTarea().getTareaotros().iterator().next();
-                            Date inicio = tarot.getDiaInicio();
-                            Date fin = tarot.getDiaFin();
-                            if (otro.compareTo(inicio) >= 0 && otro.compareTo(fin) <= 0) {
-                                a++;
-                            }
-                        } else if (age.getTarea().getTareaextracurriculars().iterator().hasNext()) {
-                            Tareaextracurricular tarot = age.getTarea().getTareaextracurriculars().iterator().next();
-                            Date inicio = tarot.getDiaInicio();
-                            Date fin = tarot.getDiaFin();
-                            if (otro.compareTo(inicio) >= 0 && otro.compareTo(fin) <= 0) {
-                                a++;
-                            }
-                        } else if (age.getTarea().getTareaclases().iterator().hasNext()) {
-                            Dia di = age.getDia2(otro);
-                            if (di.getIdDia() != null) {
-                                Iterator itin = di.getIniciofins().iterator();
-                                while (itin.hasNext()) {
-                                    Iniciofin in = (Iniciofin) itin.next();
-                                    if (ini.getInicio().compareTo(in.getInicio()) <= 0 && ini.getFin().compareTo(in.getInicio()) >= 0) {
-                                        a++;
-                                    } else if (ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) >= 0) {
-                                        a++;
-                                    } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getInicio()) >= 0 && ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
-                                        a++;
-                                    }
-                                }
-                            }
-                        } else if (age.getTarea().getTareareunions().iterator().hasNext()) {
-                            Dia di = age.getDia2(otro);
-                            if (di.getIdDia() != null) {
-                                Iterator itin = di.getIniciofins().iterator();
-                                while (itin.hasNext()) {
-                                    Iniciofin in = (Iniciofin) itin.next();
-                                    if (ini.getInicio().compareTo(in.getInicio()) <= 0 && ini.getFin().compareTo(in.getInicio()) >= 0) {
-                                        a++;
-                                    } else if (ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) >= 0) {
-                                        a++;
-                                    } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getInicio()) >= 0 && ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
-                                        a++;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            if (!declaracionjuradas.isEmpty()) {
-                Iterator itact = declaracionjuradas.iterator().next().ObtenerActivos("SABADO").iterator();
-                while (itact.hasNext()) {
-                    Activo act = (Activo) itact.next();
-                    Iterator itin = act.getActivoIniciofins().iterator();
-                    while (itin.hasNext()) {
-                        ActivoIniciofin in = (ActivoIniciofin) itin.next();
-                        if (ini.getInicio().compareTo(in.getInicio()) <= 0 && ini.getFin().compareTo(in.getInicio()) >= 0) {
-                            d++;
-                        } else if (ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) >= 0) {
-                            d++;
-                        } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getInicio()) >= 0 && ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
-                            d++;
-                        }
-//                        if (in.getInicio().compareTo(ini.getInicio()) > 0 && in.getInicio().compareTo(ini.getFin()) < 0 || in.getFin().compareTo(ini.getInicio()) > 0 && in.getFin().compareTo(ini.getFin()) < 0) {
-//                            d++;
-//                        }
-                    }
-                }
-            }
-            otro = Controlador.sumarFechasDias(otro, 7);
-        }
-        // </editor-fold>
-        }
-
-       
-        int[][] cant = new int[2][];
-        cant[0] = new int[a];
-        cant[1] = new int[d];
-        return cant;
-    }
-    // </editor-fold>
+    //     </editor-fold>
+////    public int[][] VerificarDisponibilidadClase(Date inici, Date finn, Iniciofin ini,List dsem){
+////        int a=0;
+////        int d=0;
+////        Date ot1 = inici;
+////        if (dsem.contains("LUNES")) {
+////            while (ot1.getDay() != 1) {
+////                ot1 = Controlador.sumarFechasDias(ot1, 1);
+////            }
+////             Date otro = ot1;
+////            // <editor-fold defaultstate="collapsed" desc="Guarda meses y dias">
+////        while (otro.compareTo(finn) <= 0) {
+////            if (!Controlador.PERSISTENCIA.getAgendas(idPersonal).isEmpty()) {
+////                Iterator it = Controlador.PERSISTENCIA.getAgendas(idPersonal).iterator();
+////                while (it.hasNext()) {
+////                    Agenda age = (Agenda) it.next();
+////                    if (age.getPersonal().getEstado() == true && age.getTarea().getEstado() == true) {
+////                        if (age.getTarea().getTareaotros().iterator().hasNext()) {
+////                            Tareaotro tarot = age.getTarea().getTareaotros().iterator().next();
+////                            Date inicio = tarot.getDiaInicio();
+////                            Date fin = tarot.getDiaFin();
+////                            if (otro.compareTo(inicio) >= 0 && otro.compareTo(fin) <= 0) {
+////                                a++;
+////                            }
+////                        } else if (age.getTarea().getTareaextracurriculars().iterator().hasNext()) {
+////                            Tareaextracurricular tarot = age.getTarea().getTareaextracurriculars().iterator().next();
+////                            Date inicio = tarot.getDiaInicio();
+////                            Date fin = tarot.getDiaFin();
+////                            if (otro.compareTo(inicio) >= 0 && otro.compareTo(fin) <= 0) {
+////                                a++;
+////                            }
+////                        } else if (age.getTarea().getTareaclases().iterator().hasNext()) {
+////                            Dia di = age.getDia2(otro);
+////                            if (di.getIdDia() != null) {
+////                                Iterator itin = di.getIniciofins().iterator();
+////                                while (itin.hasNext()) {
+////                                    Iniciofin in = (Iniciofin) itin.next();
+////                                    if (ini.getInicio().compareTo(in.getInicio()) <= 0 && ini.getFin().compareTo(in.getInicio()) >= 0) {
+////                                        a++;
+////                                    } else if (ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) >= 0) {
+////                                        a++;
+////                                    } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getInicio()) >= 0 && ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
+////                                        a++;
+////                                    }
+////                                }
+////                            }
+////                        } else if (age.getTarea().getTareareunions().iterator().hasNext()) {
+////                            Dia di = age.getDia2(otro);
+////                            if (di.getIdDia() != null) {
+////                                Iterator itin = di.getIniciofins().iterator();
+////                                while (itin.hasNext()) {
+////                                    Iniciofin in = (Iniciofin) itin.next();
+////                                    if (ini.getInicio().compareTo(in.getInicio()) <= 0 && ini.getFin().compareTo(in.getInicio()) >= 0) {
+////                                        a++;
+////                                    } else if (ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) >= 0) {
+////                                        a++;
+////                                    } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getInicio()) >= 0 && ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
+////                                        a++;
+////                                    }
+////                                }
+////                            }
+////                        }
+////                    }
+////                }
+////            }
+////            if (!declaracionjuradas.isEmpty()) {
+////                Iterator itact = declaracionjuradas.iterator().next().ObtenerActivos("LUNES").iterator();
+////                while (itact.hasNext()) {
+////                    Activo act = (Activo) itact.next();
+////                    Iterator itin = act.getActivoIniciofins().iterator();
+////                    while (itin.hasNext()) {
+////                        ActivoIniciofin in = (ActivoIniciofin) itin.next();
+////                        if (ini.getInicio().compareTo(in.getInicio()) <= 0 && ini.getFin().compareTo(in.getInicio()) >= 0) {
+////                            d++;
+////                        } else if (ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) >= 0) {
+////                            d++;
+////                        } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getInicio()) >= 0 && ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
+////                            d++;
+////                        }
+//////                        if (in.getInicio().compareTo(ini.getInicio()) > 0 && in.getInicio().compareTo(ini.getFin()) < 0 || in.getFin().compareTo(ini.getInicio()) > 0 && in.getFin().compareTo(ini.getFin()) < 0) {
+//////                            d++;
+//////                        }
+////                    }
+////                }
+////            }
+////            otro = Controlador.sumarFechasDias(otro, 7);
+////        }
+////        // </editor-fold>
+////        }
+////        Date ot2 = inici;
+////        if (dsem.contains("MARTES")) {
+////            while (ot2.getDay() != 2) {
+////                ot2 = Controlador.sumarFechasDias(ot2, 1);
+////            }
+////             Date otro = ot2;
+////            // <editor-fold defaultstate="collapsed" desc="Guardar meses y dias">
+////        while (otro.compareTo(finn) <= 0) {
+////            if (!Controlador.PERSISTENCIA.getAgendas(idPersonal).isEmpty()) {
+////                Iterator it = Controlador.PERSISTENCIA.getAgendas(idPersonal).iterator();
+////                while (it.hasNext()) {
+////                    Agenda age = (Agenda) it.next();
+////                    if (age.getPersonal().getEstado() == true && age.getTarea().getEstado() == true) {
+////                        if (age.getTarea().getTareaotros().iterator().hasNext()) {
+////                            Tareaotro tarot = age.getTarea().getTareaotros().iterator().next();
+////                            Date inicio = tarot.getDiaInicio();
+////                            Date fin = tarot.getDiaFin();
+////                            if (otro.compareTo(inicio) >= 0 && otro.compareTo(fin) <= 0) {
+////                                a++;
+////                            }
+////                        } else if (age.getTarea().getTareaextracurriculars().iterator().hasNext()) {
+////                            Tareaextracurricular tarot = age.getTarea().getTareaextracurriculars().iterator().next();
+////                            Date inicio = tarot.getDiaInicio();
+////                            Date fin = tarot.getDiaFin();
+////                            if (otro.compareTo(inicio) >= 0 && otro.compareTo(fin) <= 0) {
+////                                a++;
+////                            }
+////                        } else if (age.getTarea().getTareaclases().iterator().hasNext()) {
+////                            Dia di = age.getDia2(otro);
+////                            if (di.getIdDia() != null) {
+////                                Iterator itin = di.getIniciofins().iterator();
+////                                while (itin.hasNext()) {
+////                                    Iniciofin in = (Iniciofin) itin.next();
+////                                    if (ini.getInicio().compareTo(in.getInicio()) <= 0 && ini.getFin().compareTo(in.getInicio()) >= 0) {
+////                                        a++;
+////                                    } else if (ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) >= 0) {
+////                                        a++;
+////                                    } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getInicio()) >= 0 && ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
+////                                        a++;
+////                                    }
+////                                }
+////                            }
+////                        } else if (age.getTarea().getTareareunions().iterator().hasNext()) {
+////                            Dia di = age.getDia2(otro);
+////                            if (di.getIdDia() != null) {
+////                                Iterator itin = di.getIniciofins().iterator();
+////                                while (itin.hasNext()) {
+////                                    Iniciofin in = (Iniciofin) itin.next();
+////                                    if (ini.getInicio().compareTo(in.getInicio()) <= 0 && ini.getFin().compareTo(in.getInicio()) >= 0) {
+////                                        a++;
+////                                    } else if (ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) >= 0) {
+////                                        a++;
+////                                    } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getInicio()) >= 0 && ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
+////                                        a++;
+////                                    }
+////                                }
+////                            }
+////                        }
+////                    }
+////                }
+////            }
+////            if (!declaracionjuradas.isEmpty()) {
+////                Iterator itact = declaracionjuradas.iterator().next().ObtenerActivos("MARTES").iterator();
+////                while (itact.hasNext()) {
+////                    Activo act = (Activo) itact.next();
+////                    Iterator itin = act.getActivoIniciofins().iterator();
+////                    while (itin.hasNext()) {
+////                        ActivoIniciofin in = (ActivoIniciofin) itin.next();
+////                        if (ini.getInicio().compareTo(in.getInicio()) <= 0 && ini.getFin().compareTo(in.getInicio()) >= 0) {
+////                            d++;
+////                        } else if (ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) >= 0) {
+////                            d++;
+////                        } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getInicio()) >= 0 && ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
+////                            d++;
+////                        }
+//////                        if (in.getInicio().compareTo(ini.getInicio()) > 0 && in.getInicio().compareTo(ini.getFin()) < 0 || in.getFin().compareTo(ini.getInicio()) > 0 && in.getFin().compareTo(ini.getFin()) < 0) {
+//////                            d++;
+//////                        }
+////                    }
+////                }
+////            }
+////            otro = Controlador.sumarFechasDias(otro, 7);
+////        }
+////        // </editor-fold>
+////        }
+////        Date ot3 = inici;
+////        if (dsem.contains("MIERCOLES")) {
+////            while (ot3.getDay() != 3) {
+////                ot3 = Controlador.sumarFechasDias(ot3, 1);
+////            }
+////             Date otro = ot3;
+////            // <editor-fold defaultstate="collapsed" desc="Guardar meses y dias">
+////        while (otro.compareTo(finn) <= 0) {
+////            if (!Controlador.PERSISTENCIA.getAgendas(idPersonal).isEmpty()) {
+////                Iterator it = Controlador.PERSISTENCIA.getAgendas(idPersonal).iterator();
+////                while (it.hasNext()) {
+////                    Agenda age = (Agenda) it.next();
+////                    if (age.getPersonal().getEstado() == true && age.getTarea().getEstado() == true) {
+////                        if (age.getTarea().getTareaotros().iterator().hasNext()) {
+////                            Tareaotro tarot = age.getTarea().getTareaotros().iterator().next();
+////                            Date inicio = tarot.getDiaInicio();
+////                            Date fin = tarot.getDiaFin();
+////                            if (otro.compareTo(inicio) >= 0 && otro.compareTo(fin) <= 0) {
+////                                a++;
+////                            }
+////                        } else if (age.getTarea().getTareaextracurriculars().iterator().hasNext()) {
+////                            Tareaextracurricular tarot = age.getTarea().getTareaextracurriculars().iterator().next();
+////                            Date inicio = tarot.getDiaInicio();
+////                            Date fin = tarot.getDiaFin();
+////                            if (otro.compareTo(inicio) >= 0 && otro.compareTo(fin) <= 0) {
+////                                a++;
+////                            }
+////                        } else if (age.getTarea().getTareaclases().iterator().hasNext()) {
+////                            Dia di = age.getDia2(otro);
+////                            if (di.getIdDia() != null) {
+////                                Iterator itin = di.getIniciofins().iterator();
+////                                while (itin.hasNext()) {
+////                                    Iniciofin in = (Iniciofin) itin.next();
+////                                    if (ini.getInicio().compareTo(in.getInicio()) <= 0 && ini.getFin().compareTo(in.getInicio()) >= 0) {
+////                                        a++;
+////                                    } else if (ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) >= 0) {
+////                                        a++;
+////                                    } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getInicio()) >= 0 && ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
+////                                        a++;
+////                                    }
+////                                }
+////                            }
+////                        } else if (age.getTarea().getTareareunions().iterator().hasNext()) {
+////                            Dia di = age.getDia2(otro);
+////                            if (di.getIdDia() != null) {
+////                                Iterator itin = di.getIniciofins().iterator();
+////                                while (itin.hasNext()) {
+////                                    Iniciofin in = (Iniciofin) itin.next();
+////                                    if (ini.getInicio().compareTo(in.getInicio()) <= 0 && ini.getFin().compareTo(in.getInicio()) >= 0) {
+////                                        a++;
+////                                    } else if (ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) >= 0) {
+////                                        a++;
+////                                    } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getInicio()) >= 0 && ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
+////                                        a++;
+////                                    }
+////                                }
+////                            }
+////                        }
+////                    }
+////                }
+////            }
+////            if (!declaracionjuradas.isEmpty()) {
+////                Iterator itact = declaracionjuradas.iterator().next().ObtenerActivos("MIERCOLES").iterator();
+////                while (itact.hasNext()) {
+////                    Activo act = (Activo) itact.next();
+////                    Iterator itin = act.getActivoIniciofins().iterator();
+////                    while (itin.hasNext()) {
+////                        ActivoIniciofin in = (ActivoIniciofin) itin.next();
+////                        if (ini.getInicio().compareTo(in.getInicio()) <= 0 && ini.getFin().compareTo(in.getInicio()) >= 0) {
+////                            d++;
+////                        } else if (ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) >= 0) {
+////                            d++;
+////                        } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getInicio()) >= 0 && ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
+////                            d++;
+////                        }
+//////                        if (in.getInicio().compareTo(ini.getInicio()) > 0 && in.getInicio().compareTo(ini.getFin()) < 0 || in.getFin().compareTo(ini.getInicio()) > 0 && in.getFin().compareTo(ini.getFin()) < 0) {
+//////                            d++;
+//////                        }
+////                    }
+////                }
+////            }
+////            otro = Controlador.sumarFechasDias(otro, 7);
+////        }
+////        // </editor-fold>
+////        }
+////        Date ot4 = inici;
+////        if (dsem.contains("JUEVES")) {
+////            while (ot4.getDay() != 4) {
+////                ot4= Controlador.sumarFechasDias(ot4, 1);
+////            }
+////             Date otro = ot4;
+////            // <editor-fold defaultstate="collapsed" desc="Guardar meses y dias">
+////        while (otro.compareTo(finn) <= 0) {
+////            if (!Controlador.PERSISTENCIA.getAgendas(idPersonal).isEmpty()) {
+////                Iterator it = Controlador.PERSISTENCIA.getAgendas(idPersonal).iterator();
+////                while (it.hasNext()) {
+////                    Agenda age = (Agenda) it.next();
+////                    if (age.getPersonal().getEstado() == true && age.getTarea().getEstado() == true) {
+////                        if (age.getTarea().getTareaotros().iterator().hasNext()) {
+////                            Tareaotro tarot = age.getTarea().getTareaotros().iterator().next();
+////                            Date inicio = tarot.getDiaInicio();
+////                            Date fin = tarot.getDiaFin();
+////                            if (otro.compareTo(inicio) >= 0 && otro.compareTo(fin) <= 0) {
+////                                a++;
+////                            }
+////                        } else if (age.getTarea().getTareaextracurriculars().iterator().hasNext()) {
+////                            Tareaextracurricular tarot = age.getTarea().getTareaextracurriculars().iterator().next();
+////                            Date inicio = tarot.getDiaInicio();
+////                            Date fin = tarot.getDiaFin();
+////                            if (otro.compareTo(inicio) >= 0 && otro.compareTo(fin) <= 0) {
+////                                a++;
+////                            }
+////                        } else if (age.getTarea().getTareaclases().iterator().hasNext()) {
+////                            Dia di = age.getDia2(otro);
+////                            if (di.getIdDia() != null) {
+////                                Iterator itin = di.getIniciofins().iterator();
+////                                while (itin.hasNext()) {
+////                                    Iniciofin in = (Iniciofin) itin.next();
+////                                    if (ini.getInicio().compareTo(in.getInicio()) <= 0 && ini.getFin().compareTo(in.getInicio()) >= 0) {
+////                                        a++;
+////                                    } else if (ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) >= 0) {
+////                                        a++;
+////                                    } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getInicio()) >= 0 && ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
+////                                        a++;
+////                                    }
+////                                }
+////                            }
+////                        } else if (age.getTarea().getTareareunions().iterator().hasNext()) {
+////                            Dia di = age.getDia2(otro);
+////                            if (di.getIdDia() != null) {
+////                                Iterator itin = di.getIniciofins().iterator();
+////                                while (itin.hasNext()) {
+////                                    Iniciofin in = (Iniciofin) itin.next();
+////                                    if (ini.getInicio().compareTo(in.getInicio()) <= 0 && ini.getFin().compareTo(in.getInicio()) >= 0) {
+////                                        a++;
+////                                    } else if (ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) >= 0) {
+////                                        a++;
+////                                    } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getInicio()) >= 0 && ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
+////                                        a++;
+////                                    }
+////                                }
+////                            }
+////                        }
+////                    }
+////                }
+////            }
+////            if (!declaracionjuradas.isEmpty()) {
+////                Iterator itact = declaracionjuradas.iterator().next().ObtenerActivos("JUEVES").iterator();
+////                while (itact.hasNext()) {
+////                    Activo act = (Activo) itact.next();
+////                    Iterator itin = act.getActivoIniciofins().iterator();
+////                    while (itin.hasNext()) {
+////                        ActivoIniciofin in = (ActivoIniciofin) itin.next();
+////                        if (ini.getInicio().compareTo(in.getInicio()) <= 0 && ini.getFin().compareTo(in.getInicio()) >= 0) {
+////                            d++;
+////                        } else if (ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) >= 0) {
+////                            d++;
+////                        } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getInicio()) >= 0 && ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
+////                            d++;
+////                        }
+//////                        if (in.getInicio().compareTo(ini.getInicio()) > 0 && in.getInicio().compareTo(ini.getFin()) < 0 || in.getFin().compareTo(ini.getInicio()) > 0 && in.getFin().compareTo(ini.getFin()) < 0) {
+//////                            d++;
+//////                        }
+////                    }
+////                }
+////            }
+////            otro = Controlador.sumarFechasDias(otro, 7);
+////        }
+////        // </editor-fold>
+////        }
+////        Date ot5 = inici;
+////        if (dsem.contains("VIERNES")) {
+////            while (ot5.getDay() != 5) {
+////                ot5 = Controlador.sumarFechasDias(ot5, 1);
+////            }
+////             Date otro = ot5;
+////            // <editor-fold defaultstate="collapsed" desc="Guardar meses y dias">
+////        while (otro.compareTo(finn) <= 0) {
+////            if (!Controlador.PERSISTENCIA.getAgendas(idPersonal).isEmpty()) {
+////                Iterator it = Controlador.PERSISTENCIA.getAgendas(idPersonal).iterator();
+////                while (it.hasNext()) {
+////                    Agenda age = (Agenda) it.next();
+////                    if (age.getPersonal().getEstado() == true && age.getTarea().getEstado() == true) {
+////                        if (age.getTarea().getTareaotros().iterator().hasNext()) {
+////                            Tareaotro tarot = age.getTarea().getTareaotros().iterator().next();
+////                            Date inicio = tarot.getDiaInicio();
+////                            Date fin = tarot.getDiaFin();
+////                            if (otro.compareTo(inicio) >= 0 && otro.compareTo(fin) <= 0) {
+////                                a++;
+////                            }
+////                        } else if (age.getTarea().getTareaextracurriculars().iterator().hasNext()) {
+////                            Tareaextracurricular tarot = age.getTarea().getTareaextracurriculars().iterator().next();
+////                            Date inicio = tarot.getDiaInicio();
+////                            Date fin = tarot.getDiaFin();
+////                            if (otro.compareTo(inicio) >= 0 && otro.compareTo(fin) <= 0) {
+////                                a++;
+////                            }
+////                        } else if (age.getTarea().getTareaclases().iterator().hasNext()) {
+////                            Dia di = age.getDia2(otro);
+////                            if (di.getIdDia() != null) {
+////                                Iterator itin = di.getIniciofins().iterator();
+////                                while (itin.hasNext()) {
+////                                    Iniciofin in = (Iniciofin) itin.next();
+////                                    if (ini.getInicio().compareTo(in.getInicio()) <= 0 && ini.getFin().compareTo(in.getInicio()) >= 0) {
+////                                        a++;
+////                                    } else if (ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) >= 0) {
+////                                        a++;
+////                                    } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getInicio()) >= 0 && ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
+////                                        a++;
+////                                    }
+////                                }
+////                            }
+////                        } else if (age.getTarea().getTareareunions().iterator().hasNext()) {
+////                            Dia di = age.getDia2(otro);
+////                            if (di.getIdDia() != null) {
+////                                Iterator itin = di.getIniciofins().iterator();
+////                                while (itin.hasNext()) {
+////                                    Iniciofin in = (Iniciofin) itin.next();
+////                                    if (ini.getInicio().compareTo(in.getInicio()) <= 0 && ini.getFin().compareTo(in.getInicio()) >= 0) {
+////                                        a++;
+////                                    } else if (ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) >= 0) {
+////                                        a++;
+////                                    } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getInicio()) >= 0 && ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
+////                                        a++;
+////                                    }
+////                                }
+////                            }
+////                        }
+////                    }
+////                }
+////            }
+////            if (!declaracionjuradas.isEmpty()) {
+////                Iterator itact = declaracionjuradas.iterator().next().ObtenerActivos("VIERNES").iterator();
+////                while (itact.hasNext()) {
+////                    Activo act = (Activo) itact.next();
+////                    Iterator itin = act.getActivoIniciofins().iterator();
+////                    while (itin.hasNext()) {
+////                        ActivoIniciofin in = (ActivoIniciofin) itin.next();
+////                        if (ini.getInicio().compareTo(in.getInicio()) <= 0 && ini.getFin().compareTo(in.getInicio()) >= 0) {
+////                            d++;
+////                        } else if (ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) >= 0) {
+////                            d++;
+////                        } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getInicio()) >= 0 && ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
+////                            d++;
+////                        }
+//////                        if (in.getInicio().compareTo(ini.getInicio()) > 0 && in.getInicio().compareTo(ini.getFin()) < 0 || in.getFin().compareTo(ini.getInicio()) > 0 && in.getFin().compareTo(ini.getFin()) < 0) {
+//////                            d++;
+//////                        }
+////                    }
+////                }
+////            }
+////            otro = Controlador.sumarFechasDias(otro, 7);
+////        }
+////        // </editor-fold>
+////        }
+////        Date ot6 = inici;
+////        if (dsem.contains("SABADO")) {
+////            while (ot6.getDay() != 6) {
+////                ot6 = Controlador.sumarFechasDias(ot6, 1);
+////            }
+////             Date otro = ot6;
+////            // <editor-fold defaultstate="collapsed" desc="Guardar meses y dias">
+////        while (otro.compareTo(finn) <= 0) {
+////            if (!Controlador.PERSISTENCIA.getAgendas(idPersonal).isEmpty()) {
+////                Iterator it = Controlador.PERSISTENCIA.getAgendas(idPersonal).iterator();
+////                while (it.hasNext()) {
+////                    Agenda age = (Agenda) it.next();
+////                    if (age.getPersonal().getEstado() == true && age.getTarea().getEstado() == true) {
+////                        if (age.getTarea().getTareaotros().iterator().hasNext()) {
+////                            Tareaotro tarot = age.getTarea().getTareaotros().iterator().next();
+////                            Date inicio = tarot.getDiaInicio();
+////                            Date fin = tarot.getDiaFin();
+////                            if (otro.compareTo(inicio) >= 0 && otro.compareTo(fin) <= 0) {
+////                                a++;
+////                            }
+////                        } else if (age.getTarea().getTareaextracurriculars().iterator().hasNext()) {
+////                            Tareaextracurricular tarot = age.getTarea().getTareaextracurriculars().iterator().next();
+////                            Date inicio = tarot.getDiaInicio();
+////                            Date fin = tarot.getDiaFin();
+////                            if (otro.compareTo(inicio) >= 0 && otro.compareTo(fin) <= 0) {
+////                                a++;
+////                            }
+////                        } else if (age.getTarea().getTareaclases().iterator().hasNext()) {
+////                            Dia di = age.getDia2(otro);
+////                            if (di.getIdDia() != null) {
+////                                Iterator itin = di.getIniciofins().iterator();
+////                                while (itin.hasNext()) {
+////                                    Iniciofin in = (Iniciofin) itin.next();
+////                                    if (ini.getInicio().compareTo(in.getInicio()) <= 0 && ini.getFin().compareTo(in.getInicio()) >= 0) {
+////                                        a++;
+////                                    } else if (ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) >= 0) {
+////                                        a++;
+////                                    } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getInicio()) >= 0 && ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
+////                                        a++;
+////                                    }
+////                                }
+////                            }
+////                        } else if (age.getTarea().getTareareunions().iterator().hasNext()) {
+////                            Dia di = age.getDia2(otro);
+////                            if (di.getIdDia() != null) {
+////                                Iterator itin = di.getIniciofins().iterator();
+////                                while (itin.hasNext()) {
+////                                    Iniciofin in = (Iniciofin) itin.next();
+////                                    if (ini.getInicio().compareTo(in.getInicio()) <= 0 && ini.getFin().compareTo(in.getInicio()) >= 0) {
+////                                        a++;
+////                                    } else if (ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) >= 0) {
+////                                        a++;
+////                                    } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getInicio()) >= 0 && ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
+////                                        a++;
+////                                    }
+////                                }
+////                            }
+////                        }
+////                    }
+////                }
+////            }
+////            if (!declaracionjuradas.isEmpty()) {
+////                Iterator itact = declaracionjuradas.iterator().next().ObtenerActivos("SABADO").iterator();
+////                while (itact.hasNext()) {
+////                    Activo act = (Activo) itact.next();
+////                    Iterator itin = act.getActivoIniciofins().iterator();
+////                    while (itin.hasNext()) {
+////                        ActivoIniciofin in = (ActivoIniciofin) itin.next();
+////                        if (ini.getInicio().compareTo(in.getInicio()) <= 0 && ini.getFin().compareTo(in.getInicio()) >= 0) {
+////                            d++;
+////                        } else if (ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) >= 0) {
+////                            d++;
+////                        } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getInicio()) >= 0 && ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
+////                            d++;
+////                        }
+//////                        if (in.getInicio().compareTo(ini.getInicio()) > 0 && in.getInicio().compareTo(ini.getFin()) < 0 || in.getFin().compareTo(ini.getInicio()) > 0 && in.getFin().compareTo(ini.getFin()) < 0) {
+//////                            d++;
+//////                        }
+////                    }
+////                }
+////            }
+////            otro = Controlador.sumarFechasDias(otro, 7);
+////        }
+////        // </editor-fold>
+////        }
+////
+////       
+////        int[][] cant = new int[2][];
+////        cant[0] = new int[a];
+////        cant[1] = new int[d];
+////        return cant;
+////    }
+////
     
         
 //    public boolean VerificarDisponibilidadReunion (Date dia, Iniciofin ini){
@@ -2135,6 +2136,7 @@ public class Personal  implements java.io.Serializable {
         }
         return reg;
     }
+
 
 }
 

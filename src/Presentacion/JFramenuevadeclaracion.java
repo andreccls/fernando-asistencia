@@ -4,6 +4,7 @@
  */
 package Presentacion;
 
+import Clases.Auditoria;
 import Clases.Cargo;
 import Clases.Controlador;
 import Clases.Declaracionjurada;
@@ -19,6 +20,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -426,6 +428,14 @@ public class JFramenuevadeclaracion extends javax.swing.JFrame{
                     est.setPiso(cadpiso);
                     est.setDepto(caddepto);
                     est.guardarEstablecimiento(est);
+                    // <editor-fold defaultstate="collapsed" desc="Auditoria"> 
+                    Auditoria audi=new Auditoria();
+                    audi.setPersonalByIdAuditor(adm);
+                    audi.setOperacion("Insertar");
+                    audi.setFecha(new Date());
+                    audi.setEstablecimiento(est);
+                    audi.guardarAuditoria(audi);
+                    // </editor-fold>
                     Drive.LimpiarCombo(jComboBox1);
                     Drive.CargarComboEstablecimiento(jComboBox1);
                     jComboBox1.setSelectedItem(est);
@@ -495,15 +505,17 @@ public class JFramenuevadeclaracion extends javax.swing.JFrame{
     }//GEN-LAST:event_jLabel3MouseClicked
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        JFrameActualizarPersonal ventdec = new JFrameActualizarPersonal(Drive,pe,adm,idsesion);
-        if(!jTextField1.getText().isEmpty()){
-            int confirmado = JOptionPane.showConfirmDialog(null,"¿Desea cancelar la nueva declaración?","",JOptionPane.YES_NO_OPTION);
-            if (JOptionPane.OK_OPTION == confirmado){
+        JFrameActualizarPersonal ventdec = new JFrameActualizarPersonal(Drive, pe, adm, idsesion);
+        if (!jTextField1.getText().isEmpty()) {
+            int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea cancelar la nueva declaración?", "", JOptionPane.YES_NO_OPTION);
+            if (JOptionPane.OK_OPTION == confirmado) {
                 this.hide();
                 ventdec.show();
             }
-        }else{this.dispose();
-            ventdec.show();}
+        } else {
+            this.dispose();
+            ventdec.show();
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -546,10 +558,18 @@ public class JFramenuevadeclaracion extends javax.swing.JFrame{
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jLabel34MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel34MouseClicked
-        int confirmado = JOptionPane.showConfirmDialog(null,"¿Desea eliminar el establecimiento?","",JOptionPane.YES_NO_OPTION);
+        int confirmado = JOptionPane.showConfirmDialog(null,"¿Desea eliminar el establecimiento?","Eliminar Establecimiento",JOptionPane.YES_NO_OPTION);
         if (JOptionPane.OK_OPTION == confirmado){
             Establecimiento est=(Establecimiento) jComboBox1.getSelectedItem();
             est.eliminarEstablecimiento(est);
+            // <editor-fold defaultstate="collapsed" desc="Auditoria"> 
+            Auditoria audi=new Auditoria();
+            audi.setPersonalByIdAuditor(adm);
+            audi.setOperacion("Eliminar");
+            audi.setFecha(new Date());
+            audi.setEstablecimiento(est);
+            audi.guardarAuditoria(audi);
+            // </editor-fold>
             Drive.LimpiarCombo(jComboBox1);
             Drive.CargarComboEstablecimiento(jComboBox1);
         }
@@ -576,15 +596,17 @@ public class JFramenuevadeclaracion extends javax.swing.JFrame{
     }//GEN-LAST:event_jLabel36MouseClicked
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        JFrameActualizarPersonal ventdec = new JFrameActualizarPersonal(Drive,pe,adm,idsesion);
-        if(!jTextField1.getText().isEmpty()){
-            int confirmado = JOptionPane.showConfirmDialog(null,"¿Desea cancelar la nueva declaración?","",JOptionPane.YES_NO_OPTION);
-            if (JOptionPane.OK_OPTION == confirmado){
+        JFrameActualizarPersonal ventdec = new JFrameActualizarPersonal(Drive, pe, adm, idsesion);
+        if (!jTextField1.getText().isEmpty()) {
+            int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea cancelar la nueva declaración?", "", JOptionPane.YES_NO_OPTION);
+            if (JOptionPane.OK_OPTION == confirmado) {
                 this.hide();
                 ventdec.show();
             }
-        }else{this.dispose();
-            ventdec.show();}
+        } else {
+            this.dispose();
+            ventdec.show();
+        }
     }//GEN-LAST:event_formWindowClosing
 
     private void jTextField1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField1FocusLost

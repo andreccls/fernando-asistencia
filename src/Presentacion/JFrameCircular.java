@@ -587,6 +587,7 @@ public class JFrameCircular extends javax.swing.JFrame {
                 dateChooserCombo1.setSelectedDate(Calendar.getInstance());
             }
         } catch (Exception e) {
+            JOptionPane.showMessageDialog(null,e.toString(),"Registrar Circular", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_dateChooserCombo1OnSelectionChange
 

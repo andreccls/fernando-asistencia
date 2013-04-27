@@ -179,6 +179,7 @@ public class JFramePrincipal extends javax.swing.JFrame {
         jMenuItem9 = new javax.swing.JMenuItem();
         jMenuItem12 = new javax.swing.JMenuItem();
         jMenuItem13 = new javax.swing.JMenuItem();
+        jMenuItem10 = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jMenuItem14 = new javax.swing.JMenuItem();
 
@@ -368,6 +369,14 @@ public class JFramePrincipal extends javax.swing.JFrame {
         });
         jMenu2.add(jMenuItem13);
 
+        jMenuItem10.setText("Auditoria");
+        jMenuItem10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem10ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem10);
+
         jMenuBar1.add(jMenu2);
 
         jMenu4.setText("Feriado");
@@ -480,22 +489,24 @@ public class JFramePrincipal extends javax.swing.JFrame {
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         try {
-            JFrameInicio vp = new JFrameInicio();
-            Registroacceso reg = adm.getRegistroacceso(idsesion);//Drive.getRegistroacceso(adm,idsesion);
-            if (reg.getIdRegistroacceso() != null) {
-                Date hoy = new Date();
-                String s = new SimpleDateFormat("HH:mm").format(hoy.getTime());
-                SimpleDateFormat fo = new SimpleDateFormat("HH:mm");
-                Date fin = fo.parse(s);
-                reg.setFin(fin);
-                reg.actualizarRegistroAcceso(reg);
+            int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea salir?", "Cerrar sesión", JOptionPane.OK_CANCEL_OPTION);
+            if (JOptionPane.OK_OPTION == confirmado) {
+                JFrameInicio vp = new JFrameInicio();
+                Registroacceso reg = adm.getRegistroacceso(idsesion);//Drive.getRegistroacceso(adm, vp.idsesion);
+                if (reg.getIdRegistroacceso() != null) {
+                    Date hoy = new Date();
+                    String s = new SimpleDateFormat("HH:mm").format(hoy.getTime());
+                    SimpleDateFormat fo = new SimpleDateFormat("HH:mm");
+                    Date fin = fo.parse(s);
+                    reg.setFin(fin);
+                    reg.actualizarRegistroAcceso(reg);
+                }
+                this.dispose();
+                vp.show();
             }
-            this.dispose();
-            vp.show();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.toString());
         }
-        
     }//GEN-LAST:event_formWindowClosing
 
     private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed
@@ -522,6 +533,12 @@ public class JFramePrincipal extends javax.swing.JFrame {
         vent2.show();
     }//GEN-LAST:event_jMenuItem14ActionPerformed
 
+    private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
+        JFrameAuditoria vent2 = new JFrameAuditoria(Drive,adm,idsesion);
+        this.hide();
+        vent2.show();
+    }//GEN-LAST:event_jMenuItem10ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -544,6 +561,7 @@ public class JFramePrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem11;
     private javax.swing.JMenuItem jMenuItem12;
     private javax.swing.JMenuItem jMenuItem13;

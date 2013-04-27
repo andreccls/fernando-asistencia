@@ -4,8 +4,7 @@
  */
 package Presentacion;
 
-import Clases.Agenda;
-import Clases.Asistencia;
+
 import Clases.Controlador;
 import Clases.Dia;
 import Clases.Establecimiento;
@@ -92,6 +91,7 @@ public class JFrameInicio extends javax.swing.JFrame {
             col.setCalle("ENTRE RIOS");
             col.setAltura(2267);
             col.guardarEstablecimiento(col);
+            
             Perfil per1=new Perfil();
             per1.setDescripcion("ADMINISTRADOR");
             per1.setNivel(1);
