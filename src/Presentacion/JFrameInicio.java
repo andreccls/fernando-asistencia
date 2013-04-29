@@ -93,6 +93,8 @@ public class JFrameInicio extends javax.swing.JFrame {
             col.setCalle("ENTRE RIOS");
             col.setAltura(2267);
             col.guardarEstablecimiento(col);
+            auxDrive.getPrimerEstablecimiento();
+            Drive = auxDrive;
             
             Perfil per1=new Perfil();
             per1.setDescripcion("ADMINISTRADOR");
@@ -381,7 +383,9 @@ public class JFrameInicio extends javax.swing.JFrame {
                     reg.setFecha(hoy);
                     reg.setInicio(inicio);
                     idsesion=reg.guardarRegistroAcceso(reg);
-                    JOptionPane.showMessageDialog(null, "BIENVENIDO " + pp, "Verificacion de Huella", JOptionPane.INFORMATION_MESSAGE);
+                    String ss = new SimpleDateFormat("dd/MM/yyyy HH:mm").format(hoy.getTime());
+                    String tex="BIENVENIDO " + pp.toString()+ "\nHora: "+ ss;
+                    JOptionPane.showMessageDialog(null, tex, "Verificacion de Huella", JOptionPane.INFORMATION_MESSAGE);
                     JFramePrincipal vp= new JFramePrincipal(Drive, adm,idsesion);
                     this.dispose();
                     vp.show();

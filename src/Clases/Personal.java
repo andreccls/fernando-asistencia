@@ -1173,7 +1173,7 @@ public class Personal  implements java.io.Serializable {
     
     //CLASES
     // <editor-fold defaultstate="collapsed" desc="Clase"> 
-    public boolean DisponibilidadClase(Date inici, Date finn, HashMap inic,HashMap dsem){
+    public boolean DisponibilidadClase(Date inici, Date finn, HashMap inic,HashMap dsem, int id){
         boolean a=true;
 //        int d=0;
         Date ot1 = inici;
@@ -1189,7 +1189,7 @@ public class Personal  implements java.io.Serializable {
                 Iterator it = Controlador.PERSISTENCIA.getAgendas(idPersonal).iterator();
                 while (it.hasNext()) {
                     Agenda age = (Agenda) it.next();
-                    if (age.getPersonal().getEstado() == true && age.getTarea().getEstado() == true) {
+                    if (age.getPersonal().getEstado() == true && age.getTarea().getEstado() == true &&age.getTarea().getIdTarea()!=id) {
                         if (age.getTarea().getTareaclases().iterator().hasNext()) {
                             Dia di = age.getDia2(otro);
                             if (di.getIdDia() != null) {
@@ -1250,7 +1250,7 @@ public class Personal  implements java.io.Serializable {
                 Iterator it = Controlador.PERSISTENCIA.getAgendas(idPersonal).iterator();
                 while (it.hasNext()) {
                     Agenda age = (Agenda) it.next();
-                    if (age.getPersonal().getEstado() == true && age.getTarea().getEstado() == true) {
+                    if (age.getPersonal().getEstado() == true && age.getTarea().getEstado() == true &&age.getTarea().getIdTarea()!=id) {
                         if (age.getTarea().getTareaclases().iterator().hasNext()) {
                             Dia di = age.getDia2(otro);
                             if (di.getIdDia() != null) {
@@ -1310,7 +1310,7 @@ public class Personal  implements java.io.Serializable {
                 Iterator it = Controlador.PERSISTENCIA.getAgendas(idPersonal).iterator();
                 while (it.hasNext()) {
                     Agenda age = (Agenda) it.next();
-                    if (age.getPersonal().getEstado() == true && age.getTarea().getEstado() == true) {
+                    if (age.getPersonal().getEstado() == true && age.getTarea().getEstado() == true && age.getTarea().getIdTarea()!=id) {
                         if (age.getTarea().getTareaclases().iterator().hasNext()) {
                             Dia di = age.getDia2(otro);
                             if (di.getIdDia() != null) {
@@ -1371,7 +1371,7 @@ public class Personal  implements java.io.Serializable {
                 Iterator it = Controlador.PERSISTENCIA.getAgendas(idPersonal).iterator();
                 while (it.hasNext()) {
                     Agenda age = (Agenda) it.next();
-                    if (age.getPersonal().getEstado() == true && age.getTarea().getEstado() == true) {
+                    if (age.getPersonal().getEstado() == true && age.getTarea().getEstado() == true && age.getTarea().getIdTarea()!=id) {
                         if (age.getTarea().getTareaclases().iterator().hasNext()) {
                             Dia di = age.getDia2(otro);
                             if (di.getIdDia() != null) {
@@ -1432,7 +1432,7 @@ public class Personal  implements java.io.Serializable {
                 Iterator it = Controlador.PERSISTENCIA.getAgendas(idPersonal).iterator();
                 while (it.hasNext()) {
                     Agenda age = (Agenda) it.next();
-                    if (age.getPersonal().getEstado() == true && age.getTarea().getEstado() == true) {
+                    if (age.getPersonal().getEstado() == true && age.getTarea().getEstado() == true && age.getTarea().getIdTarea()!=id) {
                         if (age.getTarea().getTareaclases().iterator().hasNext()) {
                             Dia di = age.getDia2(otro);
                             if (di.getIdDia() != null) {
@@ -1493,7 +1493,7 @@ public class Personal  implements java.io.Serializable {
                 Iterator it = Controlador.PERSISTENCIA.getAgendas(idPersonal).iterator();
                 while (it.hasNext()) {
                     Agenda age = (Agenda) it.next();
-                    if (age.getPersonal().getEstado() == true && age.getTarea().getEstado() == true) {
+                    if (age.getPersonal().getEstado() == true && age.getTarea().getEstado() == true && age.getTarea().getIdTarea()!=id) {
                         if (age.getTarea().getTareaclases().iterator().hasNext()) {
                             Dia di = age.getDia2(otro);
                             if (di.getIdDia() != null) {

@@ -48,7 +48,7 @@ public class JFramePrincipal extends javax.swing.JFrame {
      * Creates new form JFramePrincipal
      */
      Controlador Drive=new Controlador();
-     Personal adm;
+     Personal adm=new Personal();
      public int idsesion;
      Tarea tar=new Tarea();
      Circular cir=new Circular();
