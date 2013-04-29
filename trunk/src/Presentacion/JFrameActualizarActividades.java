@@ -136,16 +136,16 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
             jTable1.setEnabled(false);
         }
         Drive.CargarTablaActividad(jTable1, tar);
-        ImageIcon fott1 = new ImageIcon("src\\imagenes\\no.png");
+        ImageIcon fott1 = new ImageIcon(getClass().getResource("/imagenes/no.png"));
         Icon icono1 = new ImageIcon(fott1.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
         jButton2.setIcon(icono1);
-        ImageIcon fott2 = new ImageIcon("src\\imagenes\\ok.png");
+        ImageIcon fott2 = new ImageIcon(getClass().getResource("/imagenes/ok.png"));
         Icon icono2 = new ImageIcon(fott2.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
         jButton1.setIcon(icono2);
-        ImageIcon fott3 = new ImageIcon("src\\imagenes\\Editar.png");
+        ImageIcon fott3 = new ImageIcon(getClass().getResource("/imagenes/Editar.png"));
         Icon icono3 = new ImageIcon(fott3.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
         jButton4.setIcon(icono3);
-        ImageIcon fott4 = new ImageIcon("src\\imagenes\\Eliminar.png");
+        ImageIcon fott4 = new ImageIcon(getClass().getResource("/imagenes/Eliminar.png"));
         Icon icono4 = new ImageIcon(fott4.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
         jButton3.setIcon(icono4);
     }

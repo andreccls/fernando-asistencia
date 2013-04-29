@@ -85,12 +85,12 @@ public class JFrameClase extends javax.swing.JFrame {
         jTable1.getColumnModel().getColumn(1).setCellRenderer(modelocentrar); 
         jTable1.getTableHeader().setDefaultRenderer(new HeaderRenderer(jTable1));
         ///ICONO EDITAR
-        ImageIcon fot = new ImageIcon("src\\imagenes\\image.jpg");
+        ImageIcon fot = new ImageIcon(getClass().getResource("/imagenes/image.jpg"));
         Icon icono1 = new ImageIcon(fot.getImage().getScaledInstance(jLabel18.getWidth(), jLabel18.getHeight(), Image.SCALE_DEFAULT));
         jLabel18.setIcon(icono1);
         jLabel18.repaint();
         ///ICONO ELIMINAR
-        ImageIcon fott = new ImageIcon("src\\imagenes\\eliminar.gif");
+        ImageIcon fott = new ImageIcon(getClass().getResource("/imagenes/eliminar.gif"));
         Icon icono2 = new ImageIcon(fott.getImage().getScaledInstance(jLabel19.getWidth(), jLabel19.getHeight(), Image.SCALE_DEFAULT));
         jLabel19.setIcon(icono2);
         jLabel19.repaint();
@@ -169,16 +169,16 @@ public class JFrameClase extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null,"Error al cargar el formulario","Registrar Clase", JOptionPane.ERROR_MESSAGE);
             }
         }
-        ImageIcon fott1 = new ImageIcon("src\\imagenes\\no.png");
+        ImageIcon fott1 = new ImageIcon(getClass().getResource("/imagenes/no.png"));
         Icon icono3 = new ImageIcon(fott1.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
         jButton2.setIcon(icono3);
-        ImageIcon fott2 = new ImageIcon("src\\imagenes\\ok.png");
+        ImageIcon fott2 = new ImageIcon(getClass().getResource("/imagenes/ok.png"));
         Icon icono4 = new ImageIcon(fott2.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
         jButton1.setIcon(icono4);
-        ImageIcon fott6 = new ImageIcon("src\\imagenes\\Mas.png");
+        ImageIcon fott6 = new ImageIcon(getClass().getResource("/imagenes/Mas.png"));
         Icon icono6 = new ImageIcon(fott6.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
         jButton3.setIcon(icono6);
-        ImageIcon fott7 = new ImageIcon("src\\imagenes\\Menos.png");
+        ImageIcon fott7 = new ImageIcon(getClass().getResource("/imagenes/Menos.png"));
         Icon icono7 = new ImageIcon(fott7.getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
         jButton4.setIcon(icono7);
         
@@ -291,6 +291,7 @@ public class JFrameClase extends javax.swing.JFrame {
             }
         });
 
+        jFormattedTextField1.setEditable(false);
         try {
             jFormattedTextField1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##:##")));
         } catch (java.text.ParseException ex) {
@@ -308,6 +309,7 @@ public class JFrameClase extends javax.swing.JFrame {
             }
         });
 
+        jFormattedTextField2.setEditable(false);
         try {
             jFormattedTextField2.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##:##")));
         } catch (java.text.ParseException ex) {
@@ -484,10 +486,10 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
     jTable1.addAncestorListener(new javax.swing.event.AncestorListener() {
         public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
         }
-        public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
-        }
         public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
             jTable1AncestorAdded(evt);
+        }
+        public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
         }
     });
     jScrollPane2.setViewportView(jTable1);
@@ -655,6 +657,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
         }
     });
 
+    jFormattedTextField3.setEditable(false);
     try {
         jFormattedTextField3.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##:##")));
     } catch (java.text.ParseException ex) {
@@ -672,6 +675,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
         }
     });
 
+    jFormattedTextField4.setEditable(false);
     try {
         jFormattedTextField4.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##:##")));
     } catch (java.text.ParseException ex) {
@@ -689,6 +693,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
         }
     });
 
+    jFormattedTextField5.setEditable(false);
     try {
         jFormattedTextField5.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##:##")));
     } catch (java.text.ParseException ex) {
@@ -706,6 +711,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
         }
     });
 
+    jFormattedTextField6.setEditable(false);
     try {
         jFormattedTextField6.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##:##")));
     } catch (java.text.ParseException ex) {
@@ -723,6 +729,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
         }
     });
 
+    jFormattedTextField7.setEditable(false);
     try {
         jFormattedTextField7.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##:##")));
     } catch (java.text.ParseException ex) {
@@ -740,6 +747,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
         }
     });
 
+    jFormattedTextField8.setEditable(false);
     try {
         jFormattedTextField8.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##:##")));
     } catch (java.text.ParseException ex) {
@@ -757,6 +765,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
         }
     });
 
+    jFormattedTextField9.setEditable(false);
     try {
         jFormattedTextField9.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##:##")));
     } catch (java.text.ParseException ex) {
@@ -774,6 +783,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
         }
     });
 
+    jFormattedTextField10.setEditable(false);
     try {
         jFormattedTextField10.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##:##")));
     } catch (java.text.ParseException ex) {
@@ -791,6 +801,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
         }
     });
 
+    jFormattedTextField11.setEditable(false);
     try {
         jFormattedTextField11.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##:##")));
     } catch (java.text.ParseException ex) {
@@ -808,6 +819,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
         }
     });
 
+    jFormattedTextField12.setEditable(false);
     try {
         jFormattedTextField12.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##:##")));
     } catch (java.text.ParseException ex) {
@@ -2517,9 +2529,13 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
         if(jCheckBox1.isSelected()){
             jFormattedTextField1.setEnabled(true);
             jFormattedTextField2.setEnabled(true);
+            jFormattedTextField1.setEditable(true);
+            jFormattedTextField2.setEditable(true);
         }else{
             jFormattedTextField1.setEnabled(false);
             jFormattedTextField2.setEnabled(false);
+            jFormattedTextField1.setEditable(true);
+            jFormattedTextField2.setEditable(true);
         }
     }//GEN-LAST:event_jCheckBox1ItemStateChanged
 
@@ -2527,9 +2543,13 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
         if(jCheckBox2.isSelected()){
             jFormattedTextField3.setEnabled(true);
             jFormattedTextField4.setEnabled(true);
+            jFormattedTextField3.setEditable(true);
+            jFormattedTextField4.setEditable(true);
         }else{
             jFormattedTextField3.setEnabled(false);
             jFormattedTextField4.setEnabled(false);
+            jFormattedTextField3.setEditable(true);
+            jFormattedTextField4.setEditable(true);
         }
     }//GEN-LAST:event_jCheckBox2ItemStateChanged
 
@@ -2537,9 +2557,13 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
         if(jCheckBox3.isSelected()){
             jFormattedTextField5.setEnabled(true);
             jFormattedTextField6.setEnabled(true);
+            jFormattedTextField5.setEditable(true);
+            jFormattedTextField6.setEditable(true);
         }else{
             jFormattedTextField5.setEnabled(false);
             jFormattedTextField6.setEnabled(false);
+            jFormattedTextField5.setEditable(true);
+            jFormattedTextField6.setEditable(true);
         }
     }//GEN-LAST:event_jCheckBox3ItemStateChanged
 
@@ -2547,9 +2571,13 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
         if(jCheckBox4.isSelected()){
             jFormattedTextField7.setEnabled(true);
             jFormattedTextField8.setEnabled(true);
+            jFormattedTextField7.setEditable(true);
+            jFormattedTextField8.setEditable(true);
         }else{
             jFormattedTextField7.setEnabled(false);
             jFormattedTextField8.setEnabled(false);
+            jFormattedTextField7.setEditable(true);
+            jFormattedTextField8.setEditable(true);
         }
     }//GEN-LAST:event_jCheckBox4ItemStateChanged
 
@@ -2557,9 +2585,13 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
         if(jCheckBox5.isSelected()){
             jFormattedTextField10.setEnabled(true);
             jFormattedTextField9.setEnabled(true);
+            jFormattedTextField10.setEditable(true);
+            jFormattedTextField9.setEditable(true);
         }else{
             jFormattedTextField10.setEnabled(false);
             jFormattedTextField9.setEnabled(false);
+            jFormattedTextField10.setEditable(true);
+            jFormattedTextField9.setEditable(true);
         }
     }//GEN-LAST:event_jCheckBox5ItemStateChanged
 
@@ -2567,9 +2599,13 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
         if(jCheckBox6.isSelected()){
             jFormattedTextField11.setEnabled(true);
             jFormattedTextField12.setEnabled(true);
+            jFormattedTextField11.setEditable(true);
+            jFormattedTextField12.setEditable(true);
         }else{
             jFormattedTextField11.setEnabled(false);
             jFormattedTextField12.setEnabled(false);
+            jFormattedTextField11.setEditable(true);
+            jFormattedTextField12.setEditable(true);
         }
     }//GEN-LAST:event_jCheckBox6ItemStateChanged
 

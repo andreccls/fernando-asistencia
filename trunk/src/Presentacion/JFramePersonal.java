@@ -70,8 +70,10 @@ public class JFramePersonal extends javax.swing.JFrame {
         jList1.setModel(modeloLista);
         jList2.setModel(modeloLista2);
         ///ICONO EDITAR
-        ImageIcon fot = new ImageIcon("src\\imagenes\\image.jpg");
+        ImageIcon fot = new ImageIcon(getClass().getResource("/imagenes/image.jpg"));
+//        ImageIcon fot = new ImageIcon(getClass().getResource("src\\imagenes\\image.jpg"));
         Icon icono1 = new ImageIcon(fot.getImage().getScaledInstance(jLabel35.getWidth(), jLabel35.getHeight(), Image.SCALE_DEFAULT));
+//        this.jLabel1.setIcon(new ImageIcon(getClass().getResource("/NOMBRE_DEL_PAQUETE/imagenes/imagen1.JPG")));
         jLabel35.setIcon(icono1);
         jLabel35.repaint();
         jLabel30.setIcon(icono1);
@@ -79,7 +81,7 @@ public class JFramePersonal extends javax.swing.JFrame {
         jLabel31.setIcon(icono1);
         jLabel31.repaint();
         ///ICONO ELIMINAR
-        ImageIcon fott = new ImageIcon("src\\imagenes\\eliminar.gif");
+        ImageIcon fott = new ImageIcon(getClass().getResource("/imagenes/eliminar.gif"));
         Icon icono4 = new ImageIcon(fott.getImage().getScaledInstance(jLabel32.getWidth(), jLabel32.getHeight(), Image.SCALE_DEFAULT));
         jLabel32.setIcon(icono4);
         jLabel32.repaint();
@@ -88,17 +90,17 @@ public class JFramePersonal extends javax.swing.JFrame {
         jLabel34.setIcon(icono4);
         jLabel34.repaint();
         jComboBox7.setSelectedItem("PERSONAL");
-        ImageIcon fott2 = new ImageIcon("src\\imagenes\\no.png");
+        ImageIcon fott2 = new ImageIcon(getClass().getResource("/imagenes/no.png"));
         Icon icono2 = new ImageIcon(fott2.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
         jButton3.setIcon(icono2);
-        ImageIcon fott3 = new ImageIcon("src\\imagenes\\ok.png");
+        ImageIcon fott3 = new ImageIcon(getClass().getResource("/imagenes/ok.png"));
         Icon icono3 = new ImageIcon(fott3.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
         jButton2.setIcon(icono3);
-        ImageIcon fott6 = new ImageIcon("src\\imagenes\\Mas.png");
+        ImageIcon fott6 = new ImageIcon(getClass().getResource("/imagenes/Mas.png"));
         Icon icono6 = new ImageIcon(fott6.getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
         jButton1.setIcon(icono6);
         jButton5.setIcon(icono6);
-        ImageIcon fott7 = new ImageIcon("src\\imagenes\\Menos.png");
+        ImageIcon fott7 = new ImageIcon(getClass().getResource("/imagenes/Menos.png"));
         Icon icono7 = new ImageIcon(fott7.getImage().getScaledInstance(15, 15, Image.SCALE_DEFAULT));
         jButton4.setIcon(icono7);
         jButton6.setIcon(icono7);

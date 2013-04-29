@@ -72,10 +72,10 @@ public class JFrameActividades extends javax.swing.JFrame {
         jTable2.getTableHeader().setDefaultRenderer(new HeaderRenderer(jTable2));
         jTable1.getTableHeader().setDefaultRenderer(new HeaderRenderer(jTable1));
         
-        ImageIcon fott1 = new ImageIcon("src\\imagenes\\no.png");
+        ImageIcon fott1 = new ImageIcon(getClass().getResource("/imagenes/no.png"));
         Icon icono1 = new ImageIcon(fott1.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
         jButton1.setIcon(icono1);
-        ImageIcon fott2 = new ImageIcon("src\\imagenes\\Imprimir2.png");
+        ImageIcon fott2 = new ImageIcon(getClass().getResource("/imagenes/Imprimir2.png"));
         Icon icono2 = new ImageIcon(fott2.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
         jButton2.setIcon(icono2);
         jButton5.setIcon(icono2);

@@ -62,7 +62,7 @@ public class JFramenuevadeclaracion extends javax.swing.JFrame{
         Drive.CargarComboTipocargo(jComboBox2);
         Drive.CargarComboTiponivel(jComboBox3);
         ///ICONO EDITAR
-        ImageIcon fot = new ImageIcon("src\\imagenes\\image.jpg");
+        ImageIcon fot = new ImageIcon(getClass().getResource("/imagenes/image.jpg"));
         Icon icono1 = new ImageIcon(fot.getImage().getScaledInstance(jLabel1.getWidth(), jLabel1.getHeight(), Image.SCALE_DEFAULT));
         jLabel1.setIcon(icono1);
         jLabel1.repaint();
@@ -71,7 +71,7 @@ public class JFramenuevadeclaracion extends javax.swing.JFrame{
         jLabel3.setIcon(icono1);
         jLabel3.repaint();
         ///ICONO ELIMINAR
-        ImageIcon fott = new ImageIcon("src\\imagenes\\eliminar.gif");
+        ImageIcon fott = new ImageIcon(getClass().getResource("/imagenes/eliminar.gif"));
         Icon icono4 = new ImageIcon(fott.getImage().getScaledInstance(jLabel34.getWidth(), jLabel34.getHeight(), Image.SCALE_DEFAULT));
         jLabel34.setIcon(icono4);
         jLabel34.repaint();
@@ -79,10 +79,10 @@ public class JFramenuevadeclaracion extends javax.swing.JFrame{
         jLabel35.repaint();
         jLabel36.setIcon(icono4);
         jLabel36.repaint();
-        ImageIcon fott2 = new ImageIcon("src\\imagenes\\no.png");
+        ImageIcon fott2 = new ImageIcon(getClass().getResource("/imagenes/no.png"));
         Icon icono2 = new ImageIcon(fott2.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
         jButton1.setIcon(icono2);
-        ImageIcon fott3 = new ImageIcon("src\\imagenes\\ok.png");
+        ImageIcon fott3 = new ImageIcon(getClass().getResource("/imagenes/ok.png"));
         Icon icono3 = new ImageIcon(fott3.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
         jButton2.setIcon(icono3);
     }
