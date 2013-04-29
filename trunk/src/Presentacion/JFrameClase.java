@@ -1220,7 +1220,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                             Date inicioo = dateChooserCombo1.getSelectedDate().getTime();
                             Date finn = dateChooserCombo2.getSelectedDate().getTime();
                             // </editor-fold>
-                            if (person.DisponibilidadClase(inicioo, finn, listini, items)) {
+                            if (person.DisponibilidadClase(inicioo, finn, listini, items,0)) {
                                 band=true;
                             }else{
                                 band=false;
@@ -1688,7 +1688,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                 Date inicioo = dateChooserCombo1.getSelectedDate().getTime();
                                 Date finn = dateChooserCombo2.getSelectedDate().getTime();
                                 // </editor-fold>
-                                if (person.DisponibilidadClase(inicioo, finn, listini, items)) {
+                                if (person.DisponibilidadClase(inicioo, finn, listini, items,tar.getIdTarea())) {
                                     band=true;
                                 }else{
                                     band=false;

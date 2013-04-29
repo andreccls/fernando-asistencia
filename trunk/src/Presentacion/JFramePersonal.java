@@ -959,6 +959,7 @@ jPanel1Layout.setHorizontalGroup(
                         pe.setFamiliar(false);
                         Auditoria audi=new Auditoria();
                         if(adm.getIdPersonal()!=null){
+                            adm=pe;
                             audi.setPersonalByIdAuditor(adm);
                         }else{
                             audi.setPersonalByIdAuditor(pe);
