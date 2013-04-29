@@ -89,13 +89,13 @@ public class jDigitalPersona extends javax.swing.JFrame {
         }
         jTable1.getTableHeader().setDefaultRenderer(new HeaderRenderer(jTable1));
         Drive.Cargarpersonal(jTable1, buffer.toString(), jTextField4.getText().toUpperCase());
-        ImageIcon fott2 = new ImageIcon("src\\imagenes\\no.png");
+        ImageIcon fott2 = new ImageIcon(getClass().getResource("/imagenes/no.png"));
         Icon icono2 = new ImageIcon(fott2.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
         jButton4.setIcon(icono2);
-        ImageIcon fott3 = new ImageIcon("src\\imagenes\\ok.png");
+        ImageIcon fott3 = new ImageIcon(getClass().getResource("/imagenes/ok.png"));
         Icon icono3 = new ImageIcon(fott3.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
         jButton12.setIcon(icono3);
-        ImageIcon fott4 = new ImageIcon("src\\imagenes\\Buscar.png");
+        ImageIcon fott4 = new ImageIcon(getClass().getResource("/imagenes/Buscar.png"));
         Icon icono4 = new ImageIcon(fott4.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
         jButton11.setIcon(icono4);
     }

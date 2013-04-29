@@ -8,11 +8,14 @@ import Clases.Controlador;
 import Clases.Personal;
 import Clases.Registroacceso;
 import java.awt.Frame;
+import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
@@ -41,6 +44,15 @@ public class JFrameRegistro extends javax.swing.JFrame {
         String buscar = (String) jComboBox2.getSelectedItem();
         Drive.Cargarpersonal(jTable2, buffer.toString(), buffer.toString().toUpperCase());
         Drive.CargarTablaRegistro(jTable1, per, dia, buscar);
+        ImageIcon fott1 = new ImageIcon(getClass().getResource("/imagenes/no.png"));
+        Icon icono1 = new ImageIcon(fott1.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
+        jButton3.setIcon(icono1);
+        ImageIcon fott2 = new ImageIcon(getClass().getResource("/imagenes/Imprimir2.png"));
+        Icon icono2 = new ImageIcon(fott2.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
+        jButton5.setIcon(icono2);
+        ImageIcon fott3 = new ImageIcon(getClass().getResource("/imagenes/Buscar.png"));
+        Icon icono3 = new ImageIcon(fott3.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
+        jButton1.setIcon(icono3);
     }
     
     /**

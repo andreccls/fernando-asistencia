@@ -75,10 +75,10 @@ public class JFrameCircular extends javax.swing.JFrame {
             Drive.LimpiarTabla(jTable2);
             Drive.CargarTablacheck(jTable2, buscar, buffer.toString().toUpperCase(), lista);
         }
-        ImageIcon fott1 = new ImageIcon("src\\imagenes\\no.png");
+        ImageIcon fott1 = new ImageIcon(getClass().getResource("/imagenes/no.png"));
         Icon icono1 = new ImageIcon(fott1.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
         jButton1.setIcon(icono1);
-        ImageIcon fott2 = new ImageIcon("src\\imagenes\\ok.png");
+        ImageIcon fott2 = new ImageIcon(getClass().getResource("/imagenes/ok.png"));
         Icon icono2 = new ImageIcon(fott2.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
         jButton2.setIcon(icono2);
     }

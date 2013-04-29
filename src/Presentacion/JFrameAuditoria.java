@@ -8,10 +8,13 @@ import Clases.Auditoria;
 import Clases.Controlador;
 import Clases.Personal;
 import java.awt.Frame;
+import java.awt.Image;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
@@ -37,6 +40,12 @@ public class JFrameAuditoria extends javax.swing.JFrame {
         Date dia= dateChooserCombo1.getSelectedDate().getTime();
         String buscar = (String) jComboBox2.getSelectedItem();
         Drive.CargarTablaAuditoria(jTable1, dia, buscar);
+        ImageIcon fott1 = new ImageIcon(getClass().getResource("/imagenes/no.png"));
+        Icon icono1 = new ImageIcon(fott1.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
+        jButton3.setIcon(icono1);
+        ImageIcon fott2 = new ImageIcon(getClass().getResource("/imagenes/Imprimir2.png"));
+        Icon icono2 = new ImageIcon(fott2.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
+        jButton5.setIcon(icono2);
     }
 
     /**

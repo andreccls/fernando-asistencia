@@ -69,16 +69,16 @@ public class JFrameConsultaActividades extends javax.swing.JFrame {
             jTable1.getColumnModel().getColumn(i).setPreferredWidth(anchos1[i]);
         }
         jTable1.getTableHeader().setDefaultRenderer(new JFrameConsultaActividades.HeaderRenderer(jTable1));      
-        ImageIcon fott2 = new ImageIcon("src\\imagenes\\no.png");
+        ImageIcon fott2 = new ImageIcon(getClass().getResource("/imagenes/no.png"));
         Icon icono2 = new ImageIcon(fott2.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
         jButton3.setIcon(icono2);
-        ImageIcon fott3 = new ImageIcon("src\\imagenes\\ok.png");
+        ImageIcon fott3 = new ImageIcon(getClass().getResource("/imagenes/ok.png"));
         Icon icono3 = new ImageIcon(fott3.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
         jButton4.setIcon(icono3);
-        ImageIcon fott5 = new ImageIcon("src\\imagenes\\Buscar.png");
+        ImageIcon fott5 = new ImageIcon(getClass().getResource("/imagenes/Buscar.png"));
         Icon icono5 = new ImageIcon(fott5.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
         jButton1.setIcon(icono5);
-        ImageIcon fott6 = new ImageIcon("src\\imagenes\\Imprimir2.png");
+        ImageIcon fott6 = new ImageIcon(getClass().getResource("/imagenes/Imprimir2.png"));
         Icon icono6 = new ImageIcon(fott6.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
         jButton2.setIcon(icono6);
     }

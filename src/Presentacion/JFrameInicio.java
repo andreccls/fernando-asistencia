@@ -36,12 +36,14 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -117,11 +119,12 @@ public class JFrameInicio extends javax.swing.JFrame {
         
         initComponents();
         
-        ImageIcon fott = new ImageIcon("src\\imagenes\\gutenberg.png");
+        ImageIcon fott = new ImageIcon(getClass().getResource("/imagenes/gutenberg.png"));
         Icon icono4 = new ImageIcon(fott.getImage().getScaledInstance(jLabel1.getWidth(), jLabel1.getHeight(), Image.SCALE_DEFAULT));
         jLabel1.setIcon(icono4);
         jLabel1.repaint();
-        ImageIcon fot = new ImageIcon("src\\imagenes\\Lector1.gif");
+
+        ImageIcon fot = new ImageIcon(getClass().getResource("/imagenes/Lector1.gif"));
         Icon icono5 = new ImageIcon(fot.getImage().getScaledInstance(jLabel5.getWidth(), jLabel5.getHeight(), Image.SCALE_DEFAULT));
         jLabel5.setIcon(icono5);
         jLabel5.repaint();
@@ -231,7 +234,7 @@ public class JFrameInicio extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+  
     private void formWindowDeactivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowDeactivated
         stop();
     }//GEN-LAST:event_formWindowDeactivated

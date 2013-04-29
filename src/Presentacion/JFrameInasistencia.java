@@ -89,7 +89,7 @@ public class JFrameInasistencia extends javax.swing.JFrame {
             jTable1.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
         }
         jTable1.getTableHeader().setDefaultRenderer(new HeaderRenderer(jTable1));
-        ImageIcon fot = new ImageIcon("src\\imagenes\\image.jpg");
+        ImageIcon fot = new ImageIcon(getClass().getResource("/imagenes/image.jpg"));
         Icon icono1 = new ImageIcon(fot.getImage().getScaledInstance(jLabel3.getWidth(), jLabel3.getHeight(), Image.SCALE_DEFAULT));
         jLabel3.setIcon(icono1);
         jLabel3.repaint();
@@ -98,13 +98,13 @@ public class JFrameInasistencia extends javax.swing.JFrame {
             jTable1.setEnabled(false);
             jButton2.setEnabled(false);
         }
-        ImageIcon fott2 = new ImageIcon("src\\imagenes\\no.png");
+        ImageIcon fott2 = new ImageIcon(getClass().getResource("/imagenes/no.png"));
         Icon icono2 = new ImageIcon(fott2.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
         jButton1.setIcon(icono2);
-        ImageIcon fott3 = new ImageIcon("src\\imagenes\\ok.png");
+        ImageIcon fott3 = new ImageIcon(getClass().getResource("/imagenes/ok.png"));
         Icon icono3 = new ImageIcon(fott3.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
         jButton2.setIcon(icono3);
-        ImageIcon fott6 = new ImageIcon("src\\imagenes\\Imprimir2.png");
+        ImageIcon fott6 = new ImageIcon(getClass().getResource("/imagenes/Imprimir2.png"));
         Icon icono6 = new ImageIcon(fott6.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
         jButton3.setIcon(icono6);
     }

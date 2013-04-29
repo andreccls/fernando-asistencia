@@ -96,18 +96,18 @@ public class JFrameAsistencia extends javax.swing.JFrame {
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, ex.toString(),"Error de Inicio",JOptionPane.ERROR_MESSAGE);
         }
-        ImageIcon fott = new ImageIcon("src\\imagenes\\gutenberg.png");
+        ImageIcon fott = new ImageIcon(getClass().getResource("/imagenes/gutenberg.png"));
         Icon icono4 = new ImageIcon(fott.getImage().getScaledInstance(jLabel1.getWidth(), jLabel1.getHeight(), Image.SCALE_DEFAULT));
         jLabel1.setIcon(icono4);
         jLabel1.repaint();
         jButton1.setEnabled(false);
-        ImageIcon fot = new ImageIcon("src\\imagenes\\Lector1.gif");
+        ImageIcon fot = new ImageIcon(getClass().getResource("/imagenes/Lector1.gif"));
         Icon icono5 = new ImageIcon(fot.getImage().getScaledInstance(jLabel5.getWidth(), jLabel5.getHeight(), Image.SCALE_DEFAULT));
         jLabel5.setIcon(icono5);
         jLabel5.repaint();
         Iniciar();
 	start();
-        ImageIcon fott1 = new ImageIcon("src\\imagenes\\Actividades.png");
+        ImageIcon fott1 = new ImageIcon(getClass().getResource("/imagenes/Actividades.png"));
         Icon icono1 = new ImageIcon(fott1.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
         jButton1.setIcon(icono1);
 //        try {
@@ -532,14 +532,14 @@ public class JFrameAsistencia extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-//     public static void main(String args[]) {
-//        java.awt.EventQueue.invokeLater(new Runnable() {
-//
-//            public void run() {
-//                new JFrameAsistencia().setVisible(true);
-//            }
-//        });
-//    }
+     public static void main(String args[]) {
+        java.awt.EventQueue.invokeLater(new Runnable() {
+
+            public void run() {
+                new JFrameAsistencia().setVisible(true);
+            }
+        });
+    }
      
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
