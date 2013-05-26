@@ -16,6 +16,7 @@ import java.awt.Frame;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -26,6 +27,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import net.sf.jasperreports.engine.JRException;
 
@@ -41,15 +43,15 @@ public class JFrameConsulta extends javax.swing.JFrame {
      */
     public Controlador Drive;
     public Personal adm;
-    int idsesion;
+//    int idsesion;
     Personal per = new Personal();
     StringBuffer buffer = new StringBuffer();
     HiloProgreso hilo;
 
-    public JFrameConsulta(Controlador unDrive,Personal admin,int id) {
+    public JFrameConsulta(Controlador unDrive,Personal admin) {
         this.adm=admin;
         this.Drive = unDrive;
-        this.idsesion=id;
+//        this.idsesion=id;
         initComponents();
         //Iniciamos el Hilo
         Controlador auxDrive = new Controlador();
@@ -63,9 +65,7 @@ public class JFrameConsulta extends javax.swing.JFrame {
             jTable1.getColumnModel().getColumn(i).setPreferredWidth(anchos1[i]);
         }
         jTable1.getTableHeader().setDefaultRenderer(new HeaderRenderer(jTable1));
-        if(adm.getPerfil().getNivel()>2){
-            jButton2.setEnabled(false);
-        }
+        
         ImageIcon fott2 = new ImageIcon(getClass().getResource("/imagenes/no.png"));
         Icon icono2 = new ImageIcon(fott2.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
         jButton3.setIcon(icono2);
@@ -81,7 +81,9 @@ public class JFrameConsulta extends javax.swing.JFrame {
         ImageIcon fott6 = new ImageIcon(getClass().getResource("/imagenes/Imprimir2.png"));
         Icon icono6 = new ImageIcon(fott6.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
         jButton5.setIcon(icono6);
-        
+        if(adm.getPerfil().getPersonaleli()==null){
+            jButton2.setEnabled(false);
+        }
     }
 
     /**
@@ -171,6 +173,7 @@ public class JFrameConsulta extends javax.swing.JFrame {
                 .addContainerGap(27, Short.MAX_VALUE))
         );
 
+        jTable1.setAutoCreateRowSorter(true);
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -275,7 +278,7 @@ public class JFrameConsulta extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGap(16, 16, 16))
         );
 
         pack();
@@ -284,63 +287,29 @@ public class JFrameConsulta extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea volver al menú principal?", "Consultar Personal", JOptionPane.YES_NO_OPTION);
         if (JOptionPane.OK_OPTION == confirmado) {
-            Frame vp = new JFramePrincipal(Drive,adm,idsesion);
+            Frame vp = new JFramePrincipal(Drive,adm);
             this.dispose();
             vp.show();
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        //Establecimiento col = Drive.getPrimerEstablecimiento();
         jTable1.getModel();
-        per=(Personal) jTable1.getValueAt(jTable1.getSelectedRow(), 0);
-//        int fila = Integer.parseInt(jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString());
-//        if ((fila > -1)) {
-//            per = col.getPersonal(fila);
-//        }
-        if(adm.getPerfil().getNivel()<=2){
-                iniciarSplash();
-                hilo = new HiloProgreso(jProgressBar1, this, Drive, per,adm,idsesion);
-                hilo.start();
-                hilo = null;
-            }
+        per = (Personal) jTable1.getValueAt(jTable1.getSelectedRow(), 0);
+        iniciarSplash();
+        hilo = new HiloProgreso(jProgressBar1, this, Drive, per, adm, false);
+        hilo.start();
+        hilo = null;
     }//GEN-LAST:event_jButton4ActionPerformed
 
-//    public void HiloProgres(JProgressBar progreso1) {
-//        progreso=progreso1;
-//        progreso.setStringPainted(true);
-//        progreso.setBorderPainted(true);
-//        progreso.setForeground(new Color(50, 50, 153, 100));
-//        progreso.setStringPainted(true);
-//        JFrameActualizarPersonal framee = new JFrameActualizarPersonal(Drive, per);
-//        for (int i = 1; i <= 100; i++) {
-//            progreso.setValue(i);
-//            pausa(40);
-//        }
-//        this.hide();
-//        framee.show();
-//    }
-//    
-//    public void pausa(int mlSeg){
-//    try{
-//        Thread.sleep(mlSeg);
-//    }catch(Exception e){}
-//}
     private void jTable1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseReleased
         if (evt.getClickCount() == 2) {
-//            Establecimiento col = Drive.getPrimerEstablecimiento();
             jTable1.getModel();
-            per=(Personal) jTable1.getValueAt(jTable1.rowAtPoint(evt.getPoint()), 0);
-//            int fila = jTable1.rowAtPoint(evt.getPoint());
-//            if ((fila > -1)) {
-//                per = col.getPersonal(Integer.parseInt(jTable1.getValueAt(fila, 0).toString()));
-//            }
-            if(adm.getPerfil().getNivel()<=2){
-                iniciarSplash();
-                hilo = new HiloProgreso(jProgressBar1, this, Drive, per,adm,idsesion);
-                hilo.start();
-                hilo = null;
-            }
+            per = (Personal) jTable1.getValueAt(jTable1.rowAtPoint(evt.getPoint()), 0);
+            iniciarSplash();
+            hilo = new HiloProgreso(jProgressBar1, this, Drive, per, adm, false);
+            hilo.start();
+            hilo = null;
         }
     }//GEN-LAST:event_jTable1MouseReleased
 
@@ -354,19 +323,19 @@ public class JFrameConsulta extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea eliminar el personal y todas sus actividades?", "Eliminar Personal", JOptionPane.YES_NO_OPTION);
         if (JOptionPane.OK_OPTION == confirmado) {
-//            Establecimiento col = Drive.getPrimerEstablecimiento();
             jTable1.getModel();
-//            Personal per = col.getPersonal(Integer.parseInt(jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString()));
-            per=(Personal)jTable1.getValueAt(jTable1.getSelectedRow(), 0);
+            per = (Personal) jTable1.getValueAt(jTable1.getSelectedRow(), 0);
             if (per.getEstado() == true) {
                 per.setEstado(false);
                 per.actualizarPersonal(per);
-                Auditoria audi=new Auditoria();
+                // <editor-fold defaultstate="collapsed" desc="Auditoria"> 
+                Auditoria audi = new Auditoria();
                 audi.setPersonalByIdAuditor(adm);
                 audi.setOperacion("Eliminar");
                 audi.setFecha(new Date());
                 audi.setPersonalByIdPersonal(per);
                 audi.guardarAuditoria(audi);
+                // </editor-fold>
             }
             Drive.LimpiarTabla(jTable1);
             String buscar = (String) jComboBox1.getSelectedItem();
@@ -404,19 +373,27 @@ public class JFrameConsulta extends javax.swing.JFrame {
     
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         try {
-            List<Personal> consulta=Controlador.getPERSISTENCIA().getPersonalesTrue(1);
-            Drive.mostrarReporte("ListaPersonal",consulta,"Lista Personal");
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(JFrameConsulta.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (JRException ex) {
-            Logger.getLogger(JFrameConsulta.class.getName()).log(Level.SEVERE, null, ex);
+            List lista = new ArrayList();
+            DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+            int c = 0;
+            while (modelo.getRowCount() != c) {
+                Object o=jTable1.getValueAt(c, 0);
+                if (o != null) {
+                    Personal audi = (Personal) o;
+                    lista.add(audi);
+                }
+                c++;
+            }
+            Drive.mostrarReporte("ListaPersonal",lista,"Lista Personal",lista.size());
+        } catch (Exception e) {
+            
         }
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea volver al menú principal?", "Consultar Personal", JOptionPane.YES_NO_OPTION);
         if (JOptionPane.OK_OPTION == confirmado) {
-            Frame vp = new JFramePrincipal(Drive,adm,idsesion);
+            Frame vp = new JFramePrincipal(Drive,adm);
             this.dispose();
             vp.show();
         }

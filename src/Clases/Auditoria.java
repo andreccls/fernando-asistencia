@@ -1,5 +1,5 @@
 package Clases;
-// Generated 25-abr-2013 14:00:44 by Hibernate Tools 3.2.1.GA
+// Generated 23-may-2013 2:20:55 by Hibernate Tools 3.2.1.GA
 
 
 import java.util.Date;
@@ -18,6 +18,9 @@ public class Auditoria  implements java.io.Serializable {
      private Establecimiento establecimiento;
      private Date fecha;
      private String operacion;
+     private String campo;
+     private String elementoAnterior;
+     private String elementoNuevo;
 
     public Auditoria() {
     }
@@ -28,7 +31,7 @@ public class Auditoria  implements java.io.Serializable {
         this.fecha = fecha;
         this.operacion = operacion;
     }
-    public Auditoria(Personal personalByIdAuditor, Departamento departamento, Personal personalByIdPersonal, Tarea tarea, Establecimiento establecimiento, Date fecha, String operacion) {
+    public Auditoria(Personal personalByIdAuditor, Departamento departamento, Personal personalByIdPersonal, Tarea tarea, Establecimiento establecimiento, Date fecha, String operacion, String campo, String elementoAnterior, String elementoNuevo) {
        this.personalByIdAuditor = personalByIdAuditor;
        this.departamento = departamento;
        this.personalByIdPersonal = personalByIdPersonal;
@@ -36,6 +39,14 @@ public class Auditoria  implements java.io.Serializable {
        this.establecimiento = establecimiento;
        this.fecha = fecha;
        this.operacion = operacion;
+       this.campo = campo;
+       this.elementoAnterior = elementoAnterior;
+       this.elementoNuevo = elementoNuevo;
+    }
+    
+    @Override
+    public String toString() {
+        return personalByIdAuditor.getApellido()+" "+personalByIdAuditor.getNombre();
     }
    
     public Integer getIdAuditoria() {
@@ -93,6 +104,27 @@ public class Auditoria  implements java.io.Serializable {
     
     public void setOperacion(String operacion) {
         this.operacion = operacion;
+    }
+    public String getCampo() {
+        return this.campo;
+    }
+    
+    public void setCampo(String campo) {
+        this.campo = campo;
+    }
+    public String getElementoAnterior() {
+        return this.elementoAnterior;
+    }
+    
+    public void setElementoAnterior(String elementoAnterior) {
+        this.elementoAnterior = elementoAnterior;
+    }
+    public String getElementoNuevo() {
+        return this.elementoNuevo;
+    }
+    
+    public void setElementoNuevo(String elementoNuevo) {
+        this.elementoNuevo = elementoNuevo;
     }
 
 // GENERADO POR GONZALEZ FERNANDO

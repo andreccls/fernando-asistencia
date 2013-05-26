@@ -4,19 +4,38 @@
  */
 package Presentacion;
 
+import Clases.Asistencia;
 import Clases.Controlador;
 import Clases.Personal;
 import Clases.Registroacceso;
+import TareasProgramadas.ControladorTarea;
+import java.awt.Component;
 import java.awt.Frame;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultCellEditor;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
+import javax.swing.text.DefaultFormatterFactory;
+import javax.swing.text.MaskFormatter;
 
 /**
  *
@@ -30,20 +49,32 @@ public class JFrameRegistro extends javax.swing.JFrame {
     
     public Controlador Drive;
     public Personal adm;
-    int idsesion;
+    ControladorTarea co=new ControladorTarea();
+//    int idsesion;
     Personal per = new Personal();
     StringBuffer buffer = new StringBuffer();
 //    HiloProgreso hilo;
     
-    public JFrameRegistro(Controlador unDrive,Personal admin,int id) {
+    public JFrameRegistro(Controlador unDrive,Personal admin) {
         this.adm=admin;
         this.Drive = unDrive;
-        this.idsesion=id;
+//        this.idsesion=id;
         initComponents();
         Date dia= dateChooserCombo1.getSelectedDate().getTime();
         String buscar = (String) jComboBox2.getSelectedItem();
         Drive.Cargarpersonal(jTable2, buffer.toString(), buffer.toString().toUpperCase());
         Drive.CargarTablaRegistro(jTable1, per, dia, buscar);
+        String hora=Drive.Obtenerhoras(jTable1);
+        jLabel4.setText(hora);
+        if(buscar.equals("DIA")){
+        jLabel6.setText(String.valueOf(dia.getDate()));
+        }else if(buscar.equals("SEMANA")){
+            jLabel6.setText(String.valueOf(dia.getDate()));
+        }else if(buscar.equals("MES")){
+            jLabel6.setText(String.valueOf(dia.getMonth()+1));
+        }else if(buscar.equals("AÑO")){
+            jLabel6.setText(String.valueOf(dia.getYear()));
+        }
         ImageIcon fott1 = new ImageIcon(getClass().getResource("/imagenes/no.png"));
         Icon icono1 = new ImageIcon(fott1.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
         jButton3.setIcon(icono1);
@@ -53,6 +84,33 @@ public class JFrameRegistro extends javax.swing.JFrame {
         ImageIcon fott3 = new ImageIcon(getClass().getResource("/imagenes/Buscar.png"));
         Icon icono3 = new ImageIcon(fott3.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
         jButton1.setIcon(icono3);
+        ImageIcon fott4 = new ImageIcon(getClass().getResource("/imagenes/ok.png"));
+        Icon icono4 = new ImageIcon(fott4.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
+        jButton2.setIcon(icono4);
+        
+        TableColumn Column3 = jTable1.getColumnModel().getColumn(2);
+        try {
+            MaskFormatter campo=null;
+            campo = new MaskFormatter("HH:mm");
+            JFormattedTextField text = new JFormattedTextField(campo);
+            MaskFormatter uppercase=null;
+            uppercase = new MaskFormatter("##:##");
+            DefaultFormatterFactory factory = new DefaultFormatterFactory(uppercase);
+            text.setFormatterFactory(factory);
+            Column3.setCellEditor(new DefaultCellEditor(text));
+        } catch (ParseException ex) {
+            Logger.getLogger(JFrameActualizarPersonal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        int[] anchos4 = {80, 60, 60};
+        for (int i = 0; i < jTable1.getColumnCount(); i++) {
+            jTable1.getColumnModel().getColumn(i).setPreferredWidth(anchos4[i]);
+        }
+        int[] anchos3 = {120, 80, 70, 70};
+        for (int i = 0; i < jTable2.getColumnCount(); i++) {
+            jTable2.getColumnModel().getColumn(i).setPreferredWidth(anchos3[i]);
+        }
+        jTable1.getTableHeader().setDefaultRenderer(new JFrameRegistro.HeaderRenderer(jTable1));
+        jTable2.getTableHeader().setDefaultRenderer(new JFrameRegistro.HeaderRenderer(jTable2));
     }
     
     /**
@@ -80,6 +138,11 @@ public class JFrameRegistro extends javax.swing.JFrame {
         dateChooserCombo1 = new datechooser.beans.DateChooserCombo();
         jLabel1 = new javax.swing.JLabel();
         jComboBox2 = new javax.swing.JComboBox();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("SISTEMA DE ASISTENCIA DE PERSONAL EDUCATIVO");
@@ -89,7 +152,7 @@ public class JFrameRegistro extends javax.swing.JFrame {
             }
         });
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Seleccione un Personal"));
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED), "Seleccione un Personal"));
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Apellido", "Nombre", "Sexo", "Estado civil" }));
 
@@ -106,6 +169,7 @@ public class JFrameRegistro extends javax.swing.JFrame {
             }
         });
 
+        jTable2.setAutoCreateRowSorter(true);
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -142,14 +206,14 @@ public class JFrameRegistro extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane3)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(12, 12, 12)
                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jButton1)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane3))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -179,8 +243,9 @@ public class JFrameRegistro extends javax.swing.JFrame {
             }
         });
 
-        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
+        jPanel3.setBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED));
 
+        jTable1.setAutoCreateRowSorter(true);
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -190,13 +255,14 @@ public class JFrameRegistro extends javax.swing.JFrame {
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
+        jTable1.setRowHeight(25);
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTable1MouseClicked(evt);
@@ -269,6 +335,8 @@ public class JFrameRegistro extends javax.swing.JFrame {
         }
     });
 
+    jLabel6.setText("DIA");
+
     javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
     jPanel3.setLayout(jPanel3Layout);
     jPanel3Layout.setHorizontalGroup(
@@ -284,40 +352,61 @@ public class JFrameRegistro extends javax.swing.JFrame {
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                     .addComponent(jLabel1)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(jLabel6)
+                    .addGap(0, 0, Short.MAX_VALUE)))
             .addContainerGap())
     );
     jPanel3Layout.setVerticalGroup(
         jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
             .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
-                .addComponent(dateChooserCombo1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                .addComponent(jLabel2)
+                .addComponent(dateChooserCombo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel1)
+                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel6))
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addContainerGap())
     );
+
+    jLabel3.setText("Horas trabajadas:");
+
+    jLabel4.setText("Horas");
+
+    jLabel5.setText("Minutos");
+
+    jButton2.setText("Aceptar");
+    jButton2.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            jButton2ActionPerformed(evt);
+        }
+    });
 
     javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
     jPanel1.setLayout(jPanel1Layout);
     jPanel1Layout.setHorizontalGroup(
         jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
         .addGroup(jPanel1Layout.createSequentialGroup()
-            .addContainerGap()
-            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                 .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addGap(350, 350, 350)
+                    .addComponent(jLabel3)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(jLabel4)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(jLabel5)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton2)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                     .addComponent(jButton5)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                    .addComponent(jButton3)
-                    .addGap(0, 2, Short.MAX_VALUE))
-                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addContainerGap())
+                    .addComponent(jButton3))
+                .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
     );
 
     jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jButton3, jButton5});
@@ -330,26 +419,55 @@ public class JFrameRegistro extends javax.swing.JFrame {
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE, false)
-                .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton5))
-            .addGap(13, 13, 13))
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE, false)
+                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton5)
+                    .addComponent(jButton2))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel5))))
     );
 
     javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
     getContentPane().setLayout(layout);
     layout.setHorizontalGroup(
         layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        .addGroup(layout.createSequentialGroup()
+            .addContainerGap()
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addContainerGap(38, Short.MAX_VALUE))
     );
     layout.setVerticalGroup(
         layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        .addGroup(layout.createSequentialGroup()
+            .addContainerGap()
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addContainerGap(23, Short.MAX_VALUE))
     );
 
     pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private static class HeaderRenderer implements TableCellRenderer {
+
+        DefaultTableCellRenderer renderer;
+
+        public HeaderRenderer(JTable table) {
+            renderer = (DefaultTableCellRenderer) table.getTableHeader().getDefaultRenderer();
+            renderer.setHorizontalAlignment(JLabel.CENTER);
+        }
+
+        @Override
+        public Component getTableCellRendererComponent(
+                JTable table, Object value, boolean isSelected,
+                boolean hasFocus, int row, int col) {
+            return renderer.getTableCellRendererComponent(
+                    table, value, isSelected, hasFocus, row, col);
+        }
+    }
+    
     private void jTextField1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyTyped
         Drive.LimpiarTabla(jTable2);
         char car=evt.getKeyChar();
@@ -391,7 +509,7 @@ public class JFrameRegistro extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea volver al menú principal?", "Consultar Registro", JOptionPane.YES_NO_OPTION);
         if (JOptionPane.OK_OPTION == confirmado) {
-            Frame vp = new JFramePrincipal(Drive,adm,idsesion);
+            Frame vp = new JFramePrincipal(Drive,adm);
             this.dispose();
             vp.show();
         }
@@ -399,50 +517,35 @@ public class JFrameRegistro extends javax.swing.JFrame {
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         try {
-            String combo=jComboBox2.getSelectedItem().toString();
+            jButton5.setEnabled(false);
+            jButton2.setEnabled(false);
+            jButton3.setEnabled(false);
+            String filtro1 = (String) jComboBox2.getSelectedItem();
             Date fin= dateChooserCombo1.getSelectedDate().getTime();
-            List reg=new ArrayList();
-            if (combo.equals("DIA")) {
-                java.sql.Date sqlDate = new java.sql.Date(fin.getTime());
-                Iterator it= Drive.PERSISTENCIA.getRegistroaccesoss(sqlDate,per.getIdPersonal()).iterator();
-                while(it.hasNext()){
-                    Registroacceso re=(Registroacceso) it.next();
-                    if(re.getFecha().getDate()==fin.getDate()&&re.getFecha().getMonth()==fin.getMonth()&&re.getFecha().getYear()==fin.getYear()){
-                        reg.add(re);
-                    }
+            List lista = new ArrayList();
+            DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+            int c = 0;
+            while (modelo.getRowCount() != c) {
+                Object o=jTable1.getValueAt(c, 0);
+                if (o != null) {
+                    Registroacceso audi = (Registroacceso) o;
+                    lista.add(audi);
                 }
-                Drive.mostrarReporte("Registro",reg,"Registro de acceso");   
-            }else if (combo.equals("SEMANA")) {
-                Date aux=Drive.restarFechasDias(fin, 7);
-                while(aux.compareTo(fin)<=0){
-                    java.sql.Date sqlDate = new java.sql.Date(aux.getTime());
-                    Iterator it= Drive.PERSISTENCIA.getRegistroaccesoss(sqlDate,per.getIdPersonal()).iterator();
-                    while(it.hasNext()){
-                        Registroacceso re=(Registroacceso) it.next();
-                        if(re.getFecha().getDate()==aux.getDate()&&re.getFecha().getMonth()==aux.getMonth()&&re.getFecha().getYear()==aux.getYear()){
-                            reg.add(re);
-                        }
-                    }
-                    aux=Drive.sumarFechasDias(aux, 1);
-                }
-                Drive.mostrarReporte("Registro",reg,"Registro de acceso");
-            }else if (combo.equals("MES")) {
-                Date aux=fin;
-                while(aux.compareTo(fin)<=0){
-                    if(aux.getMonth()==fin.getMonth()){
-                        java.sql.Date sqlDate = new java.sql.Date(aux.getTime());
-                        Iterator it= Drive.PERSISTENCIA.getRegistroaccesoss(sqlDate,per.getIdPersonal()).iterator();
-                        while(it.hasNext()){
-                            Registroacceso re=(Registroacceso) it.next();
-                            if(re.getFecha().getDate()==aux.getDate()&&re.getFecha().getMonth()==aux.getMonth()&&re.getFecha().getYear()==aux.getYear()){
-                                reg.add(re);
-                            }
-                        }
-                        aux=Drive.restarFechasDias(aux, 1);
-                    }else{break;}
-                }
-                Drive.mostrarReporte("Registro",reg,"Registro de acceso");
+                c++;
             }
+            if(filtro1.equals("DIA")){
+            filtro1= filtro1+": "+fin.getDate();
+            }else if(filtro1.equals("SEMANA")){
+                filtro1= filtro1+" del dia: "+fin.getDate();
+            }else if(filtro1.equals("MES")){
+                filtro1= filtro1+": "+(fin.getMonth()+1);
+            }else if(filtro1.equals("AÑO")){
+                filtro1= filtro1+": "+(fin.getYear()+1900);
+            }
+            Drive.mostrarReporte("Registro",lista,"Registro de acceso",filtro1,lista.size()); 
+            jButton5.setEnabled(true);
+            jButton2.setEnabled(true);
+            jButton3.setEnabled(true);
         } catch (Exception Ex) {
             JOptionPane.showMessageDialog(null, "Ingrese correctamente los datos", "Error de impresion", JOptionPane.ERROR_MESSAGE);
         }
@@ -466,10 +569,26 @@ public class JFrameRegistro extends javax.swing.JFrame {
     }//GEN-LAST:event_jTable2MouseReleased
 
     private void jComboBox2ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox2ItemStateChanged
-        Drive.LimpiarTabla(jTable1);
-        Date dia= dateChooserCombo1.getSelectedDate().getTime();
-        String buscar = (String) jComboBox2.getSelectedItem();
-        Drive.CargarTablaRegistro(jTable1, per, dia, buscar);
+        try{
+            Drive.LimpiarTabla(jTable1);
+            Date dia= dateChooserCombo1.getSelectedDate().getTime();
+            String buscar = (String) jComboBox2.getSelectedItem();
+            Drive.CargarTablaRegistro(jTable1, per, dia, buscar);
+            String hora=Drive.Obtenerhoras(jTable1);
+            jLabel4.setText(hora);
+            if(buscar.equals("DIA")){
+            jLabel6.setText(String.valueOf(dia.getDate()));
+            }else if(buscar.equals("SEMANA")){
+                jLabel6.setText(String.valueOf(dia.getDate()));
+            }else if(buscar.equals("MES")){
+                jLabel6.setText(String.valueOf(dia.getMonth()+1));
+            }else if(buscar.equals("AÑO")){
+                jLabel6.setText(String.valueOf(dia.getYear()));
+            }
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, "Error", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+            
     }//GEN-LAST:event_jComboBox2ItemStateChanged
 
     private void dateChooserCombo1OnSelectionChange(datechooser.events.SelectionChangedEvent evt) {//GEN-FIRST:event_dateChooserCombo1OnSelectionChange
@@ -477,16 +596,114 @@ public class JFrameRegistro extends javax.swing.JFrame {
         Date dia= dateChooserCombo1.getSelectedDate().getTime();
         String buscar = (String) jComboBox2.getSelectedItem();
         Drive.CargarTablaRegistro(jTable1, per, dia, buscar);
+        String hora=Drive.Obtenerhoras(jTable1);
+        jLabel4.setText(hora);
+        if(buscar.equals("DIA")){
+        jLabel6.setText(String.valueOf(dia.getDate()));
+        }else if(buscar.equals("SEMANA")){
+            jLabel6.setText(String.valueOf(dia.getDate()));
+        }else if(buscar.equals("MES")){
+            jLabel6.setText(String.valueOf(dia.getMonth()+1));
+        }else if(buscar.equals("AÑO")){
+            jLabel6.setText(String.valueOf(dia.getYear()));
+        }
     }//GEN-LAST:event_dateChooserCombo1OnSelectionChange
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea volver al menú principal?", "Consultar Registro", JOptionPane.YES_NO_OPTION);
         if (JOptionPane.OK_OPTION == confirmado) {
-            Frame vp = new JFramePrincipal(Drive,adm,idsesion);
+            Frame vp = new JFramePrincipal(Drive,adm);
             this.dispose();
             vp.show();
         }
     }//GEN-LAST:event_formWindowClosing
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        try{
+            DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+            int e = 0;
+            while (modelo.getRowCount() != e) {
+                Object o=modelo.getValueAt(e, 0);
+//                if(o!=null){
+                Registroacceso reg = (Registroacceso) o;
+//                }
+                Object hor=modelo.getValueAt(e, 2);
+                if(reg.getFin()==null){
+                    if(hor!=null){
+                        if(!hor.equals("  :  ")){
+                            String hora=hor.toString();
+                            String h  = hora.substring(0,2);  
+                            String m  = hora.substring(3,5);  
+                            int conta_hora = Integer.parseInt(h);  
+                            int conta_minuto = Integer.parseInt(m);  
+                            if(conta_hora > 23 || conta_minuto > 59) {  
+                                JOptionPane.showMessageDialog(null, "Ingrese correctamente la hora en el registro Nº: "+reg.getIdRegistroacceso() ,"Registrar salida",JOptionPane.ERROR_MESSAGE);  
+                                return;  
+                            }else{
+
+                                SimpleDateFormat format= new SimpleDateFormat("HH:mm");
+                                SimpleDateFormat formatfec= new SimpleDateFormat("dd/MM/yyy");
+                                Date hhora=format.parse(hora);
+                                if(hhora.compareTo(reg.getInicio())>=0){
+                                    Date fec= reg.getFecha();
+                                    java.sql.Date sqldate = new java.sql.Date(fec.getTime());
+                                    boolean bandera=true;
+                                    Iterator it=Drive.PERSISTENCIA.getRegistroaccesoss(sqldate, per.getIdPersonal()).iterator();
+                                    while(it.hasNext()){
+                                        Registroacceso ac= (Registroacceso) it.next();
+                                        if(ac.getInicio().compareTo(reg.getInicio())>=0 && ac.getIdRegistroacceso()!=reg.getIdRegistroacceso()){
+                                            if(ac.getInicio().compareTo(hhora)<0){
+                                                bandera=false;
+                                                break;
+                                            }
+                                        }
+                                    }
+                                    if(bandera==true){
+                                        reg.setFin(hhora);
+                                        reg.actualizarRegistroAcceso(reg);
+                                        Calendar cal=Calendar.getInstance();
+                                        cal.setTime(reg.getFecha());
+//                                        cal.setTime(reg.getFecha());
+//                                        cal.getTime().setHours(23);
+//                                        cal.getTime().setMinutes(59);
+//                                        cal.getTime().setSeconds(59);
+                                        
+                                        co.GuardarAsistencia(cal, per);
+//                                        co.ObtenerListadeldia(cal);
+                                    }else{
+                                        JOptionPane.showMessageDialog(null, "Existe un ingreso anterior al horario ingresado","Registrar salida",JOptionPane.ERROR_MESSAGE);  
+                                        Drive.LimpiarTabla(jTable1);
+                                        Date dia= dateChooserCombo1.getSelectedDate().getTime();
+                                        String buscar = (String) jComboBox2.getSelectedItem();
+                                        Drive.CargarTablaRegistro(jTable1, per, dia, buscar);
+                                        String horaaa=Drive.Obtenerhoras(jTable1);
+                                        jLabel4.setText(horaaa);
+                                    }
+                                }else{
+                                    JOptionPane.showMessageDialog(null, "La hora de salida debe ser menor a la hora de ingreso","Registrar salida",JOptionPane.ERROR_MESSAGE);  
+                                    Drive.LimpiarTabla(jTable1);
+                                    Date dia= dateChooserCombo1.getSelectedDate().getTime();
+                                    String buscar = (String) jComboBox2.getSelectedItem();
+                                    Drive.CargarTablaRegistro(jTable1, per, dia, buscar);
+                                    String horaaa=Drive.Obtenerhoras(jTable1);
+                                    jLabel4.setText(horaaa);
+                                }
+                            }
+                        }
+                    }
+                }
+                e++;
+            }
+            Drive.LimpiarTabla(jTable1);
+            Date dia= dateChooserCombo1.getSelectedDate().getTime();
+            String buscar = (String) jComboBox2.getSelectedItem();
+            Drive.CargarTablaRegistro(jTable1, per, dia, buscar);
+            String horaaa=Drive.Obtenerhoras(jTable1);
+            jLabel4.setText(horaaa);
+        }catch(Exception ex) {
+            JOptionPane.showMessageDialog(null, "Ingrese correctamente los datos", "Guardar fin", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -525,12 +742,17 @@ public class JFrameRegistro extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private datechooser.beans.DateChooserCombo dateChooserCombo1;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton5;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JComboBox jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

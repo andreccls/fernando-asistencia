@@ -33,6 +33,7 @@ import javax.swing.DefaultCellEditor;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -66,14 +67,14 @@ public class JFrameInasistencia extends javax.swing.JFrame {
      */
     public Controlador Drive=new Controlador();;
     public Personal adm;
-    int idsesion;
+//    int idsesion;
     JComboBox comboBoxart = new JComboBox();
     JasperReport reporte;
 
-    public JFrameInasistencia(Controlador unDrive, Personal admin, int id) {
+    public JFrameInasistencia(Controlador unDrive, Personal admin) {
         this.Drive = unDrive;
         this.adm = admin;
-        this.idsesion = id;
+//        this.idsesion = id;
         initComponents();
 
         jTextField1.setText(String.valueOf(Calendar.getInstance().getTime().getYear() + 1900));
@@ -93,11 +94,7 @@ public class JFrameInasistencia extends javax.swing.JFrame {
         Icon icono1 = new ImageIcon(fot.getImage().getScaledInstance(jLabel3.getWidth(), jLabel3.getHeight(), Image.SCALE_DEFAULT));
         jLabel3.setIcon(icono1);
         jLabel3.repaint();
-        int nivel=adm.getPerfil().getNivel();
-        if(nivel==4||nivel==3){
-            jTable1.setEnabled(false);
-            jButton2.setEnabled(false);
-        }
+        
         ImageIcon fott2 = new ImageIcon(getClass().getResource("/imagenes/no.png"));
         Icon icono2 = new ImageIcon(fott2.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
         jButton1.setIcon(icono2);
@@ -107,6 +104,11 @@ public class JFrameInasistencia extends javax.swing.JFrame {
         ImageIcon fott6 = new ImageIcon(getClass().getResource("/imagenes/Imprimir2.png"));
         Icon icono6 = new ImageIcon(fott6.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
         jButton3.setIcon(icono6);
+        
+        if(adm.getPerfil().getAsistenciasins()==null||adm.getPerfil().getAsistenciasact()==null){
+            jButton2.setEnabled(false);
+        }
+        ((JComponent) jTable1.getDefaultRenderer(Boolean.class)).setOpaque(true);
     }
 
     /**
@@ -140,6 +142,7 @@ public class JFrameInasistencia extends javax.swing.JFrame {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("INASISTENCIAS"));
 
+        jTable1.setAutoCreateRowSorter(true);
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -285,7 +288,7 @@ public class JFrameInasistencia extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
         pack();
@@ -485,7 +488,7 @@ public class JFrameInasistencia extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea volver al menu principal?", "Registrar Inasistencia", JOptionPane.YES_NO_OPTION);
         if (JOptionPane.OK_OPTION == confirmado) {
-            Frame vp = new JFramePrincipal(Drive, adm, idsesion);
+            Frame vp = new JFramePrincipal(Drive, adm);
             this.dispose();
             vp.show();
         }
@@ -530,6 +533,7 @@ public class JFrameInasistencia extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         try {
             int me=Drive.ObtenerMes(jComboBox1.getSelectedItem().toString());
+            String mes=(String) jComboBox1.getSelectedItem();
             JComboBox salida = new JComboBox();
             String cadSalida;
             salida.addItem("Asistencias");
@@ -565,7 +569,7 @@ public class JFrameInasistencia extends javax.swing.JFrame {
                         }
                     }
                 }
-                Drive.mostrarReporte("Injustificadas",inicio,"Lista de Asistencias","Asistencias");
+                Drive.mostrarReporte("Injustificadas",inicio,"Lista de Asistencias","Asistencias",mes,inicio.size());
             }
             else if (cadSalida.equals("Asistencias justificadas")) {
                 List just= new ArrayList();
@@ -591,7 +595,7 @@ public class JFrameInasistencia extends javax.swing.JFrame {
                         }
                     }
                 }
-                Drive.mostrarReporte("Justificadas",just,"Lista de Asistencias Justificadas","Asistencias Justificadas");
+                Drive.mostrarReporte("Justificadas",just,"Lista de Asistencias Justificadas","Asistencias Justificadas",mes,just.size());
             }
             else if (cadSalida.equals("Tardanzas")) {
                 List inicio= new ArrayList();
@@ -616,7 +620,7 @@ public class JFrameInasistencia extends javax.swing.JFrame {
                         }
                     }
                 }
-                Drive.mostrarReporte("Injustificadas",inicio,"Lista de Tardanzas","Tardanzas");
+                Drive.mostrarReporte("Injustificadas",inicio,"Lista de Tardanzas","Tardanzas",mes,inicio.size());
             }
             else if (cadSalida.equals("Tardanzas justificadas")) {
                 List just= new ArrayList();
@@ -642,7 +646,7 @@ public class JFrameInasistencia extends javax.swing.JFrame {
                         }
                     }
                 }
-                Drive.mostrarReporte("Justificadas",just,"Lista de Tardanzas justificadas","Tardanzas justificadas");
+                Drive.mostrarReporte("Justificadas",just,"Lista de Tardanzas justificadas","Tardanzas justificadas",mes,just.size());
             }
             else if (cadSalida.equals("Inasistencias")) {
                 List inicio= new ArrayList();
@@ -667,7 +671,7 @@ public class JFrameInasistencia extends javax.swing.JFrame {
                         }
                     }
                 }
-                Drive.mostrarReporte("Injustificadas",inicio,"Lista de Inasistencias injustificadas","Inasistencias injustificadas");
+                Drive.mostrarReporte("Injustificadas",inicio,"Lista de Inasistencias injustificadas","Inasistencias injustificadas",mes,inicio.size());
             }
             else if (cadSalida.equals("Inasistencias justificadas")) {
                 List just= new ArrayList();
@@ -693,7 +697,7 @@ public class JFrameInasistencia extends javax.swing.JFrame {
                         }
                     }
                 }
-                Drive.mostrarReporte("Justificadas",just,"Lista de Inasistencias justificadas","Inasistencias justificadas");
+                Drive.mostrarReporte("Justificadas",just,"Lista de Inasistencias justificadas","Inasistencias justificadas",mes,just.size());
             }
         }catch (Exception Ex) {
             JOptionPane.showMessageDialog(null, "Ingrese correctamente los datos", "Error de impresion", JOptionPane.ERROR_MESSAGE);
@@ -703,10 +707,10 @@ public class JFrameInasistencia extends javax.swing.JFrame {
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea volver al menu principal?", "Registrar Inasistencia", JOptionPane.YES_NO_OPTION);
         if (JOptionPane.OK_OPTION == confirmado) {
-            Frame vp = new JFramePrincipal(Drive, adm, idsesion);
+            Frame vp = new JFramePrincipal(Drive, adm);
             this.dispose();
             vp.show();
-        }
+        }else{}
     }//GEN-LAST:event_formWindowClosing
 
     private void jTable1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTable1KeyTyped

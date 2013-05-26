@@ -4,6 +4,7 @@
  */
 package Presentacion;
 
+import Clases.Anolectivo;
 import Clases.Circular;
 import Clases.Circularpersonal;
 import Clases.CircularpersonalId;
@@ -36,7 +37,7 @@ public class JFrameCircular extends javax.swing.JFrame {
      */
     Controlador Drive;
     Personal adm;
-    int idsesion;
+//    int idsesion;
     StringBuffer buffer= new StringBuffer();
     List lista = new ArrayList();
     Tarea tar = new Tarea();
@@ -44,10 +45,10 @@ public class JFrameCircular extends javax.swing.JFrame {
     boolean cambio=false;
 //    Date fecha=new Date();
     
-    public JFrameCircular(Controlador unDrive, Personal admin, int id, Circular cir) {
+    public JFrameCircular(Controlador unDrive, Personal admin, Circular cir) {
         this.Drive = unDrive;
         this.adm = admin;
-        this.idsesion = id;
+//        this.idsesion = id;
         this.circu=cir;
         initComponents();
         Drive.CargarComboDepartamento(jComboBox1);
@@ -64,8 +65,10 @@ public class JFrameCircular extends javax.swing.JFrame {
             jTextField1.setText(circu.getCircularpersonals().iterator().next().getDescripcion());
             jTextField1.setEnabled(false);
             Calendar ffecha = Calendar.getInstance();
-            ffecha.setTime(circu.getFecha());
+            ffecha.setTime(circu.getInicio());
             dateChooserCombo1.setSelectedDate(ffecha);
+            ffecha.setTime(circu.getFin());
+            dateChooserCombo2.setSelectedDate(ffecha);
             jTextArea1.setText(circu.getDescripcion());
             Iterator it = circu.getCircularpersonals().iterator();
             while (it.hasNext()) {
@@ -81,6 +84,10 @@ public class JFrameCircular extends javax.swing.JFrame {
         ImageIcon fott2 = new ImageIcon(getClass().getResource("/imagenes/ok.png"));
         Icon icono2 = new ImageIcon(fott2.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
         jButton2.setIcon(icono2);
+        if(adm.getPerfil().getCircularesins()==null&& tar.getIdTarea()==null){
+            jButton2.setEnabled(false);
+        }
+        
     }
 
     /**
@@ -112,6 +119,8 @@ public class JFrameCircular extends javax.swing.JFrame {
         jLabel25 = new javax.swing.JLabel();
         jLabel26 = new javax.swing.JLabel();
         jCheckBox1 = new javax.swing.JCheckBox();
+        jLabel4 = new javax.swing.JLabel();
+        dateChooserCombo2 = new datechooser.beans.DateChooserCombo();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("SISTEMA DE ASISTENCIA DE PERSONAL EDUCATIVO");
@@ -146,7 +155,7 @@ public class JFrameCircular extends javax.swing.JFrame {
             }
         });
 
-        jLabel2.setText("Fecha:");
+        jLabel2.setText("Desde:");
 
         dateChooserCombo1.setCurrentView(new datechooser.view.appearance.AppearancesList("Grey",
             new datechooser.view.appearance.ViewAppearance("custom",
@@ -214,6 +223,7 @@ public class JFrameCircular extends javax.swing.JFrame {
 
     jLabel14.setText("*");
 
+    jTable2.setAutoCreateRowSorter(true);
     jTable2.setModel(new javax.swing.table.DefaultTableModel(
         new Object [][] {
 
@@ -261,6 +271,61 @@ public class JFrameCircular extends javax.swing.JFrame {
     jLabel26.setText("*");
 
     jCheckBox1.setText("Todos");
+    jCheckBox1.addItemListener(new java.awt.event.ItemListener() {
+        public void itemStateChanged(java.awt.event.ItemEvent evt) {
+            jCheckBox1ItemStateChanged(evt);
+        }
+    });
+
+    jLabel4.setText("Hasta:");
+
+    dateChooserCombo2.setCurrentView(new datechooser.view.appearance.AppearancesList("Grey",
+        new datechooser.view.appearance.ViewAppearance("custom",
+            new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 11),
+                new java.awt.Color(0, 0, 0),
+                new java.awt.Color(0, 0, 255),
+                false,
+                true,
+                new datechooser.view.appearance.swing.ButtonPainter()),
+            new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 11),
+                new java.awt.Color(0, 0, 0),
+                new java.awt.Color(0, 0, 255),
+                true,
+                true,
+                new datechooser.view.appearance.swing.ButtonPainter()),
+            new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 11),
+                new java.awt.Color(0, 0, 255),
+                new java.awt.Color(0, 0, 255),
+                false,
+                true,
+                new datechooser.view.appearance.swing.ButtonPainter()),
+            new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 11),
+                new java.awt.Color(128, 128, 128),
+                new java.awt.Color(0, 0, 255),
+                false,
+                true,
+                new datechooser.view.appearance.swing.LabelPainter()),
+            new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 11),
+                new java.awt.Color(0, 0, 0),
+                new java.awt.Color(0, 0, 255),
+                false,
+                true,
+                new datechooser.view.appearance.swing.LabelPainter()),
+            new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 11),
+                new java.awt.Color(0, 0, 0),
+                new java.awt.Color(255, 0, 0),
+                false,
+                false,
+                new datechooser.view.appearance.swing.ButtonPainter()),
+            (datechooser.view.BackRenderer)null,
+            false,
+            true)));
+dateChooserCombo2.setBehavior(datechooser.model.multiple.MultyModelBehavior.SELECT_SINGLE);
+dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionChangedListener() {
+    public void onSelectionChange(datechooser.events.SelectionChangedEvent evt) {
+        dateChooserCombo2OnSelectionChange(evt);
+    }
+    });
 
     javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
     jPanel1.setLayout(jPanel1Layout);
@@ -278,22 +343,7 @@ public class JFrameCircular extends javax.swing.JFrame {
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                     .addComponent(jButton1))
                 .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addComponent(jLabel1)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(jLabel14)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel2)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                    .addComponent(dateChooserCombo1, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(jPanel1Layout.createSequentialGroup()
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jCheckBox1)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 467, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 467, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(jLabel3)
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addComponent(jLabel12)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -301,8 +351,31 @@ public class JFrameCircular extends javax.swing.JFrame {
                             .addGap(18, 18, 18)
                             .addComponent(jLabel5)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGap(0, 0, Short.MAX_VALUE)))
+                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jLabel3)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 467, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 467, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jCheckBox1))
+                    .addGap(0, 0, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel2)
+                        .addComponent(jLabel1))
+                    .addGap(18, 18, 18)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(dateChooserCombo1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 157, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jLabel14))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel4)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(dateChooserCombo2, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(9, 9, 9)))))
             .addContainerGap())
     );
 
@@ -312,25 +385,28 @@ public class JFrameCircular extends javax.swing.JFrame {
         jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
             .addContainerGap()
-            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel14)
+                .addComponent(jLabel1))
+            .addGap(11, 11, 11)
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                .addComponent(jLabel2)
                 .addComponent(dateChooserCombo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel14)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel1)))
-            .addGap(18, 18, 18)
+                .addComponent(jLabel4)
+                .addComponent(dateChooserCombo2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
             .addComponent(jLabel3)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addGap(18, 18, 18)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                 .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addComponent(jLabel12)
                 .addComponent(jLabel5)
                 .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGap(18, 18, 18)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addComponent(jCheckBox1)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -339,7 +415,7 @@ public class JFrameCircular extends javax.swing.JFrame {
                 .addComponent(jLabel26)
                 .addComponent(jButton2)
                 .addComponent(jButton1))
-            .addContainerGap(22, Short.MAX_VALUE))
+            .addContainerGap(17, Short.MAX_VALUE))
     );
 
     javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -371,15 +447,19 @@ public class JFrameCircular extends javax.swing.JFrame {
         try{
             if (Drive.VerificarCheckTabla(jTable2)) {
                 if (!jTextField1.getText().isEmpty()&& !jTextArea1.getText().isEmpty()) {
-                    Date fecha = dateChooserCombo1.getSelectedDate().getTime();
+                    Date inicio = dateChooserCombo1.getSelectedDate().getTime();
+                    Date fin = dateChooserCombo2.getSelectedDate().getTime();
                     Date hoy= new Date();
                     hoy.setHours(0);
-                    if(fecha.compareTo(hoy)>=0){
+                    boolean con=Drive.ControlarAnoLectivo(inicio, fin);
+                    if(inicio.compareTo(hoy)>=0 && con){
                         if (circu.getIdCircular() == null) {
                             // <editor-fold defaultstate="collapsed" desc="Nueva Circular"> 
                             Circular cir=new Circular();
+                            cir.setNombre(jTextField1.getText().toUpperCase());
                             cir.setFirma(adm.toString());
-                            cir.setFecha(fecha);
+                            cir.setInicio(inicio);
+                            cir.setFin(fin);
                             cir.setDescripcion(jTextArea1.getText());
                             cir.setEstablecimiento(Drive.getPrimerEstablecimiento());
                             cir.guardarCircular(cir);
@@ -396,7 +476,7 @@ public class JFrameCircular extends javax.swing.JFrame {
                                     cirper.setId(id);
                                     cirper.setPersonal(per);
                                     cirper.setCircular(cir);
-                                    cirper.setDescripcion(jTextField1.getText().toUpperCase());
+                                    cirper.setEstado(false);
                                     cirper.guardarCircularpersonal(cirper);
                                 }
                                 c++;
@@ -413,7 +493,8 @@ public class JFrameCircular extends javax.swing.JFrame {
                         } else {
                             // <editor-fold defaultstate="collapsed" desc="Actualizar tarea"> 
                             circu.setFirma(adm.toString());
-                            circu.setFecha(fecha);
+                            circu.setInicio(inicio);
+                            circu.setFin(fin);
                             circu.setDescripcion(jTextArea1.getText());
                             circu.setEstablecimiento(Drive.getPrimerEstablecimiento());
                             circu.actualizarCircular(circu);
@@ -436,7 +517,7 @@ public class JFrameCircular extends javax.swing.JFrame {
                                 }
                                 c++;
                             }
-                            JFrameConsultaCircular vent2 = new JFrameConsultaCircular(Drive,adm,idsesion);
+                            JFrameConsultaCircular vent2 = new JFrameConsultaCircular(Drive,adm);
                             this.hide();
                             vent2.show();
 //                            jTextField1.setText("");
@@ -457,6 +538,7 @@ public class JFrameCircular extends javax.swing.JFrame {
 //            cirper.set
             
         }catch(Exception e){
+            JOptionPane.showMessageDialog(null, "ERROR","Registrar Tarea Extracurricular", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -517,12 +599,12 @@ public class JFrameCircular extends javax.swing.JFrame {
             if(!jTextField1.getText().isEmpty()){
                 int confirmado = JOptionPane.showConfirmDialog(null,"¿Desea cancelar la registración de la circular?","Registrar Circular",JOptionPane.YES_NO_OPTION);
                 if (JOptionPane.OK_OPTION == confirmado){
-                   Frame vp=new JFramePrincipal(Drive,adm,idsesion);
+                   Frame vp=new JFramePrincipal(Drive,adm);
                    this.dispose();
                    vp.show();
                 }
             }else{
-                Frame vp=new JFramePrincipal(Drive,adm,idsesion);
+                Frame vp=new JFramePrincipal(Drive,adm);
                 this.dispose();
                 vp.show();
             }
@@ -530,12 +612,12 @@ public class JFrameCircular extends javax.swing.JFrame {
             if(!jTextField1.getText().isEmpty()){
                 int confirmado = JOptionPane.showConfirmDialog(null,"¿Desea cancelar la actualización de la circular?","Actualizar Circular",JOptionPane.YES_NO_OPTION);
                 if (JOptionPane.OK_OPTION == confirmado){
-                   JFrameConsultaCircular vent2 = new JFrameConsultaCircular(Drive,adm,idsesion);
+                   JFrameConsultaCircular vent2 = new JFrameConsultaCircular(Drive,adm);
                     this.hide();
                     vent2.show();
                 }
             }else{
-                JFrameConsultaCircular vent2 = new JFrameConsultaCircular(Drive,adm,idsesion);
+                JFrameConsultaCircular vent2 = new JFrameConsultaCircular(Drive,adm);
                 this.hide();
                 vent2.show();
             }
@@ -547,12 +629,12 @@ public class JFrameCircular extends javax.swing.JFrame {
             if(!jTextField1.getText().isEmpty()){
                 int confirmado = JOptionPane.showConfirmDialog(null,"¿Desea cancelar la registración de la circular?","Registrar Circular",JOptionPane.YES_NO_OPTION);
                 if (JOptionPane.OK_OPTION == confirmado){
-                   Frame vp=new JFramePrincipal(Drive,adm,idsesion);
+                   Frame vp=new JFramePrincipal(Drive,adm);
                    this.dispose();
                    vp.show();
                 }
             }else{
-                Frame vp=new JFramePrincipal(Drive,adm,idsesion);
+                Frame vp=new JFramePrincipal(Drive,adm);
                 this.dispose();
                 vp.show();
             }
@@ -560,12 +642,12 @@ public class JFrameCircular extends javax.swing.JFrame {
             if(!jTextField1.getText().isEmpty()){
                 int confirmado = JOptionPane.showConfirmDialog(null,"¿Desea cancelar la actualización de la circular?","Actualizar Circular",JOptionPane.YES_NO_OPTION);
                 if (JOptionPane.OK_OPTION == confirmado){
-                   JFrameConsultaCircular vent2 = new JFrameConsultaCircular(Drive,adm,idsesion);
+                   JFrameConsultaCircular vent2 = new JFrameConsultaCircular(Drive,adm);
                     this.hide();
                     vent2.show();
                 }
             }else{
-                JFrameConsultaCircular vent2 = new JFrameConsultaCircular(Drive,adm,idsesion);
+                JFrameConsultaCircular vent2 = new JFrameConsultaCircular(Drive,adm);
                 this.hide();
                 vent2.show();
             }
@@ -595,8 +677,32 @@ public class JFrameCircular extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextArea1FocusLost
 
     private void jTextArea1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextArea1KeyTyped
-        if(jTextField1.getText().length()==300) {evt.consume();}
+        if(jTextField1.getText().length()==1000) {evt.consume();}
     }//GEN-LAST:event_jTextArea1KeyTyped
+
+    private void jCheckBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCheckBox1ItemStateChanged
+        try{
+            if(jCheckBox1.isSelected()){
+                DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
+                int cc=0;
+                while (jTable2.getRowCount() != cc) {
+                    Personal per = (Personal) model.getValueAt(cc, 1);
+                    lista.add(per);
+                    cc++;
+                }
+                Drive.LimpiarTabla(jTable2);
+                Drive.CargarTablacheck(jTable2,buffer.toString(), buffer.toString().toUpperCase(),lista);
+            }else{
+                lista.clear();
+                Drive.LimpiarTabla(jTable2);
+                Drive.CargarTablacheck(jTable2,buffer.toString(), buffer.toString().toUpperCase(),lista);
+            }
+        }catch(Exception e){}
+    }//GEN-LAST:event_jCheckBox1ItemStateChanged
+
+    private void dateChooserCombo2OnSelectionChange(datechooser.events.SelectionChangedEvent evt) {//GEN-FIRST:event_dateChooserCombo2OnSelectionChange
+        // TODO add your handling code here:
+    }//GEN-LAST:event_dateChooserCombo2OnSelectionChange
 
     /**
      * @param args the command line arguments
@@ -634,6 +740,7 @@ public class JFrameCircular extends javax.swing.JFrame {
 //    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private datechooser.beans.DateChooserCombo dateChooserCombo1;
+    private datechooser.beans.DateChooserCombo dateChooserCombo2;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JCheckBox jCheckBox1;
@@ -645,6 +752,7 @@ public class JFrameCircular extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;

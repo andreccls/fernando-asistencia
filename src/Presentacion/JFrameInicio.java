@@ -12,6 +12,7 @@ import Clases.Iniciofin;
 import Clases.Perfil;
 import Clases.Personal;
 import Clases.Registroacceso;
+import Persistencia.ConexionJDBC;
 import TareasProgramadas.Programacion;
 import com.digitalpersona.onetouch.DPFPDataPurpose;
 import com.digitalpersona.onetouch.DPFPFeatureSet;
@@ -37,6 +38,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -62,7 +64,8 @@ public class JFrameInicio extends javax.swing.JFrame {
      * Creates new form JFrameInicio
      */
     public Personal adm=new Personal();
-    public int idsesion=0;
+//    public int idsesion=0;
+    Establecimiento es=new Establecimiento();
     private DPFPCapture Lector = DPFPGlobal.getCaptureFactory().createCapture();
     private DPFPEnrollment Reclutador = DPFPGlobal.getEnrollmentFactory().createEnrollment();
     private DPFPVerification Verificador = DPFPGlobal.getVerificationFactory().createVerification();
@@ -71,69 +74,36 @@ public class JFrameInicio extends javax.swing.JFrame {
     //public DPFPFeatureSet featuresinscripcion;
     public DPFPFeatureSet featuresverificacion;
     
-    Controlador Drive;
+    Controlador Drive=new Controlador();
     public JFrameInicio() {
-        try{
-            JFrame.setDefaultLookAndFeelDecorated( true );
-            UIManager.setLookAndFeel( new com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel() );
-        }catch( Exception e ){ e.printStackTrace(); }
-        Controlador auxDrive = new Controlador();
         try {
-//            Establecimiento col = (Establecimiento)
-            if (auxDrive.getPrimerEstablecimiento()== null) {
-                JOptionPane.showMessageDialog(null, "Debe ingresar Colegio");
-            } else {
-                auxDrive.getPrimerEstablecimiento();
-                Drive = auxDrive;
-            }
-        } catch (Exception ex) {
-//            JOptionPane.showMessageDialog(null, ex.toString());
-            Establecimiento col = new Establecimiento();
-            col.setNombre("GUTENBERG");
-            col.setCalle("ENTRE RIOS");
-            col.setAltura(2267);
-            col.guardarEstablecimiento(col);
-            auxDrive.getPrimerEstablecimiento();
-            Drive = auxDrive;
-            
-            Perfil per1=new Perfil();
-            per1.setDescripcion("ADMINISTRADOR");
-            per1.setNivel(1);
-            per1.guardarPerfil(per1);
-            Perfil per2=new Perfil();
-            per2.setDescripcion("AUXILIAR");
-            per2.setNivel(2);
-            per2.guardarPerfil(per2);
-            Perfil per3=new Perfil();
-            per3.setDescripcion("DIRECTOR");
-            per3.setNivel(3);
-            per3.guardarPerfil(per3);
-            Perfil per4=new Perfil();
-            per4.setDescripcion("PERSONAL");
-            per4.setNivel(4);
-            per4.guardarPerfil(per4);
-//            Drive.PERSISTENCIA.AlterCodigo();
-//            insert into perfil(descripcion,nivel) values ("ADMINISTRADOR",1);
-//            insert into perfil(descripcion,nivel) values ("AUXILIAR",2);
-//            insert into perfil(descripcion,nivel) values ("DIRECTOR",3);
-//            insert into perfil(descripcion,nivel) values ("PERSONAL",4);
+            JFrame.setDefaultLookAndFeelDecorated(true);
+            UIManager.setLookAndFeel(new com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        Controlador auxDrive = new Controlador();
         
-        initComponents();
-        
-        ImageIcon fott = new ImageIcon(getClass().getResource("/imagenes/gutenberg.png"));
-        Icon icono4 = new ImageIcon(fott.getImage().getScaledInstance(jLabel1.getWidth(), jLabel1.getHeight(), Image.SCALE_DEFAULT));
-        jLabel1.setIcon(icono4);
-        jLabel1.repaint();
-
-        ImageIcon fot = new ImageIcon(getClass().getResource("/imagenes/Lector1.gif"));
-        Icon icono5 = new ImageIcon(fot.getImage().getScaledInstance(jLabel5.getWidth(), jLabel5.getHeight(), Image.SCALE_DEFAULT));
-        jLabel5.setIcon(icono5);
-        jLabel5.repaint();
-        new Programacion().iniciarTarea();
-        Iniciar();
-	start();
-        
+            es=auxDrive.getPrimerEstablecimiento();
+            Drive = auxDrive;
+            initComponents();
+            if(es.getIdEstablecimiento()!=null){
+                if(es.getImagen()!=null){
+                    ImageIcon fott = new ImageIcon(es.getImagen());
+                    Icon icono4 = new ImageIcon(fott.getImage().getScaledInstance(jLabel1.getWidth(), jLabel1.getHeight(), Image.SCALE_DEFAULT));
+                    jLabel1.setIcon(icono4);
+                    jLabel1.repaint();
+                }
+                jLabel4.setText(es.getLeyenda());
+                jLabel2.setText("INSTITUTO "+es.getNombre());
+            }
+            ImageIcon fot = new ImageIcon(getClass().getResource("/imagenes/Lector1.gif"));
+            Icon icono5 = new ImageIcon(fot.getImage().getScaledInstance(jLabel5.getWidth(), jLabel5.getHeight(), Image.SCALE_DEFAULT));
+            jLabel5.setIcon(icono5);
+            jLabel5.repaint();
+            new Programacion().iniciarTarea();
+            Iniciar();
+            start();
     }
 
     /**
@@ -248,14 +218,29 @@ public class JFrameInicio extends javax.swing.JFrame {
 
     public boolean runn() {
         boolean band=true;
-        Iterator it = Drive.PERSISTENCIA.getPersonales().iterator();
-        if (!it.hasNext()) {
-            JFramePrincipal vp = new JFramePrincipal(Drive, adm, idsesion);
-//            setTemplate(null);
+        if (Drive.getPrimerEstablecimiento().getIdEstablecimiento() == null) {
+            try {
+                Drive = new Controlador();
+                ConexionJDBC mm= new ConexionJDBC();
+                mm.alterPersonalCodigo();
+            } catch (SQLException ex) {
+                Logger.getLogger(JFramePrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            JOptionPane.showMessageDialog(null, "Debe ingresar un Colegio","Guardar Colegio",JOptionPane.ERROR_MESSAGE);
+            JFrameConfiguracion vent2 = new JFrameConfiguracion(Drive, adm);
             stop();
-            this.dispose();
-            vp.show();
+            this.hide();
+            vent2.show();
             band=false;
+        } else {
+            Iterator it = Drive.PERSISTENCIA.getPersonales().iterator();
+            if (!it.hasNext()) {
+                JFramePrincipal vp = new JFramePrincipal(Drive, adm);
+                stop();
+                this.dispose();
+                vp.show();
+                band=false;
+            }
         }
         return band;
     }
@@ -375,18 +360,18 @@ public class JFrameInicio extends javax.swing.JFrame {
                 if (result.isVerified()) {
                     adm=pp;
                     Date hoy=new Date();
-                    String s = new SimpleDateFormat("HH:mm").format(hoy.getTime());
-                    SimpleDateFormat fo = new SimpleDateFormat("HH:mm");
-                    Date inicio = fo.parse(s);
-                    Registroacceso reg=new Registroacceso();
-                    reg.setPersonal(pp);
-                    reg.setFecha(hoy);
-                    reg.setInicio(inicio);
-                    idsesion=reg.guardarRegistroAcceso(reg);
+//                    String s = new SimpleDateFormat("HH:mm").format(hoy.getTime());
+//                    SimpleDateFormat fo = new SimpleDateFormat("HH:mm");
+//                    Date inicio = fo.parse(s);
+//                    Registroacceso reg=new Registroacceso();
+//                    reg.setPersonal(pp);
+//                    reg.setFecha(hoy);
+//                    reg.setInicio(inicio);
+//                    idsesion=reg.guardarRegistroAcceso(reg);
                     String ss = new SimpleDateFormat("dd/MM/yyyy HH:mm").format(hoy.getTime());
                     String tex="BIENVENIDO " + pp.toString()+ "\nHora: "+ ss;
                     JOptionPane.showMessageDialog(null, tex, "Verificacion de Huella", JOptionPane.INFORMATION_MESSAGE);
-                    JFramePrincipal vp= new JFramePrincipal(Drive, adm,idsesion);
+                    JFramePrincipal vp= new JFramePrincipal(Drive, adm);
                     this.dispose();
                     vp.show();
 //                    setTemplate(null);

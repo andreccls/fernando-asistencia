@@ -1,13 +1,13 @@
 package Clases;
-// Generated 25-abr-2013 14:00:44 by Hibernate Tools 3.2.1.GA
+// Generated 11-may-2013 1:16:55 by Hibernate Tools 3.2.1.GA
 
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
@@ -39,32 +39,32 @@ public class Personal  implements java.io.Serializable {
      private Boolean estado;
      private Boolean familiar;
      private Date fechaNac;
-     private Set<PersonalDepartamento> personalDepartamentos = new HashSet<PersonalDepartamento>(0);
      private Set<Registroacceso> registroaccesos = new HashSet<Registroacceso>(0);
-     private Set<Declaracionjurada> declaracionjuradas = new HashSet<Declaracionjurada>(0);
      private Set<Circularpersonal> circularpersonals = new HashSet<Circularpersonal>(0);
+     private Set<Declaracionjurada> declaracionjuradas = new HashSet<Declaracionjurada>(0);
      private Set<Personalnodocente> personalnodocentes = new HashSet<Personalnodocente>(0);
+     private Set<Personaldocente> personaldocentes = new HashSet<Personaldocente>(0);
+     private Set<Telefono> telefonos = new HashSet<Telefono>(0);
+     private Set<PersonalDepartamento> personalDepartamentos = new HashSet<PersonalDepartamento>(0);
      private Set<PersonalFamiliar> personalFamiliarsForIdPersonal = new HashSet<PersonalFamiliar>(0);
      private Set<PersonalFamiliar> personalFamiliarsForIdFamiliar = new HashSet<PersonalFamiliar>(0);
-     private Set<Personaldocente> personaldocentes = new HashSet<Personaldocente>(0);
      private Set<Agenda> agendas = new HashSet<Agenda>(0);
      private Set<Auditoria> auditoriasForIdAuditor = new HashSet<Auditoria>(0);
-     private Set<Telefono> telefonos = new HashSet<Telefono>(0);
+     private Set<Licencia> licencias = new HashSet<Licencia>(0);
      private Set<Auditoria> auditoriasForIdPersonal = new HashSet<Auditoria>(0);
 
     public Personal() {
     }
 
 	
-    public Personal(Tipodoc tipodoc, Perfil perfil, Establecimiento establecimiento, String dni, String apellido, String nombre) {
+    public Personal(Tipodoc tipodoc, Establecimiento establecimiento, String dni, String apellido, String nombre) {
         this.tipodoc = tipodoc;
-        this.perfil = perfil;
         this.establecimiento = establecimiento;
         this.dni = dni;
         this.apellido = apellido;
         this.nombre = nombre;
     }
-    public Personal(Tipodoc tipodoc, Perfil perfil, Establecimiento establecimiento, byte[] codigo, String dni, String apellido, String nombre, String cuil, String calle, Integer altura, String piso, String depto, String correoElectronico, String sexo, String estadoCivil, Date ingreso, Boolean estado, Boolean familiar, Date fechaNac, Set<PersonalDepartamento> personalDepartamentos, Set<Registroacceso> registroaccesos, Set<Declaracionjurada> declaracionjuradas, Set<Circularpersonal> circularpersonals, Set<Personalnodocente> personalnodocentes, Set<PersonalFamiliar> personalFamiliarsForIdPersonal, Set<PersonalFamiliar> personalFamiliarsForIdFamiliar, Set<Personaldocente> personaldocentes, Set<Agenda> agendas, Set<Auditoria> auditoriasForIdAuditor, Set<Telefono> telefonos, Set<Auditoria> auditoriasForIdPersonal) {
+    public Personal(Tipodoc tipodoc, Perfil perfil, Establecimiento establecimiento, byte[] codigo, String dni, String apellido, String nombre, String cuil, String calle, Integer altura, String piso, String depto, String correoElectronico, String sexo, String estadoCivil, Date ingreso, Boolean estado, Boolean familiar, Date fechaNac, Set<Registroacceso> registroaccesos, Set<Circularpersonal> circularpersonals, Set<Declaracionjurada> declaracionjuradas, Set<Personalnodocente> personalnodocentes, Set<Personaldocente> personaldocentes, Set<Telefono> telefonos, Set<PersonalDepartamento> personalDepartamentos, Set<PersonalFamiliar> personalFamiliarsForIdPersonal, Set<PersonalFamiliar> personalFamiliarsForIdFamiliar, Set<Agenda> agendas, Set<Auditoria> auditoriasForIdAuditor, Set<Licencia> licencias, Set<Auditoria> auditoriasForIdPersonal) {
        this.tipodoc = tipodoc;
        this.perfil = perfil;
        this.establecimiento = establecimiento;
@@ -84,25 +84,26 @@ public class Personal  implements java.io.Serializable {
        this.estado = estado;
        this.familiar = familiar;
        this.fechaNac = fechaNac;
-       this.personalDepartamentos = personalDepartamentos;
        this.registroaccesos = registroaccesos;
-       this.declaracionjuradas = declaracionjuradas;
        this.circularpersonals = circularpersonals;
+       this.declaracionjuradas = declaracionjuradas;
        this.personalnodocentes = personalnodocentes;
+       this.personaldocentes = personaldocentes;
+       this.telefonos = telefonos;
+       this.personalDepartamentos = personalDepartamentos;
        this.personalFamiliarsForIdPersonal = personalFamiliarsForIdPersonal;
        this.personalFamiliarsForIdFamiliar = personalFamiliarsForIdFamiliar;
-       this.personaldocentes = personaldocentes;
        this.agendas = agendas;
        this.auditoriasForIdAuditor = auditoriasForIdAuditor;
-       this.telefonos = telefonos;
+       this.licencias = licencias;
        this.auditoriasForIdPersonal = auditoriasForIdPersonal;
     }
-   
+    
     @Override
     public String toString() {
         return apellido+" "+nombre;
     }
-    
+   
     public Integer getIdPersonal() {
         return this.idPersonal;
     }
@@ -243,26 +244,12 @@ public class Personal  implements java.io.Serializable {
     public void setFechaNac(Date fechaNac) {
         this.fechaNac = fechaNac;
     }
-    public Set<PersonalDepartamento> getPersonalDepartamentos() {
-        return this.personalDepartamentos;
-    }
-    
-    public void setPersonalDepartamentos(Set<PersonalDepartamento> personalDepartamentos) {
-        this.personalDepartamentos = personalDepartamentos;
-    }
     public Set<Registroacceso> getRegistroaccesos() {
         return this.registroaccesos;
     }
     
     public void setRegistroaccesos(Set<Registroacceso> registroaccesos) {
         this.registroaccesos = registroaccesos;
-    }
-    public Set<Declaracionjurada> getDeclaracionjuradas() {
-        return this.declaracionjuradas;
-    }
-    
-    public void setDeclaracionjuradas(Set<Declaracionjurada> declaracionjuradas) {
-        this.declaracionjuradas = declaracionjuradas;
     }
     public Set<Circularpersonal> getCircularpersonals() {
         return this.circularpersonals;
@@ -271,12 +258,40 @@ public class Personal  implements java.io.Serializable {
     public void setCircularpersonals(Set<Circularpersonal> circularpersonals) {
         this.circularpersonals = circularpersonals;
     }
+    public Set<Declaracionjurada> getDeclaracionjuradas() {
+        return this.declaracionjuradas;
+    }
+    
+    public void setDeclaracionjuradas(Set<Declaracionjurada> declaracionjuradas) {
+        this.declaracionjuradas = declaracionjuradas;
+    }
     public Set<Personalnodocente> getPersonalnodocentes() {
         return this.personalnodocentes;
     }
     
     public void setPersonalnodocentes(Set<Personalnodocente> personalnodocentes) {
         this.personalnodocentes = personalnodocentes;
+    }
+    public Set<Personaldocente> getPersonaldocentes() {
+        return this.personaldocentes;
+    }
+    
+    public void setPersonaldocentes(Set<Personaldocente> personaldocentes) {
+        this.personaldocentes = personaldocentes;
+    }
+    public Set<Telefono> getTelefonos() {
+        return this.telefonos;
+    }
+    
+    public void setTelefonos(Set<Telefono> telefonos) {
+        this.telefonos = telefonos;
+    }
+    public Set<PersonalDepartamento> getPersonalDepartamentos() {
+        return this.personalDepartamentos;
+    }
+    
+    public void setPersonalDepartamentos(Set<PersonalDepartamento> personalDepartamentos) {
+        this.personalDepartamentos = personalDepartamentos;
     }
     public Set<PersonalFamiliar> getPersonalFamiliarsForIdPersonal() {
         return this.personalFamiliarsForIdPersonal;
@@ -292,13 +307,6 @@ public class Personal  implements java.io.Serializable {
     public void setPersonalFamiliarsForIdFamiliar(Set<PersonalFamiliar> personalFamiliarsForIdFamiliar) {
         this.personalFamiliarsForIdFamiliar = personalFamiliarsForIdFamiliar;
     }
-    public Set<Personaldocente> getPersonaldocentes() {
-        return this.personaldocentes;
-    }
-    
-    public void setPersonaldocentes(Set<Personaldocente> personaldocentes) {
-        this.personaldocentes = personaldocentes;
-    }
     public Set<Agenda> getAgendas() {
         return this.agendas;
     }
@@ -313,12 +321,12 @@ public class Personal  implements java.io.Serializable {
     public void setAuditoriasForIdAuditor(Set<Auditoria> auditoriasForIdAuditor) {
         this.auditoriasForIdAuditor = auditoriasForIdAuditor;
     }
-    public Set<Telefono> getTelefonos() {
-        return this.telefonos;
+    public Set<Licencia> getLicencias() {
+        return this.licencias;
     }
     
-    public void setTelefonos(Set<Telefono> telefonos) {
-        this.telefonos = telefonos;
+    public void setLicencias(Set<Licencia> licencias) {
+        this.licencias = licencias;
     }
     public Set<Auditoria> getAuditoriasForIdPersonal() {
         return this.auditoriasForIdPersonal;
@@ -338,7 +346,7 @@ public class Personal  implements java.io.Serializable {
     
     public void actualizarPersonal(Personal unPersonal){
         Controlador.getPERSISTENCIA().update(this);
-        JOptionPane.showMessageDialog(null,"La persona se actualizó correctamente","Actualización de Persona",JOptionPane.INFORMATION_MESSAGE);
+        
     }
 
     public Personaldocente getPersonaldoc(int idperdoc) {
@@ -437,40 +445,21 @@ public class Personal  implements java.io.Serializable {
     public void crearPersonalFamiliar(PersonalFamiliarId id, Personal personalByIdPersonal, Personal personalByIdFamiliar, Tiporelacion tiporelacion, Boolean asignacionFamiliar){
         PersonalFamiliar unPersonalFamiliar=new PersonalFamiliar (id, personalByIdPersonal, personalByIdFamiliar, tiporelacion,asignacionFamiliar);
         unPersonalFamiliar.guardarPersonalFamiliar(unPersonalFamiliar);
-        //PersonalFamiliar per=unPersonalFamiliar;
-
      }
     
-    public void crearDeclaracionjurada(Personal personal, Establecimiento establecimiento, int ano, String observacion, Set<DetalleEstablecimiento> detalleEstablecimientos){
-        Declaracionjurada unaDeclaracionjurada=new Declaracionjurada (personal, establecimiento, ano, observacion, detalleEstablecimientos);
-        //if(!existePersonal(unPersonal)){
-            unaDeclaracionjurada.guardarDeclaracionjurada(unaDeclaracionjurada);
-            //agregarReserva(unaReserva);
-        //} 
+    public void crearDeclaracionjurada(Personal personal, Anolectivo anolectivo, String observacion, Set<DetalleEstablecimiento> detalleEstablecimientos){
+        Declaracionjurada unaDeclaracionjurada=new Declaracionjurada (personal, anolectivo, observacion, detalleEstablecimientos);
+        unaDeclaracionjurada.guardarDeclaracionjurada(unaDeclaracionjurada);
      }
     
     public void crearTelefono(Personal personal, String nombre, String numero){
         Telefono unTelefono=new Telefono (personal, nombre, numero);
-        //if(!existePersonal(unPersonal)){
-            unTelefono.guardarTelefono(unTelefono);
-            //agregarReserva(unaReserva);
-        //} 
+        unTelefono.guardarTelefono(unTelefono);
      }
-//    public void actualizarTelefono(Personal personal, String nombre, String numero){
-//        Telefono unTelefono=new Telefono (personal, nombre, numero);
-//        //if(!existePersonal(unPersonal)){
-//            unTelefono.actualizarTelefono(unTelefono);
-//            //agregarReserva(unaReserva);
-//        //} 
-//     }
-    
     
     public void crearPersonaldepartamento(PersonalDepartamentoId id, Departamento departamento, Personal personal, Boolean jefe){
         PersonalDepartamento unPersonalDepartamento=new PersonalDepartamento (id, departamento, personal, jefe);
-        //if(!existePersonal(unPersonal)){
-            unPersonalDepartamento.guardarPersonalDepartamento(unPersonalDepartamento);
-            //agregarReserva(unaReserva);
-        //} 
+        unPersonalDepartamento.guardarPersonalDepartamento(unPersonalDepartamento);
      }
     
     public void actualizarPersonaldepartamento(PersonalDepartamentoId id, Departamento departamento, Personal personal, Boolean jefe){
@@ -493,6 +482,20 @@ public class Personal  implements java.io.Serializable {
         } catch (Exception ex) {
              JOptionPane.showMessageDialog(null, ex.toString());
         }
+    }
+    
+    public boolean VerificarRegistro (Registroacceso reg){
+        boolean bandera=true;
+        Calendar cal=Calendar.getInstance();
+        cal.add(Calendar.MINUTE, -1);
+        Date aux=new Date();
+        aux.setHours(reg.getInicio().getHours());
+        aux.setMinutes(reg.getInicio().getMinutes());
+        aux.setSeconds(reg.getInicio().getSeconds());
+        if(cal.getTime().compareTo(aux)<=0){
+            bandera=false;
+        }
+        return bandera;
     }
 
     public void CargarListDepartamento(JList Jlist,DefaultListModel modeloLista){
@@ -531,21 +534,21 @@ public class Personal  implements java.io.Serializable {
     
     ///REUNIONES
     // <editor-fold defaultstate="collapsed" desc="REUNIONES"> 
-    public int ReunionVerificarDisponibilidad (Date diaini,Date hini,Date hfin, boolean control){
+    public int ReunionVerificarDisponibilidad (Date diaini,Date hini,Date hfin, boolean control, int id){
         int band=1;
         try {
             if (!Controlador.PERSISTENCIA.getAgendas(idPersonal).isEmpty()) {
                 Iterator it = Controlador.PERSISTENCIA.getAgendas(idPersonal).iterator();
                 while (it.hasNext()) {
                     Agenda age = (Agenda) it.next();
-                    if (age.getPersonal().getEstado() == true && age.getTarea().getEstado() == true) {
+                    if (age.getPersonal().getEstado() == true && age.getTarea().getEstado() == true && age.getTarea().getIdTarea()!=id) {
                         if(age.getTarea().getTareaotros().iterator().hasNext()){
-                            Tareaotro tarot=age.getTarea().getTareaotros().iterator().next();
-                            Date inicio=tarot.getDiaInicio();
-                            Date fin=tarot.getDiaFin();
+//                            Tareaotro tarot=age.getTarea().getTareaotros().iterator().next();
+                            Date inicio=age.getTarea().getDiaInicio();
+                            Date fin=age.getTarea().getDiaFin();
                             if(diaini.compareTo(inicio)>=0 && diaini.compareTo(fin)<=0){
-                                Date hinicio = tarot.getDiaInicio();
-                                Date hhfin = tarot.getDiaFin();
+                                Date hinicio = age.getTarea().getDiaInicio();
+                                Date hhfin = age.getTarea().getDiaFin();
                                 if(hini.compareTo(hinicio)<=0&&hfin.compareTo(hinicio)>=0){
                                     band = 1;
                                     if(control==true){JOptionPane.showMessageDialog(null, "El personal "+ toString() +" tiene otra tarea no obligatoria", "Registrar Reunión", JOptionPane.INFORMATION_MESSAGE);}
@@ -561,9 +564,9 @@ public class Personal  implements java.io.Serializable {
                                 }
                             }
                         }else if(age.getTarea().getTareaextracurriculars().iterator().hasNext()){
-                            Tareaextracurricular tarot=age.getTarea().getTareaextracurriculars().iterator().next();
-                            Date inicio=tarot.getDiaInicio();
-                            Date fin=tarot.getDiaFin();
+//                            Tareaextracurricular tarot=age.getTarea().getTareaextracurriculars().iterator().next();
+                            Date inicio=age.getTarea().getDiaInicio();
+                            Date fin=age.getTarea().getDiaFin();
                             hini.setYear(diaini.getYear());
                             hini.setMonth(diaini.getMonth());
                             hini.setDate(diaini.getDate());
@@ -694,21 +697,21 @@ public class Personal  implements java.io.Serializable {
     
     ///EXTRACURRICULARES
     // <editor-fold defaultstate="collapsed" desc="EXTRACURRICULARES"> 
-    public int ExtracurricularVerificarDisponibilidad (Date diaini,Date hini,Date hfin,Date diafin,boolean control){
+    public int ExtracurricularVerificarDisponibilidad (Date diaini,Date hini,Date hfin,Date diafin,boolean control, int id){
         int band=1;
         try {
             if (!Controlador.PERSISTENCIA.getAgendas(idPersonal).isEmpty()) {
                 Iterator it = Controlador.PERSISTENCIA.getAgendas(idPersonal).iterator();
                 while (it.hasNext()) {
                     Agenda age = (Agenda) it.next();
-                    if (age.getPersonal().getEstado() == true && age.getTarea().getEstado() == true) {
+                    if (age.getPersonal().getEstado() == true && age.getTarea().getEstado() == true && age.getTarea().getIdTarea()!=id) {
                         if(age.getTarea().getTareaotros().iterator().hasNext()){
-                            Tareaotro tarot=age.getTarea().getTareaotros().iterator().next();
-                            Date inicio=tarot.getDiaInicio();
-                            Date fin=tarot.getDiaFin();
+                            //Tareaotro tarot=age.getTarea().getTareaotros().iterator().next();
+                            Date inicio=age.getTarea().getDiaInicio();
+                            Date fin=age.getTarea().getDiaFin();
                             if(diaini.compareTo(inicio)>=0 ||diafin.compareTo(inicio)>= 0 && diaini.compareTo(fin)<=0 || diafin.compareTo(fin)<=0){
-                                Date hinicio = tarot.getDiaInicio();
-                                Date hhfin = tarot.getDiaFin();
+                                Date hinicio = age.getTarea().getDiaInicio();
+                                Date hhfin = age.getTarea().getDiaFin();
                                 if(hini.compareTo(hinicio)<=0&&hfin.compareTo(hinicio)>=0){
                                     band = 1;
                                     if(control==true){JOptionPane.showMessageDialog(null, "El personal "+ toString() +" tiene una tarea no obligatoria a este horario", "Registrar Tarea Extracurricular", JOptionPane.ERROR_MESSAGE);}
@@ -724,12 +727,12 @@ public class Personal  implements java.io.Serializable {
                                 }
                             }
                         }else if(age.getTarea().getTareaextracurriculars().iterator().hasNext()){
-                            Tareaextracurricular tarot=age.getTarea().getTareaextracurriculars().iterator().next();
-                            Date inicio=tarot.getDiaInicio();
-                            Date fin=tarot.getDiaFin();
+//                            Tareaextracurricular tarot=age.getTarea().getTareaextracurriculars().iterator().next();
+                            Date inicio=age.getTarea().getDiaInicio();
+                            Date fin=age.getTarea().getDiaFin();
                             if(diaini.compareTo(inicio)>=0 ||diafin.compareTo(inicio)>= 0 && diaini.compareTo(fin)<=0 || diafin.compareTo(fin)<=0){
-                                Date hinicio = tarot.getDiaInicio();
-                                Date hhfin = tarot.getDiaFin();
+                                Date hinicio = age.getTarea().getDiaInicio();
+                                Date hhfin = age.getTarea().getDiaFin();
                                 if(hini.compareTo(hinicio)<=0&&hfin.compareTo(hinicio)>=0){
                                     band = 0;
                                     if(control==true){JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para "+ toString() +" porque existe una tarea extracurricular a ese horario", "Registrar Tarea Extracurricular", JOptionPane.ERROR_MESSAGE);}
@@ -964,21 +967,21 @@ public class Personal  implements java.io.Serializable {
     
     ///OTROS
     // <editor-fold defaultstate="collapsed" desc="OTROS"> 
-    public boolean OtrosVerificarDisponibilidad (Date diaini,Date hini,Date hfin,Date diafin, boolean control){
+    public boolean OtrosVerificarDisponibilidad (Date diaini,Date hini,Date hfin,Date diafin, boolean control, int id){
         boolean band=true;
         try {
             if (!Controlador.PERSISTENCIA.getAgendas(idPersonal).isEmpty()) {
                 Iterator it = Controlador.PERSISTENCIA.getAgendas(idPersonal).iterator();
                 while (it.hasNext()) {
                     Agenda age = (Agenda) it.next();
-                    if (age.getPersonal().getEstado() == true && age.getTarea().getEstado() == true) {
+                    if (age.getPersonal().getEstado() == true && age.getTarea().getEstado() == true && age.getTarea().getIdTarea()!=id) {
                         if(age.getTarea().getTareaotros().iterator().hasNext()){
-                            Tareaotro tarot=age.getTarea().getTareaotros().iterator().next();
-                            Date inicio=tarot.getDiaInicio();
-                            Date fin=tarot.getDiaFin();
+//                            Tareaotro tarot=age.getTarea().getTareaotros().iterator().next();
+                            Date inicio=age.getTarea().getDiaInicio();
+                            Date fin=age.getTarea().getDiaFin();
                             if(diaini.compareTo(inicio)>=0 ||diafin.compareTo(inicio)>= 0 && diaini.compareTo(fin)<=0 || diafin.compareTo(fin)<=0){
-                                Date hinicio = tarot.getDiaInicio();
-                                Date hhfin = tarot.getDiaFin();
+                                Date hinicio = age.getTarea().getDiaInicio();
+                                Date hhfin = age.getTarea().getDiaFin();
                                 if(hini.compareTo(hinicio)<=0&&hfin.compareTo(hinicio)>=0){
                                     band = false;
                                     JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para "+ toString() +" porque existe otra tarea a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);
@@ -994,9 +997,9 @@ public class Personal  implements java.io.Serializable {
                                 }
                             }
                         }else if(age.getTarea().getTareaextracurriculars().iterator().hasNext()){
-                            Tareaextracurricular tarot=age.getTarea().getTareaextracurriculars().iterator().next();
-                            Date inicio=tarot.getDiaInicio();
-                            Date fin=tarot.getDiaFin();
+//                            Tareaextracurricular tarot=age.getTarea().getTareaextracurriculars().iterator().next();
+                            Date inicio=age.getTarea().getDiaInicio();
+                            Date fin=age.getTarea().getDiaFin();
                             if(diaini.compareTo(inicio)>=0 ||diafin.compareTo(inicio)>= 0 && diaini.compareTo(fin)<=0 || diafin.compareTo(fin)<=0){
                                 hini.setYear(diaini.getYear());
                                 hini.setMonth(diaini.getMonth());
@@ -1189,7 +1192,7 @@ public class Personal  implements java.io.Serializable {
                 Iterator it = Controlador.PERSISTENCIA.getAgendas(idPersonal).iterator();
                 while (it.hasNext()) {
                     Agenda age = (Agenda) it.next();
-                    if (age.getPersonal().getEstado() == true && age.getTarea().getEstado() == true &&age.getTarea().getIdTarea()!=id) {
+                    if (age.getPersonal().getEstado() == true && age.getTarea().getEstado() == true && age.getTarea().getIdTarea()!=id) {
                         if (age.getTarea().getTareaclases().iterator().hasNext()) {
                             Dia di = age.getDia2(otro);
                             if (di.getIdDia() != null) {
@@ -2112,14 +2115,15 @@ public class Personal  implements java.io.Serializable {
 //    }
 //    
     
-    public Declaracionjurada getDeclaracionjurada() {
+    public Declaracionjurada getDeclaracionjurada(int ano) {
         Declaracionjurada dec=new Declaracionjurada();
         Iterator it=declaracionjuradas.iterator();
         while(it.hasNext()){
-            dec=(Declaracionjurada) it.next();
+            Declaracionjurada aux=(Declaracionjurada) it.next();
+            if(aux.getAnolectivo().getAno()==ano){
+                dec=aux;
+            }
         }
-        
-        
         return dec;
     }
 

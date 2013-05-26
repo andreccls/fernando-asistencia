@@ -57,9 +57,9 @@ public class Tiponivel  implements java.io.Serializable {
     public void guardarTiponivel(Tiponivel unTiponivel){
         Controlador.getPERSISTENCIA().insert(this);
 
-        JOptionPane.showMessageDialog(null,"El Nivel "+ 
-                String.valueOf(unTiponivel.getIdTiponivel()) +
-                " se guardo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null,"El tipo de Nivel "+ 
+                unTiponivel.getNombre() +
+                " se guardo correctamente","Registrar tipo de nivel",JOptionPane.INFORMATION_MESSAGE);
     }
     
     public void eliminarTiponivel(Tiponivel unTiponivel){
@@ -68,9 +68,7 @@ public class Tiponivel  implements java.io.Serializable {
             JOptionPane.showMessageDialog(null,"El nivel no se puede eliminar porque esta relacionada con otras declaraciones juradas","Mensaje",JOptionPane.INFORMATION_MESSAGE);
         }else{
         Controlador.getPERSISTENCIA().delete(this);
-        JOptionPane.showMessageDialog(null,"El Cargo "+ 
-                String.valueOf(unTiponivel.getIdTiponivel()) +
-                " se elimino correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null,"El Cargo se elimino correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
         }
     }
 

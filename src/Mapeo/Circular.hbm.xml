@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 25-abr-2013 14:00:45 by Hibernate Tools 3.2.1.GA -->
+<!-- Generated 23-may-2013 2:20:56 by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
   <class catalog="asistencia" name="Clases.Circular" table="circular">
     <id name="idCircular" type="java.lang.Integer">
@@ -10,14 +10,20 @@
     <many-to-one class="Clases.Establecimiento" fetch="select" name="establecimiento">
       <column name="Id_establecimiento" not-null="true"/>
     </many-to-one>
+    <property name="nombre" type="string">
+      <column length="45" name="Nombre"/>
+    </property>
     <property name="descripcion" type="string">
-      <column length="300" name="Descripcion"/>
+      <column length="1000" name="Descripcion"/>
     </property>
     <property name="firma" type="string">
       <column length="45" name="Firma"/>
     </property>
-    <property name="fecha" type="date">
-      <column length="10" name="Fecha"/>
+    <property name="inicio" type="date">
+      <column length="10" name="Inicio"/>
+    </property>
+    <property name="fin" type="date">
+      <column length="10" name="Fin"/>
     </property>
     <set inverse="true" name="circularpersonals">
       <key>

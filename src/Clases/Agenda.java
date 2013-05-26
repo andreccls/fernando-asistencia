@@ -1,5 +1,5 @@
 package Clases;
-// Generated 25-abr-2013 4:50:54 by Hibernate Tools 3.2.1.GA
+// Generated 11-may-2013 1:16:55 by Hibernate Tools 3.2.1.GA
 
 
 import java.util.Calendar;
@@ -17,6 +17,7 @@ public class Agenda  implements java.io.Serializable {
      private AgendaId id;
      private Revista revista;
      private Personal personal;
+     private Anolectivo anolectivo;
      private Tarea tarea;
      private String comentario;
      private Set<Franco> francos = new HashSet<Franco>(0);
@@ -26,15 +27,17 @@ public class Agenda  implements java.io.Serializable {
     }
 
 	
-    public Agenda(AgendaId id, Personal personal, Tarea tarea) {
+    public Agenda(AgendaId id, Personal personal, Anolectivo anolectivo, Tarea tarea) {
         this.id = id;
         this.personal = personal;
+        this.anolectivo = anolectivo;
         this.tarea = tarea;
     }
-    public Agenda(AgendaId id, Revista revista, Personal personal, Tarea tarea, String comentario, Set<Franco> francos, Set<Ano> anos) {
+    public Agenda(AgendaId id, Revista revista, Personal personal, Anolectivo anolectivo, Tarea tarea, String comentario, Set<Franco> francos, Set<Ano> anos) {
        this.id = id;
        this.revista = revista;
        this.personal = personal;
+       this.anolectivo = anolectivo;
        this.tarea = tarea;
        this.comentario = comentario;
        this.francos = francos;
@@ -61,6 +64,13 @@ public class Agenda  implements java.io.Serializable {
     
     public void setPersonal(Personal personal) {
         this.personal = personal;
+    }
+    public Anolectivo getAnolectivo() {
+        return this.anolectivo;
+    }
+    
+    public void setAnolectivo(Anolectivo anolectivo) {
+        this.anolectivo = anolectivo;
     }
     public Tarea getTarea() {
         return this.tarea;

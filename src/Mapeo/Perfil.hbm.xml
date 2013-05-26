@@ -1,21 +1,114 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 25-abr-2013 14:00:45 by Hibernate Tools 3.2.1.GA -->
+<!-- Generated 23-may-2013 2:20:56 by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
   <class catalog="asistencia" name="Clases.Perfil" table="perfil">
     <id name="idPerfil" type="java.lang.Integer">
       <column name="Id_perfil"/>
       <generator class="identity"/>
     </id>
-    <property name="descripcion" type="string">
-      <column length="45" name="Descripcion"/>
+    <property name="nombre" type="string">
+      <column length="45" name="Nombre"/>
     </property>
-    <property name="nivel" type="java.lang.Integer">
-      <column name="Nivel"/>
+    <property name="personalins" type="java.lang.Boolean">
+      <column name="Personalins"/>
+    </property>
+    <property name="personalact" type="java.lang.Boolean">
+      <column name="Personalact"/>
+    </property>
+    <property name="personaleli" type="java.lang.Boolean">
+      <column name="Personaleli"/>
+    </property>
+    <property name="personalcon" type="java.lang.Boolean">
+      <column name="Personalcon"/>
+    </property>
+    <property name="actividadesins" type="java.lang.Boolean">
+      <column name="Actividadesins"/>
+    </property>
+    <property name="actividadesact" type="java.lang.Boolean">
+      <column name="Actividadesact"/>
+    </property>
+    <property name="actividadeseli" type="java.lang.Boolean">
+      <column name="Actividadeseli"/>
+    </property>
+    <property name="actividadescon" type="java.lang.Boolean">
+      <column name="Actividadescon"/>
+    </property>
+    <property name="asistenciasins" type="java.lang.Boolean">
+      <column name="Asistenciasins"/>
+    </property>
+    <property name="asistenciasact" type="java.lang.Boolean">
+      <column name="Asistenciasact"/>
+    </property>
+    <property name="asistenciaseli" type="java.lang.Boolean">
+      <column name="Asistenciaseli"/>
+    </property>
+    <property name="asistenciascon" type="java.lang.Boolean">
+      <column name="Asistenciascon"/>
+    </property>
+    <property name="circularesins" type="java.lang.Boolean">
+      <column name="Circularesins"/>
+    </property>
+    <property name="circularesact" type="java.lang.Boolean">
+      <column name="Circularesact"/>
+    </property>
+    <property name="circulareseli" type="java.lang.Boolean">
+      <column name="Circulareseli"/>
+    </property>
+    <property name="circularescon" type="java.lang.Boolean">
+      <column name="Circularescon"/>
+    </property>
+    <property name="configuracionins" type="java.lang.Boolean">
+      <column name="Configuracionins"/>
+    </property>
+    <property name="configuracionact" type="java.lang.Boolean">
+      <column name="Configuracionact"/>
+    </property>
+    <property name="configuracioneli" type="java.lang.Boolean">
+      <column name="Configuracioneli"/>
+    </property>
+    <property name="configuracioncon" type="java.lang.Boolean">
+      <column name="Configuracioncon"/>
+    </property>
+    <property name="registroins" type="java.lang.Boolean">
+      <column name="Registroins"/>
+    </property>
+    <property name="registroact" type="java.lang.Boolean">
+      <column name="Registroact"/>
+    </property>
+    <property name="registroeli" type="java.lang.Boolean">
+      <column name="Registroeli"/>
+    </property>
+    <property name="registrocon" type="java.lang.Boolean">
+      <column name="Registrocon"/>
+    </property>
+    <property name="auditoriains" type="java.lang.Boolean">
+      <column name="Auditoriains"/>
+    </property>
+    <property name="auditoriaact" type="java.lang.Boolean">
+      <column name="Auditoriaact"/>
+    </property>
+    <property name="auditoriaeli" type="java.lang.Boolean">
+      <column name="Auditoriaeli"/>
+    </property>
+    <property name="auditoriacon" type="java.lang.Boolean">
+      <column name="Auditoriacon"/>
+    </property>
+    <property name="historialins" type="java.lang.Boolean">
+      <column name="Historialins"/>
+    </property>
+    <property name="historialact" type="java.lang.Boolean">
+      <column name="Historialact"/>
+    </property>
+    <property name="historialeli" type="java.lang.Boolean">
+      <column name="Historialeli"/>
+    </property>
+    <property name="historialcon" type="java.lang.Boolean">
+      <column name="Historialcon"/>
     </property>
     <set inverse="true" name="personals">
       <key>
-        <column name="Id_perfil" not-null="true"/>
+        <column name="Id_perfil"/>
       </key>
       <one-to-many class="Clases.Personal"/>
     </set>

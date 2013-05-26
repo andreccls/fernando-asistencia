@@ -12,6 +12,8 @@ package Presentacion;
 
 import Clases.Agenda;
 import Clases.AgendaId;
+import Clases.Circular;
+import Clases.Circularpersonal;
 import java.util.Iterator;
 import java.util.List;
 import Clases.Personal;
@@ -59,7 +61,8 @@ public class JFrameActividades extends javax.swing.JFrame {
         Date d=dateChooserCombo1.getSelectedDate().getTime();
         String buscar = (String) jComboBox2.getSelectedItem();
         Drive.CargarGrillaActividades(jTable2, per,dia.getTime());
-        Drive.CargarTablaRegistro(jTable1, per, d, buscar);
+        Drive.CargarTablaRegistro2(jTable1, per, d, buscar);
+        Drive.CargarTablaCircularPer(jTable3, per, d, buscar);
         jLabel3.setText(String.valueOf(Drive.ObtenerInasistenciaPersonal(per)));
         jLabel4.setText(String.valueOf(Drive.ObtenerTardanzaPersonal(per)));
         DefaultTableCellRenderer modelocentrar = new DefaultTableCellRenderer();
@@ -69,6 +72,9 @@ public class JFrameActividades extends javax.swing.JFrame {
         jTable1.getColumnModel().getColumn(2).setCellRenderer(modelocentrar); 
         jTable2.getColumnModel().getColumn(1).setCellRenderer(modelocentrar); 
         jTable2.getColumnModel().getColumn(2).setCellRenderer(modelocentrar); 
+        jTable2.getColumnModel().getColumn(3).setCellRenderer(modelocentrar); 
+        jTable3.getColumnModel().getColumn(2).setCellRenderer(modelocentrar); 
+        jTable3.getTableHeader().setDefaultRenderer(new HeaderRenderer(jTable3));
         jTable2.getTableHeader().setDefaultRenderer(new HeaderRenderer(jTable2));
         jTable1.getTableHeader().setDefaultRenderer(new HeaderRenderer(jTable1));
         
@@ -79,6 +85,33 @@ public class JFrameActividades extends javax.swing.JFrame {
         Icon icono2 = new ImageIcon(fott2.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
         jButton2.setIcon(icono2);
         jButton5.setIcon(icono2);
+        ImageIcon fott3 = new ImageIcon(getClass().getResource("/imagenes/ok.png"));
+        Icon icono3 = new ImageIcon(fott3.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
+        jButton3.setIcon(icono3);
+        String hora=Drive.Obtenerhoras2(jTable1);
+        jLabel10.setText(hora);
+        int[] anchos1 = {150, 100, 80, 50, 150};
+        for (int i = 0; i < jTable3.getColumnCount(); i++) {
+            jTable3.getColumnModel().getColumn(i).setPreferredWidth(anchos1[i]);
+        }
+//        jTable3.getTableHeader().setDefaultRenderer(new JFrameActividades.HeaderRenderer(jTable3));
+        
+        ((JComponent) jTable3.getDefaultRenderer(Boolean.class)).setOpaque(true);
+        if(buscar.equals("DIA")){
+            jLabel12.setText(String.valueOf(d.getDate()));
+        }else if(buscar.equals("SEMANA")){
+            jLabel12.setText(String.valueOf(d.getDate()));
+        }else if(buscar.equals("MES")){
+            jLabel12.setText(String.valueOf(d.getMonth()+1));
+        }
+        String buscar2 = (String) jComboBox3.getSelectedItem();
+        if(buscar2.equals("DIA")){
+            jLabel13.setText(String.valueOf(d.getDate()));
+        }else if(buscar2.equals("MES")){
+            jLabel13.setText(String.valueOf(d.getMonth()+1));
+        }else if(buscar2.equals("AÑO")){
+            jLabel13.setText(String.valueOf(d.getYear()+1900));
+        }
     }
 
     /**
@@ -109,6 +142,19 @@ public class JFrameActividades extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jComboBox2 = new javax.swing.JComboBox();
         jButton5 = new javax.swing.JButton();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel7 = new javax.swing.JLabel();
+        dateChooserCombo2 = new datechooser.beans.DateChooserCombo();
+        jLabel8 = new javax.swing.JLabel();
+        jComboBox3 = new javax.swing.JComboBox();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTable3 = new javax.swing.JTable();
+        jButton3 = new javax.swing.JButton();
+        jLabel13 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -179,11 +225,11 @@ public class JFrameActividades extends javax.swing.JFrame {
 
         },
         new String [] {
-            "Actividad", "Hora Inicio", "Hora Fin"
+            "Actividad", "Lugar", "Hora Inicio", "Hora Fin"
         }
     ) {
         boolean[] canEdit = new boolean [] {
-            false, false, false
+            false, false, false, false
         };
 
         public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -237,11 +283,11 @@ public class JFrameActividades extends javax.swing.JFrame {
             .addComponent(dateChooserPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addGap(18, 18, 18)
             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+            .addGap(16, 16, 16)
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                 .addComponent(jLabel1)
                 .addComponent(jLabel3))
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                 .addComponent(jLabel2)
                 .addComponent(jLabel4)
@@ -253,6 +299,7 @@ public class JFrameActividades extends javax.swing.JFrame {
 
     jPanel3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
+    jTable1.setAutoCreateRowSorter(true);
     jTable1.setModel(new javax.swing.table.DefaultTableModel(
         new Object [][] {
 
@@ -270,11 +317,11 @@ public class JFrameActividades extends javax.swing.JFrame {
         }
     });
     jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
-        public void mouseClicked(java.awt.event.MouseEvent evt) {
-            jTable1MouseClicked(evt);
-        }
         public void mouseEntered(java.awt.event.MouseEvent evt) {
             jTable1MouseEntered(evt);
+        }
+        public void mouseClicked(java.awt.event.MouseEvent evt) {
+            jTable1MouseClicked(evt);
         }
         public void mouseReleased(java.awt.event.MouseEvent evt) {
             jTable1MouseReleased(evt);
@@ -348,6 +395,14 @@ dateChooserCombo1.addSelectionChangedListener(new datechooser.events.SelectionCh
         }
     });
 
+    jLabel9.setText("Horas trabajadas:");
+
+    jLabel10.setText("Horas");
+
+    jLabel11.setText("Minutos");
+
+    jLabel12.setText("DIA");
+
     javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
     jPanel3.setLayout(jPanel3Layout);
     jPanel3Layout.setHorizontalGroup(
@@ -355,17 +410,25 @@ dateChooserCombo1.addSelectionChangedListener(new datechooser.events.SelectionCh
         .addGroup(jPanel3Layout.createSequentialGroup()
             .addContainerGap()
             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 401, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createSequentialGroup()
                     .addComponent(jLabel5)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                    .addComponent(dateChooserCombo1, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
+                    .addComponent(dateChooserCombo1, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                     .addComponent(jLabel6)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE))
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(jLabel9)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(jLabel10)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(jLabel11)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton5)))
             .addContainerGap())
     );
@@ -373,20 +436,181 @@ dateChooserCombo1.addSelectionChangedListener(new datechooser.events.SelectionCh
         jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
         .addGroup(jPanel3Layout.createSequentialGroup()
             .addContainerGap()
-            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                 .addComponent(jLabel5)
                 .addComponent(dateChooserCombo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addComponent(jLabel6)
+                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel12))
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
-            .addComponent(jButton5)
+            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel9)
+                    .addComponent(jLabel10)
+                    .addComponent(jLabel11))
+                .addComponent(jButton5))
             .addContainerGap())
     );
 
-    jTabbedPane2.addTab("Registro de asistencias", jPanel3);
+    jTabbedPane2.addTab("Registro de ingreso", jPanel3);
+
+    jLabel7.setText("Seleccione un dia:");
+
+    dateChooserCombo2.setCurrentView(new datechooser.view.appearance.AppearancesList("Grey",
+        new datechooser.view.appearance.ViewAppearance("custom",
+            new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 11),
+                new java.awt.Color(0, 0, 0),
+                new java.awt.Color(0, 0, 255),
+                false,
+                true,
+                new datechooser.view.appearance.swing.ButtonPainter()),
+            new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 11),
+                new java.awt.Color(0, 0, 0),
+                new java.awt.Color(0, 0, 255),
+                true,
+                true,
+                new datechooser.view.appearance.swing.ButtonPainter()),
+            new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 11),
+                new java.awt.Color(0, 0, 255),
+                new java.awt.Color(0, 0, 255),
+                false,
+                true,
+                new datechooser.view.appearance.swing.ButtonPainter()),
+            new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 11),
+                new java.awt.Color(128, 128, 128),
+                new java.awt.Color(0, 0, 255),
+                false,
+                true,
+                new datechooser.view.appearance.swing.LabelPainter()),
+            new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 11),
+                new java.awt.Color(0, 0, 0),
+                new java.awt.Color(0, 0, 255),
+                false,
+                true,
+                new datechooser.view.appearance.swing.LabelPainter()),
+            new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 11),
+                new java.awt.Color(0, 0, 0),
+                new java.awt.Color(255, 0, 0),
+                false,
+                false,
+                new datechooser.view.appearance.swing.ButtonPainter()),
+            (datechooser.view.BackRenderer)null,
+            false,
+            true)));
+dateChooserCombo2.setBehavior(datechooser.model.multiple.MultyModelBehavior.SELECT_SINGLE);
+dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionChangedListener() {
+    public void onSelectionChange(datechooser.events.SelectionChangedEvent evt) {
+        dateChooserCombo2OnSelectionChange(evt);
+    }
+    });
+
+    jLabel8.setText("Buscar por:");
+
+    jComboBox3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "AÑO", "MES", "DIA" }));
+    jComboBox3.addItemListener(new java.awt.event.ItemListener() {
+        public void itemStateChanged(java.awt.event.ItemEvent evt) {
+            jComboBox3ItemStateChanged(evt);
+        }
+    });
+
+    jTable3.setAutoCreateRowSorter(true);
+    jTable3.setModel(new javax.swing.table.DefaultTableModel(
+        new Object [][] {
+
+        },
+        new String [] {
+            "Firma", "Nombre", "Fecha", "Estado", "Comentario"
+        }
+    ) {
+        Class[] types = new Class [] {
+            java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class, java.lang.Object.class
+        };
+        boolean[] canEdit = new boolean [] {
+            false, false, false, true, true
+        };
+
+        public Class getColumnClass(int columnIndex) {
+            return types [columnIndex];
+        }
+
+        public boolean isCellEditable(int rowIndex, int columnIndex) {
+            return canEdit [columnIndex];
+        }
+    });
+    jTable3.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+    jTable3.addMouseListener(new java.awt.event.MouseAdapter() {
+        public void mouseClicked(java.awt.event.MouseEvent evt) {
+            jTable3MouseClicked(evt);
+        }
+        public void mouseEntered(java.awt.event.MouseEvent evt) {
+            jTable3MouseEntered(evt);
+        }
+        public void mouseReleased(java.awt.event.MouseEvent evt) {
+            jTable3MouseReleased(evt);
+        }
+    });
+    jScrollPane3.setViewportView(jTable3);
+
+    jButton3.setText("Aceptar");
+    jButton3.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            jButton3ActionPerformed(evt);
+        }
+    });
+
+    jLabel13.setText("DIA");
+
+    javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+    jPanel2.setLayout(jPanel2Layout);
+    jPanel2Layout.setHorizontalGroup(
+        jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+            .addContainerGap()
+            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(jPanel2Layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(jButton3))
+                .addGroup(jPanel2Layout.createSequentialGroup()
+                    .addComponent(jLabel7)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(dateChooserCombo2, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(jLabel8)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(jLabel13)
+                    .addGap(0, 39, Short.MAX_VALUE)))
+            .addGap(14, 14, 14))
+        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(12, 12, 12)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 401, Short.MAX_VALUE)
+                .addGap(12, 12, 12)))
+    );
+    jPanel2Layout.setVerticalGroup(
+        jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGroup(jPanel2Layout.createSequentialGroup()
+            .addContainerGap()
+            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                .addComponent(jLabel7)
+                .addComponent(dateChooserCombo2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel8)
+                .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel13))
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 335, Short.MAX_VALUE)
+            .addComponent(jButton3)
+            .addContainerGap())
+        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(47, 47, 47)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(48, Short.MAX_VALUE)))
+    );
+
+    jTabbedPane2.addTab("Circulares", jPanel2);
 
     jButton1.setText("Salir");
     jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -481,7 +705,7 @@ dateChooserCombo1.addSelectionChangedListener(new datechooser.events.SelectionCh
                         inifin.add(ini);
                     }
                 }
-                Drive.mostrarReporte("Actividades",inifin,"Registro de Actividades","Actividades");
+                Drive.mostrarReporte("Actividades",inifin,"Registro de Actividades","Actividades",inifin.size());
             }else if (cadSalida.equals("SEMANA")) {
                 int aa=fin.getDay();
                 int a=0;
@@ -499,7 +723,7 @@ dateChooserCombo1.addSelectionChangedListener(new datechooser.events.SelectionCh
                     a++;
                     aux=Drive.sumarFechasDias(aux, 1);
                 }
-                Drive.mostrarReporte("Actividades",inifin,"Registro de Actividades","Actividades");
+                Drive.mostrarReporte("Actividades",inifin,"Registro de Actividades","Actividades",inifin.size());
             }else if (cadSalida.equals("MES")) {
                 int aa=fin.getDate()-1;
                 Date aux=Drive.restarFechasDias(fin, aa);
@@ -516,7 +740,7 @@ dateChooserCombo1.addSelectionChangedListener(new datechooser.events.SelectionCh
                     aux=Drive.sumarFechasDias(aux, 1);
                 }
                 
-                Drive.mostrarReporte("Actividades",inifin,"Registro de Actividades","Actividades");
+                Drive.mostrarReporte("Actividades",inifin,"Registro de Actividades","Actividades",inifin.size());
             }
             jButton2.setEnabled(true);
             jButton1.setEnabled(true);
@@ -541,65 +765,62 @@ dateChooserCombo1.addSelectionChangedListener(new datechooser.events.SelectionCh
         Drive.LimpiarTabla(jTable1);
         Date dia= dateChooserCombo1.getSelectedDate().getTime();
         String buscar = (String) jComboBox2.getSelectedItem();
-        Drive.CargarTablaRegistro(jTable1, per, dia, buscar);
+        Drive.CargarTablaRegistro2(jTable1, per, dia, buscar);
+        String hora=Drive.Obtenerhoras2(jTable1);
+        jLabel10.setText(hora);
+        if(buscar.equals("DIA")){
+            jLabel12.setText(String.valueOf(dia.getDate()));
+        }else if(buscar.equals("SEMANA")){
+            jLabel12.setText(String.valueOf(dia.getDate()));
+        }else if(buscar.equals("MES")){
+            jLabel12.setText(String.valueOf(dia.getMonth()+1));
+        }
     }//GEN-LAST:event_dateChooserCombo1OnSelectionChange
 
     private void jComboBox2ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox2ItemStateChanged
         Drive.LimpiarTabla(jTable1);
         Date dia= dateChooserCombo1.getSelectedDate().getTime();
         String buscar = (String) jComboBox2.getSelectedItem();
-        Drive.CargarTablaRegistro(jTable1, per, dia, buscar);
+        Drive.CargarTablaRegistro2(jTable1, per, dia, buscar);
+        String hora=Drive.Obtenerhoras2(jTable1);
+        jLabel10.setText(hora);
+        if(buscar.equals("DIA")){
+            jLabel12.setText(String.valueOf(dia.getDate()));
+        }else if(buscar.equals("SEMANA")){
+            jLabel12.setText(String.valueOf(dia.getDate()));
+        }else if(buscar.equals("MES")){
+            jLabel12.setText(String.valueOf(dia.getMonth()+1));
+        }
+        
     }//GEN-LAST:event_jComboBox2ItemStateChanged
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         try {
             jButton5.setEnabled(false);
             jButton1.setEnabled(false);
-            String combo=jComboBox2.getSelectedItem().toString();
+            String filtro1 = (String) jComboBox2.getSelectedItem();
             Date fin= dateChooserCombo1.getSelectedDate().getTime();
-            List reg=new ArrayList();
-            if (combo.equals("DIA")) {
-                java.sql.Date sqlDate = new java.sql.Date(fin.getTime());
-                Iterator it= Drive.PERSISTENCIA.getRegistroaccesoss(sqlDate,per.getIdPersonal()).iterator();
-                while(it.hasNext()){
-                    Registroacceso re=(Registroacceso) it.next();
-                    if(re.getFecha().getDate()==fin.getDate()&&re.getFecha().getMonth()==fin.getMonth()&&re.getFecha().getYear()==fin.getYear()){
-                        reg.add(re);
-                    }
+            List lista = new ArrayList();
+            DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+            int c = 0;
+            while (modelo.getRowCount() != c) {
+                Object o=jTable1.getValueAt(c, 0);
+                if (o != null) {
+                    Registroacceso audi = (Registroacceso) o;
+                    lista.add(audi);
                 }
-                Drive.mostrarReporte("Registro",reg,"Registro de acceso");   
-            }else if (combo.equals("SEMANA")) {
-                Date aux=Drive.restarFechasDias(fin, 7);
-                while(aux.compareTo(fin)<=0){
-                    java.sql.Date sqlDate = new java.sql.Date(aux.getTime());
-                    Iterator it= Drive.PERSISTENCIA.getRegistroaccesoss(sqlDate,per.getIdPersonal()).iterator();
-                    while(it.hasNext()){
-                        Registroacceso re=(Registroacceso) it.next();
-                        if(re.getFecha().getDate()==aux.getDate()&&re.getFecha().getMonth()==aux.getMonth()&&re.getFecha().getYear()==aux.getYear()){
-                            reg.add(re);
-                        }
-                    }
-                    aux=Drive.sumarFechasDias(aux, 1);
-                }
-                Drive.mostrarReporte("Registro",reg,"Registro de acceso");
-            }else if (combo.equals("MES")) {
-                Date aux=fin;
-                while(aux.compareTo(fin)<=0){
-                    if(aux.getMonth()==fin.getMonth()){
-                        java.sql.Date sqlDate = new java.sql.Date(aux.getTime());
-                        Iterator it= Drive.PERSISTENCIA.getRegistroaccesoss(sqlDate,per.getIdPersonal()).iterator();
-                        while(it.hasNext()){
-                            Registroacceso re=(Registroacceso) it.next();
-                            if(re.getFecha().getDate()==aux.getDate()&&re.getFecha().getMonth()==aux.getMonth()&&re.getFecha().getYear()==aux.getYear()){
-                                reg.add(re);
-                            }
-                        }
-                        aux=Drive.restarFechasDias(aux, 1);
-                    }else{break;}
-                }
-                
-                Drive.mostrarReporte("Registro",reg,"Registro de acceso");
+                c++;
             }
+            if(filtro1.equals("DIA")){
+            filtro1= filtro1+": "+fin.getDate();
+            }else if(filtro1.equals("SEMANA")){
+                filtro1= filtro1+" del dia: "+fin.getDate();
+            }else if(filtro1.equals("MES")){
+                filtro1= filtro1+": "+(fin.getMonth()+1);
+            }else if(filtro1.equals("AÑO")){
+                filtro1= filtro1+": "+(fin.getYear()+1900);
+            }
+            Drive.mostrarReporte("Registro",lista,"Registro de acceso",filtro1,lista.size()); 
             jButton5.setEnabled(true);
             jButton1.setEnabled(true);
         } catch (Exception Ex) {
@@ -607,30 +828,132 @@ dateChooserCombo1.addSelectionChangedListener(new datechooser.events.SelectionCh
         }
     }//GEN-LAST:event_jButton5ActionPerformed
 
+    private void dateChooserCombo2OnSelectionChange(datechooser.events.SelectionChangedEvent evt) {//GEN-FIRST:event_dateChooserCombo2OnSelectionChange
+        Drive.LimpiarTabla(jTable3);
+        Date d=dateChooserCombo2.getSelectedDate().getTime();
+        String buscar = (String) jComboBox3.getSelectedItem();
+        Drive.CargarTablaCircularPer(jTable3, per, d, buscar);
+        if(buscar.equals("DIA")){
+            jLabel13.setText(String.valueOf(d.getDate()));
+        }else if(buscar.equals("MES")){
+            jLabel13.setText(String.valueOf(d.getMonth()+1));
+        }else if(buscar.equals("AÑO")){
+            jLabel13.setText(String.valueOf(d.getYear()+1900));
+        }
+    }//GEN-LAST:event_dateChooserCombo2OnSelectionChange
+
+    private void jComboBox3ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox3ItemStateChanged
+        Drive.LimpiarTabla(jTable3);
+        Date d=dateChooserCombo2.getSelectedDate().getTime();
+        String buscar = (String) jComboBox3.getSelectedItem();
+        Drive.CargarTablaCircularPer(jTable3, per, d, buscar);
+        if(buscar.equals("DIA")){
+            jLabel13.setText(String.valueOf(d.getDate()));
+        }else if(buscar.equals("MES")){
+            jLabel13.setText(String.valueOf(d.getMonth()+1));
+        }else if(buscar.equals("AÑO")){
+            jLabel13.setText(String.valueOf(d.getYear()+1900));
+        }
+    }//GEN-LAST:event_jComboBox3ItemStateChanged
+
+    private void jTable3MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable3MouseReleased
+        if (evt.getClickCount() == 2) {
+            jTable3.getModel();
+            Object o=jTable3.getValueAt(jTable3.rowAtPoint(evt.getPoint()), 0);
+            Circularpersonal cirper = (Circularpersonal) o;
+            Circular cir = (Circular) jTable3.getValueAt(jTable3.rowAtPoint(evt.getPoint()), 1);
+            int sel = JOptionPane.showOptionDialog(null, cir.getDescripcion(), cir.getNombre(), JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Leido", "No leido", "Salir"},"Leido");
+            if (sel == 0){
+                cirper.setEstado(true);
+                cirper.ActualizarCircularpersonal(cirper);
+                Drive.LimpiarTabla(jTable3);
+                Date d=dateChooserCombo1.getSelectedDate().getTime();
+                String buscar = (String) jComboBox2.getSelectedItem();
+                Drive.CargarTablaCircularPer(jTable3, per, d, buscar);
+            }
+            
+        }
+    }//GEN-LAST:event_jTable3MouseReleased
+
+    private void jTable3MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable3MouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTable3MouseEntered
+
+    private void jTable3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable3MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTable3MouseClicked
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        try{
+            DefaultTableModel modelo = (DefaultTableModel) jTable3.getModel();
+            int e = 0;
+            while (modelo.getRowCount() != e) {
+                Circularpersonal cirper=(Circularpersonal) modelo.getValueAt(e, 0);
+                String desc=(String) modelo.getValueAt(e, 4);
+                if(cirper.getDescripcion()!=null){
+                    if(!cirper.getDescripcion().equals(desc)){
+                        cirper.setDescripcion(desc);
+                        cirper.ActualizarCircularpersonal(cirper);
+                    }
+                }else{
+                    if(desc!=null){
+                        cirper.setDescripcion(desc);
+                        cirper.ActualizarCircularpersonal(cirper);
+                    }
+                }
+                boolean check=(Boolean) modelo.getValueAt(e, 3);
+                if(cirper.getEstado()!=check){
+                    cirper.setEstado(check);
+                    cirper.ActualizarCircularpersonal(cirper);
+                }
+                e++;
+            }
+            Drive.LimpiarTabla(jTable3);
+            Date d=dateChooserCombo1.getSelectedDate().getTime();
+            String buscar = (String) jComboBox2.getSelectedItem();
+            Drive.CargarTablaCircularPer(jTable3, per, d, buscar);
+        }catch(Exception ex) {
+            JOptionPane.showMessageDialog(null, ex.toString(), "Guardar fin", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
+
     /**
      * @param args the command line arguments
      */
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private datechooser.beans.DateChooserCombo dateChooserCombo1;
+    private datechooser.beans.DateChooserCombo dateChooserCombo2;
     private datechooser.beans.DateChooserPanel dateChooserPanel1;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton5;
     private javax.swing.JComboBox jComboBox2;
+    private javax.swing.JComboBox jComboBox3;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTabbedPane jTabbedPane2;
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
+    private javax.swing.JTable jTable3;
     // End of variables declaration//GEN-END:variables
 }

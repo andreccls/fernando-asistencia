@@ -45,8 +45,8 @@ public class Programacion {
         //La informacion que se pide un nombre, a que grupo pertenece 
         //y a que clase que implemente de Job va a ser llamado
         JobDetail job = new JobDetail("TareaAutomatizar", null, TareaInvocar.class);
-        Trigger trigger = TriggerUtils.makeMinutelyTrigger(5);
-        trigger.setName("CadaCincoMinutos");
+        Trigger trigger = TriggerUtils.makeMinutelyTrigger(30);
+        trigger.setName("CadaMediaHora");
         trigger.setStartTime(new Date());
         
 //        JobDetail job2 = new JobDetail("TareaAutomatizar2", null, ControlarTardanzas.class);

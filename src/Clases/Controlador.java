@@ -4,12 +4,28 @@
  */
 package Clases;
 
+import Persistencia.ConexionJDBC;
 import Persistencia.persistencia;
+import Presentacion.JFrameActividades;
+import java.awt.Image;
 import java.awt.Label;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
+import java.awt.image.WritableRaster;
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.nio.file.Files;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -24,7 +40,10 @@ import javax.swing.JOptionPane;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JTable;
@@ -51,20 +70,25 @@ import net.sf.jasperreports.view.JasperViewer;
 public class Controlador {
 
     public static persistencia PERSISTENCIA;
+    public static ConexionJDBC conexion;
 
     public Controlador() {
-        
+        try {        
             PERSISTENCIA = new persistencia();
-        
+            conexion = new ConexionJDBC();
+        } catch (SQLException ex) {
+            Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public static persistencia getPERSISTENCIA() {
         return PERSISTENCIA;
     }
+    
+    public static ConexionJDBC getConexionJDBC() {
+        return conexion;
+    }
 
-    
-    
-    
 
     public boolean existeColegio() {
         boolean col = false;
@@ -73,10 +97,69 @@ public class Controlador {
         }
         return col;
     }
+    
+    public boolean VerificarLicencia(Personal per,Date inicio, Date fin) {
+        boolean col = true;
+        Iterator it = PERSISTENCIA.getLicencias(per.getIdPersonal()).iterator();
+        while(it.hasNext()){
+            try {
+                Licencia lic=(Licencia) it.next();
+                Date licini=lic.getInicio();
+                Date licfin=lic.getFin();
+                SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+                Date ini=formateador.parse(formateador.format(inicio));
+                Date fi=formateador.parse(formateador.format(fin));
+                if((ini.compareTo(licini)<=0 && fi.compareTo(licini)>=0) || (ini.compareTo(licfin)<=0 && fi.compareTo(licfin)>=0)|| (ini.compareTo(licini)<=0 && fi.compareTo(licfin)>=0) || (ini.compareTo(licini)>=0 && fi.compareTo(licfin)<=0)){
+                    col=false;
+                }
+            } catch (ParseException ex) {
+                Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return col;
+    }
+    
+    public boolean VerificarLicencia(Personal per,Date inicio, Date fin,int idlic) {
+        boolean col = true;
+        Iterator it = PERSISTENCIA.getLicencias(per.getIdPersonal()).iterator();
+        while(it.hasNext()){
+            try {
+                Licencia lic=(Licencia) it.next();
+                if(lic.getIdLicencia()!=idlic){
+                    Date licini=lic.getInicio();
+                    Date licfin=lic.getFin();
+                    SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+                    Date ini=formateador.parse(formateador.format(inicio));
+                    Date fi=formateador.parse(formateador.format(fin));
+                    if((ini.compareTo(licini)<=0 && fi.compareTo(licini)>=0) || (ini.compareTo(licfin)<=0 && fi.compareTo(licfin)>=0)|| (ini.compareTo(licini)<=0 && fi.compareTo(licfin)>=0) || (ini.compareTo(licini)>=0 && fi.compareTo(licfin)<=0)){
+                        col=false;
+                    }
+                }
+            } catch (ParseException ex) {
+                Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return col;
+    }
 
     public Establecimiento getPrimerEstablecimiento() {
-        Establecimiento col = (Establecimiento) Controlador.getPERSISTENCIA().getEstablecimientos().get(0);
+        Establecimiento col = new Establecimiento();
+        Iterator it=PERSISTENCIA.getEstablecimientos().iterator();
+        if(it.hasNext()){
+            col=(Establecimiento) PERSISTENCIA.getEstablecimientos().get(0);
+        }
         return col;
+    }
+    
+    public Anolectivo getAnoLectivo() {
+        Anolectivo an = new Anolectivo();
+        Date ano=new Date();
+        int a=ano.getYear()+1900;
+        Iterator it=PERSISTENCIA.getAnoLectivo(a).iterator();
+        if(it.hasNext()){
+            an=(Anolectivo) it.next();
+        }
+        return an;
     }
 
     public Establecimiento getColegio(int idcol) {
@@ -92,9 +175,9 @@ public class Controlador {
         return cole;
     }
 
-    public void crearEstablecimiento(String nombre, String calle, Integer altura, String piso, String depto, Set<Auditoria> auditorias, Set<Feriado> feriados, Set<Tarea> tareas, Set<Departamento> departamentos, Set<Circular> circulars, Set<Personal> personals, Set<DetalleEstablecimiento> detalleEstablecimientos, Set<Declaracionjurada> declaracionjuradas) {
+    public void crearEstablecimiento(String nombre, String calle, Integer altura, String piso, String depto, byte[] imagen, String leyenda, Set<Auditoria> auditorias, Set<Tarea> tareas, Set<Departamento> departamentos, Set<Circular> circulars, Set<Personal> personals, Set<Anolectivo> anolectivos, Set<DetalleEstablecimiento> detalleEstablecimientos) {
         if (!existeColegio()) {
-            Establecimiento unEstablecimiento = new Establecimiento(nombre, calle, altura, piso, depto,auditorias, feriados, tareas, departamentos, circulars, personals, detalleEstablecimientos, declaracionjuradas);
+            Establecimiento unEstablecimiento = new Establecimiento(nombre, calle, altura, piso, depto,imagen,leyenda,auditorias, tareas, departamentos, circulars, personals,anolectivos,detalleEstablecimientos);
             unEstablecimiento.guardarEstablecimiento(unEstablecimiento);
         } else {
             JOptionPane.showMessageDialog(null, "Ya existe el Colegio");
@@ -143,6 +226,30 @@ public class Controlador {
             JOptionPane.showMessageDialog(null, ex.toString());
         }
     }
+    
+    public void CargarComboLugar(JComboBox JCombo) {
+        try {
+            Iterator<Lugar> rs = Controlador.getPERSISTENCIA().getLugar().iterator();
+            while (rs.hasNext()) {
+                Lugar lug = rs.next();
+                JCombo.addItem(lug);
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex.toString());
+        }
+    }
+    
+    public void CargarComboAulas(JComboBox JCombo) {
+        try {
+            Iterator<Aula> rs = Controlador.getPERSISTENCIA().getAulas().iterator();
+            while (rs.hasNext()) {
+                Aula au = (Aula) rs.next();
+                JCombo.addItem(au);
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex.toString());
+        }
+    }
 
     public void CargarComboDepartamento(JComboBox JCombo) {
         try {
@@ -159,8 +266,8 @@ public class Controlador {
 
     public void CargarComboPerfil(JComboBox JCombo) {
         try {
-            //Establecimiento col = getPrimerEstablecimiento();
-            Iterator rs = Controlador.getPERSISTENCIA().getPerfiles().iterator();
+//            LimpiarCombo(JCombo);
+            Iterator rs = PERSISTENCIA.getPerfiles().iterator();
             while (rs.hasNext()) {
                 Perfil perf = (Perfil) rs.next();
                 JCombo.addItem(perf);
@@ -170,6 +277,37 @@ public class Controlador {
         }
     }
 
+    public byte[] ObtenerByte (String direccion){
+        File file = new File(direccion);
+        byte[] bFile = new byte[(int) file.length()];
+        try {
+             FileInputStream fileInputStream = new FileInputStream(file);
+             fileInputStream.read(bFile);
+             fileInputStream.close();
+        } catch (Exception e) {
+             e.printStackTrace();
+        }
+        return bFile;
+    }
+    
+    
+//    public byte[] extractBytes(String ImageName) throws IOException {
+//        // open image
+//        File imgPath = new File(ImageName);
+//        BufferedImage bufferedImage = ImageIO.read(imgPath);
+//        // get DataBufferBytes from Raster
+//        WritableRaster raster = bufferedImage.getRaster();
+//        DataBufferByte data = (DataBufferByte) raster.getDataBuffer();
+//
+//        return (data.getData());
+//    }
+    
+//    public byte[] simple(String ImageName) throws IOException {
+//        File fi = new File(ImageName);
+//        byte[] fileContent = Files.readAllBytes(fi.toPath());
+//        return fileContent;
+//    }
+    
     public void CargarComboRelacion(JComboBox JCombo) {
         try {
             Iterator rs = Controlador.getPERSISTENCIA().getRelaciones().iterator();
@@ -181,6 +319,7 @@ public class Controlador {
             JOptionPane.showMessageDialog(null, ex.toString());
         }
     }
+    
 
     public void CargarComboArticulo(JComboBox JCombo) {
         try {
@@ -200,6 +339,19 @@ public class Controlador {
             while (rs.hasNext()) {
                 Tipodoc tipo = (Tipodoc) rs.next();
                 JCombo.addItem(tipo);
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex.toString());
+        }
+    }
+    
+    public void CargarComboDecjurada(JComboBox JCombo, Personal per) {
+        try {
+            Iterator rs = per.getDeclaracionjuradas().iterator();
+            while (rs.hasNext()) {
+                Declaracionjurada dec = (Declaracionjurada) rs.next();
+                Anolectivo ano=dec.getAnolectivo();
+                JCombo.addItem(ano);
             }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, ex.toString());
@@ -338,9 +490,6 @@ public class Controlador {
     public static void LimpiarCombo(JComboBox JCombo) {
         DefaultComboBoxModel mod = (DefaultComboBoxModel) JCombo.getModel();
         mod.removeAllElements();
-        //        DefaultTableModel modelo = (DefaultTableModel) Tabla.getModel();
-//        while(modelo.getRowCount()>0)
-//            modelo.removeRow(0);
     }
 
     public static void LimpiarTabla(JTable Tabla) {
@@ -374,10 +523,11 @@ public class Controlador {
             Iterator<Iniciofin> it = agen.getDia2(di).getIniciofins().iterator();
             while (it.hasNext()) {
                 Iniciofin ini = (Iniciofin) it.next();
-                Object[] fila = new Object[3];
+                Object[] fila = new Object[4];
                 fila[0] = agen.getTarea().getNombre();
-                fila[1] = ini.getInicio();
-                fila[2] = ini.getFin();
+                fila[1] = agen.getTarea().getLugar();
+                fila[2] = ini.getInicio();
+                fila[3] = ini.getFin();
                 model.addRow(fila);
             }
         }
@@ -387,16 +537,17 @@ public class Controlador {
     public void CargarTablaActivo(JTable tabla, Nivel niv) {
         LimpiarTabla(tabla);
         DefaultTableModel model = (DefaultTableModel) tabla.getModel();
-        Iterator<Activo> activo = niv.getActivos().iterator();
+        Iterator<Activo> activo = PERSISTENCIA.getActivos(niv.getIdNivel()).iterator();
         while (activo.hasNext()) {
             Activo act = (Activo) activo.next();
-            Iterator<ActivoIniciofin> horas = act.getActivoIniciofins().iterator();
+            Iterator<ActivoIniciofin> horas = PERSISTENCIA.getActivoiniciofin(act.getIdActivo()).iterator();
             while (horas.hasNext()) {
                 ActivoIniciofin infin = (ActivoIniciofin) horas.next();
                 Object[] fila = new Object[3];
                 fila[0] = act.getDia();
-                fila[1] = infin.getInicio();
-                fila[2] = infin.getFin();
+                SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
+                fila[1] = formateador.format(infin.getInicio());
+                fila[2] = formateador.format(infin.getFin());
                 model.addRow(fila);
             }
         }
@@ -426,10 +577,10 @@ public class Controlador {
         tabla.setModel(model);
     }
 
-    public void CargarTablaFeriados(JTable tabla) {
+    public void CargarTablaFeriados(JTable tabla,Date fecha) {
         LimpiarTabla(tabla);
         DefaultTableModel model = (DefaultTableModel) tabla.getModel();
-        Iterator it = PERSISTENCIA.getFeriados().iterator();
+        Iterator it = PERSISTENCIA.getFeriados(fecha.getYear()+1900).iterator();
         while (it.hasNext()) {
             Feriado fer = (Feriado) it.next();
             Object[] fila = new Object[2];
@@ -443,56 +594,64 @@ public class Controlador {
 
     public void CargarTablaFiltroActividades(JTable tabla, String buscarpor, String tipo, String valor) {
         DefaultTableModel model = (DefaultTableModel) tabla.getModel();
+        Anolectivo ano=getAnoLectivo();
         if (tipo.equals("Clase")) {
             Iterator<Tareaclase> act = PERSISTENCIA.getTareasClases().iterator();
             while (act.hasNext()) {
                 Tareaclase ac = act.next();
-                if (ac.getTarea().getEstado() == true) {
+                if (ac.getTarea().getEstado()&&ac.getTarea().getAgendas().size()>0) {
+                    Agenda ag=ac.getTarea().getAgendas().iterator().next();
+                    if(ag.getAnolectivo().getIdAnolectivo()==ano.getIdAnolectivo()){
                     if (buscarpor.equals("Nombre") && ac.getTarea().getEstado() == true) {
                         int i = ac.getTarea().getNombre().indexOf(valor);
                         if (i == 0) {
                             Object[] fila = new Object[3];
-                            fila[0] = ac.getTarea();
+                            fila[0] = ac;
                             fila[1] = ac.getTarea().getLugar();
                             fila[2] = ac.getTarea().getComentario();
                             model.addRow(fila);
                         }
                     } else if (buscarpor.equals("Lugar") && ac.getTarea().getEstado() == true) {
-                        int i = ac.getTarea().getLugar().indexOf(valor);
+                        int i = ac.getTarea().getLugar().getNombre().indexOf(valor);
                         if (i == 0) {
                             Object[] fila = new Object[3];
-                            fila[0] = ac.getTarea();
+                            fila[0] = ac;
                             fila[1] = ac.getTarea().getLugar();
                             fila[2] = ac.getTarea().getComentario();
                             model.addRow(fila);
                         }
                     }
                 }
+                }
+                
             }
         } else if (tipo.equals("Reunión")) {
             Iterator<Tareareunion> act = PERSISTENCIA.getTareasReuniones().iterator();
             while (act.hasNext()) {
                 Tareareunion ac = act.next();
-                if (ac.getTarea().getEstado() == true) {
+                if (ac.getTarea().getEstado()&&ac.getTarea().getAgendas().size()>0) {
+                    Agenda ag=ac.getTarea().getAgendas().iterator().next();
+                    if(ag.getAnolectivo().getIdAnolectivo()==ano.getIdAnolectivo()){
                     if (buscarpor.equals("Nombre") && ac.getTarea().getEstado() == true) {
                         int i = ac.getTarea().getNombre().indexOf(valor);
                         if (i == 0) {
                             Object[] fila = new Object[3];
-                            fila[0] = ac.getTarea();
+                            fila[0] = ac;
                             fila[1] = ac.getTarea().getLugar();
                             fila[2] = ac.getTarea().getComentario();
                             model.addRow(fila);
                         }
                     } else if (buscarpor.equals("Lugar") && ac.getTarea().getEstado() == true) {
-                        int i = ac.getTarea().getLugar().indexOf(valor);
+                        int i = ac.getTarea().getLugar().getNombre().indexOf(valor);
                         if (i == 0) {
                             Object[] fila = new Object[3];
-                            fila[0] = ac.getTarea();
+                            fila[0] = ac;
                             fila[1] = ac.getTarea().getLugar();
                             fila[2] = ac.getTarea().getComentario();
                             model.addRow(fila);
                         }
                     }
+                }
                 }
             }
         } else if (tipo.equals("Extracurricular")) {
@@ -500,26 +659,29 @@ public class Controlador {
             while (act.hasNext()) {
                 Tareaextracurricular acc = act.next();
                 Tarea ac = acc.getTarea();
-                if (ac.getEstado() == true) {
+                if (ac.getEstado()&&ac.getAgendas().size()>0) {
+                    Agenda ag=ac.getAgendas().iterator().next();
+                    if(ag.getAnolectivo().getIdAnolectivo()==ano.getIdAnolectivo()){
                     if (buscarpor.equals("Nombre") && ac.getEstado() == true) {
                         int i = ac.getNombre().indexOf(valor);
                         if (i == 0) {
                             Object[] fila = new Object[3];
-                            fila[0] = ac;
+                            fila[0] = acc;
                             fila[1] = ac.getLugar();
                             fila[2] = ac.getComentario();
                             model.addRow(fila);
                         }
                     } else if (buscarpor.equals("Lugar") && ac.getEstado() == true) {
-                        int i = ac.getLugar().indexOf(valor);
+                        int i = ac.getLugar().getNombre().indexOf(valor);
                         if (i == 0) {
                             Object[] fila = new Object[3];
-                            fila[0] = ac;
+                            fila[0] = acc;
                             fila[1] = ac.getLugar();
                             fila[2] = ac.getComentario();
                             model.addRow(fila);
                         }
                     }
+                }
                 }
             }
         } else if (tipo.equals("Otro")) {
@@ -527,7 +689,40 @@ public class Controlador {
             while (act.hasNext()) {
                 Tareaotro acc = act.next();
                 Tarea ac = acc.getTarea();
-                if (ac.getEstado() == true) {
+//                Agenda ag=ac.getAgendas().iterator().next();
+                if (ac.getEstado()&&ac.getAgendas().size()>0) {
+                    Agenda ag=ac.getAgendas().iterator().next();
+                    if(ag.getAnolectivo().getIdAnolectivo()==ano.getIdAnolectivo()){
+                    if (buscarpor.equals("Nombre") && ac.getEstado() == true) {
+                        int i = ac.getNombre().indexOf(valor);
+                        if (i == 0) {
+                            Object[] fila = new Object[3];
+                            fila[0] = acc;
+                            fila[1] = ac.getLugar();
+                            fila[2] = ac.getComentario();
+                            model.addRow(fila);
+                        }
+                    } else if (buscarpor.equals("Lugar") && ac.getEstado() == true) {
+                        int i = ac.getLugar().getNombre().indexOf(valor);
+                        if (i == 0) {
+                            Object[] fila = new Object[3];
+                            fila[0] = acc;
+                            fila[1] = ac.getLugar();
+                            fila[2] = ac.getComentario();
+                            model.addRow(fila);
+                        }
+                    }
+                }
+                }
+            }
+        } else if (tipo.equals("Todos")) {
+            Iterator<Tarea> act = PERSISTENCIA.getTareas().iterator();
+            while (act.hasNext()) {
+                Tarea ac = act.next();
+//                Agenda ag=ac.getAgendas().iterator().next();
+                if (ac.getEstado()&&ac.getAgendas().size()>0) {
+                    Agenda ag=ac.getAgendas().iterator().next();
+                    if(ag.getAnolectivo().getIdAnolectivo()==ano.getIdAnolectivo()){
                     if (buscarpor.equals("Nombre") && ac.getEstado() == true) {
                         int i = ac.getNombre().indexOf(valor);
                         if (i == 0) {
@@ -538,7 +733,7 @@ public class Controlador {
                             model.addRow(fila);
                         }
                     } else if (buscarpor.equals("Lugar") && ac.getEstado() == true) {
-                        int i = ac.getLugar().indexOf(valor);
+                        int i = ac.getLugar().getNombre().indexOf(valor);
                         if (i == 0) {
                             Object[] fila = new Object[3];
                             fila[0] = ac;
@@ -548,31 +743,6 @@ public class Controlador {
                         }
                     }
                 }
-            }
-        } else if (tipo.equals("Todos")) {
-            Iterator<Tarea> act = PERSISTENCIA.getTareas().iterator();
-            while (act.hasNext()) {
-                Tarea ac = act.next();
-                if (ac.getEstado() == true) {
-                    if (buscarpor.equals("Nombre") && ac.getEstado() == true) {
-                        int i = ac.getNombre().indexOf(valor);
-                        if (i == 0) {
-                            Object[] fila = new Object[3];
-                            fila[0] = ac;
-                            fila[1] = ac.getLugar();
-                            fila[2] = ac.getComentario();
-                            model.addRow(fila);
-                        }
-                    } else if (buscarpor.equals("Lugar") && ac.getEstado() == true) {
-                        int i = ac.getLugar().indexOf(valor);
-                        if (i == 0) {
-                            Object[] fila = new Object[3];
-                            fila[0] = ac;
-                            fila[1] = ac.getLugar();
-                            fila[2] = ac.getComentario();
-                            model.addRow(fila);
-                        }
-                    }
                 }
             }
         }
@@ -586,11 +756,13 @@ public class Controlador {
         Iterator<Circular> it = PERSISTENCIA.getCirculares().iterator();
         while (it.hasNext()) {
             Circular cir = it.next();
-            if (cir.getFecha().getYear() == dia.getYear() && cir.getFecha().getMonth() == dia.getMonth() && cir.getFecha().getDate() == dia.getDate()) {
+            if (cir.getInicio().compareTo(dia)<=0 && cir.getFin().compareTo(dia)>=0) {
                 Object[] fila = new Object[4];
-                fila[0] = cir.getCircularpersonals().iterator().next().getDescripcion();
-                fila[1] = cir.getFecha();
-                fila[2] = cir;
+                fila[0] = cir;
+                SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+                fila[1] = formateador.format(cir.getInicio());
+                fila[2] = formateador.format(cir.getFin());
+                fila[3] = cir.getFirma();
                 model.addRow(fila);
             }
         }
@@ -647,6 +819,303 @@ public class Controlador {
         tabla.setModel(model);
     }
 
+    public void CargarHistorial (String valor, Date fecha, List listaper, List listatar){
+        if (valor.equals("Año")) {
+                Iterator it = PERSISTENCIA.getAnos(fecha.getYear() + 1900).iterator();
+                while (it.hasNext()) {
+                    Ano ano = (Ano) it.next();
+                    Personal per = ano.getAgenda().getPersonal();
+                    Tarea tar=ano.getAgenda().getTarea();
+                    if (!listaper.contains(per)) {
+                        listaper.add(per);
+                    }
+                    if (!listatar.contains(tar)) {
+                        listatar.add(tar);
+                    }
+                    
+                }
+            } else if (valor.equals("Mes")) {
+                Iterator it = PERSISTENCIA.getMeses(fecha.getYear() + 1900, fecha.getMonth()).iterator();
+                while (it.hasNext()) {
+                    Mes mes = (Mes) it.next();
+                    Personal per = mes.getAno().getAgenda().getPersonal();
+                    Tarea tar=mes.getAno().getAgenda().getTarea();
+                    if (!listaper.contains(per)) {
+                        listaper.add(per);
+                    }
+                    if (!listatar.contains(tar)) {
+                        listatar.add(tar);
+                    }
+                }
+            } else if (valor.equals("Dia")) {
+                Iterator it = PERSISTENCIA.getDias(fecha.getYear()+1900, fecha.getMonth(), fecha.getDate()).iterator();
+                while (it.hasNext()) {
+                    Dia dia = (Dia) it.next();
+                    Personal per = dia.getMes().getAno().getAgenda().getPersonal();
+                    Tarea tar=dia.getMes().getAno().getAgenda().getTarea();
+                    if (!listaper.contains(per)) {
+                        listaper.add(per);
+                    }
+                    if (!listatar.contains(tar)) {
+                        listatar.add(tar);
+                    }
+                }
+            }
+    }
+    public void CargarTablaHistorial(JTable tablapersonal, Date fecha, String valor, String filtro,JTable tablaclases) {
+        List lista = new ArrayList();
+        List listac= new ArrayList();
+        if (valor.equals("AÑO")) {
+            Iterator it = PERSISTENCIA.getAnos(fecha.getYear() + 1900).iterator();
+            while (it.hasNext()) {
+                Ano ano = (Ano) it.next();
+                Personal per = ano.getAgenda().getPersonal();
+                Tarea tar=ano.getAgenda().getTarea();
+                if (!lista.contains(per)) {
+                    lista.add(per);
+                }
+                if (!listac.contains(tar)) {
+                    listac.add(tar);
+                }
+            }
+        } else if (valor.equals("MES")) {
+            Iterator it = PERSISTENCIA.getMeses(fecha.getYear() + 1900, fecha.getMonth()).iterator();
+            while (it.hasNext()) {
+                Mes mes = (Mes) it.next();
+                Personal per = mes.getAno().getAgenda().getPersonal();
+                Tarea tar=mes.getAno().getAgenda().getTarea();
+                if (!lista.contains(per)) {
+                    lista.add(per);
+                }
+                if (!listac.contains(tar)) {
+                    listac.add(tar);
+                }
+            }
+        } else if (valor.equals("DIA")) {
+            Iterator it = PERSISTENCIA.getDias(fecha.getYear()+1900, fecha.getMonth(), fecha.getDate()).iterator();
+            while (it.hasNext()) {
+                Dia dia = (Dia) it.next();
+                Personal per = dia.getMes().getAno().getAgenda().getPersonal();
+                Tarea tar=dia.getMes().getAno().getAgenda().getTarea();
+                if (!lista.contains(per)) {
+                    lista.add(per);
+                }
+                if (!listac.contains(tar)) {
+                    listac.add(tar);
+                }
+            }
+        }
+        
+        DefaultTableModel model = (DefaultTableModel) tablapersonal.getModel();
+        Iterator itt = lista.iterator();
+        while (itt.hasNext()) {
+            Personal pe = (Personal) itt.next();
+            Iterator ittt = PERSISTENCIA.getAuditoria(pe.getIdPersonal()).iterator();
+            while (ittt.hasNext()) {
+                Auditoria audi = (Auditoria) ittt.next();
+                if (filtro.equals("Todos")) {
+                    Object[] fila = new Object[6];
+                    fila[0] = pe;
+                    fila[1] = pe.getDni();
+                    SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+                    fila[2] = formateador.format(pe.getIngreso());
+                    fila[3] = pe.getCorreoElectronico();
+                    fila[4] = audi.getOperacion();
+                    SimpleDateFormat formateador2 = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+                    fila[5] = formateador2.format(audi.getFecha());
+                    model.addRow(fila);
+                } else if (filtro.equals("Activos") && audi.getOperacion().equals("Insertar")) {
+                    Object[] fila = new Object[6];
+                    fila[0] = pe;
+                    fila[1] = pe.getDni();
+                    SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+                    fila[2] = formateador.format(pe.getIngreso());
+                    fila[3] = pe.getCorreoElectronico();
+                    fila[4] = audi.getOperacion();
+                    SimpleDateFormat formateador2 = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+                    fila[5] = formateador2.format(audi.getFecha());
+                    model.addRow(fila);
+                } else if (filtro.equals("Inactivos") && audi.getOperacion().equals("Eliminar")) {
+                    Object[] fila = new Object[6];
+                    fila[0] = pe;
+                    fila[1] = pe.getDni();
+                    SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+                    fila[2] = formateador.format(pe.getIngreso());
+                    fila[3] = pe.getCorreoElectronico();
+                    fila[4] = audi.getOperacion();
+                    SimpleDateFormat formateador2 = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+                    fila[5] = formateador2.format(audi.getFecha());
+                    model.addRow(fila);
+                }
+            }
+        }
+        tablapersonal.setModel(model);
+        
+        DefaultTableModel modell = (DefaultTableModel) tablaclases.getModel();
+        Iterator itc = listac.iterator();
+        while (itc.hasNext()) {
+            Tarea tar = (Tarea) itc.next();
+            Iterator ittt = PERSISTENCIA.getAuditoriaTarea(tar.getIdTarea()).iterator();
+            while (ittt.hasNext()) {
+                Auditoria audi = (Auditoria) ittt.next();
+                if (filtro.equals("Todos")) {
+                    Object[] fila = new Object[6];
+                    fila[0] = tar;
+                    fila[1] = tar.getLugar();
+                    SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+                    fila[2] = formateador.format(tar.getDiaInicio());
+                    fila[3] = formateador.format(tar.getDiaFin());
+                    fila[4] = audi.getOperacion();
+                    SimpleDateFormat formateador2 = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+                    fila[5] = formateador2.format(audi.getFecha());
+                    modell.addRow(fila);
+                } 
+                else if (filtro.equals("Activos") && audi.getOperacion().equals("Insertar")) {
+                    Object[] fila = new Object[6];
+                    fila[0] = tar;
+                    fila[1] = tar.getLugar();
+                    SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+                    fila[2] = formateador.format(tar.getDiaInicio());
+                    fila[3] = formateador.format(tar.getDiaFin());
+                    fila[4] = audi.getOperacion();
+                    SimpleDateFormat formateador2 = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+                    fila[5] = formateador2.format(audi.getFecha());
+                    modell.addRow(fila);
+                } else if (filtro.equals("Inactivos") && audi.getOperacion().equals("Eliminar")) {
+                    Object[] fila = new Object[6];
+                    fila[0] = tar;
+                    fila[1] = tar.getLugar();
+                    SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+                    fila[2] = formateador.format(tar.getDiaInicio());
+                    fila[3] = formateador.format(tar.getDiaFin());
+                    fila[4] = audi.getOperacion();
+                    SimpleDateFormat formateador2 = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+                    fila[5] = formateador2.format(audi.getFecha());
+                    modell.addRow(fila);
+                }
+            }
+        }
+        tablaclases.setModel(modell);
+    }
+    
+    public void CargarTablaPerTar(JTable tabla, Personal per){
+        LimpiarTabla(tabla);
+        DefaultTableModel model = (DefaultTableModel) tabla.getModel();
+        Iterator it=per.getAgendas().iterator();
+        while(it.hasNext()){
+            Agenda age=(Agenda) it.next();
+            Tarea tar=age.getTarea();
+            Object[] fila = new Object[4];
+            fila[0] = tar;
+            fila[1] = tar.getComentario();
+            SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+            fila[2] = formateador.format(tar.getDiaInicio());
+            fila[3] = formateador.format(tar.getDiaFin());
+            model.addRow(fila);
+        }
+    }
+    
+    public void CargarTablaPerTar(JTable tabla, Tarea tar){
+        LimpiarTabla(tabla);
+        DefaultTableModel model = (DefaultTableModel) tabla.getModel();
+        Iterator it=tar.getAgendas().iterator();
+        while(it.hasNext()){
+            Agenda age=(Agenda) it.next();
+            Personal per=age.getPersonal();
+            Object[] fila = new Object[4];
+            fila[0] = per;
+            fila[1] = per.getDni();
+            SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+            fila[2] = formateador.format(per.getIngreso());
+            fila[3] = per.getCorreoElectronico();
+            model.addRow(fila);
+        }
+    }
+    
+    public void CargarTablaPerTarHoy(JTable tabla, Tarea tar,Date fecha){
+        LimpiarTabla(tabla);
+        DefaultTableModel model = (DefaultTableModel) tabla.getModel();
+        Iterator it=PERSISTENCIA.getIniciofinTar(fecha.getDate(), fecha.getMonth(), fecha.getYear()+1900, tar.getIdTarea()).iterator();
+        while(it.hasNext()){
+            Iniciofin in=(Iniciofin) it.next();
+            Personal per=in.getDia().getMes().getAno().getAgenda().getPersonal();
+            if(per.getEstado()){
+                Object[] fila = new Object[4];
+                fila[0] = per;
+                fila[1] = per.getDni();
+                SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+                fila[2] = per.getCorreoElectronico();
+                fila[3] = formateador.format(per.getIngreso());
+                model.addRow(fila);
+            }
+        }
+    }
+    
+    public void CargarTablaPerTarHoy(JTable tabla, Personal per,Date fecha){
+        LimpiarTabla(tabla);
+        DefaultTableModel model = (DefaultTableModel) tabla.getModel();
+        Iterator it=PERSISTENCIA.getIniciofinPer(fecha.getDate(), fecha.getMonth(), fecha.getYear()+1900, per.getIdPersonal()).iterator();
+        while(it.hasNext()){
+            Iniciofin in=(Iniciofin) it.next();
+            Tarea tar= in.getDia().getMes().getAno().getAgenda().getTarea();
+            if(tar.getEstado()){
+                Object[] fila = new Object[4];
+                fila[0] = tar;
+                fila[1] = tar.getComentario();
+                SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
+                fila[2] = formateador.format(in.getInicio());
+                fila[3] = formateador.format(in.getFin());
+                model.addRow(fila);
+            }
+        }
+    }
+    
+    public void CargarTablaPerHoy(JTable tabla,Date hoy, Date hora){
+        LimpiarTabla(tabla);
+        List<Personal> pe=new ArrayList();
+        DefaultTableModel model = (DefaultTableModel) tabla.getModel();
+        Iterator it=PERSISTENCIA.getIniciofin(hoy.getDate(), hoy.getMonth(), hoy.getYear()+1900).iterator();
+        while(it.hasNext()){
+            Iniciofin in=(Iniciofin) it.next();
+            if(in.getInicio().compareTo(hora)<=0 && in.getFin().compareTo(hora)>=0){
+                Personal per=in.getDia().getMes().getAno().getAgenda().getPersonal();
+                if(!pe.contains(per)&&per.getEstado()){
+                    pe.add(per);
+                    Object[] fila = new Object[4];
+                    fila[0] = per;
+                    fila[1] = per.getDni();
+                    SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+                    fila[2] = per.getCorreoElectronico();
+                    fila[3] = formateador.format(per.getIngreso());
+                    model.addRow(fila);
+                }
+            }
+        }
+    }
+    
+    public void CargarTablaTarHoy(JTable tabla,Date hoy, Date hora){
+        LimpiarTabla(tabla);
+        List<Tarea> ta=new ArrayList();
+        DefaultTableModel model = (DefaultTableModel) tabla.getModel();
+        Iterator it=PERSISTENCIA.getIniciofin(hoy.getDate(), hoy.getMonth(), hoy.getYear()+1900).iterator();
+        while(it.hasNext()){
+            Iniciofin in=(Iniciofin) it.next();
+            if(in.getInicio().compareTo(hora)<=0 && in.getFin().compareTo(hora)>=0){
+                Tarea tar=in.getDia().getMes().getAno().getAgenda().getTarea();
+                if(!ta.contains(tar)&&tar.getEstado()){
+                    ta.add(tar);
+                    Object[] fila = new Object[4];
+                    fila[0] = tar;
+                    fila[1] = tar.getComentario();
+                    SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
+                    fila[2] = formateador.format(in.getInicio());
+                    fila[3] = formateador.format(in.getFin());
+                    model.addRow(fila);
+                }
+            }
+        }
+    }
+    
     public void CargarTablaFiltro(JTable tabla, String buscarpor, String valor) {
         DefaultTableModel model = (DefaultTableModel) tabla.getModel();
         Iterator<Personal> pe = PERSISTENCIA.getPersonales().iterator();
@@ -723,9 +1192,8 @@ public class Controlador {
                 if (buscar.equals("DIA")) {
                     if (reg.getFecha().getYear() == dia.getYear() && reg.getFecha().getMonth() == dia.getMonth() && reg.getFecha().getDate() == dia.getDate()) {
                         Object fila[] = new Object[3];
-                        SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
                         SimpleDateFormat formateador2 = new SimpleDateFormat("HH:mm");
-                        fila[0] = formateador.format(reg.getFecha());
+                        fila[0] = reg;
                         if (reg.getInicio() != null) {
                                 fila[1] = formateador2.format(reg.getInicio());
                             }
@@ -740,15 +1208,14 @@ public class Controlador {
                     while (aux.compareTo(dia)<=0) {
                         if (reg.getFecha().getYear() == aux.getYear() && reg.getFecha().getMonth() == aux.getMonth() && reg.getFecha().getDate() == aux.getDate()) {
                             Object fila[] = new Object[3];
-                            SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
                             SimpleDateFormat formateador2 = new SimpleDateFormat("HH:mm");
-                            fila[0] = formateador.format(reg.getFecha());
+                            fila[0] = reg;
                             if (reg.getInicio() != null) {
-                                fila[1] = formateador2.format(reg.getInicio());
-                            }
-                            if (reg.getFin() != null) {
-                                fila[2] = formateador2.format(reg.getFin());
-                            }
+                                    fila[1] = formateador2.format(reg.getInicio());
+                                }
+                                if (reg.getFin() != null) {
+                                    fila[2] = formateador2.format(reg.getFin());
+                                }
                             model.addRow(fila);
                         }
                         aux = sumarFechasDias(aux, 1);
@@ -756,9 +1223,8 @@ public class Controlador {
                 }else if (buscar.equals("MES")) {
                     if (reg.getFecha().getYear() == dia.getYear() && reg.getFecha().getMonth() == dia.getMonth()) {
                         Object fila[] = new Object[3];
-                        SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
                         SimpleDateFormat formateador2 = new SimpleDateFormat("HH:mm");
-                        fila[0] = formateador.format(reg.getFecha());
+                        fila[0] = reg;
                         if (reg.getInicio() != null) {
                                 fila[1] = formateador2.format(reg.getInicio());
                             }
@@ -770,9 +1236,8 @@ public class Controlador {
                 }else if (buscar.equals("AÑO")) {
                     if (reg.getFecha().getYear() == dia.getYear()) {
                         Object fila[] = new Object[3];
-                        SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
                         SimpleDateFormat formateador2 = new SimpleDateFormat("HH:mm");
-                        fila[0] = formateador.format(reg.getFecha());
+                        fila[0] = reg;
                         if (reg.getInicio() != null) {
                                 fila[1] = formateador2.format(reg.getInicio());
                             }
@@ -790,30 +1255,24 @@ public class Controlador {
         }
     }
     
-    public void CargarTablaAuditoria(JTable tabla, Date dia, String buscar) {
+    public void CargarTablaRegistro2(JTable tabla, Personal per, Date dia, String buscar) {
         try {
             DefaultTableModel model = (DefaultTableModel) tabla.getModel();
-            SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-            Iterator<Auditoria> it = PERSISTENCIA.getAuditoria().iterator();
+            Iterator<Registroacceso> it = per.getRegistroaccesos().iterator();
             while (it.hasNext()) {
-                Auditoria reg = (Auditoria) it.next();
+                Registroacceso reg = (Registroacceso) it.next();
                 if (buscar.equals("DIA")) {
                     if (reg.getFecha().getYear() == dia.getYear() && reg.getFecha().getMonth() == dia.getMonth() && reg.getFecha().getDate() == dia.getDate()) {
-                        Object fila[] = new Object[4];
-                        if(reg.getEstablecimiento()!=null){
-                            fila[0] = "Colegio: "+reg.getEstablecimiento().getNombre();
-                        }else if(reg.getPersonalByIdPersonal()!=null){
-                            fila[0] = "Personal: "+reg.getPersonalByIdPersonal().getApellido()+" "+reg.getPersonalByIdPersonal().getNombre();
-                        }else if(reg.getTarea()!=null){
-                            fila[0] = "Tarea: "+reg.getTarea().getNombre();
-                        }else if(reg.getDepartamento()!=null){
-                            fila[0] = "Departamento: "+reg.getDepartamento().getNombre();
-                        }
-                        
-                        fila[1] = reg.getOperacion();
-                        fila[2] = formateador.format(reg.getFecha());
-                        fila[3] = reg.getPersonalByIdAuditor().getApellido()+" "+reg.getPersonalByIdAuditor().getNombre();
-                            
+                        Object fila[] = new Object[3];
+//                        SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+                        SimpleDateFormat formateador2 = new SimpleDateFormat("HH:mm");
+                        fila[0] = reg;
+                        if (reg.getInicio() != null) {
+                                fila[1] = formateador2.format(reg.getInicio());
+                            }
+                            if (reg.getFin() != null) {
+                                fila[2] = formateador2.format(reg.getFin());
+                            }
                         model.addRow(fila);
                     }
 
@@ -821,61 +1280,46 @@ public class Controlador {
                     Date aux=restarFechasDias(dia, 7);
                     while (aux.compareTo(dia)<=0) {
                         if (reg.getFecha().getYear() == aux.getYear() && reg.getFecha().getMonth() == aux.getMonth() && reg.getFecha().getDate() == aux.getDate()) {
-                            Object fila[] = new Object[4];
-                            if(reg.getEstablecimiento()!=null){
-                                fila[0] = "Colegio: "+reg.getEstablecimiento().getNombre();
-                            }else if(reg.getPersonalByIdPersonal()!=null){
-                                fila[0] = "Personal: "+reg.getPersonalByIdPersonal().getApellido()+" "+reg.getPersonalByIdPersonal().getNombre();
-                            }else if(reg.getTarea()!=null){
-                                fila[0] = "Tarea: "+reg.getTarea().getNombre();
-                            }else if(reg.getDepartamento()!=null){
-                                fila[0] = "Departamento: "+reg.getDepartamento().getNombre();
-                            }
-
-                            fila[1] = reg.getOperacion();
-                            fila[2] = formateador.format(reg.getFecha());
-                            fila[3] = reg.getPersonalByIdAuditor().getApellido()+" "+reg.getPersonalByIdAuditor().getNombre();
-
+                            Object fila[] = new Object[3];
+//                            SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+                            SimpleDateFormat formateador2 = new SimpleDateFormat("HH:mm");
+                            fila[0] = reg;
+                            if (reg.getInicio() != null) {
+                                    fila[1] = formateador2.format(reg.getInicio());
+                                }
+                                if (reg.getFin() != null) {
+                                    fila[2] = formateador2.format(reg.getFin());
+                                }
                             model.addRow(fila);
                         }
                         aux = sumarFechasDias(aux, 1);
                     }
                 }else if (buscar.equals("MES")) {
                     if (reg.getFecha().getYear() == dia.getYear() && reg.getFecha().getMonth() == dia.getMonth()) {
-                        Object fila[] = new Object[4];
-                        if(reg.getEstablecimiento()!=null){
-                            fila[0] = "Colegio: "+reg.getEstablecimiento().getNombre();
-                        }else if(reg.getPersonalByIdPersonal()!=null){
-                            fila[0] = "Personal: "+reg.getPersonalByIdPersonal().getApellido()+" "+reg.getPersonalByIdPersonal().getNombre();
-                        }else if(reg.getTarea()!=null){
-                            fila[0] = "Tarea: "+reg.getTarea().getNombre();
-                        }else if(reg.getDepartamento()!=null){
-                            fila[0] = "Departamento: "+reg.getDepartamento().getNombre();
-                        }
-                        
-                        fila[1] = reg.getOperacion();
-                        fila[2] = formateador.format(reg.getFecha());
-                        fila[3] = reg.getPersonalByIdAuditor().getApellido()+" "+reg.getPersonalByIdAuditor().getNombre();
-                            
+                        Object fila[] = new Object[3];
+//                        SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+                        SimpleDateFormat formateador2 = new SimpleDateFormat("HH:mm");
+                        fila[0] = reg;
+                        if (reg.getInicio() != null) {
+                                fila[1] = formateador2.format(reg.getInicio());
+                            }
+                            if (reg.getFin() != null) {
+                                fila[2] = formateador2.format(reg.getFin());
+                            }
                         model.addRow(fila);
                     }
                 }else if (buscar.equals("AÑO")) {
                     if (reg.getFecha().getYear() == dia.getYear()) {
-                        Object fila[] = new Object[4];
-                        if(reg.getEstablecimiento()!=null){
-                            fila[0] = "Colegio: "+reg.getEstablecimiento().getNombre();
-                        }else if(reg.getPersonalByIdPersonal()!=null){
-                            fila[0] = "Personal: "+reg.getPersonalByIdPersonal().getApellido()+" "+reg.getPersonalByIdPersonal().getNombre();
-                        }else if(reg.getTarea()!=null){
-                            fila[0] = "Tarea: "+reg.getTarea().getNombre();
-                        }else if(reg.getDepartamento()!=null){
-                            fila[0] = "Departamento: "+reg.getDepartamento().getNombre();
-                        }
-                        
-                        fila[1] = reg.getOperacion();
-                        fila[2] = formateador.format(reg.getFecha());
-                        fila[3] = reg.getPersonalByIdAuditor().getApellido()+" "+reg.getPersonalByIdAuditor().getNombre();
-                            
+                        Object fila[] = new Object[3];
+//                        SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+                        SimpleDateFormat formateador2 = new SimpleDateFormat("HH:mm");
+                        fila[0] = reg;
+                        if (reg.getInicio() != null) {
+                                fila[1] = formateador2.format(reg.getInicio());
+                            }
+                            if (reg.getFin() != null) {
+                                fila[2] = formateador2.format(reg.getFin());
+                            }
                         model.addRow(fila);
                     }
                 }
@@ -886,7 +1330,452 @@ public class Controlador {
             JOptionPane.showMessageDialog(null, e.toString());
         }
     }
+    
+    public String Obtenerhoras(JTable tabla) {
+        int hora=0;
+        int minuto=0;
+        String trab=null;
+        try {
+            DefaultTableModel model = (DefaultTableModel) tabla.getModel();
+            SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
+            int c = 0;
+            while (model.getRowCount() != c) {
+                String oi = (String)model.getValueAt(c, 1);
+                String of = (String)model.getValueAt(c, 2);
+                if (oi != null && of != null) {
+                    Date inicio = formateador.parse(oi);
+                    Date fin = formateador.parse(of);
+                    long tiempoInicial=inicio.getTime();
+                    long tiempoFinal=fin.getTime(); 
+                    long tiempo= tiempoFinal - tiempoInicial;
+//                    int seconds = (int) (tiempo / 1000) % 60 ;
+                    int minutos = (int) ((tiempo / (1000*60)) % 60);
+                    int horas   = (int) ((tiempo / (1000*60*60)) % 24);
+//                    long horas = (tiempo/3600000);
+//                    
+//                    //el metodo getTime te devuelve en mili segundos para saberlo en mins debes hacer
+//                    resta=resta /(1000*60);
+                    hora=hora+horas;
+                    minuto=minuto+minutos;
+                    if(minuto>=60){
+                        hora=hora+1;
+                        minuto=minuto-60;
+                    }
+                }
+                c++;
+            }
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.toString());
+        }
+        return trab= String.valueOf(hora)+":"+String.valueOf(minuto);
+    }
+    
+    public String Obtenerhoras2(JTable tabla) {
+        int hora=0;
+        int minuto=0;
+        String trab=null;
+        try {
+            DefaultTableModel model = (DefaultTableModel) tabla.getModel();
+            SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
+            int c = 0;
+            while (model.getRowCount() != c) {
+                String oi = (String)model.getValueAt(c, 1);
+                String of = (String)model.getValueAt(c, 2);
+                if (oi != null && of != null) {
+                    Date inicio = formateador.parse(oi);
+                    Date fin = formateador.parse(of);
+                    long tiempoInicial=inicio.getTime();
+                    long tiempoFinal=fin.getTime(); 
+                    long tiempo= tiempoFinal - tiempoInicial;
+//                    int seconds = (int) (tiempo / 1000) % 60 ;
+                    int minutos = (int) ((tiempo / (1000*60)) % 60);
+                    int horas   = (int) ((tiempo / (1000*60*60)) % 24);
+//                    long horas = (tiempo/3600000);
+//                    
+//                    //el metodo getTime te devuelve en mili segundos para saberlo en mins debes hacer
+//                    resta=resta /(1000*60);
+                    hora=hora+horas;
+                    minuto=minuto+minutos;
+                    if(minuto>=60){
+                        hora=hora+1;
+                        minuto=minuto-60;
+                    }
+                }
+                c++;
+            }
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.toString());
+        }
+        return trab= String.valueOf(hora)+":"+String.valueOf(minuto);
+    }
+    
+    public void CargarTablaCircularPer(JTable tabla, Personal per, Date dia, String buscar) {
+        try {
+            DefaultTableModel model = (DefaultTableModel) tabla.getModel();
+            Iterator<Circularpersonal> it = per.getCircularpersonals().iterator();
+            while (it.hasNext()) {
+                Circularpersonal ci = (Circularpersonal) it.next();
+                Circular cir= ci.getCircular();
+                Date inicio=cir.getInicio();
+                Date fin=cir.getFin();
+                SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+                Date d=formateador.parse(formateador.format(dia));
+                if (buscar.equals("DIA")) {
+                    if (inicio.compareTo(d)<=0 && fin.compareTo(d)>=0) {
+                        Object fila[] = new Object[5];
+                        fila[0] = ci;
+                        fila[1] = cir;
+                        fila[2] = formateador.format(cir.getInicio());
+//                        fila[3] = ci.getEstado();
+                        if (ci.getEstado()==true) {
+                            fila[3] = new Boolean(true);
+                        } else {
+                            fila[3] = new Boolean(false);
+                        }
+                        fila[4] = ci.getDescripcion();
+                        model.addRow(fila);
+                    }
 
+                } else if (buscar.equals("MES")) {
+                    if (inicio.getMonth()<=d.getMonth() && fin.getMonth()>=d.getMonth()) {
+                        Object fila[] = new Object[5];
+                        fila[0] = cir.getFirma();
+                        fila[1] = cir;
+                        fila[2] = formateador.format(cir.getInicio());
+//                        fila[3] = ci.getEstado();
+                        if (ci.getEstado()==true) {
+                            fila[3] = new Boolean(true);
+                        } else {
+                            fila[3] = new Boolean(false);
+                        }
+                        fila[4] = ci;
+                        model.addRow(fila);
+                    }
+                }else if (buscar.equals("AÑO")) {
+                    if (inicio.getYear()==d.getYear() && fin.getYear()==d.getYear()) {
+                        Object fila[] = new Object[5];
+                        fila[0] = cir.getFirma();
+                        fila[1] = cir;
+                        fila[2] = formateador.format(cir.getInicio());
+                         fila[3] = ci.getEstado();
+//                        fila[3] = ci.getEstado();
+                        if (ci.getEstado()==true) {
+                            fila[3] = new Boolean(true);
+                        } else {
+                            fila[3] = new Boolean(false);
+                        }
+                        fila[4] = ci;
+                        model.addRow(fila);
+                    }
+                }
+                
+            }
+            tabla.setModel(model);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.toString());
+        }
+    }
+    
+    public void CargarTablaAuditoria(JTable tabla, Date dia, String buscar,String filtro) {
+        try {
+            DefaultTableModel model = (DefaultTableModel) tabla.getModel();
+            SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+            Iterator<Auditoria> it = PERSISTENCIA.getAuditoria().iterator();
+            while (it.hasNext()) {
+                Auditoria reg = (Auditoria) it.next();
+                if (buscar.equals("DIA")) {
+                    if (reg.getFecha().getYear() == dia.getYear() && reg.getFecha().getMonth() == dia.getMonth() && reg.getFecha().getDate() == dia.getDate()) {
+                        Object fila[] = new Object[7];
+                        if(filtro.equals("TODOS")){
+                            if(reg.getEstablecimiento()!=null){
+                                fila[0] = "Colegio: "+reg.getEstablecimiento().getNombre();
+                            }else if(reg.getPersonalByIdPersonal()!=null){
+                                fila[0] = "Personal: "+reg.getPersonalByIdPersonal().getApellido()+" "+reg.getPersonalByIdPersonal().getNombre();
+                            }else if(reg.getTarea()!=null){
+                                fila[0] = "Tarea: "+reg.getTarea().getNombre();
+                            }else if(reg.getDepartamento()!=null){
+                                fila[0] = "Departamento: "+reg.getDepartamento().getNombre();
+                            }
+                            fila[1] = reg.getOperacion();
+                            fila[2] = formateador.format(reg.getFecha());
+                            fila[3] = reg;
+                            fila[4] = reg.getCampo();   
+                            fila[5] = reg.getElementoAnterior();
+                            fila[6] = reg.getElementoNuevo();  
+                            model.addRow(fila);
+                        }else if(filtro.equals("PERSONAL")){
+                            if(reg.getPersonalByIdPersonal()!=null){
+                                fila[0] = "Personal: "+reg.getPersonalByIdPersonal().getApellido()+" "+reg.getPersonalByIdPersonal().getNombre();
+                                fila[1] = reg.getOperacion();
+                                fila[2] = formateador.format(reg.getFecha());
+                                fila[3] = reg;
+                                fila[4] = reg.getCampo();   
+                                fila[5] = reg.getElementoAnterior();
+                                fila[6] = reg.getElementoNuevo(); 
+                                model.addRow(fila);
+                            }
+                        }else if(filtro.equals("TAREA")){
+                            if(reg.getTarea()!=null){
+                                fila[0] = "Tarea: "+reg.getTarea().getNombre();
+                                fila[1] = reg.getOperacion();
+                                fila[2] = formateador.format(reg.getFecha());
+                                fila[3] = reg;
+                                fila[4] = reg.getCampo();   
+                                fila[5] = reg.getElementoAnterior();
+                                fila[6] = reg.getElementoNuevo(); 
+                                model.addRow(fila);
+                            }
+                        }else if(filtro.equals("DEPARTAMENTO")){
+                            if(reg.getDepartamento()!=null){
+                                fila[0] = "Departamento: "+reg.getDepartamento().getNombre();
+                                fila[1] = reg.getOperacion();
+                                fila[2] = formateador.format(reg.getFecha());
+                                fila[3] = reg;   
+                                fila[4] = reg.getCampo();   
+                                fila[5] = reg.getElementoAnterior();
+                                fila[6] = reg.getElementoNuevo(); 
+                                model.addRow(fila);
+                            }
+                        }else if(filtro.equals("COLEGIO")){
+                            if(reg.getEstablecimiento()!=null){
+                                fila[0] = "Colegio: "+reg.getEstablecimiento().getNombre();
+                                fila[1] = reg.getOperacion();
+                                fila[2] = formateador.format(reg.getFecha());
+                                fila[3] = reg;
+                                fila[4] = reg.getCampo();   
+                                fila[5] = reg.getElementoAnterior();
+                                fila[6] = reg.getElementoNuevo(); 
+                                model.addRow(fila);
+                            }
+                        }
+                    }
+
+                } else if (buscar.equals("SEMANA")) {
+                    Date aux=restarFechasDias(dia, 7);
+                    while (aux.compareTo(dia)<=0) {
+                        if (reg.getFecha().getYear() == aux.getYear() && reg.getFecha().getMonth() == aux.getMonth() && reg.getFecha().getDate() == aux.getDate()) {
+                            Object fila[] = new Object[7];
+                            if(filtro.equals("TODOS")){
+                                if(reg.getEstablecimiento()!=null){
+                                    fila[0] = "Colegio: "+reg.getEstablecimiento().getNombre();
+                                }else if(reg.getPersonalByIdPersonal()!=null){
+                                    fila[0] = "Personal: "+reg.getPersonalByIdPersonal().getApellido()+" "+reg.getPersonalByIdPersonal().getNombre();
+                                }else if(reg.getTarea()!=null){
+                                    fila[0] = "Tarea: "+reg.getTarea().getNombre();
+                                }else if(reg.getDepartamento()!=null){
+                                    fila[0] = "Departamento: "+reg.getDepartamento().getNombre();
+                                }
+                                fila[1] = reg.getOperacion();
+                                fila[2] = formateador.format(reg.getFecha());
+                                fila[3] = reg;
+                                fila[4] = reg.getCampo();   
+                                fila[5] = reg.getElementoAnterior();
+                                fila[6] = reg.getElementoNuevo(); 
+                                model.addRow(fila);
+                            }else if(filtro.equals("PERSONAL")){
+                                if(reg.getPersonalByIdPersonal()!=null){
+                                    fila[0] = "Personal: "+reg.getPersonalByIdPersonal().getApellido()+" "+reg.getPersonalByIdPersonal().getNombre();
+                                    fila[1] = reg.getOperacion();
+                                    fila[2] = formateador.format(reg.getFecha());
+                                    fila[3] = reg;
+                                    fila[4] = reg.getCampo();   
+                                    fila[5] = reg.getElementoAnterior();
+                                    fila[6] = reg.getElementoNuevo(); 
+                                    model.addRow(fila);
+                                }
+                            }else if(filtro.equals("TAREA")){
+                                if(reg.getTarea()!=null){
+                                    fila[0] = "Tarea: "+reg.getTarea().getNombre();
+                                    fila[1] = reg.getOperacion();
+                                    fila[2] = formateador.format(reg.getFecha());
+                                    fila[3] = reg;
+                                    fila[4] = reg.getCampo();   
+                                    fila[5] = reg.getElementoAnterior();
+                                    fila[6] = reg.getElementoNuevo(); 
+                                    model.addRow(fila);
+                                }
+                            }else if(filtro.equals("DEPARTAMENTO")){
+                                if(reg.getDepartamento()!=null){
+                                    fila[0] = "Departamento: "+reg.getDepartamento().getNombre();
+                                    fila[1] = reg.getOperacion();
+                                    fila[2] = formateador.format(reg.getFecha());
+                                    fila[3] = reg;
+                                    fila[4] = reg.getCampo();   
+                                    fila[5] = reg.getElementoAnterior();
+                                    fila[6] = reg.getElementoNuevo(); 
+                                    model.addRow(fila);
+                                }
+                            }else if(filtro.equals("COLEGIO")){
+                                if(reg.getEstablecimiento()!=null){
+                                    fila[0] = "Colegio: "+reg.getEstablecimiento().getNombre();
+                                    fila[1] = reg.getOperacion();
+                                    fila[2] = formateador.format(reg.getFecha());
+                                    fila[3] = reg;
+                                    fila[4] = reg.getCampo();   
+                                    fila[5] = reg.getElementoAnterior();
+                                    fila[6] = reg.getElementoNuevo(); 
+                                    model.addRow(fila);
+                                }
+                            }
+                        }
+                        aux = sumarFechasDias(aux, 1);
+                    }
+                }else if (buscar.equals("MES")) {
+                    if (reg.getFecha().getYear() == dia.getYear() && reg.getFecha().getMonth() == dia.getMonth()) {
+                        Object fila[] = new Object[7];
+                        if(filtro.equals("TODOS")){
+                            if(reg.getEstablecimiento()!=null){
+                                fila[0] = "Colegio: "+reg.getEstablecimiento().getNombre();
+                            }else if(reg.getPersonalByIdPersonal()!=null){
+                                fila[0] = "Personal: "+reg.getPersonalByIdPersonal().getApellido()+" "+reg.getPersonalByIdPersonal().getNombre();
+                            }else if(reg.getTarea()!=null){
+                                fila[0] = "Tarea: "+reg.getTarea().getNombre();
+                            }else if(reg.getDepartamento()!=null){
+                                fila[0] = "Departamento: "+reg.getDepartamento().getNombre();
+                            }
+                            fila[1] = reg.getOperacion();
+                            fila[2] = formateador.format(reg.getFecha());
+                            fila[3] = reg;
+                            fila[4] = reg.getCampo();   
+                            fila[5] = reg.getElementoAnterior();
+                            fila[6] = reg.getElementoNuevo(); 
+                            model.addRow(fila);
+                        }else if(filtro.equals("PERSONAL")){
+                            if(reg.getPersonalByIdPersonal()!=null){
+                                fila[0] = "Personal: "+reg.getPersonalByIdPersonal().getApellido()+" "+reg.getPersonalByIdPersonal().getNombre();
+                                fila[1] = reg.getOperacion();
+                                fila[2] = formateador.format(reg.getFecha());
+                                fila[3] = reg;
+                                fila[4] = reg.getCampo();   
+                                fila[5] = reg.getElementoAnterior();
+                                fila[6] = reg.getElementoNuevo(); 
+                                model.addRow(fila);
+                            }
+                        }else if(filtro.equals("TAREA")){
+                            if(reg.getTarea()!=null){
+                                fila[0] = "Tarea: "+reg.getTarea().getNombre();
+                                fila[1] = reg.getOperacion();
+                                fila[2] = formateador.format(reg.getFecha());
+                                fila[3] = reg;
+                                fila[4] = reg.getCampo();   
+                                fila[5] = reg.getElementoAnterior();
+                                fila[6] = reg.getElementoNuevo(); 
+                                model.addRow(fila);
+                            }
+                        }else if(filtro.equals("DEPARTAMENTO")){
+                            if(reg.getDepartamento()!=null){
+                                fila[0] = "Departamento: "+reg.getDepartamento().getNombre();
+                                fila[1] = reg.getOperacion();
+                                fila[2] = formateador.format(reg.getFecha());
+                                fila[3] = reg;
+                                fila[4] = reg.getCampo();   
+                                fila[5] = reg.getElementoAnterior();
+                                fila[6] = reg.getElementoNuevo(); 
+                                model.addRow(fila);
+                            }
+                        }else if(filtro.equals("COLEGIO")){
+                            if(reg.getEstablecimiento()!=null){
+                                fila[0] = "Colegio: "+reg.getEstablecimiento().getNombre();
+                                fila[1] = reg.getOperacion();
+                                fila[2] = formateador.format(reg.getFecha());
+                                fila[3] = reg;
+                                fila[4] = reg.getCampo();   
+                                fila[5] = reg.getElementoAnterior();
+                                fila[6] = reg.getElementoNuevo(); 
+                                model.addRow(fila);
+                            }
+                        }
+                    }
+                }else if (buscar.equals("AÑO")) {
+                    if (reg.getFecha().getYear() == dia.getYear()) {
+                        Object fila[] = new Object[7];
+                        if(filtro.equals("TODOS")){
+                            if(reg.getEstablecimiento()!=null){
+                                fila[0] = "Colegio: "+reg.getEstablecimiento().getNombre();
+                            }else if(reg.getPersonalByIdPersonal()!=null){
+                                fila[0] = "Personal: "+reg.getPersonalByIdPersonal().getApellido()+" "+reg.getPersonalByIdPersonal().getNombre();
+                            }else if(reg.getTarea()!=null){
+                                fila[0] = "Tarea: "+reg.getTarea().getNombre();
+                            }else if(reg.getDepartamento()!=null){
+                                fila[0] = "Departamento: "+reg.getDepartamento().getNombre();
+                            }
+                            fila[1] = reg.getOperacion();
+                            fila[2] = formateador.format(reg.getFecha());
+                            fila[3] = reg;
+                            fila[4] = reg.getCampo();   
+                            fila[5] = reg.getElementoAnterior();
+                            fila[6] = reg.getElementoNuevo(); 
+                            model.addRow(fila);
+                        }else if(filtro.equals("PERSONAL")){
+                            if(reg.getPersonalByIdPersonal()!=null){
+                                fila[0] = "Personal: "+reg.getPersonalByIdPersonal().getApellido()+" "+reg.getPersonalByIdPersonal().getNombre();
+                                fila[1] = reg.getOperacion();
+                                fila[2] = formateador.format(reg.getFecha());
+                                fila[3] = reg;
+                                fila[4] = reg.getCampo();   
+                                fila[5] = reg.getElementoAnterior();
+                                fila[6] = reg.getElementoNuevo(); 
+                                model.addRow(fila);
+                            }
+                        }else if(filtro.equals("TAREA")){
+                            if(reg.getTarea()!=null){
+                                fila[0] = "Tarea: "+reg.getTarea().getNombre();
+                                fila[1] = reg.getOperacion();
+                                fila[2] = formateador.format(reg.getFecha());
+                                fila[3] = reg;
+                                fila[4] = reg.getCampo();   
+                                fila[5] = reg.getElementoAnterior();
+                                fila[6] = reg.getElementoNuevo(); 
+                                model.addRow(fila);
+                            }
+                        }else if(filtro.equals("DEPARTAMENTO")){
+                            if(reg.getDepartamento()!=null){
+                                fila[0] = "Departamento: "+reg.getDepartamento().getNombre();
+                                fila[1] = reg.getOperacion();
+                                fila[2] = formateador.format(reg.getFecha());
+                                fila[3] = reg;
+                                fila[4] = reg.getCampo();   
+                                fila[5] = reg.getElementoAnterior();
+                                fila[6] = reg.getElementoNuevo(); 
+                                model.addRow(fila);
+                            }
+                        }else if(filtro.equals("COLEGIO")){
+                            if(reg.getEstablecimiento()!=null){
+                                fila[0] = "Colegio: "+reg.getEstablecimiento().getNombre();
+                                fila[1] = reg.getOperacion();
+                                fila[2] = formateador.format(reg.getFecha());
+                                fila[3] = reg;
+                                fila[4] = reg.getCampo();   
+                                fila[5] = reg.getElementoAnterior();
+                                fila[6] = reg.getElementoNuevo(); 
+                                model.addRow(fila);
+                            }
+                        }
+                    }
+                }
+                
+            }
+            tabla.setModel(model);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.toString());
+        }
+    }
+
+    public boolean verificarPerfil (String nombre){
+        boolean bandera=false;
+        Iterator it = PERSISTENCIA.getPerfiles().iterator();
+        while(it.hasNext()){
+            Perfil per=(Perfil) it.next();
+            if(per.getNombre().equals(nombre)){
+                bandera=true;
+            }
+        }
+        return bandera;
+    }
+    
+    
     public void CargarTablacheck(JTable tabla, String buscarpor, String valor, List personales) {
         try {
             DefaultTableModel model = (DefaultTableModel) tabla.getModel();
@@ -1000,6 +1889,31 @@ public class Controlador {
         tabla.setModel(model);
     }
 
+    public boolean ControlarAnoLectivo(Date inicio,Date fin){
+        boolean band=false;
+        Anolectivo lec=getAnoLectivo();
+        if(lec.getIdAnolectivo()!=null){
+            if(lec.getInicio().compareTo(inicio)<=0 &&lec.getFin().compareTo(fin)>=0){
+                band=true;
+            }
+        }
+        return band;
+    }
+    
+    public boolean ControlarAnoLectivo(Date fecha){
+        boolean band=false;
+        Anolectivo lec=getAnoLectivo();
+        if(lec.getIdAnolectivo()!=null){
+            if(lec.getInicio().compareTo(fecha)<=0 &&lec.getFin().compareTo(fecha)>=0){
+                band=true;
+            }
+        }else{
+            JOptionPane.showMessageDialog(null, "Primero debe configurar el año lectivo", "Configurar año lectivo", JOptionPane.ERROR_MESSAGE);
+        }
+        return band;
+    }
+    
+    
     public void CargarTablaflia(JTable Tabla, Personal per) {
         try {
             DefaultTableModel modelo = (DefaultTableModel) Tabla.getModel();
@@ -1026,6 +1940,59 @@ public class Controlador {
                         fila[6] = "No";
                     }
                     modelo.addRow(fila);
+                }
+            }
+            Tabla.setModel(modelo);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex.toString());
+        }
+    }
+    
+    public void CargarTablaLicencia(JTable Tabla, Personal per,Date fecha,String valor) {
+        try {
+            DefaultTableModel modelo = (DefaultTableModel) Tabla.getModel();
+            //Personal ppp=col.getPersonal(per.getIdPersonal());
+            Iterator<Licencia> rs = PERSISTENCIA.getLicencias(per.getIdPersonal()).iterator();
+            while (rs.hasNext()) {
+                Licencia lic = (Licencia) rs.next();
+                if (valor.equals("TODO")) {
+                    Object fila[] = new Object[4];
+                    SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+                    fila[0] = formateador.format(lic.getInicio());
+                    fila[1] = formateador.format(lic.getFin());
+                    fila[2] = lic;
+                    fila[3] = lic.getArticulo();
+                    modelo.addRow(fila);
+                }else if (valor.equals("AÑO")) {
+                    if(lic.getInicio().getYear()==fecha.getYear()||lic.getFin().getYear()==fecha.getYear()){
+                        Object fila[] = new Object[4];
+                        SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+                        fila[0] = formateador.format(lic.getInicio());
+                        fila[1] = formateador.format(lic.getFin());
+                        fila[2] = lic;
+                        fila[3] = lic.getArticulo();
+                        modelo.addRow(fila);
+                    }
+                }else if (valor.equals("MES")) {
+                    if(lic.getInicio().getMonth()<=fecha.getMonth()&& lic.getFin().getMonth()>=fecha.getMonth()){
+                        Object fila[] = new Object[4];
+                        SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+                        fila[0] = formateador.format(lic.getInicio());
+                        fila[1] = formateador.format(lic.getFin());
+                        fila[2] = lic;
+                        fila[3] = lic.getArticulo();
+                        modelo.addRow(fila);
+                    }
+                }else if (valor.equals("DIA")) {
+                    if(lic.getInicio().compareTo(fecha) <=0 && lic.getFin().compareTo(fecha) >=0){
+                        Object fila[] = new Object[4];
+                        SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+                        fila[0] = formateador.format(lic.getInicio());
+                        fila[1] = formateador.format(lic.getFin());
+                        fila[2] = lic;
+                        fila[3] = lic.getArticulo();
+                        modelo.addRow(fila);
+                    }
                 }
             }
             Tabla.setModel(modelo);
@@ -1062,8 +2029,8 @@ public class Controlador {
                                         fecha.setDate(di.getDia());
                                         fila[0] = age.getPersonal();
                                         fila[1] = age.getRevista().getNombre();
-                                        fila[2] = tarcla.getAula();
-                                        fila[3] = tarcla.getNumero();
+                                        fila[2] = tarcla.getAula().getNombre();
+                                        fila[3] = tarcla.getAula().getNumero();
                                         SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
                                         SimpleDateFormat formateador2 = new SimpleDateFormat("HH:mm");
                                         fila[4] = formateador.format(fecha);
@@ -1123,24 +2090,6 @@ public class Controlador {
                     Iterator it = tar.getAgendas().iterator();
                     while (it.hasNext()) {
                         Agenda age = (Agenda) it.next();
-//                        Iterator ita=age.getAnos().iterator();
-//                        while(ita.hasNext()){
-//                           Ano an=(Ano) ita.next();
-//                           Iterator itm=an.getMeses().iterator();
-//                           while(itm.hasNext()){
-//                               Mes me=(Mes) itm.next();
-//                               Iterator itd=me.getDias().iterator();
-//                               while(itd.hasNext()){
-//                                   Dia di=(Dia) itd.next();
-//                                   Iterator itini=di.getIniciofins().iterator();
-//                                   while(itini.hasNext()){
-//                                       Iniciofin ini=(Iniciofin)itini.next();
-                        Tareaextracurricular tarreu = tar.getTareaextracurriculars().iterator().next();
-//                                       Date fecha=new Date();
-//                                       String vacio="";
-//                                       fecha.setYear(an.getAno()-1900);
-//                                       fecha.setMonth(me.getMes());
-//                                       fecha.setDate(di.getDia());
                         fila[0] = age.getPersonal();
                         fila[1] = tar.getComentario();
                         SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
@@ -1149,10 +2098,10 @@ public class Controlador {
                         if (fran.getIdFranco() != null) {
                             fila[3] = formateador.format(fran.getDiaFranco());
                         }
-                        fila[3] = formateador.format(tarreu.getDiaFin());
-                        fila[4] = formateador.format(tarreu.getDiaInicio());
-                        fila[5] = formateador2.format(tarreu.getDiaInicio());
-                        fila[6] = formateador2.format(tarreu.getDiaFin());
+                        fila[3] = formateador.format(tar.getDiaFin());
+                        fila[4] = formateador.format(tar.getDiaInicio());
+                        fila[5] = formateador2.format(tar.getDiaInicio());
+                        fila[6] = formateador2.format(tar.getDiaFin());
                         modelo.addRow(fila);
                     }
 //                               }
@@ -1173,10 +2122,10 @@ public class Controlador {
                         fila[2] = tarreu.getCaracteristica();
                         SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
                         SimpleDateFormat formateador2 = new SimpleDateFormat("HH:mm");
-                        fila[3] = formateador.format(tarreu.getDiaFin());
-                        fila[4] = formateador.format(tarreu.getDiaInicio());
-                        fila[5] = formateador2.format(tarreu.getDiaInicio());
-                        fila[6] = formateador2.format(tarreu.getDiaFin());
+                        fila[3] = formateador.format(tar.getDiaFin());
+                        fila[4] = formateador.format(tar.getDiaInicio());
+                        fila[5] = formateador2.format(tar.getDiaInicio());
+                        fila[6] = formateador2.format(tar.getDiaFin());
                         modelo.addRow(fila);
                     }
                 }
@@ -1253,7 +2202,7 @@ public class Controlador {
                         fila[3] = formateador.format(fecha);
                         fila[4] = asis.getIniciofin().getInicio();
                         fila[5] = asis.getIniciofin().getFin();
-                        if (asis.getTardanza() == true) {
+                        if (asis.getEstado() == true) {
                             fila[6] = new Boolean(true);
                         } else {
                             fila[6] = new Boolean(false);
@@ -1279,6 +2228,48 @@ public class Controlador {
         }
     }
 
+    public void CargarTablaAsisteciaTarea(JTable Tabla,Tarea tar) {
+        try {
+            DefaultTableModel modelo = (DefaultTableModel) Tabla.getModel();
+            Date hoy=new Date();
+            Iterator it = PERSISTENCIA.getIniciofinTarea(tar.getIdTarea()).iterator();
+            while (it.hasNext()) {
+                Iniciofin in = (Iniciofin) it.next();
+                Date fecha=new Date();
+                fecha.setDate(in.getDia().getDia());
+                fecha.setMonth(in.getDia().getMes().getMes());
+                fecha.setYear(in.getDia().getMes().getAno().getAno()-1900);
+                fecha.setHours(in.getFin().getHours());
+                fecha.setMinutes(in.getFin().getMinutes());
+                fecha.setSeconds(in.getFin().getSeconds());
+                if(fecha.compareTo(hoy)<=0){
+                    if (in.getAsistencias().iterator().hasNext()) {
+                        Asistencia asis = in.getAsistencias().iterator().next();
+                        Object fila[] = new Object[5];
+                        fila[0] = in.getDia().getMes().getAno().getAgenda().getPersonal();
+                        fila[1] = in.getDia().getMes().getAno().getAgenda().getPersonal().getDni();
+                        SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+                        fila[2] = formateador.format(fecha);
+                        if (asis.getEstado() == true) {
+                            fila[3] = "SI";
+                        } else {
+                            fila[3] = "NO";
+                        }
+                        if (asis.getTardanza() == true) {
+                            fila[4] = "SI";
+                        } else {
+                            fila[4] = "NO";
+                        }
+                        modelo.addRow(fila);
+                    }
+                }
+            }
+            Tabla.setModel(modelo);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex.toString());
+        }
+    }
+    
     public Boolean ControlFamiliar(Personal pe, Tiporelacion rel, Boolean bandera) {
         Boolean ban = true;
         if (bandera == false) {
@@ -1346,15 +2337,29 @@ public class Controlador {
         return pe;
     }
 
-    public void CargarComboEstablecimientosPerso(JComboBox JCombo, Personal per) {
-        if (!PERSISTENCIA.DecjuradaPer(per.getIdPersonal()).isEmpty()) {
-            Declaracionjurada dec = (Declaracionjurada) PERSISTENCIA.DecjuradaPer(per.getIdPersonal()).get(0);
-            Iterator<DetalleEstablecimiento> car = PERSISTENCIA.DetalledecjuradaPer(dec.getIdDeclaracionjurada()).iterator();
-            while (car.hasNext()) {
-                DetalleEstablecimiento ca = (DetalleEstablecimiento) car.next();
-                JCombo.addItem(ca);
+    public void CargarComboEstablecimientosPerso(JComboBox JCombo, Personal per, int ano) {
+        LimpiarCombo(JCombo);
+        if(ano!=0){
+            Iterator it = PERSISTENCIA.getDecJuradaPersonal(per.getIdPersonal()).iterator();
+            while(it.hasNext()){
+                Declaracionjurada dec=(Declaracionjurada) it.next();
+                if(dec.getAnolectivo().getAno()==ano){
+                    Iterator<DetalleEstablecimiento> car = PERSISTENCIA.DetalledecjuradaPer(dec.getIdDeclaracionjurada()).iterator();
+                    while (car.hasNext()) {
+                        DetalleEstablecimiento ca = (DetalleEstablecimiento) car.next();
+                        JCombo.addItem(ca);
+                    }
+                }
             }
         }
+//        if (!PERSISTENCIA.DecjuradaPer(per.getIdPersonal()).isEmpty()) {
+//            Declaracionjurada dec = (Declaracionjurada) PERSISTENCIA.DecjuradaPer(per.getIdPersonal()).get(0);
+//            Iterator<DetalleEstablecimiento> car = PERSISTENCIA.DetalledecjuradaPer(dec.getIdDeclaracionjurada()).iterator();
+//            while (car.hasNext()) {
+//                DetalleEstablecimiento ca = (DetalleEstablecimiento) car.next();
+//                JCombo.addItem(ca);
+//            }
+//        }
     }
 
     public String ObtenerDia(int i) {
@@ -1439,7 +2444,7 @@ public class Controlador {
 
     public boolean existeFeriado(Date unafecha) {
         boolean tmpres = false;
-        Iterator it = PERSISTENCIA.getFeriados().iterator();
+        Iterator it = PERSISTENCIA.getFeriados(unafecha.getYear()).iterator();
         while (it.hasNext()) {
             Feriado fer = (Feriado) it.next();
             if (fer.getDia().compareTo(unafecha) == 0) {
@@ -1448,19 +2453,6 @@ public class Controlador {
             }
         }
         return tmpres;
-    }
-
-    public Feriado getFeriado(int idfer) {
-        Feriado fer = new Feriado();
-        Iterator it = PERSISTENCIA.getFeriados().iterator();
-        while (it.hasNext()) {
-            Feriado p = (Feriado) it.next();
-            if (idfer == p.getIdFeriado()) {
-                fer = p;
-                break;
-            }
-        }
-        return fer;
     }
 
     public boolean VerificarCheckTabla(JTable tabla) {
@@ -1477,12 +2469,13 @@ public class Controlador {
         return band;
     }
   
-    public static void mostrarReporte(String report, List consulta, String titulo) throws FileNotFoundException, JRException {
+    public static void mostrarReporte(String report, List consulta, String titulo,int total) throws FileNotFoundException, JRException {
         String path = System.getProperty("user.dir") + "\\src\\Reportes\\";
         String templateName = path + report + ".jrxml";
         HashMap parametros = new HashMap();
         parametros.clear();
-
+        parametros.put("total", total);
+        
         JasperReport jasper = JasperCompileManager.compileReport(templateName);
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasper, parametros, new JRBeanCollectionDataSource(consulta));
         JasperViewer jviewer = new JasperViewer(jasperPrint, false);
@@ -1492,12 +2485,39 @@ public class Controlador {
         }
     }
     
-    public static void mostrarReporte(String report, List consulta, String titulo, String label) throws FileNotFoundException, JRException {
+    public static void mostrarReporte(String report, List consulta, String titulo, String label,int total) throws FileNotFoundException, JRException {
+        String path = System.getProperty("user.dir") + "\\src\\Reportes\\";
+        String templateName = path + report + ".jrxml";
+//        String templateName;
+//        String templateName = "/reportes/"+report+".jrxml";
+//        String templateName=null;
+//        templateName = getClass().getResource("/reportes/"+report+".jrxml").getPath();
+//        URL archivo = this.getClass().getResource("/reportes/rptHojaAsitencia.jasper");
+        HashMap parametros = new HashMap();
+        parametros.clear();
+        parametros.put("Titulo", label);
+        parametros.put("total", total);
+
+        JasperReport jasper = JasperCompileManager.compileReport(templateName);
+//        JasperReport jasper = (JasperReport) JRLoader.loadObject(templateName);
+//        JasperReport jasperReport = (JasperReport)JRLoader.loadObject(archivo);
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasper, parametros, new JRBeanCollectionDataSource(consulta));
+        JasperViewer jviewer = new JasperViewer(jasperPrint, false);
+        if(jasperPrint.getPages().iterator().hasNext()){
+            jviewer.setTitle(titulo);
+            jviewer.show();
+        }
+        
+    }
+    
+    public static void mostrarReporte(String report, List consulta, String titulo, String filtro1,String filtro2,int total) throws FileNotFoundException, JRException {
         String path = System.getProperty("user.dir") + "\\src\\Reportes\\";
         String templateName = path + report + ".jrxml";
         HashMap parametros = new HashMap();
         parametros.clear();
-        parametros.put("Titulo", label);
+        parametros.put("total", total);
+        parametros.put("filtro1", filtro1);
+        parametros.put("filtro2", filtro2);
 
         JasperReport jasper = JasperCompileManager.compileReport(templateName);
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasper, parametros, new JRBeanCollectionDataSource(consulta));
@@ -1508,21 +2528,28 @@ public class Controlador {
         }
         
     }
-    
-    public Circular VerificarCircular(Personal per, Date hoy) {
-        Circular circ = new Circular();
-        Iterator it = PERSISTENCIA.getCirculares().iterator();
+    public void VerificarCircular(Personal per, Date hoy) {
+        boolean band=false;
+        Iterator it = per.getCircularpersonals().iterator();
         while (it.hasNext()) {
-            Circular cir = (Circular) it.next();
-            if (cir.getFecha().getYear() == hoy.getYear() && cir.getFecha().getMonth() == hoy.getMonth() && cir.getFecha().getDate() == hoy.getDate()) {
-                Iterator itt = PERSISTENCIA.getCircularPersonales(cir.getIdCircular()).iterator();
-                while (itt.hasNext()) {
-                    Circularpersonal cirper = (Circularpersonal) itt.next();
-                    if (cirper.getPersonal().getIdPersonal() == per.getIdPersonal()) {
-                        circ = cir;
-                        break;
-                    }
-                }
+            Circularpersonal cirper = (Circularpersonal) it.next();
+            if(!cirper.getEstado()){
+                band=true;
+                break;
+            }
+        }
+        if(band==true){
+            JOptionPane.showMessageDialog(null, "Usted tiene circulares que aún no ha leido","Leer Circulares",JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+    public Circular VerificarCircular2(Personal per, Date hoy) {
+        Circular circ = new Circular();
+        Iterator it = per.getCircularpersonals().iterator();
+        while (it.hasNext()) {
+            Circularpersonal cirper = (Circularpersonal) it.next();
+            Circular cir = cirper.getCircular();
+            if(!cirper.getEstado()){
+                
             }
         }
         return circ;

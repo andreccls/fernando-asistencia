@@ -1,8 +1,5 @@
 package Clases;
-// Generated 17/10/2012 08:54:15 by Hibernate Tools 3.2.1.GA
-
-import javax.swing.JOptionPane;
-
+// Generated 02-may-2013 17:40:38 by Hibernate Tools 3.2.1.GA
 
 
 
@@ -30,6 +27,11 @@ public class Tareareunion  implements java.io.Serializable {
        this.tarea = tarea;
        this.motivo = motivo;
        this.caracter = caracter;
+    }
+    
+    @Override
+    public String toString() {
+        return tarea.getNombre();
     }
    
     public TareareunionId getId() {
@@ -61,8 +63,7 @@ public class Tareareunion  implements java.io.Serializable {
         this.caracter = caracter;
     }
 
-
-    //// GENERADO POR GONZALEZ FERNANDO
+ //// GENERADO POR GONZALEZ FERNANDO
     
     
     public void guardarTareareunion(Tareareunion unaTareareunion){

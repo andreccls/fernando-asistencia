@@ -1,5 +1,5 @@
 package Clases;
-// Generated 31/01/2013 23:17:19 by Hibernate Tools 3.2.1.GA
+// Generated 11-may-2013 1:16:55 by Hibernate Tools 3.2.1.GA
 
 
 import java.util.Date;
@@ -12,7 +12,7 @@ public class Feriado  implements java.io.Serializable {
 
 
      private Integer idFeriado;
-     private Establecimiento establecimiento;
+     private Anolectivo anolectivo;
      private String comentario;
      private Date dia;
 
@@ -20,11 +20,11 @@ public class Feriado  implements java.io.Serializable {
     }
 
 	
-    public Feriado(Establecimiento establecimiento) {
-        this.establecimiento = establecimiento;
+    public Feriado(Anolectivo anolectivo) {
+        this.anolectivo = anolectivo;
     }
-    public Feriado(Establecimiento establecimiento, String comentario, Date dia) {
-       this.establecimiento = establecimiento;
+    public Feriado(Anolectivo anolectivo, String comentario, Date dia) {
+       this.anolectivo = anolectivo;
        this.comentario = comentario;
        this.dia = dia;
     }
@@ -41,12 +41,12 @@ public class Feriado  implements java.io.Serializable {
     public void setIdFeriado(Integer idFeriado) {
         this.idFeriado = idFeriado;
     }
-    public Establecimiento getEstablecimiento() {
-        return this.establecimiento;
+    public Anolectivo getAnolectivo() {
+        return this.anolectivo;
     }
     
-    public void setEstablecimiento(Establecimiento establecimiento) {
-        this.establecimiento = establecimiento;
+    public void setAnolectivo(Anolectivo anolectivo) {
+        this.anolectivo = anolectivo;
     }
     public String getComentario() {
         return this.comentario;
@@ -63,31 +63,25 @@ public class Feriado  implements java.io.Serializable {
         this.dia = dia;
     }
 
- // GENERADO POR GONZALEZ FERNANDO
+// GENERADO POR GONZALEZ FERNANDO
     
     public void guardarFeriado(Feriado unFeriado){
         Controlador.getPERSISTENCIA().insert(this);
         //Controlador.getPERSISTENCIA().update(this);
 
-        JOptionPane.showMessageDialog(null,"El Feriado "+ 
-                String.valueOf(unFeriado.getIdFeriado()) +
-                " se guardo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null,"El Feriado se guardo correctamente","Registrar feriado",JOptionPane.INFORMATION_MESSAGE);
     }
     
     public void actualizarFeriado(Feriado unFeriado){
         Controlador.getPERSISTENCIA().update(this);
 
-        JOptionPane.showMessageDialog(null,"El Feriado "+ 
-                String.valueOf(unFeriado.getIdFeriado()) +
-                " se actualizó correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null,"El Feriado se actualizó correctamente","Actualizar feriado",JOptionPane.INFORMATION_MESSAGE);
     }
     
     public void eliminarFeriado(Feriado unFeriado){
         Controlador.getPERSISTENCIA().delete(this);
 
-        JOptionPane.showMessageDialog(null,"El Feriado "+ 
-                String.valueOf(unFeriado.getIdFeriado()) +
-                " se elimino correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null,"El Feriado se elimino correctamente","Eliminar feriado",JOptionPane.INFORMATION_MESSAGE);
     }
 
 

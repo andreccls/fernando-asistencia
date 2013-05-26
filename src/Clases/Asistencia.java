@@ -103,8 +103,8 @@ public class Asistencia  implements java.io.Serializable {
         //} 
      }
     
-    public void crearArticulo(String nombre, String nroArticulo, Set<Justificacion> justificacions){
-        Articulo unArticulo=new Articulo (nombre, nroArticulo,justificacions);
+    public void crearArticulo(String nombre, String nroArticulo, Set<Justificacion> justificacions, Set<Licencia> licencias){
+        Articulo unArticulo=new Articulo (nombre, nroArticulo,justificacions,licencias);
         //if(!existePersonal(unPersonal)){
             unArticulo.guardarArticulo(unArticulo);
             //agregarReserva(unaReserva);

@@ -88,7 +88,7 @@ public class Cargo  implements java.io.Serializable {
     public void eliminarCargo(Cargo unCargo){
         Controlador.getPERSISTENCIA().delete(this);
 
-        JOptionPane.showMessageDialog(null,"El Cargo se elimino correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null,"El Cargo se elimino correctamente","Eliminar Cargo",JOptionPane.INFORMATION_MESSAGE);
     }
 
     public Nivel getNivel(Tiponivel tiponivel) {

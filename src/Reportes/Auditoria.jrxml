@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Auditoria" language="groovy" pageWidth="595" pageHeight="842" columnWidth="482" leftMargin="85" rightMargin="28" topMargin="28" bottomMargin="28">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Auditoria" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="786" leftMargin="28" rightMargin="28" topMargin="85" bottomMargin="28">
+	<parameter name="total" class="java.lang.Integer"/>
+	<parameter name="filtro1" class="java.lang.String"/>
+	<parameter name="filtro2" class="java.lang.String"/>
 	<queryString language="hql">
 		<![CDATA[from Auditoria]]>
 	</queryString>
+	<field name="campo" class="java.lang.String"/>
 	<field name="departamento" class="Clases.Departamento"/>
+	<field name="elementoAnterior" class="java.lang.String"/>
+	<field name="elementoNuevo" class="java.lang.String"/>
 	<field name="establecimiento" class="Clases.Establecimiento"/>
 	<field name="fecha" class="java.util.Date"/>
 	<field name="idAuditoria" class="java.lang.Integer"/>
@@ -15,97 +21,179 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="117" splitType="Stretch">
-			<image>
-				<reportElement x="1" y="4" width="80" height="58"/>
-				<imageExpression class="java.lang.String"><![CDATA["imagenes/gutenberg.png"]]></imageExpression>
-			</image>
-			<staticText>
-				<reportElement x="1" y="82" width="199" height="35"/>
-				<textElement/>
-				<text><![CDATA[Incorporado a la Enseñanza oficial N º441
-Entre Ríos 2245-67 3300 POSADAS-MNES
-]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="1" y="62" width="139" height="20"/>
-				<textElement>
+		<band height="183" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="124" width="199" height="35"/>
+				<textElement markup="none"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{personalByIdAuditor}.getEstablecimiento().getLeyenda()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="104" width="139" height="20"/>
+				<textElement markup="none">
 					<font size="12" isBold="true" isItalic="true" isUnderline="false" isStrikeThrough="false"/>
 				</textElement>
-				<text><![CDATA[Instituto "Gutenberg"]]></text>
-			</staticText>
+				<textFieldExpression class="java.lang.String"><![CDATA["Instituto "+$F{personalByIdAuditor}.getEstablecimiento().getNombre()]]></textFieldExpression>
+			</textField>
 			<staticText>
-				<reportElement x="244" y="40" width="232" height="66"/>
+				<reportElement x="554" y="93" width="232" height="66"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="40" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
 				</textElement>
 				<text><![CDATA[Auditoría]]></text>
 			</staticText>
-		</band>
-	</title>
-	<columnHeader>
-		<band height="26" splitType="Stretch">
-			<staticText>
-				<reportElement x="176" y="6" width="67" height="20"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Acción]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="244" y="6" width="95" height="20"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Fecha]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="1" y="6" width="174" height="20"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Elemento]]></text>
-			</staticText>
 			<line>
-				<reportElement x="0" y="6" width="482" height="1"/>
-			</line>
-			<line>
-				<reportElement x="0" y="25" width="482" height="1"/>
-			</line>
-			<line>
-				<reportElement x="175" y="7" width="1" height="19"/>
-			</line>
-			<line>
-				<reportElement x="243" y="7" width="1" height="19"/>
-			</line>
-			<line>
-				<reportElement x="339" y="7" width="1" height="19"/>
-			</line>
-			<line>
-				<reportElement x="481" y="7" width="1" height="19"/>
-			</line>
-			<line>
-				<reportElement x="0" y="7" width="1" height="19"/>
-			</line>
-			<line>
-				<reportElement mode="Transparent" x="0" y="0" width="482" height="1"/>
+				<reportElement mode="Transparent" x="0" y="159" width="786" height="1"/>
 				<graphicElement>
 					<pen lineWidth="3.0" lineStyle="Double"/>
 				</graphicElement>
 			</line>
 			<staticText>
-				<reportElement x="340" y="6" width="142" height="20"/>
+				<reportElement x="1" y="160" width="162" height="23"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="12" isBold="true"/>
+					<font size="12" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="163" y="161" width="1" height="22"/>
+			</line>
+			<textField>
+				<reportElement x="164" y="160" width="56" height="23"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$P{total}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="160" width="1" height="23"/>
+			</line>
+			<image hAlign="Center">
+				<reportElement mode="Transparent" x="0" y="0" width="100" height="100"/>
+				<imageExpression class="java.io.InputStream"><![CDATA[new java.io.ByteArrayInputStream ($F{personalByIdAuditor}.getEstablecimiento().getImagen())]]></imageExpression>
+			</image>
+			<line>
+				<reportElement x="220" y="160" width="1" height="23"/>
+			</line>
+			<textField>
+				<reportElement x="338" y="160" width="79" height="23"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{filtro1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="221" y="160" width="116" height="23"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Buscado por:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="337" y="161" width="1" height="22"/>
+			</line>
+			<staticText>
+				<reportElement x="418" y="160" width="148" height="23"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Filtrado por:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="567" y="160" width="124" height="23"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{filtro2}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="417" y="160" width="1" height="23"/>
+			</line>
+			<line>
+				<reportElement x="566" y="161" width="1" height="22"/>
+			</line>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="26" splitType="Stretch">
+			<staticText>
+				<reportElement x="164" y="0" width="56" height="26"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Acción]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="221" y="0" width="64" height="26"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Fecha]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="0" width="162" height="26"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Elemento]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="25" width="786" height="1"/>
+			</line>
+			<line>
+				<reportElement x="163" y="0" width="1" height="26"/>
+			</line>
+			<line>
+				<reportElement x="220" y="0" width="1" height="26"/>
+			</line>
+			<line>
+				<reportElement x="285" y="0" width="1" height="26"/>
+			</line>
+			<line>
+				<reportElement x="417" y="0" width="1" height="26"/>
+			</line>
+			<line>
+				<reportElement x="0" y="0" width="1" height="26"/>
+			</line>
+			<staticText>
+				<reportElement x="286" y="0" width="131" height="25"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[Personal]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="0" width="786" height="1"/>
+			</line>
+			<line>
+				<reportElement x="636" y="0" width="1" height="26"/>
+			</line>
+			<line>
+				<reportElement x="493" y="0" width="1" height="26"/>
+			</line>
+			<staticText>
+				<reportElement x="418" y="0" width="75" height="26"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Campo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="494" y="1" width="142" height="25"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Elemento anterior]]></text>
+			</staticText>
+			<line>
+				<reportElement x="785" y="0" width="1" height="26"/>
+			</line>
+			<staticText>
+				<reportElement x="637" y="1" width="148" height="25"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Elemento posterior]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="30" splitType="Stretch">
 			<textField>
-				<reportElement x="1" y="0" width="174" height="30"/>
+				<reportElement x="1" y="0" width="162" height="30"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{establecimiento} != null ?
     "Colegio: "+$F{establecimiento}.getNombre() :
@@ -118,54 +206,78 @@ Entre Ríos 2245-67 3300 POSADAS-MNES
     "NULL"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="176" y="0" width="67" height="30"/>
+				<reportElement x="164" y="0" width="56" height="30"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{operacion}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy HH:mm">
-				<reportElement x="244" y="0" width="95" height="30"/>
+				<reportElement x="221" y="0" width="64" height="30"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.util.Date"><![CDATA[$F{fecha}]]></textFieldExpression>
 			</textField>
 			<textField pattern="HH:mm">
-				<reportElement x="340" y="0" width="142" height="30"/>
+				<reportElement x="286" y="0" width="131" height="30"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{personalByIdAuditor}.getApellido()+" "+$F{personalByIdAuditor}.getNombre()]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="175" y="0" width="1" height="30"/>
+				<reportElement x="163" y="0" width="1" height="30"/>
 			</line>
 			<line>
-				<reportElement x="243" y="0" width="1" height="30"/>
+				<reportElement x="220" y="0" width="1" height="30"/>
 			</line>
 			<line>
-				<reportElement x="339" y="0" width="1" height="30"/>
+				<reportElement x="285" y="0" width="1" height="30"/>
 			</line>
 			<line>
-				<reportElement x="481" y="0" width="1" height="30"/>
+				<reportElement x="417" y="0" width="1" height="30"/>
 			</line>
 			<line>
 				<reportElement x="0" y="0" width="1" height="30"/>
 			</line>
+			<line>
+				<reportElement x="0" y="29" width="786" height="1"/>
+			</line>
+			<textField pattern="dd/MM/yyyy HH:mm">
+				<reportElement x="418" y="0" width="75" height="30"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{campo}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="493" y="0" width="1" height="30"/>
+			</line>
+			<textField pattern="HH:mm">
+				<reportElement x="494" y="0" width="142" height="30"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{elementoAnterior}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="636" y="0" width="1" height="30"/>
+			</line>
+			<textField pattern="HH:mm">
+				<reportElement x="637" y="0" width="148" height="30"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{elementoNuevo}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="785" y="0" width="1" height="30"/>
+			</line>
 		</band>
 	</detail>
-	<columnFooter>
-		<band height="45" splitType="Stretch"/>
-	</columnFooter>
 	<pageFooter>
-		<band height="20" splitType="Stretch">
+		<band height="41" splitType="Stretch">
 			<textField evaluationTime="Report">
-				<reportElement x="436" y="0" width="40" height="20"/>
+				<reportElement x="771" y="21" width="15" height="20"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy">
-				<reportElement x="1" y="0" width="100" height="20"/>
+				<reportElement x="1" y="21" width="100" height="20"/>
 				<textElement/>
 				<textFieldExpression class="java.util.Date"><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="356" y="0" width="80" height="20"/>
+				<reportElement x="691" y="21" width="80" height="20"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression class="java.lang.String"><![CDATA["Pagina "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
 			</textField>

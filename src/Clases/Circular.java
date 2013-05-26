@@ -1,5 +1,5 @@
 package Clases;
-// Generated 21/02/2013 23:49:41 by Hibernate Tools 3.2.1.GA
+// Generated 11-may-2013 2:42:05 by Hibernate Tools 3.2.1.GA
 
 
 import java.util.Date;
@@ -16,28 +16,33 @@ public class Circular  implements java.io.Serializable {
 
      private Integer idCircular;
      private Establecimiento establecimiento;
+     private String nombre;
      private String descripcion;
      private String firma;
-     private Date fecha;
+     private Date inicio;
+     private Date fin;
      private Set<Circularpersonal> circularpersonals = new HashSet<Circularpersonal>(0);
 
     public Circular() {
     }
 
-    @Override
-    public String toString() {
-        return firma;
-    }
 	
     public Circular(Establecimiento establecimiento) {
         this.establecimiento = establecimiento;
     }
-    public Circular(Establecimiento establecimiento, String descripcion, String firma, Date fecha, Set<Circularpersonal> circularpersonals) {
+    public Circular(Establecimiento establecimiento, String nombre, String descripcion, String firma, Date inicio, Date fin, Set<Circularpersonal> circularpersonals) {
        this.establecimiento = establecimiento;
+       this.nombre = nombre;
        this.descripcion = descripcion;
        this.firma = firma;
-       this.fecha = fecha;
+       this.inicio = inicio;
+       this.fin = fin;
        this.circularpersonals = circularpersonals;
+    }
+    
+    @Override
+    public String toString() {
+        return nombre;
     }
    
     public Integer getIdCircular() {
@@ -54,6 +59,13 @@ public class Circular  implements java.io.Serializable {
     public void setEstablecimiento(Establecimiento establecimiento) {
         this.establecimiento = establecimiento;
     }
+    public String getNombre() {
+        return this.nombre;
+    }
+    
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
     public String getDescripcion() {
         return this.descripcion;
     }
@@ -68,12 +80,19 @@ public class Circular  implements java.io.Serializable {
     public void setFirma(String firma) {
         this.firma = firma;
     }
-    public Date getFecha() {
-        return this.fecha;
+    public Date getInicio() {
+        return this.inicio;
     }
     
-    public void setFecha(Date fecha) {
-        this.fecha = fecha;
+    public void setInicio(Date inicio) {
+        this.inicio = inicio;
+    }
+    public Date getFin() {
+        return this.fin;
+    }
+    
+    public void setFin(Date fin) {
+        this.fin = fin;
     }
     public Set<Circularpersonal> getCircularpersonals() {
         return this.circularpersonals;
@@ -119,6 +138,7 @@ public class Circular  implements java.io.Serializable {
             cirper.eliminarCircularpersonal(cirper);
         }
     }
+
 
 }
 

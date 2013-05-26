@@ -1,5 +1,5 @@
 package Clases;
-// Generated 27/11/2012 13:31:14 by Hibernate Tools 3.2.1.GA
+// Generated 03-may-2013 3:30:36 by Hibernate Tools 3.2.1.GA
 
 
 import java.util.HashSet;
@@ -12,10 +12,10 @@ import javax.swing.JOptionPane;
  */
 public class Declaracionjurada  implements java.io.Serializable {
 
+
      private Integer idDeclaracionjurada;
      private Personal personal;
-     private Establecimiento establecimiento;
-     private Integer ano;
+     private Anolectivo anolectivo;
      private String observacion;
      private Set<DetalleEstablecimiento> detalleEstablecimientos = new HashSet<DetalleEstablecimiento>(0);
 
@@ -23,14 +23,13 @@ public class Declaracionjurada  implements java.io.Serializable {
     }
 
 	
-    public Declaracionjurada(Personal personal, Establecimiento establecimiento) {
+    public Declaracionjurada(Personal personal, Anolectivo anolectivo) {
         this.personal = personal;
-        this.establecimiento = establecimiento;
+        this.anolectivo = anolectivo;
     }
-    public Declaracionjurada(Personal personal, Establecimiento establecimiento, Integer ano, String observacion, Set<DetalleEstablecimiento> detalleEstablecimientos) {
+    public Declaracionjurada(Personal personal, Anolectivo anolectivo, String observacion, Set<DetalleEstablecimiento> detalleEstablecimientos) {
        this.personal = personal;
-       this.establecimiento = establecimiento;
-       this.ano = ano;
+       this.anolectivo = anolectivo;
        this.observacion = observacion;
        this.detalleEstablecimientos = detalleEstablecimientos;
     }
@@ -49,19 +48,12 @@ public class Declaracionjurada  implements java.io.Serializable {
     public void setPersonal(Personal personal) {
         this.personal = personal;
     }
-    public Establecimiento getEstablecimiento() {
-        return this.establecimiento;
+    public Anolectivo getAnolectivo() {
+        return this.anolectivo;
     }
     
-    public void setEstablecimiento(Establecimiento establecimiento) {
-        this.establecimiento = establecimiento;
-    }
-    public Integer getAno() {
-        return this.ano;
-    }
-    
-    public void setAno(Integer ano) {
-        this.ano = ano;
+    public void setAnolectivo(Anolectivo anolectivo) {
+        this.anolectivo = anolectivo;
     }
     public String getObservacion() {
         return this.observacion;
@@ -102,7 +94,9 @@ public class Declaracionjurada  implements java.io.Serializable {
         Iterator it=detalleEstablecimientos.iterator();
            while(it.hasNext()){
            DetalleEstablecimiento c=(DetalleEstablecimiento) it.next();
-           if(est.getNombre().equals(c.getEstablecimiento().getNombre())){
+           int uno=c.getEstablecimiento().getIdEstablecimiento();
+           int dos=est.getIdEstablecimiento();
+           if(uno==dos){
                detalle=c;
                break;
            }
@@ -141,6 +135,7 @@ public class Declaracionjurada  implements java.io.Serializable {
         }
         return ini;
     }
+
 
 }
 
