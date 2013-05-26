@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Reuniones" language="groovy" pageWidth="595" pageHeight="842" columnWidth="511" leftMargin="56" rightMargin="28" topMargin="28" bottomMargin="28">
+	<parameter name="total" class="java.lang.Integer"/>
 	<queryString language="hql">
 		<![CDATA[from Tareareunion]]>
 	</queryString>
@@ -16,38 +17,54 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="120" splitType="Stretch">
-			<image>
-				<reportElement x="0" y="0" width="80" height="58"/>
-				<imageExpression class="java.lang.String"><![CDATA["imagenes/gutenberg.png"]]></imageExpression>
-			</image>
-			<staticText>
-				<reportElement x="-1" y="58" width="139" height="20"/>
-				<textElement>
+		<band height="177" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="99" width="139" height="20"/>
+				<textElement markup="none">
 					<font size="12" isBold="true" isItalic="true" isUnderline="false" isStrikeThrough="false"/>
 				</textElement>
-				<text><![CDATA[Instituto "Gutenberg"]]></text>
-			</staticText>
+				<textFieldExpression class="java.lang.String"><![CDATA["Instituto "+$F{tarea}.getEstablecimiento().getNombre()]]></textFieldExpression>
+			</textField>
 			<line>
-				<reportElement mode="Transparent" x="0" y="115" width="511" height="1"/>
+				<reportElement mode="Transparent" x="0" y="154" width="511" height="1"/>
 				<graphicElement>
 					<pen lineWidth="3.0" lineStyle="Double"/>
 				</graphicElement>
 			</line>
 			<staticText>
-				<reportElement mode="Opaque" x="226" y="38" width="282" height="73" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement mode="Opaque" x="226" y="76" width="282" height="73" forecolor="#000000" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="30" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Reuniones]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="0" y="118" width="228" height="35"/>
+				<textElement markup="none"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{tarea}.getEstablecimiento().getLeyenda()]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="-1" y="156" width="1" height="21"/>
+			</line>
+			<line>
+				<reportElement x="154" y="156" width="1" height="21"/>
+			</line>
+			<textField>
+				<reportElement x="155" y="156" width="116" height="21"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$P{total}]]></textFieldExpression>
+			</textField>
 			<staticText>
-				<reportElement x="-1" y="78" width="228" height="35"/>
-				<textElement/>
-				<text><![CDATA[Incorporado a la Enseñanza oficial N º441
-Entre Ríos 2245-67 3300 POSADAS-MNES
-]]></text>
+				<reportElement x="0" y="156" width="154" height="21"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL:]]></text>
 			</staticText>
+			<image hAlign="Center">
+				<reportElement mode="Transparent" x="-1" y="0" width="100" height="99"/>
+				<imageExpression class="java.io.InputStream"><![CDATA[new java.io.ByteArrayInputStream ($F{tarea}.getEstablecimiento().getImagen())]]></imageExpression>
+			</image>
 		</band>
 	</title>
 	<columnHeader>
@@ -55,28 +72,28 @@ Entre Ríos 2245-67 3300 POSADAS-MNES
 			<staticText>
 				<reportElement x="0" y="0" width="154" height="23"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="12" isBold="true"/>
+					<font size="14" isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[Nombre]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="154" y="0" width="117" height="23"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="12" isBold="true"/>
+					<font size="14" isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[Lugar]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="272" y="0" width="79" height="23"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="12" isBold="true"/>
+					<font size="14" isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[Caracter]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="352" y="0" width="159" height="23"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="12" isBold="true"/>
+					<font size="14" isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[Motivo]]></text>
 			</staticText>
@@ -112,7 +129,7 @@ Entre Ríos 2245-67 3300 POSADAS-MNES
 			</textField>
 			<textField>
 				<reportElement x="155" y="0" width="116" height="32"/>
-				<textElement verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{tarea}.getLugar()]]></textFieldExpression>
 			</textField>
 			<textField>
@@ -140,25 +157,25 @@ Entre Ríos 2245-67 3300 POSADAS-MNES
 			<line>
 				<reportElement x="351" y="0" width="1" height="32"/>
 			</line>
+			<line>
+				<reportElement x="0" y="31" width="511" height="1"/>
+			</line>
 		</band>
 	</detail>
-	<columnFooter>
-		<band height="45" splitType="Stretch"/>
-	</columnFooter>
 	<pageFooter>
-		<band height="21" splitType="Stretch">
+		<band height="43" splitType="Stretch">
 			<textField>
-				<reportElement x="391" y="0" width="80" height="20"/>
+				<reportElement x="417" y="23" width="80" height="20"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression class="java.lang.String"><![CDATA["Pagina "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
-				<reportElement x="471" y="0" width="40" height="20"/>
+				<reportElement x="497" y="23" width="14" height="20"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy">
-				<reportElement x="0" y="0" width="100" height="20"/>
+				<reportElement x="0" y="23" width="100" height="20"/>
 				<textElement/>
 				<textFieldExpression class="java.util.Date"><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>

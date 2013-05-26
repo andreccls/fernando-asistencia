@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 25-abr-2013 14:00:45 by Hibernate Tools 3.2.1.GA -->
+<!-- Generated 23-may-2013 2:20:56 by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
   <class catalog="asistencia" name="Clases.Establecimiento" table="establecimiento">
     <id name="idEstablecimiento" type="java.lang.Integer">
@@ -22,17 +22,17 @@
     <property name="depto" type="string">
       <column length="3" name="Depto"/>
     </property>
+    <property name="imagen" type="binary">
+      <column name="Imagen"/>
+    </property>
+    <property name="leyenda" type="string">
+      <column length="100" name="Leyenda"/>
+    </property>
     <set inverse="true" name="auditorias">
       <key>
         <column name="Id_establecimiento"/>
       </key>
       <one-to-many class="Clases.Auditoria"/>
-    </set>
-    <set inverse="true" name="feriados">
-      <key>
-        <column name="Id_establecimiento" not-null="true"/>
-      </key>
-      <one-to-many class="Clases.Feriado"/>
     </set>
     <set inverse="true" name="tareas">
       <key>
@@ -58,17 +58,17 @@
       </key>
       <one-to-many class="Clases.Personal"/>
     </set>
+    <set inverse="true" name="anolectivos">
+      <key>
+        <column name="Id_establecimiento" not-null="true"/>
+      </key>
+      <one-to-many class="Clases.Anolectivo"/>
+    </set>
     <set inverse="true" name="detalleEstablecimientos">
       <key>
         <column name="Id_establecimiento" not-null="true"/>
       </key>
       <one-to-many class="Clases.DetalleEstablecimiento"/>
-    </set>
-    <set inverse="true" name="declaracionjuradas">
-      <key>
-        <column name="Id_establecimiento" not-null="true"/>
-      </key>
-      <one-to-many class="Clases.Declaracionjurada"/>
     </set>
   </class>
 </hibernate-mapping>

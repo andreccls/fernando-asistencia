@@ -14,6 +14,8 @@ import Clases.Agenda;
 import Clases.Circular;
 import Clases.Controlador;
 import Clases.Declaracionjurada;
+import Clases.Establecimiento;
+import Clases.Perfil;
 import javax.swing.JOptionPane;
 import Clases.Personal;
 import Clases.Personaldocente;
@@ -21,6 +23,7 @@ import Clases.Personalnodocente;
 import Clases.Registroacceso;
 import Clases.Tarea;
 import Clases.Telefono;
+import Persistencia.ConexionJDBC;
 import TareasProgramadas.Programacion;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -28,10 +31,13 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.LinearGradientPaint;
 import java.awt.Point;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
@@ -49,50 +55,80 @@ public class JFramePrincipal extends javax.swing.JFrame {
      */
      Controlador Drive=new Controlador();
      Personal adm=new Personal();
-     public int idsesion;
+//     public int idsesion;
      Tarea tar=new Tarea();
      Circular cir=new Circular();
+     Establecimiento es;
      
-     
-    public JFramePrincipal(Controlador unDrive, Personal admin,int id) {
+    public JFramePrincipal(Controlador unDrive, Personal admin) {
         this.Drive=unDrive;
         this.adm=admin;
-        this.idsesion=id;
+//        this.idsesion=id;
         initComponents();
-        ImageIcon fott = new ImageIcon(getClass().getResource("/imagenes/gutenberg.png"));
-        Icon icono = new ImageIcon(fott.getImage().getScaledInstance(jLabel1.getWidth(), jLabel1.getHeight(), Image.SCALE_DEFAULT));
-        jLabel1.setIcon(icono);
-        jLabel1.repaint();
-        int nivel=0;
-        if(adm.getIdPersonal()==null){
-            nivel=1;
+//        Perfil perf= adm.getPerfil();
+//        Boolean act=;
+        if(adm.getIdPersonal()!=null){
+            if(adm.getPerfil().getActividadesins()==null){
+                jMenuItem4.setEnabled(false);//registrar extracurricular
+                jMenuItem5.setEnabled(false);//registrar clase
+                jMenuItem6.setEnabled(false);//registrar reunion
+                jMenuItem7.setEnabled(false);//registrar otro
+            }
+            if(adm.getPerfil().getCircularesins()==null){
+                jMenuItem11.setEnabled(false);//registrar Circular
+            }
+            if(adm.getPerfil().getPersonalins()==null){
+                jMenuItem1.setEnabled(false);//registrar personal
+            }
+            if(adm.getPerfil().getPersonalact()==null){
+                jMenuItem2.setEnabled(false);//registrar huella
+            }
+            if(adm.getPerfil().getPersonalcon()==null){
+                jMenuItem3.setEnabled(false);//Consultar personal
+            }
+            if(adm.getPerfil().getAsistenciascon()==null){
+                jMenuItem8.setEnabled(false);//Consultar inasistencia
+            }
+            if(adm.getPerfil().getActividadescon()==null){
+                jMenuItem9.setEnabled(false);//Consultar actividades
+            }
+            if(adm.getPerfil().getCircularescon()==null){
+                jMenuItem12.setEnabled(false);//Consultar circulares
+            }
+            if(adm.getPerfil().getRegistrocon()==null){
+                jMenuItem13.setEnabled(false);//Consultar registro
+            }
+            if(adm.getPerfil().getAuditoriacon()==null){
+                jMenuItem10.setEnabled(false);//Consultar auditoria
+            }
+            if(adm.getPerfil().getHistorialcon()==null){
+                jMenuItem16.setEnabled(false);//Consultar historial
+            }
+            if(adm.getPerfil().getConfiguracioncon()==null){
+                jMenuItem14.setEnabled(false);//Configurar feriado
+                jMenuItem15.setEnabled(false);//Configurar inicio
+            }
         }else{
-        nivel=adm.getPerfil().getNivel();}
-        if(nivel==4){
-            jMenuItem1.setEnabled(false);//registrar personal
-            jMenuItem2.setEnabled(false);//registrar huella
-            jMenuItem3.setEnabled(false);//Consultar personal
-            jMenuItem4.setEnabled(false);//registrar extracurricular
-            jMenuItem5.setEnabled(false);//registrar clase
-            jMenuItem6.setEnabled(false);//registrar reunion
-            jMenuItem7.setEnabled(false);//registrar otro
-            jMenuItem8.setEnabled(false);//Consultar inasistencia
-            jMenuItem9.setEnabled(false);//Consultar actividades
-            jMenuItem11.setEnabled(false);//registrar feriados
-            jMenuItem12.setEnabled(false);//registrar feriados
-            jMenuItem13.setEnabled(false);//registrar feriados
-            jMenuItem14.setEnabled(false);//registrar feriados
-//            jMenuItem12.setEnabled(false);//registrar feriados
-//            jMenuItem13.setEnabled(false);//registrar feriados
-        }else if(nivel==3){
-            jMenuItem1.setEnabled(false);//registrar personal
-            jMenuItem2.setEnabled(false);//registrar huella
-            jMenuItem4.setEnabled(false);//registrar extracurricular
-            jMenuItem5.setEnabled(false);//registrar clase
-            jMenuItem6.setEnabled(false);//registrar reunion
-            jMenuItem7.setEnabled(false);//registrar otro
-//            jMenuItem13.setEnabled(false);//registrar feriados
+            jMenuItem1.setEnabled(true);//registrar personal
+            jMenuItem2.setEnabled(true);//registrar huella
+            jMenu3.setEnabled(false);//registrar huella
+            jMenu5.setEnabled(false);//registrar huella
+            jMenu2.setEnabled(false);//registrar huella.
+            jMenuItem14.setEnabled(false);
         }
+        
+        es=Drive.getPrimerEstablecimiento();
+        if(es.getImagen()!=null){
+            ImageIcon fott = new ImageIcon(es.getImagen());
+
+            Icon icono = new ImageIcon(fott.getImage().getScaledInstance(jLabel1.getWidth(), jLabel1.getHeight(), Image.SCALE_DEFAULT));
+    //        Icon icono = new ImageIcon(fott.getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
+            jLabel1.setIcon(icono);
+            jLabel1.repaint();
+        }
+        jLabel4.setText(es.getLeyenda());
+        jLabel2.setText("INSTITUTO "+es.getNombre());
+        
         ImageIcon fott1 = new ImageIcon(getClass().getResource("/imagenes/Personal.png"));
         Icon icono1 = new ImageIcon(fott1.getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
         jMenuItem1.setIcon(icono1);
@@ -135,7 +171,19 @@ public class JFramePrincipal extends javax.swing.JFrame {
         ImageIcon fott14 = new ImageIcon(getClass().getResource("/imagenes/no.png"));
         Icon icono14 = new ImageIcon(fott14.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
         jButton3.setIcon(icono14);
-        
+        ImageIcon fott15 = new ImageIcon(getClass().getResource("/imagenes/Auditoria.png"));
+        Icon icono15 = new ImageIcon(fott15.getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
+        jMenuItem10.setIcon(icono15);
+        ImageIcon fott16 = new ImageIcon(getClass().getResource("/imagenes/Inicio.png"));
+        Icon icono16 = new ImageIcon(fott16.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
+        jMenuItem15.setIcon(icono16);
+        ImageIcon fott17 = new ImageIcon(getClass().getResource("/imagenes/Historial.png"));
+        Icon icono17 = new ImageIcon(fott17.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
+        jMenuItem16.setIcon(icono17);
+        ImageIcon fott18 = new ImageIcon(getClass().getResource("/imagenes/Consulta.png"));
+        Icon icono18 = new ImageIcon(fott18.getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
+        jMenuItem17.setIcon(icono18);
+//        
 //        ImageIcon fondo = new ImageIcon("src\\imagenes\\fondo.png");
 //        Icon icon = new ImageIcon(fondo.getImage().getScaledInstance(jPanel1.getWidth(), jPanel1.getHeight(), Image.SCALE_DEFAULT));
 //        jPanel1.setIcon(icon);
@@ -180,7 +228,11 @@ public class JFramePrincipal extends javax.swing.JFrame {
         jMenuItem12 = new javax.swing.JMenuItem();
         jMenuItem13 = new javax.swing.JMenuItem();
         jMenuItem10 = new javax.swing.JMenuItem();
+        jMenuItem16 = new javax.swing.JMenuItem();
+        jMenu5 = new javax.swing.JMenu();
+        jMenuItem17 = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
+        jMenuItem15 = new javax.swing.JMenuItem();
         jMenuItem14 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -377,9 +429,37 @@ public class JFramePrincipal extends javax.swing.JFrame {
         });
         jMenu2.add(jMenuItem10);
 
+        jMenuItem16.setText("Historial");
+        jMenuItem16.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem16ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem16);
+
         jMenuBar1.add(jMenu2);
 
-        jMenu4.setText("Feriado");
+        jMenu5.setText("Hoy");
+
+        jMenuItem17.setText("Ver");
+        jMenuItem17.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem17ActionPerformed(evt);
+            }
+        });
+        jMenu5.add(jMenuItem17);
+
+        jMenuBar1.add(jMenu5);
+
+        jMenu4.setText("Configuración");
+
+        jMenuItem15.setText("Inicio");
+        jMenuItem15.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem15ActionPerformed(evt);
+            }
+        });
+        jMenu4.add(jMenuItem15);
 
         jMenuItem14.setText("Feriados");
         jMenuItem14.addActionListener(new java.awt.event.ActionListener() {
@@ -412,55 +492,55 @@ public class JFramePrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenu1ActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        JFramePersonal vent2 = new JFramePersonal(Drive,adm,idsesion);
+        JFramePersonal vent2 = new JFramePersonal(Drive,adm);
         this.hide();
         vent2.show();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
-        JFrameClase vent2 = new JFrameClase(Drive,adm,idsesion,tar);
+        JFrameClase vent2 = new JFrameClase(Drive,adm,tar);
         this.hide();
         vent2.show();
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
-        JFrameReunion vent2 = new JFrameReunion(Drive,adm,idsesion,tar);
+        JFrameReunion vent2 = new JFrameReunion(Drive,adm,tar);
         this.hide();
         vent2.show();
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        JFrameConsulta vent2 = new JFrameConsulta(Drive,adm,idsesion);
+        JFrameConsulta vent2 = new JFrameConsulta(Drive,adm);
         this.hide();
         vent2.show();
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        jDigitalPersona vent2 = new jDigitalPersona(Drive,adm,idsesion);
+        jDigitalPersona vent2 = new jDigitalPersona(Drive,adm);
         this.hide();
         vent2.show();        // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        JFrameExtracurricular vent2 = new JFrameExtracurricular(Drive,adm,idsesion,tar);
+        JFrameExtracurricular vent2 = new JFrameExtracurricular(Drive,adm,tar);
         this.hide();
         vent2.show();
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
-        JFrameotro vent2 = new JFrameotro(Drive,adm,idsesion,tar);
+        JFrameotro vent2 = new JFrameotro(Drive,adm,tar);
         this.hide();
         vent2.show();
     }//GEN-LAST:event_jMenuItem7ActionPerformed
 
     private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
-        JFrameInasistencia vent2 = new JFrameInasistencia(Drive,adm,idsesion);
+        JFrameInasistencia vent2 = new JFrameInasistencia(Drive,adm);
         this.hide();
         vent2.show();
     }//GEN-LAST:event_jMenuItem8ActionPerformed
 
     private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
-        JFrameConsultaActividades vent2 = new JFrameConsultaActividades(Drive,adm,idsesion);
+        JFrameConsultaActividades vent2 = new JFrameConsultaActividades(Drive,adm);
         this.hide();
         vent2.show();
     }//GEN-LAST:event_jMenuItem9ActionPerformed
@@ -470,15 +550,15 @@ public class JFramePrincipal extends javax.swing.JFrame {
             int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea salir?", "Cerrar sesión", JOptionPane.OK_CANCEL_OPTION);
             if (JOptionPane.OK_OPTION == confirmado) {
                 JFrameInicio vp = new JFrameInicio();
-                Registroacceso reg = adm.getRegistroacceso(idsesion);//Drive.getRegistroacceso(adm, vp.idsesion);
-                if (reg.getIdRegistroacceso() != null) {
-                    Date hoy = new Date();
-                    String s = new SimpleDateFormat("HH:mm").format(hoy.getTime());
-                    SimpleDateFormat fo = new SimpleDateFormat("HH:mm");
-                    Date fin = fo.parse(s);
-                    reg.setFin(fin);
-                    reg.actualizarRegistroAcceso(reg);
-                }
+//                Registroacceso reg = adm.getRegistroacceso(idsesion);//Drive.getRegistroacceso(adm, vp.idsesion);
+//                if (reg.getIdRegistroacceso() != null) {
+//                    Date hoy = new Date();
+//                    String s = new SimpleDateFormat("HH:mm").format(hoy.getTime());
+//                    SimpleDateFormat fo = new SimpleDateFormat("HH:mm");
+//                    Date fin = fo.parse(s);
+//                    reg.setFin(fin);
+//                    reg.actualizarRegistroAcceso(reg);
+//                }
                 this.dispose();
                 vp.show();
             }
@@ -492,15 +572,15 @@ public class JFramePrincipal extends javax.swing.JFrame {
             int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea salir?", "Cerrar sesión", JOptionPane.OK_CANCEL_OPTION);
             if (JOptionPane.OK_OPTION == confirmado) {
                 JFrameInicio vp = new JFrameInicio();
-                Registroacceso reg = adm.getRegistroacceso(idsesion);//Drive.getRegistroacceso(adm, vp.idsesion);
-                if (reg.getIdRegistroacceso() != null) {
-                    Date hoy = new Date();
-                    String s = new SimpleDateFormat("HH:mm").format(hoy.getTime());
-                    SimpleDateFormat fo = new SimpleDateFormat("HH:mm");
-                    Date fin = fo.parse(s);
-                    reg.setFin(fin);
-                    reg.actualizarRegistroAcceso(reg);
-                }
+//                Registroacceso reg = adm.getRegistroacceso(idsesion);//Drive.getRegistroacceso(adm, vp.idsesion);
+//                if (reg.getIdRegistroacceso() != null) {
+//                    Date hoy = new Date();
+//                    String s = new SimpleDateFormat("HH:mm").format(hoy.getTime());
+//                    SimpleDateFormat fo = new SimpleDateFormat("HH:mm");
+//                    Date fin = fo.parse(s);
+//                    reg.setFin(fin);
+//                    reg.actualizarRegistroAcceso(reg);
+//                }
                 this.dispose();
                 vp.show();
             }
@@ -510,34 +590,52 @@ public class JFramePrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosing
 
     private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed
-        JFrameCircular vent2 = new JFrameCircular(Drive,adm,idsesion,cir);
+        JFrameCircular vent2 = new JFrameCircular(Drive,adm,cir);
         this.hide();
         vent2.show();
     }//GEN-LAST:event_jMenuItem11ActionPerformed
 
     private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem12ActionPerformed
-        JFrameConsultaCircular vent2 = new JFrameConsultaCircular(Drive,adm,idsesion);
+        JFrameConsultaCircular vent2 = new JFrameConsultaCircular(Drive,adm);
         this.hide();
         vent2.show();
     }//GEN-LAST:event_jMenuItem12ActionPerformed
 
     private void jMenuItem13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem13ActionPerformed
-        JFrameRegistro vent2 = new JFrameRegistro(Drive,adm,idsesion);
+        JFrameRegistro vent2 = new JFrameRegistro(Drive,adm);
         this.hide();
         vent2.show();
     }//GEN-LAST:event_jMenuItem13ActionPerformed
 
     private void jMenuItem14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem14ActionPerformed
-        JFrameFeriados vent2 = new JFrameFeriados(Drive,adm,idsesion);
+        JFrameFeriados vent2 = new JFrameFeriados(Drive,adm);
         this.hide();
         vent2.show();
     }//GEN-LAST:event_jMenuItem14ActionPerformed
 
     private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
-        JFrameAuditoria vent2 = new JFrameAuditoria(Drive,adm,idsesion);
+        JFrameAuditoria vent2 = new JFrameAuditoria(Drive,adm);
         this.hide();
         vent2.show();
     }//GEN-LAST:event_jMenuItem10ActionPerformed
+
+    private void jMenuItem15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem15ActionPerformed
+        JFrameConfiguracion vent2 = new JFrameConfiguracion(Drive,adm);
+        this.hide();
+        vent2.show();
+    }//GEN-LAST:event_jMenuItem15ActionPerformed
+
+    private void jMenuItem16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem16ActionPerformed
+        JFrameHistorial vent2 = new JFrameHistorial(Drive,adm);
+        this.hide();
+        vent2.show();
+    }//GEN-LAST:event_jMenuItem16ActionPerformed
+
+    private void jMenuItem17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem17ActionPerformed
+        JFrameVer vent2 = new JFrameVer(Drive,adm);
+        this.hide();
+        vent2.show();
+    }//GEN-LAST:event_jMenuItem17ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -559,6 +657,7 @@ public class JFramePrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
+    private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem10;
@@ -566,6 +665,9 @@ public class JFramePrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem12;
     private javax.swing.JMenuItem jMenuItem13;
     private javax.swing.JMenuItem jMenuItem14;
+    private javax.swing.JMenuItem jMenuItem15;
+    private javax.swing.JMenuItem jMenuItem16;
+    private javax.swing.JMenuItem jMenuItem17;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;

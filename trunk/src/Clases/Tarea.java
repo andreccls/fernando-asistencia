@@ -1,5 +1,5 @@
 package Clases;
-// Generated 25-abr-2013 1:29:18 by Hibernate Tools 3.2.1.GA
+// Generated 14-may-2013 5:19:10 by Hibernate Tools 3.2.1.GA
 
 
 import java.text.SimpleDateFormat;
@@ -18,11 +18,13 @@ public class Tarea  implements java.io.Serializable {
 
 
      private Integer idTarea;
+     private Lugar lugar;
      private Establecimiento establecimiento;
      private String nombre;
-     private String lugar;
      private String comentario;
      private Boolean estado;
+     private Date diaInicio;
+     private Date diaFin;
      private Set<Tareareunion> tareareunions = new HashSet<Tareareunion>(0);
      private Set<Auditoria> auditorias = new HashSet<Auditoria>(0);
      private Set<Agenda> agendas = new HashSet<Agenda>(0);
@@ -38,12 +40,14 @@ public class Tarea  implements java.io.Serializable {
         this.establecimiento = establecimiento;
         this.nombre = nombre;
     }
-    public Tarea(Establecimiento establecimiento, String nombre, String lugar, String comentario, Boolean estado, Set<Tareareunion> tareareunions, Set<Auditoria> auditorias, Set<Agenda> agendas, Set<Tareaotro> tareaotros, Set<Tareaextracurricular> tareaextracurriculars, Set<Tareaclase> tareaclases) {
+    public Tarea(Lugar lugar, Establecimiento establecimiento, String nombre, String comentario, Boolean estado, Date diaInicio, Date diaFin, Set<Tareareunion> tareareunions, Set<Auditoria> auditorias, Set<Agenda> agendas, Set<Tareaotro> tareaotros, Set<Tareaextracurricular> tareaextracurriculars, Set<Tareaclase> tareaclases) {
+       this.lugar = lugar;
        this.establecimiento = establecimiento;
        this.nombre = nombre;
-       this.lugar = lugar;
        this.comentario = comentario;
        this.estado = estado;
+       this.diaInicio = diaInicio;
+       this.diaFin = diaFin;
        this.tareareunions = tareareunions;
        this.auditorias = auditorias;
        this.agendas = agendas;
@@ -51,18 +55,25 @@ public class Tarea  implements java.io.Serializable {
        this.tareaextracurriculars = tareaextracurriculars;
        this.tareaclases = tareaclases;
     }
-   
+    
     @Override
     public String toString() {
         return nombre;
     }
-    
+   
     public Integer getIdTarea() {
         return this.idTarea;
     }
     
     public void setIdTarea(Integer idTarea) {
         this.idTarea = idTarea;
+    }
+    public Lugar getLugar() {
+        return this.lugar;
+    }
+    
+    public void setLugar(Lugar lugar) {
+        this.lugar = lugar;
     }
     public Establecimiento getEstablecimiento() {
         return this.establecimiento;
@@ -78,13 +89,6 @@ public class Tarea  implements java.io.Serializable {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-    public String getLugar() {
-        return this.lugar;
-    }
-    
-    public void setLugar(String lugar) {
-        this.lugar = lugar;
-    }
     public String getComentario() {
         return this.comentario;
     }
@@ -98,6 +102,20 @@ public class Tarea  implements java.io.Serializable {
     
     public void setEstado(Boolean estado) {
         this.estado = estado;
+    }
+    public Date getDiaInicio() {
+        return this.diaInicio;
+    }
+    
+    public void setDiaInicio(Date diaInicio) {
+        this.diaInicio = diaInicio;
+    }
+    public Date getDiaFin() {
+        return this.diaFin;
+    }
+    
+    public void setDiaFin(Date diaFin) {
+        this.diaFin = diaFin;
     }
     public Set<Tareareunion> getTareareunions() {
         return this.tareareunions;
@@ -153,12 +171,11 @@ public class Tarea  implements java.io.Serializable {
     
     public void ActualizarTarea(Tarea unaTarea){
     Controlador.getPERSISTENCIA().update(this);
-
-    JOptionPane.showMessageDialog(null,"La tarea se actualizó correctamente","Actualizar tarea",JOptionPane.INFORMATION_MESSAGE);
+    
     }
     
-    public void crearTareaclase(TareaclaseId id, Tarea tarea, String aula, Integer numero){
-        Tareaclase unaTareaclase=new Tareaclase(id,tarea,aula,numero);
+    public void crearTareaclase(TareaclaseId id, Aula aula, Tarea tarea){
+        Tareaclase unaTareaclase=new Tareaclase(id,aula,tarea);
             unaTareaclase.guardarTareaclase(unaTareaclase);
      }
     
@@ -167,13 +184,13 @@ public class Tarea  implements java.io.Serializable {
             unaTareareunion.guardarTareareunion(unaTareareunion);
      }
     
-    public void crearTareaextracurricular(TareaextracurricularId id, Tarea tarea, Date diaInicio, Date diaFin){
-        Tareaextracurricular unaTareaextracurricular=new Tareaextracurricular(id,tarea,diaInicio,diaFin);
+    public void crearTareaextracurricular(TareaextracurricularId id, Tarea tarea, String comentario){
+        Tareaextracurricular unaTareaextracurricular=new Tareaextracurricular(id,tarea,comentario);
             unaTareaextracurricular.guardarTareaextracurricular(unaTareaextracurricular);
      }
     
-    public void crearTareaotro(TareaotroId id, Tarea tarea, String caracteristica, Date diaInicio, Date diaFin){
-        Tareaotro unaTareaotro=new Tareaotro(id,tarea,caracteristica,diaInicio,diaFin);
+    public void crearTareaotro(TareaotroId id, Tarea tarea, String caracteristica){
+        Tareaotro unaTareaotro=new Tareaotro(id,tarea,caracteristica);
             unaTareaotro.guardarTareaotro(unaTareaotro);
      }
     
@@ -210,6 +227,15 @@ public class Tarea  implements java.io.Serializable {
 //        return lista;
     }
     
+    public List ListaPer(Tarea tar) {
+        List lista = new ArrayList();
+        Iterator it = tar.getAgendas().iterator();
+        while (it.hasNext()) {
+            Agenda ag = (Agenda) it.next();
+            lista.add(ag.getPersonal());
+        }
+        return lista;
+    }
     public List ObtenerListaDiass(){
         List lista = new ArrayList();
         List listad = new ArrayList();
@@ -407,9 +433,9 @@ public class Tarea  implements java.io.Serializable {
     public void RecuperarAsistencia(Tarea tar, Date dinicio) {
         try {
             if (tar.getTareaextracurriculars().iterator().hasNext()) {
-                Tareaextracurricular tarex = tar.getTareaextracurriculars().iterator().next();
-                Date diaini = tarex.getDiaInicio();
-                Date diafin = tarex.getDiaFin();
+                //Tareaextracurricular tarex = tar.getTareaextracurriculars().iterator().next();
+                Date diaini = tar.getDiaInicio();
+                Date diafin = tar.getDiaFin();
                 Iterator it = Controlador.PERSISTENCIA.getAgendas().iterator();
                 while (it.hasNext()) {
                     Agenda age = (Agenda) it.next();
@@ -602,6 +628,7 @@ public class Tarea  implements java.io.Serializable {
             JOptionPane.showMessageDialog(null,"Error al recuperar las asistencias","Eliminar tarea",JOptionPane.ERROR_MESSAGE);
         }
     }
+
 
 
 }

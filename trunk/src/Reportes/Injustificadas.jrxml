@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="InasistenciasJustificadas" language="groovy" pageWidth="595" pageHeight="842" columnWidth="539" leftMargin="28" rightMargin="28" topMargin="85" bottomMargin="28">
-	<parameter name="Titulo" class="java.lang.String"/>
+	<parameter name="filtro1" class="java.lang.String"/>
+	<parameter name="total" class="java.lang.Integer"/>
+	<parameter name="filtro2" class="java.lang.String"/>
 	<queryString language="hql">
 		<![CDATA[from Iniciofin]]>
 	</queryString>
@@ -17,90 +19,134 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="117" splitType="Stretch">
-			<image>
-				<reportElement x="1" y="4" width="80" height="58"/>
-				<imageExpression class="java.lang.String"><![CDATA["imagenes/gutenberg.png"]]></imageExpression>
-			</image>
-			<staticText>
-				<reportElement x="1" y="82" width="199" height="35"/>
-				<textElement/>
-				<text><![CDATA[Incorporado a la Enseñanza oficial N º441
-Entre Ríos 2245-67 3300 POSADAS-MNES
-]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="1" y="62" width="139" height="20"/>
-				<textElement>
+		<band height="183" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="123" width="199" height="35"/>
+				<textElement markup="none"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{dia}.getMes().getAno().getAgenda().getPersonal().getEstablecimiento().getLeyenda()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="104" width="139" height="20"/>
+				<textElement markup="none">
 					<font size="12" isBold="true" isItalic="true" isUnderline="false" isStrikeThrough="false"/>
 				</textElement>
-				<text><![CDATA[Instituto "Gutenberg"]]></text>
-			</staticText>
+				<textFieldExpression class="java.lang.String"><![CDATA["Instituto "+$F{dia}.getMes().getAno().getAgenda().getPersonal().getEstablecimiento().getNombre()]]></textFieldExpression>
+			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="237" y="41" width="296" height="76" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement mode="Opaque" x="237" y="81" width="296" height="76" forecolor="#000000" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle" markup="none">
 					<font size="30" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{Titulo}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{filtro1}]]></textFieldExpression>
 			</textField>
+			<line>
+				<reportElement mode="Transparent" x="1" y="159" width="539" height="1"/>
+				<graphicElement>
+					<pen lineWidth="3.0" lineStyle="Double"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="0" y="160" width="1" height="23"/>
+			</line>
+			<textField>
+				<reportElement x="137" y="160" width="68" height="23"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$P{total}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="160" width="135" height="23"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="136" y="161" width="1" height="22"/>
+			</line>
+			<image hAlign="Center">
+				<reportElement mode="Transparent" x="0" y="0" width="100" height="100"/>
+				<imageExpression class="java.io.InputStream"><![CDATA[new java.io.ByteArrayInputStream ($F{dia}.getMes().getAno().getAgenda().getPersonal().getEstablecimiento().getImagen())]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="206" y="160" width="80" height="23"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[MES:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="287" y="160" width="84" height="23"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{filtro2}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="286" y="161" width="1" height="22"/>
+			</line>
+			<line>
+				<reportElement x="205" y="160" width="1" height="23"/>
+			</line>
 		</band>
 	</title>
 	<columnHeader>
 		<band height="26" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="6" width="136" height="20"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<reportElement x="0" y="0" width="136" height="26"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true" isItalic="true"/>
+				</textElement>
 				<text><![CDATA[Actividad]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="137" y="6" width="149" height="20"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<reportElement x="137" y="0" width="149" height="26"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true" isItalic="true"/>
+				</textElement>
 				<text><![CDATA[Personal]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="287" y="6" width="83" height="20"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<reportElement x="287" y="0" width="83" height="26"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true" isItalic="true"/>
+				</textElement>
 				<text><![CDATA[Fecha]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="371" y="6" width="83" height="20"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<reportElement x="371" y="0" width="83" height="26"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true" isItalic="true"/>
+				</textElement>
 				<text><![CDATA[Inicio]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="455" y="6" width="83" height="20"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<reportElement x="455" y="0" width="83" height="26"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true" isItalic="true"/>
+				</textElement>
 				<text><![CDATA[Fin]]></text>
 			</staticText>
 			<line>
-				<reportElement x="0" y="6" width="539" height="1"/>
+				<reportElement x="0" y="0" width="539" height="1"/>
 			</line>
 			<line>
 				<reportElement x="0" y="25" width="539" height="1"/>
 			</line>
 			<line>
-				<reportElement x="136" y="7" width="1" height="19"/>
+				<reportElement x="136" y="0" width="1" height="26"/>
 			</line>
 			<line>
-				<reportElement x="286" y="7" width="1" height="19"/>
+				<reportElement x="286" y="0" width="1" height="26"/>
 			</line>
 			<line>
-				<reportElement x="370" y="7" width="1" height="19"/>
+				<reportElement x="370" y="0" width="1" height="26"/>
 			</line>
 			<line>
-				<reportElement x="454" y="7" width="1" height="19"/>
+				<reportElement x="454" y="0" width="1" height="26"/>
 			</line>
 			<line>
-				<reportElement x="538" y="7" width="1" height="19"/>
+				<reportElement x="538" y="0" width="1" height="26"/>
 			</line>
 			<line>
-				<reportElement x="0" y="7" width="1" height="19"/>
-			</line>
-			<line>
-				<reportElement mode="Transparent" x="0" y="0" width="539" height="1"/>
-				<graphicElement>
-					<pen lineWidth="3.0" lineStyle="Double"/>
-				</graphicElement>
+				<reportElement x="0" y="0" width="1" height="26"/>
 			</line>
 		</band>
 	</columnHeader>
@@ -149,27 +195,27 @@ Entre Ríos 2245-67 3300 POSADAS-MNES
 			<line>
 				<reportElement x="0" y="0" width="1" height="20"/>
 			</line>
+			<line>
+				<reportElement x="0" y="19" width="539" height="1"/>
+			</line>
 		</band>
 	</detail>
-	<columnFooter>
-		<band height="45" splitType="Stretch"/>
-	</columnFooter>
 	<pageFooter>
-		<band height="20" splitType="Stretch">
-			<textField evaluationTime="Report">
-				<reportElement x="493" y="0" width="40" height="20"/>
-				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
-			</textField>
+		<band height="41" splitType="Stretch">
 			<textField pattern="dd/MM/yyyy">
-				<reportElement x="1" y="0" width="100" height="20"/>
+				<reportElement x="1" y="21" width="100" height="20"/>
 				<textElement/>
 				<textFieldExpression class="java.util.Date"><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="413" y="0" width="80" height="20"/>
+				<reportElement x="443" y="21" width="80" height="20"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression class="java.lang.String"><![CDATA["Pagina "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="523" y="21" width="16" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>

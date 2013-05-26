@@ -53,15 +53,15 @@ public class JFramePersonal extends javax.swing.JFrame {
 
      Controlador Drive;
      Personal adm=new Personal();
-     public int idsesion;
+//     public int idsesion;
     DefaultListModel modeloLista = new DefaultListModel();
     DefaultListModel modeloLista2 = new DefaultListModel();
     
     /** Creates new form JFramePersonal */
-    public JFramePersonal(Controlador unDrive,Personal admin,int id) {
+    public JFramePersonal(Controlador unDrive,Personal admin) {
         this.adm=admin;
         this.Drive=unDrive;
-        this.idsesion=id;
+//        this.idsesion=id;
         initComponents();
         Drive.CargarComboDepartamento(jComboBox2);
         Drive.CargarComboTipodoc(jComboBox5);
@@ -104,7 +104,11 @@ public class JFramePersonal extends javax.swing.JFrame {
         Icon icono7 = new ImageIcon(fott7.getImage().getScaledInstance(15, 15, Image.SCALE_DEFAULT));
         jButton4.setIcon(icono7);
         jButton6.setIcon(icono7);
-        
+        if(adm.getIdPersonal()!=null){
+            if(adm.getPerfil().getPersonalins()==null){
+                jButton1.setEnabled(false);
+            }
+        }
 
     }
 
@@ -938,7 +942,7 @@ jPanel1Layout.setHorizontalGroup(
                         byte[] bit=new byte[0];
                         int alt=0;
                         if(!jTextField7.getText().isEmpty()){alt=Integer.parseInt(jTextField7.getText());} 
-                        int i=col.crearPersonal(tipo,perf,col,bit,nro,jTextField2.getText().toUpperCase(), jTextField1.getText().toUpperCase(), jFormattedTextField2.getText(), jTextField6.getText().toUpperCase(),alt,jTextField8.getText().toUpperCase(),jTextField13.getText().toUpperCase(), jTextField9.getText(),sexo,civil,ingreso,true,false,fechanac,null,null,null,null,null,null,null,null,null,null,null,null); 
+                        int i=col.crearPersonal(tipo,perf,col,bit,nro,jTextField2.getText().toUpperCase(), jTextField1.getText().toUpperCase(), jFormattedTextField2.getText(), jTextField6.getText().toUpperCase(),alt,jTextField8.getText().toUpperCase(),jTextField13.getText().toUpperCase(), jTextField9.getText(),sexo,civil,ingreso,true,false,fechanac,null,null,null,null,null,null,null,null,null,null,null,null,null); 
 
                         pe.setIdPersonal(i);
                         pe.setEstablecimiento(col);
@@ -957,18 +961,20 @@ jPanel1Layout.setHorizontalGroup(
                         pe.setIngreso(ingreso);
                         pe.setEstado(true);
                         pe.setFamiliar(false);
+                        pe.setPerfil(perf);
+                        // <editor-fold defaultstate="collapsed" desc="Auditoria"> 
                         Auditoria audi=new Auditoria();
-                        if(adm.getIdPersonal()!=null){
+                        if(adm.getIdPersonal()==null){
                             adm=pe;
-                            audi.setPersonalByIdAuditor(adm);
-                        }else{
                             audi.setPersonalByIdAuditor(pe);
+                        }else{
+                            audi.setPersonalByIdAuditor(adm);
                         }
                         audi.setPersonalByIdPersonal(pe);
                         audi.setOperacion("Insertar");
                         audi.setFecha(new Date());
                         audi.guardarAuditoria(audi);
-
+                        // </editor-fold>
                         int b=0;
                         while(modeloLista.size()!=b){
                             Telefono tel=(Telefono) modeloLista.getElementAt(b);
@@ -996,6 +1002,7 @@ jPanel1Layout.setHorizontalGroup(
                             }else{
                                 Exception noesvalido=new Exception("No ingreso las horas y/o la antiguedad del docente. Para realizar algún cambio ingrese a actualizar personal");
                                 throw noesvalido;
+                                
                             }
                         }
                         if(jRadioButton2.isSelected()){
@@ -1009,6 +1016,19 @@ jPanel1Layout.setHorizontalGroup(
                         if(pe.getEstado()==false){
                             pe.setEstado(true);
                             pe.actualizarPersonal(pe);
+                            // <editor-fold defaultstate="collapsed" desc="Auditoria"> 
+                            Auditoria audi=new Auditoria();
+                            if(adm.getIdPersonal()==null){
+                                adm=pe;
+                                audi.setPersonalByIdAuditor(pe);
+                            }else{
+                                audi.setPersonalByIdAuditor(adm);
+                            }
+                            audi.setPersonalByIdPersonal(pe);
+                            audi.setOperacion("Insertar");
+                            audi.setFecha(new Date());
+                            audi.guardarAuditoria(audi);
+                            // </editor-fold>
                         }
                         JOptionPane.showMessageDialog(null, "El personal ya existe, para realizar algún cambio ingrese a actualizar personal","Registrar Personal", JOptionPane.ERROR_MESSAGE);
                     }
@@ -1036,20 +1056,36 @@ jPanel1Layout.setHorizontalGroup(
                 JOptionPane.showMessageDialog(null,"Los campos con '*' son obligatorios y no pueden tener espacios en blanco en la fecha","Registrar Personal", JOptionPane.ERROR_MESSAGE);
             }
         }catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, ex.toString(),"Registrar Personal", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, ex.toString(), "Registrar Personal", JOptionPane.ERROR_MESSAGE);
+            jTextField1.setText("");
+            jTextField2.setText("");
+            jFormattedTextField5.setText("");
+            jFormattedTextField2.setText("");
+            jTextField6.setText("");
+            jTextField7.setText("");
+            jTextField8.setText("");
+            jTextField9.setText("");
+            jTextField3.setText("");
+            jTextField4.setText("");
+            jTextField12.setText("");
+            jTextField13.setText("");
+            modeloLista.removeAllElements();
+            modeloLista2.removeAllElements();
+            jRadioButton1.setSelected(false);
+            jRadioButton2.setSelected(false);
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        if (!jTextField1.getText().isEmpty() || !jTextField2.getText().isEmpty() || !jFormattedTextField5.getText().isEmpty()) {
+        if (!jTextField1.getText().isEmpty() || !jTextField2.getText().isEmpty() || !jFormattedTextField5.getText().contains(" ")) {
             int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea cancelar la registración del personal?", "Registrar Personal", JOptionPane.YES_NO_OPTION);
             if (JOptionPane.OK_OPTION == confirmado) {
-                Frame vp = new JFramePrincipal(Drive, adm, idsesion);
+                Frame vp = new JFramePrincipal(Drive, adm);
                 this.dispose();
                 vp.show();
             }
         } else {
-            Frame vp = new JFramePrincipal(Drive, adm, idsesion);
+            Frame vp = new JFramePrincipal(Drive, adm);
             this.dispose();
             vp.show();
         }
@@ -1059,12 +1095,12 @@ jPanel1Layout.setHorizontalGroup(
         if (!jTextField1.getText().isEmpty() || !jTextField2.getText().isEmpty() || !jFormattedTextField5.getText().isEmpty()) {
             int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea cancelar la registración del personal?", "Registrar Personal", JOptionPane.YES_NO_OPTION);
             if (JOptionPane.OK_OPTION == confirmado) {
-                Frame vp = new JFramePrincipal(Drive, adm, idsesion);
+                Frame vp = new JFramePrincipal(Drive, adm);
                 this.dispose();
                 vp.show();
             }
         } else {
-            Frame vp = new JFramePrincipal(Drive, adm, idsesion);
+            Frame vp = new JFramePrincipal(Drive, adm);
             this.dispose();
             vp.show();
         }
@@ -1121,20 +1157,30 @@ jPanel1Layout.setHorizontalGroup(
     private void jLabel33MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel33MouseClicked
         int confirmado = JOptionPane.showConfirmDialog(null,"¿Desea eliminar la actividad?","Eliminar actividad",JOptionPane.YES_NO_OPTION);
         if (JOptionPane.OK_OPTION == confirmado){
-            Actividad act=(Actividad) jComboBox6.getSelectedItem();
-            act.eliminarActividad(act);
-            Drive.LimpiarCombo(jComboBox6);
-            Drive.CargarComboActividad(jComboBox6);
+            Object o=jComboBox6.getSelectedItem();
+            if(o!=null){
+                Actividad act=(Actividad) jComboBox6.getSelectedItem();
+                act.eliminarActividad(act);
+                Drive.LimpiarCombo(jComboBox6);
+                Drive.CargarComboActividad(jComboBox6);
+            }else{
+                JOptionPane.showMessageDialog(null, "Seleccione una actividad","Eliminar actividad", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }//GEN-LAST:event_jLabel33MouseClicked
 
     private void jLabel32MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel32MouseClicked
         int confirmado = JOptionPane.showConfirmDialog(null,"¿Desea eliminar el tipo de documento?","Eliminar Tipo de Documento",JOptionPane.YES_NO_OPTION);
         if (JOptionPane.OK_OPTION == confirmado){
-            Tipodoc doc=(Tipodoc) jComboBox5.getSelectedItem();
-            doc.eliminarTipodoc(doc);
-            Drive.LimpiarCombo(jComboBox5);
-            Drive.CargarComboTipodoc(jComboBox5);
+            Object o=jComboBox5.getSelectedItem();
+            if(o!=null){
+                Tipodoc doc=(Tipodoc) jComboBox5.getSelectedItem();
+                doc.eliminarTipodoc(doc);
+                Drive.LimpiarCombo(jComboBox5);
+                Drive.CargarComboTipodoc(jComboBox5);
+            }else{
+                JOptionPane.showMessageDialog(null, "Seleccione un tipo de documento","Eliminar tipo de documento", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }//GEN-LAST:event_jLabel32MouseClicked
 

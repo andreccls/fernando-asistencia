@@ -1,9 +1,5 @@
 package Clases;
-// Generated 21/02/2013 23:49:41 by Hibernate Tools 3.2.1.GA
-
-import java.util.Iterator;
-import javax.swing.JOptionPane;
-
+// Generated 11-may-2013 2:42:05 by Hibernate Tools 3.2.1.GA
 
 
 
@@ -17,6 +13,7 @@ public class Circularpersonal  implements java.io.Serializable {
      private Personal personal;
      private Circular circular;
      private String descripcion;
+     private Boolean estado;
 
     public Circularpersonal() {
     }
@@ -27,16 +24,17 @@ public class Circularpersonal  implements java.io.Serializable {
         this.personal = personal;
         this.circular = circular;
     }
-    public Circularpersonal(CircularpersonalId id, Personal personal, Circular circular, String descripcion) {
+    public Circularpersonal(CircularpersonalId id, Personal personal, Circular circular, String descripcion, Boolean estado) {
        this.id = id;
        this.personal = personal;
        this.circular = circular;
        this.descripcion = descripcion;
+       this.estado = estado;
     }
     
     @Override
     public String toString() {
-        return descripcion;
+        return circular.getFirma();
     }
    
     public CircularpersonalId getId() {
@@ -67,6 +65,13 @@ public class Circularpersonal  implements java.io.Serializable {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
+    public Boolean getEstado() {
+        return this.estado;
+    }
+    
+    public void setEstado(Boolean estado) {
+        this.estado = estado;
+    }
 
 //// GENERADO POR GONZALEZ FERNANDO
     
@@ -85,6 +90,12 @@ public class Circularpersonal  implements java.io.Serializable {
         Controlador.getPERSISTENCIA().delete(this);
 //        JOptionPane.showMessageDialog(null,"El Departamento se eliminó correctamente","Eliminar departamento",JOptionPane.INFORMATION_MESSAGE);
 //        }
+    }
+    
+    public void ActualizarCircularpersonal(Circularpersonal unCircularpersonal){
+        Controlador.getPERSISTENCIA().update(this);
+
+//        JOptionPane.showMessageDialog(null,"El Departamento se guardó correctamente","Registrar departamento",JOptionPane.INFORMATION_MESSAGE);
     }
 
 

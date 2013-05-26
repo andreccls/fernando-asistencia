@@ -4,17 +4,24 @@
  */
 package Presentacion;
 
+import Clases.Agenda;
+import Clases.Anolectivo;
 import Clases.Controlador;
 import Clases.Establecimiento;
 import Clases.Personal;
+import Clases.Registroacceso;
 import Clases.Tarea;
 import Clases.Tareaclase;
+import Clases.Tareaextracurricular;
+import Clases.Tareaotro;
+import Clases.Tareareunion;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Frame;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -26,6 +33,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -49,12 +57,12 @@ public class JFrameConsultaActividades extends javax.swing.JFrame {
     HiloProgreso hilo1;
     Tarea tar=new Tarea();
     String bandera;
-    int idsesion;
+//    int idsesion;
     
-    public JFrameConsultaActividades(Controlador unDrive, Personal admin,int id) {
+    public JFrameConsultaActividades(Controlador unDrive, Personal admin) {
         this.Drive=unDrive;
         this.adm=admin;
-        this.idsesion=id;
+//        this.idsesion=id;
         initComponents();
         Controlador auxDrive = new Controlador();
         auxDrive.getPrimerEstablecimiento();
@@ -114,6 +122,8 @@ public class JFrameConsultaActividades extends javax.swing.JFrame {
             }
         });
 
+        jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED));
+
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Actividad"));
 
         jLabel1.setText("Buscar por:");
@@ -170,6 +180,7 @@ public class JFrameConsultaActividades extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        jTable1.setAutoCreateRowSorter(true);
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -237,7 +248,7 @@ public class JFrameConsultaActividades extends javax.swing.JFrame {
                         .addComponent(jButton3))
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jScrollPane1))
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jButton2, jButton3, jButton4});
@@ -248,14 +259,14 @@ public class JFrameConsultaActividades extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 213, Short.MAX_VALUE)
                 .addGap(13, 13, 13)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton2)
                     .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(20, 20, 20))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -265,14 +276,14 @@ public class JFrameConsultaActividades extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
         pack();
@@ -328,51 +339,37 @@ public class JFrameConsultaActividades extends javax.swing.JFrame {
     }//GEN-LAST:event_jTable1MouseEntered
 
     private void jTable1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseReleased
-        if(evt.getClickCount()==2){
+        if (evt.getClickCount() == 2) {
             jTable1.getModel();
-            tar=(Tarea)jTable1.getValueAt(jTable1.rowAtPoint(evt.getPoint()), 0);
-            //int fila = jTable1.rowAtPoint(evt.getPoint());
-//            if ((fila > -1)){
-//                tar=col.getTarea(Integer.parseInt(jTable1.getValueAt(fila,0).toString()));
-//            }
-            if(adm.getPerfil().getNivel()<=2){
-                iniciarSplash();
-    //            //Creamos un objeto HiloProgreso al cual
-    //            //le pasamos por parámetro la barra de progreso
-                hilo1=new HiloProgreso(jProgressBar1,this,Drive,tar,adm,idsesion);
-                hilo1.start();
-                hilo1=null;
-            }
-        }                 // TODO add your handling code here:
+            tar = (Tarea) jTable1.getValueAt(jTable1.rowAtPoint(evt.getPoint()), 0);
+            iniciarSplash();
+            hilo1 = new HiloProgreso(jProgressBar1, this, Drive, tar, adm, false);
+            hilo1.start();
+            hilo1 = null;
+        }
     }//GEN-LAST:event_jTable1MouseReleased
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        try{
-            Establecimiento col= Drive.getPrimerEstablecimiento();
+        try {
+            Establecimiento col = Drive.getPrimerEstablecimiento();
             jTable1.getModel();
             jTable1.getModel();
-            tar=(Tarea)jTable1.getValueAt(jTable1.getSelectedRow(), 0);
-//            int fila = Integer.parseInt(jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString());
-//            if ((fila > -1)){
-//                tar=col.getTarea(fila);
-//            }
-            if(adm.getPerfil().getNivel()<=2){
-                iniciarSplash();
-    //            //Creamos un objeto HiloProgreso al cual
-    //            //le pasamos por parámetro la barra de progreso
-                hilo1=new HiloProgreso(jProgressBar1,this,Drive,tar,adm,idsesion);
-                hilo1.start();
-                hilo1=null;
-            }
-        }catch(Exception e){
-            JOptionPane.showMessageDialog(null,"Seleccione una actividad","Consultar Actividad",JOptionPane.ERROR_MESSAGE);
+            tar = (Tarea) jTable1.getValueAt(jTable1.getSelectedRow(), 0);
+            iniciarSplash();
+            //Creamos un objeto HiloProgreso al cual
+            //le pasamos por parámetro la barra de progreso
+            hilo1 = new HiloProgreso(jProgressBar1, this, Drive, tar, adm, false);
+            hilo1.start();
+            hilo1 = null;
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Seleccione una actividad", "Consultar Actividad", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         int confirmado = JOptionPane.showConfirmDialog(null,"¿Desea volver al menú principal?","Consultar Actividad",JOptionPane.YES_NO_OPTION);
         if (JOptionPane.OK_OPTION == confirmado){
-            Frame vp=new JFramePrincipal(Drive,adm,idsesion); 
+            Frame vp=new JFramePrincipal(Drive,adm); 
             this.dispose();
             vp.show();
         }
@@ -381,48 +378,58 @@ public class JFrameConsultaActividades extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         try{
             bandera=(String) jComboBox2.getSelectedItem();
-            List<Tarea> historial = Drive.PERSISTENCIA.getTareas();
             if(bandera.equals("Clase")){
-                Iterator it= historial.iterator();
-                List cl=new ArrayList();
-                while(it.hasNext()){
-                    Tarea tar=(Tarea) it.next();
-                    if(tar.getTareaclases().iterator().hasNext() && tar.getEstado()==true){
-                        cl.add(tar.getTareaclases().iterator().next());
+                List lista = new ArrayList();
+                DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+                int c = 0;
+                while (modelo.getRowCount() != c) {
+                    Object o=jTable1.getValueAt(c, 0);
+                    if (o != null) {
+                        Tareaclase audi = (Tareaclase) o;
+                        lista.add(audi);
                     }
-
+                    c++;
                 }
-                Drive.mostrarReporte("Clases",cl,"Lista de Clases");
+                Drive.mostrarReporte("Clases",lista,"Lista de Clases",lista.size());
             }else if(bandera.equals("Reunión")){
-                Iterator it= historial.iterator();
-                List cl=new ArrayList();
-                while(it.hasNext()){
-                    Tarea tar=(Tarea) it.next();
-                    if(tar.getTareareunions().iterator().hasNext() && tar.getEstado()==true){
-                        cl.add(tar.getTareareunions().iterator().next());
+                List lista = new ArrayList();
+                DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+                int c = 0;
+                while (modelo.getRowCount() != c) {
+                    Object o=jTable1.getValueAt(c, 0);
+                    if (o != null) {
+                        Tareareunion audi = (Tareareunion) o;
+                        lista.add(audi);
                     }
+                    c++;
                 }
-                Drive.mostrarReporte("Reuniones",cl,"Lista de Reuniones");
+                Drive.mostrarReporte("Reuniones",lista,"Lista de Reuniones",lista.size());
             }else if(bandera.equals("Extracurricular")){
-                Iterator it= historial.iterator();
-                List cl=new ArrayList();
-                while(it.hasNext()){
-                    Tarea tar=(Tarea) it.next();
-                    if(tar.getTareaextracurriculars().iterator().hasNext() && tar.getEstado()==true){
-                        cl.add(tar.getTareaextracurriculars().iterator().next());
+                List lista = new ArrayList();
+                DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+                int c = 0;
+                while (modelo.getRowCount() != c) {
+                    Object o=jTable1.getValueAt(c, 0);
+                    if (o != null) {
+                        Tareaextracurricular audi = (Tareaextracurricular) o;
+                        lista.add(audi);
                     }
+                    c++;
                 }
-                Drive.mostrarReporte("TareasExtracurriculares",cl,"Lista de Tareas Extracurriculares");
+                Drive.mostrarReporte("TareasExtracurriculares",lista,"Lista de Tareas Extracurriculares",lista.size());
             }else if(bandera.equals("Otro")){
-                Iterator it= historial.iterator();
-                List cl=new ArrayList();
-                while(it.hasNext()){
-                    Tarea tar=(Tarea) it.next();
-                    if(tar.getTareaotros().iterator().hasNext() && tar.getEstado()==true){
-                        cl.add(tar.getTareaotros().iterator().next());
+                List lista = new ArrayList();
+                DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+                int c = 0;
+                while (modelo.getRowCount() != c) {
+                    Object o=jTable1.getValueAt(c, 0);
+                    if (o != null) {
+                        Tareaotro audi = (Tareaotro) o;
+                        lista.add(audi);
                     }
+                    c++;
                 }
-                Drive.mostrarReporte("OtrasActividades",cl,"Lista de Otras Actividades");
+                Drive.mostrarReporte("OtrasActividades",lista,"Lista de Otras Actividades",lista.size());
             }else if(bandera.equals("Todos")){
                 JOptionPane.showMessageDialog(null,"No se pueden imprimir todas las actividades, por favor seleccione una actividad en especial","Error de impresión", JOptionPane.ERROR_MESSAGE);
             }
@@ -443,7 +450,7 @@ public class JFrameConsultaActividades extends javax.swing.JFrame {
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         int confirmado = JOptionPane.showConfirmDialog(null,"¿Desea volver al menú principal?","Consultar Actividad",JOptionPane.YES_NO_OPTION);
         if (JOptionPane.OK_OPTION == confirmado){
-            Frame vp=new JFramePrincipal(Drive,adm,idsesion); 
+            Frame vp=new JFramePrincipal(Drive,adm); 
             this.dispose();
             vp.show();
         }

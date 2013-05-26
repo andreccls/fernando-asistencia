@@ -13,7 +13,6 @@ import javax.swing.JOptionPane;
  */
 public class Activo  implements java.io.Serializable {
 
-
      private Integer idActivo;
      private Nivel nivel;
      private String dia;

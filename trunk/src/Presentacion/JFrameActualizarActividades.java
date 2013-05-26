@@ -45,23 +45,24 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
 
     public Controlador Drive;
     public Personal adm;
-    int idsesion;
+//    int idsesion;
     Tarea tar;
+    boolean band=false;
     /**
      * Creates new form JFrameActualizarActividades
      */
-    public JFrameActualizarActividades(Controlador unDrive,Tarea tarr, Personal admin,int id) {
+    public JFrameActualizarActividades(Controlador unDrive,Tarea tarr, Personal admin,boolean bandera) {
         initComponents();
         this.Drive=unDrive;
         this.adm=admin;
         this.tar=tarr;
-        this.idsesion=id;
+//        this.idsesion=id;
+        this.band=bandera;
         Drive.LimpiarTabla(jTable1);
-        jTextField5.setText(Integer.toString(tarr.getIdTarea()));
+        Drive.CargarComboLugar(jComboBox1);
+        jComboBox1.setSelectedItem(tar.getLugar());
         jTextField1.setText(tarr.getNombre());
         jTextField1.setEnabled(false);
-        jTextField3.setText(tarr.getLugar());
-        jTextField3.setEnabled(false);
         jButton1.setEnabled(false);
         int[] anchos1 = {170,120,90,80,80,80,80};
         for(int i = 0; i < jTable1.getColumnCount(); i++) {
@@ -148,6 +149,22 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
         ImageIcon fott4 = new ImageIcon(getClass().getResource("/imagenes/Eliminar.png"));
         Icon icono4 = new ImageIcon(fott4.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
         jButton3.setIcon(icono4);
+        if(band==true){
+            jButton1.setEnabled(false);
+            jButton3.setEnabled(false);
+            jButton4.setEnabled(false);
+            jTextField1.setEnabled(false);
+        }
+        if(adm.getPerfil().getActividadesact()==null){
+            jButton4.setEnabled(false);
+        }
+        if(adm.getPerfil().getActividadeseli()==null){
+            jButton3.setEnabled(false);
+        }
+        if(adm.getPerfil().getActividadesins()==null){
+            jButton1.setEnabled(false);
+        }
+        
     }
 
     
@@ -165,14 +182,12 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jTextField1 = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        jLabel19 = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
         jButton3 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
+        jComboBox1 = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("SISTEMA DE ASISTENCIA DE PERSONAL EDUCATIVO");
@@ -195,6 +210,7 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
 
         jLabel2.setText("Lugar:");
 
+        jTable1.setAutoCreateRowSorter(true);
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -213,11 +229,6 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
         });
         jTable1.setRowHeight(25);
         jScrollPane2.setViewportView(jTable1);
-
-        jLabel19.setText("Numero:");
-
-        jTextField5.setEditable(false);
-        jTextField5.setEnabled(false);
 
         jButton3.setText("Eliminar");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -247,30 +258,25 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 731, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButton1)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton4)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton3)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton2))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(28, 28, 28)
                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 257, Short.MAX_VALUE)
-                        .addComponent(jLabel2)
                         .addGap(18, 18, 18)
-                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel19)
-                                .addGap(18, 18, 18)
-                                .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(jButton1)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButton4)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButton3)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButton2)))))
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -280,18 +286,13 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel19))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jLabel1)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel2)))
-                .addGap(56, 56, 56)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 186, Short.MAX_VALUE)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 262, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton2)
@@ -338,9 +339,15 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
     }
      
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        JFrameConsultaActividades vpp=new JFrameConsultaActividades(Drive,adm,idsesion);
-        this.hide();
-        vpp.show();
+        if(band==true){
+            Frame vp=new JFrameHistorial(Drive,adm);
+            this.dispose();
+            vp.show();
+        }else{
+            JFrameConsultaActividades vpp=new JFrameConsultaActividades(Drive,adm);
+            this.hide();
+            vpp.show();
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -352,15 +359,16 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
                 SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
                 SimpleDateFormat formateador2 = new SimpleDateFormat("HH:mm");
                 if(!tar.getTareaextracurriculars().isEmpty()){
-                    diaini=tar.getTareaextracurriculars().iterator().next().getDiaInicio();
+                    diaini=tar.getDiaInicio();
                 }else if(!tar.getTareareunions().isEmpty()){
+                    
                     diaini=formateador.parse(jTable1.getModel().getValueAt(0,4).toString());
                     Date hini=formateador2.parse(jTable1.getModel().getValueAt(0,5).toString());
                     diaini.setHours(hini.getHours());
                     diaini.setMinutes(hini.getMinutes());
                     diaini.setSeconds(hini.getSeconds());
                 } else if(!tar.getTareaotros().isEmpty()){
-                    diaini=tar.getTareaotros().iterator().next().getDiaInicio();
+                    diaini=tar.getDiaInicio();
                 } else if (!tar.getTareaclases().isEmpty()) {
                     DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
                     int e = 0;
@@ -386,7 +394,8 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
                     audi.setOperacion("Eliminar");
                     audi.setFecha(new Date());
                     audi.guardarAuditoria(audi);
-                    JFrameConsultaActividades vpp=new JFrameConsultaActividades(Drive,adm,idsesion);
+                    JOptionPane.showMessageDialog(null,"La tarea se eliminó correctamente","Eliminar tarea",JOptionPane.INFORMATION_MESSAGE);
+                    JFrameConsultaActividades vpp=new JFrameConsultaActividades(Drive,adm);
                     this.hide();
                     vpp.show();
                 }else{
@@ -398,7 +407,8 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
                     audi.setOperacion("Eliminar");
                     audi.setFecha(new Date());
                     audi.guardarAuditoria(audi);
-                    JFrameConsultaActividades vpp=new JFrameConsultaActividades(Drive,adm,idsesion);
+                    JOptionPane.showMessageDialog(null,"La tarea se eliminó correctamente","Eliminar tarea",JOptionPane.INFORMATION_MESSAGE);
+                    JFrameConsultaActividades vpp=new JFrameConsultaActividades(Drive,adm);
                     this.hide();
                     vpp.show();
                 }
@@ -431,7 +441,7 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
                     e++;
                 }
             }
-            JFrameConsultaActividades vpp=new JFrameConsultaActividades(Drive,adm,idsesion);
+            JFrameConsultaActividades vpp=new JFrameConsultaActividades(Drive,adm);
             this.hide();
             vpp.show();
         } catch (Exception ex) {
@@ -440,9 +450,15 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        JFrameConsultaActividades vpp=new JFrameConsultaActividades(Drive,adm,idsesion);
-        this.dispose();
-        vpp.show();
+        if(band==true){
+            Frame vp=new JFrameHistorial(Drive,adm);
+            this.dispose();
+            vp.show();
+        }else{
+            JFrameConsultaActividades vpp=new JFrameConsultaActividades(Drive,adm);
+            this.dispose();
+            vpp.show();
+        }
     }//GEN-LAST:event_formWindowClosing
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -464,7 +480,7 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
                         if (aux.compareTo(fecha) > 0) {
                             JOptionPane.showMessageDialog(null, "No puede modificar una tarea que ya ocurrió", "Actualizar Tarea", JOptionPane.ERROR_MESSAGE);
                         } else {
-                            JFrameExtracurricular vent2 = new JFrameExtracurricular(Drive, adm, idsesion,tar);
+                            JFrameExtracurricular vent2 = new JFrameExtracurricular(Drive, adm,tar);
                             this.hide();
                             vent2.show();
                         }
@@ -488,7 +504,7 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
                         if (aux.compareTo(fecha) > 0) {
                             JOptionPane.showMessageDialog(null, "No puede modificar una tarea que ya ocurrió", "Actualizar Tarea", JOptionPane.ERROR_MESSAGE);
                         } else {
-                            JFrameotro vent2 = new JFrameotro(Drive, adm, idsesion, tar);
+                            JFrameotro vent2 = new JFrameotro(Drive, adm, tar);
                             this.hide();
                             vent2.show();
                         }
@@ -496,7 +512,7 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
                 } catch (Exception e) {
                 }
             } else if (tar.getComentario().equals("CLASE")) {
-                JFrameClase vent2 = new JFrameClase(Drive, adm, idsesion, tar);
+                JFrameClase vent2 = new JFrameClase(Drive, adm, tar);
                 this.hide();
                 vent2.show();
             } else if (tar.getComentario().equals("REUNION")) {
@@ -515,7 +531,7 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
                         if (aux.compareTo(fecha) > 0) {
                             JOptionPane.showMessageDialog(null, "No puede modificar una tarea que ya ocurrió", "Actualizar Tarea", JOptionPane.ERROR_MESSAGE);
                         } else {
-                            JFrameReunion vent2 = new JFrameReunion(Drive, adm, idsesion,tar);
+                            JFrameReunion vent2 = new JFrameReunion(Drive, adm, tar);
                             this.hide();
                             vent2.show();
                         }
@@ -571,14 +587,12 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField5;
     // End of variables declaration//GEN-END:variables
 }

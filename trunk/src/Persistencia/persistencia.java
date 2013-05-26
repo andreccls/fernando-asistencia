@@ -124,6 +124,27 @@ public class persistencia {
         return items;
 
     }
+    
+//    public List getlicencia(int idper) throws ArrayStoreException {
+//        String hql = "from Licencia where id_personal=" + idper;
+//        List items = new ArrayList();
+//        Transaction tx = session.beginTransaction();
+//        Query q = session.createQuery(hql);
+//        items = q.list();
+//        tx.commit();
+//        return items;
+//    }
+    
+    public List getActivoiniciofin(int idact) throws ArrayStoreException {
+        String hql = "from ActivoIniciofin where id_activo=" + idact;
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
+
+    }
 
     public List getEstablecimientos() throws ArrayStoreException {
         String hql = "from Establecimiento";
@@ -145,6 +166,46 @@ public class persistencia {
         tx.commit();
         return items;
     }
+
+    public List getAuditoria(int idper) throws ArrayStoreException {
+        String hql = "from Auditoria where personalByIdPersonal="+idper;
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
+    }
+    
+    public List getTareaclase(int idaula) throws ArrayStoreException {
+        String hql = "from Tareaclase where id_aula="+idaula;
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
+    }
+    
+//    public List getLicencias(int idlic) throws ArrayStoreException {
+//        String hql = "from Licencia where id_licencia="+idlic;
+//        List items = new ArrayList();
+//        Transaction tx = session.beginTransaction();
+//        Query q = session.createQuery(hql);
+//        items = q.list();
+//        tx.commit();
+//        return items;
+//    }
+    
+    public List getAuditoriaTarea(int idtar) throws ArrayStoreException {
+        String hql = "from Auditoria where tarea="+idtar;
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
+    }
     
     public List getAuditoria(Date fecha) throws ArrayStoreException {
         String hql = "from Auditoria where day(fecha)='"+fecha.getDate()+"' and month(fecha)='"+(fecha.getMonth()+1)+"' and year(fecha)='"+(fecha.getYear()+1900)+"'";
@@ -156,8 +217,78 @@ public class persistencia {
         return items;
     }
     
+    public List getIniciofin(int dia, int mes, int ano) throws ArrayStoreException {
+        String hql = "from Iniciofin as ini where ini.dia.dia="+dia+" and ini.dia.mes.mes="+mes+" and ini.dia.mes.ano.ano="+ano;
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
+    }
+    
+    public List getIniciofinPer(int dia, int mes, int ano,int idper) throws ArrayStoreException {
+        String hql = "from Iniciofin as ini where ini.dia.dia="+dia+" and ini.dia.mes.mes="+mes+" and ini.dia.mes.ano.ano="+ano+" and ini.dia.mes.ano.agenda.personal.idPersonal="+idper;
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
+    }
+    
+    public List getIniciofinTar(int dia, int mes, int ano,int idtar) throws ArrayStoreException {
+        String hql = "from Iniciofin as ini where ini.dia.dia="+dia+" and ini.dia.mes.mes="+mes+" and ini.dia.mes.ano.ano="+ano+" and ini.dia.mes.ano.agenda.tarea.idTarea="+idtar;
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
+    }
+    
+    public List getIniciofinTarea(int idtar) throws ArrayStoreException {
+        String hql = "from Iniciofin as ini where ini.dia.mes.ano.agenda.tarea.idTarea="+idtar;
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
+    }
+    
     public List getAnos(int idper, int idtar) throws ArrayStoreException {
         String hql = "from Ano where id_personal="+idper+" and id_tarea="+idtar;
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
+    }
+    
+    public List getAnos(int ano) throws ArrayStoreException {
+        String hql = "from Ano where ano="+ano;
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
+    }
+    
+    public List getAnoLectivo(int ano) throws ArrayStoreException {
+        String hql = "from Anolectivo where ano="+ano;
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
+    }
+    
+    public List getMeses(int ano,int mes) throws ArrayStoreException {
+        String hql = "select me from Mes as me, Ano as an where me.mes="+mes+" and me.ano.idAno=an.idAno and an.ano="+ano;
         List items = new ArrayList();
         Transaction tx = session.beginTransaction();
         Query q = session.createQuery(hql);
@@ -216,6 +347,16 @@ public class persistencia {
         return items;
     }
     
+    public List getDias(int ano, int mes, int dia) throws ArrayStoreException {
+        String hql = "select di from Dia as di, Mes as me, Ano as an where di.dia="+dia+" and di.mes.idMes=me.idMes and me.mes="+mes+" and me.ano.idAno=an.idAno and an.ano="+ano;
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
+    }
+    
 //    public List getDiass(int idmes) throws ArrayStoreException {
 //        String hql = "select d.idDia as idDia,d.dia as dia,d.mes  from Dia as d,Mes as m where d.mes.idMes=m.idMes and m.mes="+idmes;
 //        List items = new ArrayList();
@@ -247,6 +388,16 @@ public class persistencia {
     }
 
     public List getTareas() throws ArrayStoreException {
+        String hql = "from Tarea";
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
+    }
+    
+    public List getTareas(int ano) throws ArrayStoreException {
         String hql = "from Tarea";
         List items = new ArrayList();
         Transaction tx = session.beginTransaction();
@@ -316,8 +467,18 @@ public class persistencia {
         return items;
     }
 
-    public List getFeriados() throws ArrayStoreException {
-        String hql = "from Feriado";
+    public List getFeriados(int ano) throws ArrayStoreException {
+        String hql = "from Feriado where year(dia)="+ano;
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
+    }
+    
+    public List getLicencias(int idper) throws ArrayStoreException {
+        String hql = "from Licencia as li where li.personal.idPersonal="+idper;
         List items = new ArrayList();
         Transaction tx = session.beginTransaction();
         Query q = session.createQuery(hql);
@@ -472,16 +633,36 @@ public class persistencia {
 
     }
 
-    public List ObtenerInicioFin(int dia, int mes, int ano) throws ArrayStoreException {
-        String hql = "select id_iniciofin,inicio,estado_inicio,fin,estado_fin,iniciofin.id_dia from iniciofin,dia,mes,ano where iniciofin.id_dia=dia.id_dia and dia.dia=" + dia + " and dia.id_mes=mes.id_mes and mes.mes=" + mes + " and mes.id_ano=ano.id_ano and ano.ano=" + ano;
+//    public List ObtenerInicioFin(int dia, int mes, int ano) throws ArrayStoreException {
+//        String hql = "select id_iniciofin,inicio,estado_inicio,fin,estado_fin,iniciofin.id_dia from iniciofin,dia,mes,ano where iniciofin.id_dia=dia.id_dia and dia.dia=" + dia + " and dia.id_mes=mes.id_mes and mes.mes=" + mes + " and mes.id_ano=ano.id_ano and ano.ano=" + ano;
+//        List items = new ArrayList();
+//        Transaction tx = session.beginTransaction();
+//        Query q = session.createSQLQuery(hql).addEntity(Iniciofin.class);
+//        items = q.list();
+//        tx.commit();
+//        return items;
+//    }
+    
+    public List ObtenerInicioFinPer(int dia, int mes, int ano, int idper) throws ArrayStoreException {
+        String hql = "from Iniciofin as ini where ini.dia.dia="+dia+" and ini.dia.mes.mes="+mes+" and ini.dia.mes.ano.ano="+ano+" and ini.dia.mes.ano.agenda.personal.idPersonal="+idper;
         List items = new ArrayList();
         Transaction tx = session.beginTransaction();
-        Query q = session.createSQLQuery(hql).addEntity(Iniciofin.class);
+        Query q = session.createQuery(hql);
         items = q.list();
         tx.commit();
         return items;
     }
 
+    public List ObtenerInicioFin(int dia, int mes, int ano) throws ArrayStoreException {
+        String hql = "from Iniciofin as ini where ini.dia.dia="+dia+" and ini.dia.mes.mes="+mes+" and ini.dia.mes.ano.ano="+ano;
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
+    }
+    
     public List ObtenerListaInasistencia(int mes, int ano) throws ArrayStoreException {
         String hql = "select id_asistencia,estado,tardanza,asistencia.id_iniciofin from asistencia,iniciofin,dia,mes,ano where asistencia.id_iniciofin=iniciofin.id_iniciofin and iniciofin.id_dia=dia.id_dia and dia.id_mes=mes.id_mes and mes.mes=" + mes + " and mes.id_ano=ano.id_ano and ano.ano=" + ano + " and asistencia.estado=0";
         List items = new ArrayList();
@@ -503,7 +684,7 @@ public class persistencia {
     }
 
     public List DecjuradaPer(int idper) throws ArrayStoreException {
-        String hql = "from Declaracionjurada where id_personal=" + idper;
+        String hql = "from Declaracionjurada where personal=" + idper;
         List items = new ArrayList();
         Transaction tx = session.beginTransaction();
         Query q = session.createQuery(hql);
@@ -589,9 +770,20 @@ public class persistencia {
         return items;
 
     }
+    
+    public List getRegistro(int idreg) throws ArrayStoreException {
+        String hql = "from Registroacceso where idRegistroacceso=" + idreg;
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
+
+    }
 
     public List getDecJuradaPersonal(int id) throws ArrayStoreException {
-        String hql = "from Declaracionjurada where id_personal=" + id;
+        String hql = "from Declaracionjurada where personal="+id;
         List items = new ArrayList();
         Transaction tx = session.beginTransaction();
         Query q = session.createQuery(hql);
@@ -631,7 +823,26 @@ public class persistencia {
         items = q.list();
         tx.commit();
         return items;
-
+    }
+    
+    public List getLugar() throws ArrayStoreException {
+        String hql = "from Lugar";
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
+    }
+    
+    public List getAulas() throws ArrayStoreException {
+        String hql = "from Aula";
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
     }
 
     public List getFranco() throws ArrayStoreException {
@@ -663,6 +874,18 @@ public class persistencia {
         tx.commit();
         return items;
     }
+    
+    public List getAgendasTar(int idtar) throws ArrayStoreException {
+        String hql = "from Agenda where id_tarea="+idtar;
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
+    }
+    
+    
 //    public List getAgendastar(int idtar) throws ArrayStoreException {
 //        String hql = "from Agenda where id_tarea="+idtar;
 //        List items = new ArrayList();

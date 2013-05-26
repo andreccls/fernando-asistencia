@@ -91,25 +91,21 @@ public class Nivel  implements java.io.Serializable {
     public void guardarNivel(Nivel unNivel){
         Controlador.getPERSISTENCIA().insert(this);
 
-        JOptionPane.showMessageDialog(null,"El Nivel "+ 
-                String.valueOf(unNivel.getIdNivel()) +
-                " se guardo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null,"La declaración jurada se guardo correctamente","Registrar declaración jurada",JOptionPane.INFORMATION_MESSAGE);
     }
     
     public void ActualizarNivel(Nivel unNivel){
         Controlador.getPERSISTENCIA().update(this);
 
-        JOptionPane.showMessageDialog(null,"El Nivel "+ 
-                String.valueOf(unNivel.getIdNivel()) +
-                " se actualizó correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null,"La declaración jurada se actualizó correctamente","Actualizar declaración jurada",JOptionPane.INFORMATION_MESSAGE);
     }
     
     public void eliminarNivel(Nivel unNivel){
         Controlador.getPERSISTENCIA().delete(this);
 
-        JOptionPane.showMessageDialog(null,"El nivel "+ 
-                String.valueOf(unNivel.getIdNivel()) +
-                " se elimino correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+//        JOptionPane.showMessageDialog(null,"El nivel "+ 
+//                String.valueOf(unNivel.getIdNivel()) +
+//                " se elimino correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
     }
     
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 25-abr-2013 14:00:45 by Hibernate Tools 3.2.1.GA -->
+<!-- Generated 23-may-2013 2:20:56 by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
   <class catalog="asistencia" name="Clases.Declaracionjurada" table="declaracionjurada">
     <id name="idDeclaracionjurada" type="java.lang.Integer">
@@ -8,14 +8,11 @@
       <generator class="identity"/>
     </id>
     <many-to-one class="Clases.Personal" fetch="select" name="personal">
-      <column name="Id_personal" not-null="true" unique="true"/>
+      <column name="Id_personal" not-null="true"/>
     </many-to-one>
-    <many-to-one class="Clases.Establecimiento" fetch="select" name="establecimiento">
-      <column name="Id_establecimiento" not-null="true"/>
+    <many-to-one class="Clases.Anolectivo" fetch="select" name="anolectivo">
+      <column name="Id_anolectivo" not-null="true"/>
     </many-to-one>
-    <property name="ano" type="java.lang.Integer">
-      <column name="Ano"/>
-    </property>
     <property name="observacion" type="string">
       <column length="50" name="Observacion"/>
     </property>

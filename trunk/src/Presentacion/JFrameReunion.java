@@ -14,6 +14,7 @@ package Presentacion;
 import Clases.Agenda;
 import Clases.AgendaId;
 import Clases.Ano;
+import Clases.Anolectivo;
 import Clases.Auditoria;
 import Clases.Controlador;
 import Clases.Departamento;
@@ -21,6 +22,7 @@ import Clases.Dia;
 import Clases.Establecimiento;
 import Clases.Franco;
 import Clases.Iniciofin;
+import Clases.Lugar;
 import Clases.Mes;
 import Clases.Personal;
 import Clases.PersonaldocenteId;
@@ -44,6 +46,7 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -57,17 +60,17 @@ public class JFrameReunion extends javax.swing.JFrame {
 
      Controlador Drive;
      Personal adm;
-     int idsesion;
+//     int idsesion;
     StringBuffer buffer= new StringBuffer();
     List lista = new ArrayList();
     Tarea tar = new Tarea();
     boolean cambio=false;
     Date fecha=new Date();
     /** Creates new form JFrameReunion */
-    public JFrameReunion(Controlador unDrive, Personal admin, int id, Tarea tarr) {
+    public JFrameReunion(Controlador unDrive, Personal admin, Tarea tarr) {
         this.Drive = unDrive;
         this.adm = admin;
-        this.idsesion = id;
+//        this.idsesion = id;
         this.tar = tarr;
         initComponents();
 
@@ -80,6 +83,7 @@ public class JFrameReunion extends javax.swing.JFrame {
         jTable1.getColumnModel().getColumn(2).setCellRenderer(modelocentrar);
         jTable1.getTableHeader().setDefaultRenderer(new HeaderRenderer(jTable1));
         Drive.CargarComboDepartamento(jComboBox1);
+        Drive.CargarComboLugar(jComboBox3);
         String buscar;
         Object aux= jComboBox1.getSelectedItem();
         if(aux.equals("TODOS")){
@@ -89,12 +93,14 @@ public class JFrameReunion extends javax.swing.JFrame {
             buscar=dep.getNombre();
         }
         Drive.CargarTablacheck(jTable1, buscar, buffer.toString().toUpperCase(), lista);
+        jFormattedTextField1.setText("00:00");
+        jFormattedTextField2.setText("00:00");
         ///Verificar si vengo desde principal o desde consultar tarea
         if (tar.getIdTarea() != null) {
             try {
                 jTextField3.setText(tar.getNombre());
                 jTextField3.setEnabled(false);
-                jTextField4.setText(tar.getLugar());
+                jComboBox3.setSelectedItem(tar.getLugar());
                 Tareareunion tareu = tar.getTareareunions().iterator().next();
                 jTextField1.setText(tareu.getCaracter());
                 jComboBox2.setSelectedItem(tareu.getCaracter());
@@ -126,6 +132,18 @@ public class JFrameReunion extends javax.swing.JFrame {
         ImageIcon fott3 = new ImageIcon(getClass().getResource("/imagenes/ok.png"));
         Icon icono3 = new ImageIcon(fott3.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
         jButton1.setIcon(icono3);
+        ///ICONO EDITAR
+        ImageIcon fot = new ImageIcon(getClass().getResource("/imagenes/image.jpg"));
+        Icon icono1 = new ImageIcon(fot.getImage().getScaledInstance(jLabel36.getWidth(), jLabel36.getHeight(), Image.SCALE_DEFAULT));
+        jLabel36.setIcon(icono1);
+        jLabel36.repaint();
+        ImageIcon fott = new ImageIcon(getClass().getResource("/imagenes/eliminar.gif"));
+        Icon icono0 = new ImageIcon(fott.getImage().getScaledInstance(jLabel21.getWidth(), jLabel21.getHeight(), Image.SCALE_DEFAULT));
+        jLabel21.setIcon(icono0);
+        jLabel21.repaint();
+        if(adm.getPerfil().getActividadesins()==null&&tar.getIdTarea()==null){
+            jButton1.setEnabled(false);
+        }
     }
 
 
@@ -154,7 +172,6 @@ public class JFrameReunion extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jTextField3 = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jFormattedTextField1 = new javax.swing.JFormattedTextField();
         jLabel8 = new javax.swing.JLabel();
@@ -171,6 +188,9 @@ public class JFrameReunion extends javax.swing.JFrame {
         jLabel25 = new javax.swing.JLabel();
         jLabel26 = new javax.swing.JLabel();
         jCheckBox1 = new javax.swing.JCheckBox();
+        jComboBox3 = new javax.swing.JComboBox();
+        jLabel21 = new javax.swing.JLabel();
+        jLabel36 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("SISTEMA DE ASISTENCIA DE PERSONAL EDUCATIVO");
@@ -200,6 +220,7 @@ public class JFrameReunion extends javax.swing.JFrame {
             }
         });
 
+        jTable1.setAutoCreateRowSorter(true);
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -305,12 +326,6 @@ public class JFrameReunion extends javax.swing.JFrame {
 
     jLabel6.setText("Lugar:");
 
-    jTextField4.addKeyListener(new java.awt.event.KeyAdapter() {
-        public void keyTyped(java.awt.event.KeyEvent evt) {
-            jTextField4KeyTyped(evt);
-        }
-    });
-
     jLabel3.setText("Hora Inicio:");
 
     try {
@@ -367,6 +382,28 @@ public class JFrameReunion extends javax.swing.JFrame {
     jLabel26.setText("*");
 
     jCheckBox1.setText("Todos");
+    jCheckBox1.addItemListener(new java.awt.event.ItemListener() {
+        public void itemStateChanged(java.awt.event.ItemEvent evt) {
+            jCheckBox1ItemStateChanged(evt);
+        }
+    });
+
+    jLabel21.setText("E");
+    jLabel21.addMouseListener(new java.awt.event.MouseAdapter() {
+        public void mouseClicked(java.awt.event.MouseEvent evt) {
+            jLabel21MouseClicked(evt);
+        }
+    });
+
+    jLabel36.setText("N");
+    jLabel36.setMaximumSize(new java.awt.Dimension(15, 15));
+    jLabel36.setMinimumSize(new java.awt.Dimension(15, 15));
+    jLabel36.setPreferredSize(new java.awt.Dimension(15, 15));
+    jLabel36.addMouseListener(new java.awt.event.MouseAdapter() {
+        public void mouseClicked(java.awt.event.MouseEvent evt) {
+            jLabel36MouseClicked(evt);
+        }
+    });
 
     javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
     jPanel1.setLayout(jPanel1Layout);
@@ -376,7 +413,7 @@ public class JFrameReunion extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addGap(10, 10, 10)
-                    .addComponent(jScrollPane1))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 454, Short.MAX_VALUE))
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addContainerGap()
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -423,14 +460,20 @@ public class JFrameReunion extends javax.swing.JFrame {
                         .addComponent(jLabel5)
                         .addComponent(jLabel6))
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addComponent(jFormattedTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(jLabel17))
                         .addComponent(jLabel10)
-                        .addComponent(jTextField4, javax.swing.GroupLayout.DEFAULT_SIZE, 133, Short.MAX_VALUE)
-                        .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(jComboBox2, javax.swing.GroupLayout.Alignment.LEADING, 0, 97, Short.MAX_VALUE)
+                                .addComponent(jComboBox3, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jLabel36, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addContainerGap())
                 .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
@@ -467,8 +510,10 @@ public class JFrameReunion extends javax.swing.JFrame {
                         .addComponent(dateChooserCombo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel7)))
                 .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                        .addComponent(jLabel21)
+                        .addComponent(jLabel36, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel6))
                     .addGap(18, 18, 18)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -521,14 +566,14 @@ public class JFrameReunion extends javax.swing.JFrame {
         .addGroup(layout.createSequentialGroup()
             .addContainerGap()
             .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addContainerGap(19, Short.MAX_VALUE))
     );
     layout.setVerticalGroup(
         layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
         .addGroup(layout.createSequentialGroup()
             .addContainerGap()
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addContainerGap())
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addContainerGap(18, Short.MAX_VALUE))
     );
 
     pack();
@@ -558,28 +603,28 @@ public class JFrameReunion extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         if (tar.getIdTarea()==null) {
-            if (!jTextField1.getText().isEmpty() || !jTextField3.getText().isEmpty() || !jTextField4.getText().isEmpty()) {
-                int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea cancelar la reunión?", "", JOptionPane.YES_NO_OPTION);
+            if (!jTextField1.getText().isEmpty() || !jTextField3.getText().isEmpty()) {
+                int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea cancelar la reunión?", "Registrar Reunión", JOptionPane.YES_NO_OPTION);
                 if (JOptionPane.OK_OPTION == confirmado) {
-                    Frame vp = new JFramePrincipal(Drive, adm, idsesion);
+                    Frame vp = new JFramePrincipal(Drive, adm);
                     this.dispose();
                     vp.show();
                 }
             } else {
-                Frame vp = new JFramePrincipal(Drive, adm, idsesion);
+                Frame vp = new JFramePrincipal(Drive, adm);
                 this.dispose();
                 vp.show();
             }
         } else {
             if (cambio==true) {
-                int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea cancelar la actualización de la reunión?", "", JOptionPane.YES_NO_OPTION);
+                int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea cancelar la actualización de la reunión?", "Actualizar Reunión", JOptionPane.YES_NO_OPTION);
                 if (JOptionPane.OK_OPTION == confirmado) {
-                    Frame vp = new JFrameConsultaActividades(Drive, adm, idsesion);
+                    Frame vp = new JFrameConsultaActividades(Drive, adm);
                     this.dispose();
                     vp.show();
                 }
             } else {
-                Frame vp = new JFrameConsultaActividades(Drive, adm, idsesion);
+                Frame vp = new JFrameConsultaActividades(Drive, adm);
                 this.dispose();
                 vp.show();
             }
@@ -590,10 +635,10 @@ public class JFrameReunion extends javax.swing.JFrame {
         try {
             if (Drive.VerificarCheckTabla(jTable1)) {
                 if (!jTextField3.getText().isEmpty() && !jFormattedTextField1.getText().contains(" ") && !jFormattedTextField2.getText().contains(" ")) {
+                    Lugar lu=(Lugar) jComboBox3.getSelectedItem();
                     if (tar.getIdTarea() == null) {
                         // <editor-fold defaultstate="collapsed" desc="Guardar tarea nueva"> 
                         SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
-                        formateador.setLenient(false);
                         Date inicio = formateador.parse(jFormattedTextField1.getText());
                         Date fin = formateador.parse(jFormattedTextField2.getText());
                         if (inicio.compareTo(fin) < 0) {
@@ -607,7 +652,9 @@ public class JFrameReunion extends javax.swing.JFrame {
                                 if (model.getValueAt(cc, 0).equals(true)) {
                                     Personal per = (Personal) model.getValueAt(cc, 1);
                                     control=true;
-                                    int res=per.ReunionVerificarDisponibilidad(fecha, inicio, fin, control);
+                                    int id=0;
+                                    if(tar.getIdTarea()!=null){id=tar.getIdTarea();}
+                                    int res=per.ReunionVerificarDisponibilidad(fecha, inicio, fin, control,id);
                                     if (res==1||res==2) {
                                         est = true;
                                     }
@@ -618,9 +665,23 @@ public class JFrameReunion extends javax.swing.JFrame {
                             if (est == true) {
                                 tarr.setEstablecimiento(Drive.getPrimerEstablecimiento());
                                 tarr.setNombre(jTextField3.getText().toUpperCase());
-                                tarr.setLugar(jTextField4.getText().toUpperCase());
+                                tarr.setLugar(lu);
                                 tarr.setComentario("REUNION");
                                 tarr.setEstado(true);
+                                
+                                Date aux1=new Date();
+                                aux1.setYear(fecha.getYear());
+                                aux1.setMonth(fecha.getMonth());
+                                aux1.setDate(fecha.getDate());
+                                aux1.setHours(inicio.getHours());
+                                aux1.setMinutes(inicio.getMinutes());
+                                tarr.setDiaInicio(aux1);
+                                Date aux2=fecha;
+                                int hora2=fin.getHours();
+                                int min2=fin.getMinutes();
+                                aux2.setHours(hora2);
+                                aux2.setMinutes(min2);
+                                tarr.setDiaFin(aux2);
                                 int idtar = tarr.guardarTarea(tarr);
                                 // <editor-fold defaultstate="collapsed" desc="Auditoria"> 
                                 Auditoria audi=new Auditoria();
@@ -639,9 +700,12 @@ public class JFrameReunion extends javax.swing.JFrame {
                                     if (modelo.getValueAt(c, 0).equals(true)) {
                                         Personal per = (Personal) modelo.getValueAt(c, 1);
                                         control=false;
-                                        if (per.ReunionVerificarDisponibilidad(fecha, inicio, fin, control)==1) {
+                                        int idd=0;
+                                        if(tar.getIdTarea()!=null){idd=tar.getIdTarea();}
+                                        if (per.ReunionVerificarDisponibilidad(fecha, inicio, fin, control,idd)==1) {
                                             AgendaId ida = new AgendaId(per.getIdPersonal(), tarr.getIdTarea());
                                             Agenda age = new Agenda();
+                                            age.setAnolectivo(Drive.getAnoLectivo());
                                             age.setId(ida);
                                             age.setPersonal(per);
                                             age.setTarea(tarr);
@@ -667,7 +731,7 @@ public class JFrameReunion extends javax.swing.JFrame {
                                             in.setEstadoInicio(false);
                                             in.setFin(fin);
                                             in.guardarIniciofin(in);
-                                        }else if(per.ReunionVerificarDisponibilidad(fecha, inicio, fin, control)==2){
+                                        }else if(per.ReunionVerificarDisponibilidad(fecha, inicio, fin, control,tar.getIdTarea())==2){
                                             AgendaId ida = new AgendaId(per.getIdPersonal(), tarr.getIdTarea());
                                             Agenda age = new Agenda();
                                             age.setId(ida);
@@ -701,7 +765,6 @@ public class JFrameReunion extends javax.swing.JFrame {
                                     c++;
                                 }
                                 jTextField3.setText("");
-                                jTextField4.setText("");
                                 jTextField1.setText("");
                                 Drive.LimpiarTabla(jTable1);
                                 lista.removeAll(lista);
@@ -715,52 +778,86 @@ public class JFrameReunion extends javax.swing.JFrame {
                         // </editor-fold>
                     } else {
                         // <editor-fold defaultstate="collapsed" desc="Actualizar tarea"> 
-                        boolean band2=false;
+//                        boolean band2=false;
                         SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
                         formateador.setLenient(false);
                         Date inicio = formateador.parse(jFormattedTextField1.getText());
                         Date fin = formateador.parse(jFormattedTextField2.getText());
                         if (inicio.compareTo(fin) < 0) {
+                            boolean mensaje=false;
                             String caracter = (String) jComboBox2.getSelectedItem();
                             fecha = dateChooserCombo1.getSelectedDate().getTime();
-                            if (!tar.getLugar().equals(jTextField4.getText().toUpperCase())) {
-                                tar.setLugar(jTextField4.getText().toUpperCase());
+                            if (tar.getLugar().getIdLugar()!=lu.getIdLugar()) {
+                                // <editor-fold defaultstate="collapsed" desc="Auditoria"> 
+                                Auditoria audi= new Auditoria();
+                                audi.setPersonalByIdAuditor(adm);
+                                audi.setOperacion("Actualizar");
+                                audi.setFecha(new Date());
+                                audi.setTarea(tar);
+                                audi.setCampo("Lugar");
+                                audi.setElementoAnterior(tar.getLugar().getNombre());
+                                audi.setElementoNuevo(lu.getNombre());
+                                audi.guardarAuditoria(audi);
+                                // </editor-fold>
+                                tar.setLugar(lu);
                                 tar.ActualizarTarea(tar);
-                                jTextField4.setText(tar.getLugar());
-                                band2=true;
+                                mensaje=true;
+                                jComboBox3.setSelectedItem(lu);
+//                                band2=true;
                             }
                             Tareareunion tareu = tar.getTareareunions().iterator().next();
-                            if (!tareu.getMotivo().equals(jTextField1.getText().toUpperCase())||!tareu.getCaracter().equals(caracter)) {
+                            if (!tareu.getMotivo().equals(jTextField1.getText().toUpperCase())) {
+                                // <editor-fold defaultstate="collapsed" desc="Auditoria"> 
+                                Auditoria audi= new Auditoria();
+                                audi.setPersonalByIdAuditor(adm);
+                                audi.setOperacion("Actualizar");
+                                audi.setFecha(new Date());
+                                audi.setTarea(tar);
+                                audi.setCampo("Motivo");
+                                audi.setElementoAnterior(tareu.getMotivo());
+                                audi.setElementoNuevo(jTextField1.getText().toUpperCase());
+                                audi.guardarAuditoria(audi);
+                                // </editor-fold>
                                 tareu.setMotivo(jTextField1.getText().toUpperCase());
+                                tareu.actualizarTareareunion(tareu);
+                                mensaje=true;
+                                jTextField1.setText(tareu.getMotivo());
+                            }
+                            if (!tareu.getCaracter().equals(caracter)) {
+                                // <editor-fold defaultstate="collapsed" desc="Auditoria"> 
+                                Auditoria audi= new Auditoria();
+                                audi.setPersonalByIdAuditor(adm);
+                                audi.setOperacion("Actualizar");
+                                audi.setFecha(new Date());
+                                audi.setTarea(tar);
+                                audi.setCampo("Caracter");
+                                audi.setElementoAnterior(tareu.getCaracter());
+                                audi.setElementoNuevo(caracter);
+                                audi.guardarAuditoria(audi);
+                                // </editor-fold>
                                 tareu.setCaracter(caracter);
                                 tareu.actualizarTareareunion(tareu);
-                                jTextField1.setText(tareu.getMotivo());
+                                mensaje=true;
                                 jComboBox2.setSelectedItem(tareu.getCaracter());
-                                band2=true;
                             }
                             
                             DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
                             int c = 0;
-                            boolean bander = false;
+                            boolean controll=true;
                             int cont = tar.getAgendas().size();
                             int contper = 0;
+                            List lista = tar.ListaPer(tar);
                             while (jTable1.getRowCount() != c) {
                                 boolean aux = (Boolean) modelo.getValueAt(c, 0);
                                 if (aux == true) {
                                     contper++;
                                     Personal person = (Personal) modelo.getValueAt(c, 1);
-                                    Iterator it = tar.getAgendas().iterator();
-                                    bander = false;
-                                    while (it.hasNext()) {
-                                        Agenda ag = (Agenda) it.next();
-                                        Personal pp = ag.getPersonal();
-                                        if (pp.getIdPersonal() == person.getIdPersonal()) {
-                                            bander = true;
-                                            break;
-                                        }
-                                    }
-                                    if (bander == false) {
+                                    if (!lista.contains(person)) {
                                         cambio = true;
+                                    }
+                                    if (person.ReunionVerificarDisponibilidad(fecha, inicio, fin, controll,tar.getIdTarea()) == 0) {
+                                        controll=false;
+                                        break;
                                     }
                                 }
                                 c++;
@@ -768,8 +865,50 @@ public class JFrameReunion extends javax.swing.JFrame {
                             if (cont != contper) {
                                 cambio = true;
                             }
-                            if (cambio == true) {
-                                band2=true;
+                            if (cambio == true && controll==true) {
+                                Date aux1=fecha;
+                                Date aux2=fecha;
+                                aux1.setHours(inicio.getHours());
+                                aux1.setMinutes(inicio.getMinutes());
+                                aux1.setSeconds(inicio.getSeconds());
+                                aux2.setHours(fin.getHours());
+                                aux2.setMinutes(fin.getMinutes());
+                                aux2.setSeconds(fin.getSeconds());
+                                if(tar.getDiaInicio().compareTo(aux1)!=0){
+                                    // <editor-fold defaultstate="collapsed" desc="Auditoria"> 
+                                    Auditoria audi= new Auditoria();
+                                    audi.setPersonalByIdAuditor(adm);
+                                    audi.setOperacion("Actualizar");
+                                    audi.setFecha(new Date());
+                                    audi.setTarea(tar);
+                                    audi.setCampo("Fecha");
+                                    SimpleDateFormat formatea = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+                                    audi.setElementoAnterior(formatea.format(tar.getDiaInicio()));
+                                    audi.setElementoNuevo(formatea.format(aux1));
+                                    audi.guardarAuditoria(audi);
+                                    // </editor-fold>
+                                    tar.setDiaInicio(aux1);
+                                    tar.ActualizarTarea(tar);
+                                    mensaje=true;
+                                }
+                                if(tar.getDiaFin().compareTo(aux2)!=0){
+                                    // <editor-fold defaultstate="collapsed" desc="Auditoria"> 
+                                    Auditoria audi= new Auditoria();
+                                    audi.setPersonalByIdAuditor(adm);
+                                    audi.setOperacion("Actualizar");
+                                    audi.setFecha(new Date());
+                                    audi.setTarea(tar);
+                                    audi.setCampo("Fecha");
+                                     SimpleDateFormat formatea = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+                                    audi.setElementoAnterior(formatea.format(tar.getDiaFin()));
+                                    audi.setElementoNuevo(formatea.format(aux2));
+                                    audi.guardarAuditoria(audi);
+                                    // </editor-fold>
+                                    tar.setDiaFin(aux2);
+                                    tar.ActualizarTarea(tar);
+                                    mensaje=true;
+                                }
+
                                 tar.BorrarTodo();
                                 Drive=new Controlador();
                                 tar=(Tarea) Drive.PERSISTENCIA.getTarea(tar.getIdTarea()).iterator().next();
@@ -778,10 +917,11 @@ public class JFrameReunion extends javax.swing.JFrame {
                                     if (modelo.getValueAt(c, 0).equals(true)) {
                                         Personal per = (Personal) modelo.getValueAt(c, 1);
                                         boolean control=false;
-                                        if (per.ReunionVerificarDisponibilidad(fecha, inicio, fin,control)==1) {
+                                        if (per.ReunionVerificarDisponibilidad(fecha, inicio, fin,control,tar.getIdTarea())==1) {
                                             Agenda age = tar.ObtenerAgenda(per.getIdPersonal());
                                             if (age.getId() == null) {
                                                 AgendaId ida = new AgendaId(per.getIdPersonal(), tar.getIdTarea());
+                                                age.setAnolectivo(Drive.getAnoLectivo());
                                                 age.setId(ida);
                                                 age.setPersonal(per);
                                                 age.setTarea(tar);
@@ -808,7 +948,7 @@ public class JFrameReunion extends javax.swing.JFrame {
                                             in.setEstadoInicio(false);
                                             in.setFin(fin);
                                             in.guardarIniciofin(in);
-                                        } else if(per.ReunionVerificarDisponibilidad(fecha, inicio, fin,control)==2) {
+                                        } else if(per.ReunionVerificarDisponibilidad(fecha, inicio, fin,control,tar.getIdTarea())==2) {
                                             Agenda age = tar.ObtenerAgenda(per.getIdPersonal());
                                             if (age.getId() == null) {
                                                 AgendaId ida = new AgendaId(per.getIdPersonal(), tar.getIdTarea());
@@ -845,18 +985,11 @@ public class JFrameReunion extends javax.swing.JFrame {
                                     c++;
                                 }
                             }
-                            if(band2==true){
-                                // <editor-fold defaultstate="collapsed" desc="Auditoria"> 
-                                Auditoria audi=new Auditoria();
-                                audi.setPersonalByIdAuditor(adm);
-                                audi.setOperacion("Actualizar");
-                                audi.setFecha(new Date());
-                                audi.setTarea(tar);
-                                audi.guardarAuditoria(audi);
-                                    // </editor-fold>
+                            if(mensaje==true){
+                                JOptionPane.showMessageDialog(null,"La tarea se actualizó correctamente","Actualizar tarea",JOptionPane.INFORMATION_MESSAGE);
                             }
                         }
-                        Frame vp = new JFrameConsultaActividades(Drive, adm, idsesion);
+                        Frame vp = new JFrameConsultaActividades(Drive, adm);
                         this.dispose();
                         vp.show();
                         // </editor-fold>
@@ -878,28 +1011,28 @@ public class JFrameReunion extends javax.swing.JFrame {
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         if (tar.getIdTarea()==null) {
-            if (!jTextField1.getText().isEmpty() || !jTextField3.getText().isEmpty() || !jTextField4.getText().isEmpty()) {
-                int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea cancelar la reunión?", "", JOptionPane.YES_NO_OPTION);
+            if (!jTextField1.getText().isEmpty() || !jTextField3.getText().isEmpty()) {
+                int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea cancelar la reunión?", "Registrar Reunión", JOptionPane.YES_NO_OPTION);
                 if (JOptionPane.OK_OPTION == confirmado) {
-                    Frame vp = new JFramePrincipal(Drive, adm, idsesion);
+                    Frame vp = new JFramePrincipal(Drive, adm);
                     this.dispose();
                     vp.show();
                 }
             } else {
-                Frame vp = new JFramePrincipal(Drive, adm, idsesion);
+                Frame vp = new JFramePrincipal(Drive, adm);
                 this.dispose();
                 vp.show();
             }
         } else {
             if (!cambio==true) {
-                int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea cancelar la actualización de la reunión?", "", JOptionPane.YES_NO_OPTION);
+                int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea cancelar la actualización de la reunión?", "Actualizar Reunión", JOptionPane.YES_NO_OPTION);
                 if (JOptionPane.OK_OPTION == confirmado) {
-                    Frame vp = new JFrameConsultaActividades(Drive, adm, idsesion);
+                    Frame vp = new JFrameConsultaActividades(Drive, adm);
                     this.dispose();
                     vp.show();
                 }
             } else {
-                Frame vp = new JFrameConsultaActividades(Drive, adm, idsesion);
+                Frame vp = new JFrameConsultaActividades(Drive, adm);
                 this.dispose();
                 vp.show();
             }
@@ -940,7 +1073,7 @@ public class JFrameReunion extends javax.swing.JFrame {
                 Drive.CargarTablacheck(jTable1,buscar, es.toUpperCase(),lista);
             }
         }catch(Exception e){
-            JOptionPane.showMessageDialog(null, "ERROR","Registrar Tarea Extracurricular", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "ERROR","Registrar Reunión", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jTextField2KeyTyped
 
@@ -960,32 +1093,64 @@ public class JFrameReunion extends javax.swing.JFrame {
 
     private void jFormattedTextField2FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jFormattedTextField2FocusLost
         try{
+            String hora=jFormattedTextField2.getText();
+            String h  = hora.substring(0,2);  
+            String m  = hora.substring(3,5);  
+            int conta_hora = Integer.parseInt(h);  
+            int conta_minuto = Integer.parseInt(m);  
+            if(conta_hora > 23 || conta_minuto > 59) {  
+                JOptionPane.showMessageDialog(null, "Ingrese correctamente la hora" ,"Registrar Reunión",JOptionPane.ERROR_MESSAGE);  
+                jFormattedTextField2.setText("00:00"); 
+                return;  
+            }
             SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
             Date inicio = formateador.parse(jFormattedTextField1.getText());
             Date fin = formateador.parse(jFormattedTextField2.getText());
-            if(inicio.compareTo(fin)>=0){
-                JOptionPane.showMessageDialog(null,"El horario de fin debe ser mayor al horario de inicio","Registrar Clase", JOptionPane.ERROR_MESSAGE);
-                jFormattedTextField2.setText("");
+            if (inicio.compareTo(fin) >= 0) {
+                JOptionPane.showMessageDialog(null, "El horario de fin debe ser mayor al horario de inicio", "Registrar Reunión", JOptionPane.ERROR_MESSAGE);
+                jFormattedTextField1.setText("00:00");
+                jFormattedTextField2.setText("00:00");
+                return;
             }
-            if(tar.getIdTarea()!=null){
-                Agenda age=tar.getAgendas().iterator().next();
-                Dia d=age.getDia2(fecha);
+            if (tar.getIdTarea() != null) {
+                Agenda age = tar.getAgendas().iterator().next();
+                Dia d = age.getDia2(fecha);
                 Iniciofin ini = d.getIniciofins().iterator().next();
-                String est=formateador.format(ini.getFin());
+                String est = formateador.format(ini.getFin());
                 Date aux=formateador.parse(est);
                 if(!fin.equals(aux)){
                     cambio=true;
                 }
             }
         }catch(Exception e){
-            JOptionPane.showMessageDialog(null,"Error","Registrar Clase", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"Error","Registrar Reunión", JOptionPane.ERROR_MESSAGE);
+            jFormattedTextField2.setText("00:00");
         }
     }//GEN-LAST:event_jFormattedTextField2FocusLost
 
     private void dateChooserCombo1OnSelectionChange(datechooser.events.SelectionChangedEvent evt) {//GEN-FIRST:event_dateChooserCombo1OnSelectionChange
         try {
+            Date inicio=dateChooserCombo1.getSelectedDate().getTime();
+            Date fech=new Date();
+            inicio.setHours(fech.getDate());
+            inicio.setMinutes(fech.getMinutes());
+            inicio.setSeconds(fech.getSeconds());
+            
+            Anolectivo an=Drive.getPrimerEstablecimiento().getAnoLectivo(fech.getYear()+1900);
+            if(an.getInicio().compareTo(inicio)>0 || an.getFin().compareTo(inicio)<0){
+                JOptionPane.showMessageDialog(null,"La fecha debe estar contemplado dentro del año lectivo","Registrar Reunión",JOptionPane.ERROR_MESSAGE);
+                Calendar cal = Calendar.getInstance();
+                dateChooserCombo1.setSelectedDate(cal);
+                return;
+            }
+            if(inicio.compareTo(fech)<=0){
+                JOptionPane.showMessageDialog(null,"La fecha no puede ser menor a hoy","Registrar Reunión",JOptionPane.ERROR_MESSAGE);
+                Calendar cal = Calendar.getInstance();
+                dateChooserCombo1.setSelectedDate(cal);
+                return;
+            }
             if (tar.getIdTarea() != null) {
-                Date inicio = dateChooserCombo1.getSelectedDate().getTime();
+                inicio = dateChooserCombo1.getSelectedDate().getTime();
                 SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
                 formateador.setLenient(false);
                 String i = formateador.format(fecha);
@@ -1002,12 +1167,34 @@ public class JFrameReunion extends javax.swing.JFrame {
 
     private void jFormattedTextField1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jFormattedTextField1FocusLost
         try {
+            String hora=jFormattedTextField1.getText();
+            String h  = hora.substring(0,2);  
+            String m  = hora.substring(3,5);  
+            int conta_hora = Integer.parseInt(h);  
+            int conta_minuto = Integer.parseInt(m);  
+            if(conta_hora > 23 || conta_minuto > 59) {  
+                JOptionPane.showMessageDialog(null, "Ingrese correctamente la hora" ,"Registrar Reunión",JOptionPane.ERROR_MESSAGE);  
+                jFormattedTextField1.setText("00:00"); 
+                return;  
+            }  
+            SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
+            Date inicio = formateador.parse(jFormattedTextField1.getText());
+            Date fe=dateChooserCombo1.getSelectedDate().getTime();
+            Date ahora = new Date();
+            if (fe.compareTo(ahora)<=0) {
+                ahora.setDate(inicio.getDate());
+                ahora.setMonth(inicio.getMonth());
+                ahora.setYear(inicio.getYear());
+                if (inicio.compareTo(ahora) <= 0) {
+                    JOptionPane.showMessageDialog(null, "El inicio de la reunión debe ser mayor que las: " + formateador.format(ahora), "Registrar Reunión", JOptionPane.ERROR_MESSAGE);
+                    jFormattedTextField1.setText("00:00");
+                    return;
+                }
+            }
             if (tar.getIdTarea() != null) {
                 Agenda age = tar.getAgendas().iterator().next();
                 Dia d = age.getDia2(fecha);
                 Iniciofin ini = d.getIniciofins().iterator().next();
-                SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
-                Date inicio = formateador.parse(jFormattedTextField1.getText());
                 String est = formateador.format(ini.getInicio());
                 Date aux = formateador.parse(est);
                 if (!inicio.equals(aux)) {
@@ -1015,8 +1202,8 @@ public class JFrameReunion extends javax.swing.JFrame {
                 }
             }
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Ingrese correctamente la hora", "Registrar Clase", JOptionPane.ERROR_MESSAGE);
-            jFormattedTextField1.setText("");
+            JOptionPane.showMessageDialog(null, "Ingrese correctamente la hora", "Registrar Reunión", JOptionPane.ERROR_MESSAGE);
+            jFormattedTextField1.setText("00:00");
         }
     }//GEN-LAST:event_jFormattedTextField1FocusLost
 
@@ -1024,13 +1211,84 @@ public class JFrameReunion extends javax.swing.JFrame {
         if(jTextField3.getText().length()==20) evt.consume();
     }//GEN-LAST:event_jTextField3KeyTyped
 
-    private void jTextField4KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField4KeyTyped
-        if(jTextField4.getText().length()==45) evt.consume();
-    }//GEN-LAST:event_jTextField4KeyTyped
-
     private void jTextField1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyTyped
         if(jTextField1.getText().length()==45) evt.consume();
     }//GEN-LAST:event_jTextField1KeyTyped
+
+    private void jCheckBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCheckBox1ItemStateChanged
+        try{
+            if(jCheckBox1.isSelected()){
+                DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+                int cc=0;
+                while (jTable1.getRowCount() != cc) {
+                    Personal per = (Personal) model.getValueAt(cc, 1);
+                    lista.add(per);
+                    cc++;
+                }
+                Drive.LimpiarTabla(jTable1);
+                Drive.CargarTablacheck(jTable1,buffer.toString(), buffer.toString().toUpperCase(),lista);
+            }else{
+                lista.clear();
+                Drive.LimpiarTabla(jTable1);
+                Drive.CargarTablacheck(jTable1,buffer.toString(), buffer.toString().toUpperCase(),lista);
+            }
+        }catch(Exception e){}
+    }//GEN-LAST:event_jCheckBox1ItemStateChanged
+
+    private void jLabel21MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel21MouseClicked
+        int confirmado = JOptionPane.showConfirmDialog(null,"¿Desea eliminar el Lugar?","Eliminar Lugar",JOptionPane.YES_NO_OPTION);
+        if (JOptionPane.OK_OPTION == confirmado){
+            Object o=jComboBox3.getSelectedItem();
+            if(o!=null){
+                Lugar lu=(Lugar) o;
+                lu.EliminarLugar(lu);
+                Drive.LimpiarCombo(jComboBox3);
+                Drive.CargarComboLugar(jComboBox3);
+            }else{
+                JOptionPane.showMessageDialog(null, "Seleccione un lugar","Eliminar Lugar", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_jLabel21MouseClicked
+
+    private void jLabel36MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel36MouseClicked
+        JTextField nombre = new JTextField();
+        JTextField descripcion = new JTextField();
+        String cadSalida;
+        nombre.setText("");
+        nombre.setSize(30, 30);
+        String caddes = null;
+        descripcion.setText("");
+        descripcion.setSize(20, 20);
+
+        Lugar au = new Lugar();
+        JOptionPane.showMessageDialog(null, nombre, "Ingrese el nombre del lugar", JOptionPane.INFORMATION_MESSAGE);
+        if (!nombre.getText().isEmpty() && nombre.getText().length() <= 45) {
+            cadSalida = nombre.getText().toUpperCase();
+            Iterator it = Drive.PERSISTENCIA.getLugar().iterator();
+            boolean w = false;
+            while (it.hasNext()) {
+                Lugar tip = (Lugar) it.next();
+                if (tip.getNombre().equals(cadSalida)) {
+                    JOptionPane.showMessageDialog(null, "El lugar ya existe", "Registrar Lugar", JOptionPane.ERROR_MESSAGE);
+                    w = true;
+                }
+            }
+            if (w == false) {
+                au.setNombre(cadSalida);
+                JOptionPane.showMessageDialog(null, descripcion, "Ingrese la descripción del Lugar", JOptionPane.INFORMATION_MESSAGE);
+                if (descripcion.getText().length() <= 100) {
+                    caddes = descripcion.getText().toUpperCase();
+                }
+                au.setDescripcion(caddes);
+                au.guardarLugar(au);
+                Drive.LimpiarCombo(jComboBox3);
+                Drive.CargarComboLugar(jComboBox3);
+                jComboBox3.setSelectedItem(au);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "El nombre del lugar no puede estar vacio y puede contener hasta 45 caracteres", "Registrar Lugar", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jLabel36MouseClicked
 
     /**
     * @param args the command line arguments
@@ -1045,6 +1303,7 @@ public class JFrameReunion extends javax.swing.JFrame {
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JComboBox jComboBox2;
+    private javax.swing.JComboBox jComboBox3;
     private javax.swing.JFormattedTextField jFormattedTextField1;
     private javax.swing.JFormattedTextField jFormattedTextField2;
     private javax.swing.JLabel jLabel1;
@@ -1054,9 +1313,11 @@ public class JFrameReunion extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel36;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -1070,7 +1331,6 @@ public class JFrameReunion extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
     // End of variables declaration//GEN-END:variables
 
 }

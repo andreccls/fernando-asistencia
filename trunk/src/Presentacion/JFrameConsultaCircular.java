@@ -34,19 +34,16 @@ public class JFrameConsultaCircular extends javax.swing.JFrame {
     public Personal adm;
     Personal per= new Personal();
     StringBuffer buffer= new StringBuffer();
-//    HiloProgreso hilo1;
-//    Tarea tar=new Tarea();
-//    String bandera;
-    int idsesion;
+//    int idsesion;
     Circular cir=new Circular();
     
-    public JFrameConsultaCircular(Controlador unDrive, Personal admin,int id) {
+    public JFrameConsultaCircular(Controlador unDrive, Personal admin) {
         this.Drive=unDrive;
         this.adm=admin;
-        this.idsesion=id;
+//        this.idsesion=id;
         initComponents();
         Drive.CargarTablaCirculares(jTable1,dateChooserCombo1.getSelectedDate().getTime());
-        int[] anchos1 = {150,150,150};
+        int[] anchos1 = {150,150,150,200};
         for(int i = 0; i < jTable1.getColumnCount(); i++) {
             jTable1.getColumnModel().getColumn(i).setPreferredWidth(anchos1[i]);
         }
@@ -63,6 +60,9 @@ public class JFrameConsultaCircular extends javax.swing.JFrame {
         ImageIcon fott5 = new ImageIcon(getClass().getResource("/imagenes/Buscar.png"));
         Icon icono5 = new ImageIcon(fott5.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
         jButton1.setIcon(icono5);
+        if(adm.getPerfil().getCirculareseli() == null){
+            jButton4.setEnabled(false);
+        }
     }
 
     /**
@@ -84,7 +84,8 @@ public class JFrameConsultaCircular extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("SISTEMA DE ASISTENCIA DE PERSONAL EDUCATIVO");
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
@@ -93,16 +94,17 @@ public class JFrameConsultaCircular extends javax.swing.JFrame {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Consultar Circulares"));
 
+        jTable1.setAutoCreateRowSorter(true);
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Nombre", "Fecha", "Firma"
+                "Nombre", "Inicio", "Fin", "Firma"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -110,14 +112,14 @@ public class JFrameConsultaCircular extends javax.swing.JFrame {
             }
         });
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTable1MouseClicked(evt);
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                jTable1MouseReleased(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 jTable1MouseEntered(evt);
             }
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                jTable1MouseReleased(evt);
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
             }
         });
         jScrollPane1.setViewportView(jTable1);
@@ -261,7 +263,7 @@ public class JFrameConsultaCircular extends javax.swing.JFrame {
         .addGroup(layout.createSequentialGroup()
             .addContainerGap()
             .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addContainerGap(21, Short.MAX_VALUE))
     );
 
     pack();
@@ -293,11 +295,15 @@ public class JFrameConsultaCircular extends javax.swing.JFrame {
 
     private void jTable1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseReleased
         if(evt.getClickCount()==2){
-            jTable1.getModel();
-            cir=(Circular)jTable1.getValueAt(jTable1.rowAtPoint(evt.getPoint()), 2);
-            JFrameCircular vent2 = new JFrameCircular(Drive,adm,idsesion,cir);
-            this.hide();
-            vent2.show();
+            if(adm.getPerfil().getCircularesact()){
+                jTable1.getModel();
+                cir=(Circular)jTable1.getValueAt(jTable1.rowAtPoint(evt.getPoint()), 2);
+                JFrameCircular vent2 = new JFrameCircular(Drive,adm,cir);
+                this.hide();
+                vent2.show();
+            }else {
+                JOptionPane.showMessageDialog(null,"No tiene permisos para actualizar circulares","Actualizar Circular",JOptionPane.ERROR_MESSAGE);
+            }
         }
     }//GEN-LAST:event_jTable1MouseReleased
 
@@ -315,7 +321,7 @@ public class JFrameConsultaCircular extends javax.swing.JFrame {
             int i=jTable1.getSelectedRow();
             if(i>=0){
                 cir=(Circular)jTable1.getValueAt(i, 2);
-                JFrameCircular vent2 = new JFrameCircular(Drive,adm,idsesion,cir);
+                JFrameCircular vent2 = new JFrameCircular(Drive,adm,cir);
                 this.hide();
                 vent2.show();
             }
@@ -327,7 +333,7 @@ public class JFrameConsultaCircular extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea salir?", "Consultar Circulares", JOptionPane.YES_NO_OPTION);
         if (JOptionPane.OK_OPTION == confirmado) {
-            Frame vp = new JFramePrincipal(Drive, adm, idsesion);
+            Frame vp = new JFramePrincipal(Drive, adm);
             this.dispose();
             vp.show();
         }
@@ -359,7 +365,7 @@ public class JFrameConsultaCircular extends javax.swing.JFrame {
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea salir?", "Consultar Circulares", JOptionPane.YES_NO_OPTION);
         if (JOptionPane.OK_OPTION == confirmado) {
-            Frame vp = new JFramePrincipal(Drive, adm, idsesion);
+            Frame vp = new JFramePrincipal(Drive, adm);
             this.dispose();
             vp.show();
         }

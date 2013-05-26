@@ -1,8 +1,5 @@
 package Clases;
-// Generated 17/10/2012 08:54:15 by Hibernate Tools 3.2.1.GA
-
-import javax.swing.JOptionPane;
-
+// Generated 14-may-2013 5:19:10 by Hibernate Tools 3.2.1.GA
 
 
 
@@ -13,9 +10,8 @@ public class Tareaclase  implements java.io.Serializable {
 
 
      private TareaclaseId id;
+     private Aula aula;
      private Tarea tarea;
-     private String aula;
-     private Integer numero;
 
     public Tareaclase() {
     }
@@ -25,17 +21,16 @@ public class Tareaclase  implements java.io.Serializable {
         this.id = id;
         this.tarea = tarea;
     }
-    public Tareaclase(TareaclaseId id, Tarea tarea, String aula, Integer numero) {
+    public Tareaclase(TareaclaseId id, Aula aula, Tarea tarea) {
        this.id = id;
-       this.tarea = tarea;
        this.aula = aula;
-       this.numero = numero;
+       this.tarea = tarea;
     }
     
-//    @Override
-//    public String toString() {
-//        return aula;
-//    }
+    @Override
+    public String toString() {
+        return tarea.getNombre();
+    }
    
     public TareaclaseId getId() {
         return this.id;
@@ -44,26 +39,19 @@ public class Tareaclase  implements java.io.Serializable {
     public void setId(TareaclaseId id) {
         this.id = id;
     }
+    public Aula getAula() {
+        return this.aula;
+    }
+    
+    public void setAula(Aula aula) {
+        this.aula = aula;
+    }
     public Tarea getTarea() {
         return this.tarea;
     }
     
     public void setTarea(Tarea tarea) {
         this.tarea = tarea;
-    }
-    public String getAula() {
-        return this.aula;
-    }
-    
-    public void setAula(String aula) {
-        this.aula = aula;
-    }
-    public Integer getNumero() {
-        return this.numero;
-    }
-    
-    public void setNumero(Integer numero) {
-        this.numero = numero;
     }
 
 //// GENERADO POR GONZALEZ FERNANDO

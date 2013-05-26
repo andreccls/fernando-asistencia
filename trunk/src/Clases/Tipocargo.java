@@ -58,20 +58,18 @@ public class Tipocargo  implements java.io.Serializable {
     public void guardarTipocargo(Tipocargo unTipocargo){
         Controlador.getPERSISTENCIA().insert(this);
 
-        JOptionPane.showMessageDialog(null,"El Cargo "+ 
-                String.valueOf(unTipocargo.getIdTipocargo()) +
-                " se guardo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null,"El tipo de Cargo "+ 
+                unTipocargo.getNombre() +
+                " se guardo correctamente","Registrar tipo de cargo",JOptionPane.INFORMATION_MESSAGE);
     }
     
     public void eliminarTipocargo(Tipocargo unTipocargo){
         Iterator it=cargos.iterator();
         if(it.hasNext()){
-            JOptionPane.showMessageDialog(null,"El tipo de cargo no se puede eliminar porque esta relacionada con otras declaraciones juradas","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null,"El tipo de cargo no se puede eliminar porque esta relacionada con otras declaraciones juradas","Eliminar Cargo",JOptionPane.INFORMATION_MESSAGE);
         }else{
         Controlador.getPERSISTENCIA().delete(this);
-        JOptionPane.showMessageDialog(null,"El Cargo "+ 
-                String.valueOf(unTipocargo.getIdTipocargo()) +
-                " se elimino correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null,"El Cargo se elimino correctamente","Eliminar Cargo",JOptionPane.INFORMATION_MESSAGE);
         }
     }
 

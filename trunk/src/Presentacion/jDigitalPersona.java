@@ -62,11 +62,11 @@ public class jDigitalPersona extends javax.swing.JFrame {
    Personal per=new Personal();
    StringBuffer buffer= new StringBuffer();
    public Personal adm;
-   int idsesion;
+//   int idsesion;
    
-    public jDigitalPersona(Controlador unDrive, Personal admin, int id) {
+    public jDigitalPersona(Controlador unDrive, Personal admin) {
         this.adm=admin;
-        this.idsesion=id;
+//        this.idsesion=id;
         initComponents();
         Controlador auxDrive = new Controlador();
         auxDrive.getPrimerEstablecimiento();
@@ -98,6 +98,11 @@ public class jDigitalPersona extends javax.swing.JFrame {
         ImageIcon fott4 = new ImageIcon(getClass().getResource("/imagenes/Buscar.png"));
         Icon icono4 = new ImageIcon(fott4.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
         jButton11.setIcon(icono4);
+        if(adm.getIdPersonal()!=null){
+            if(adm.getPerfil().getPersonalact()==null){
+                jButton12.setEnabled(false);
+            }
+        }
     }
 
     /**
@@ -177,6 +182,7 @@ public class jDigitalPersona extends javax.swing.JFrame {
             }
         });
 
+        jTable1.setAutoCreateRowSorter(true);
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -406,14 +412,14 @@ public class jDigitalPersona extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowOpened
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        Frame vp=new JFramePrincipal(Drive,adm,idsesion);
+        Frame vp=new JFramePrincipal(Drive,adm);
         stop(); 
         this.dispose();
         vp.show();
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        Frame vp=new JFramePrincipal(Drive,adm,idsesion);
+        Frame vp=new JFramePrincipal(Drive,adm);
         stop();
         this.dispose();
         vp.show();
@@ -727,7 +733,7 @@ public class jDigitalPersona extends javax.swing.JFrame {
              byte[] bit=read(datosHuella);
              per.setCodigo(bit);
              per.actualizarPersonal(per);
-             JOptionPane.showMessageDialog(null,"Huella Guardada Correctamente");
+             JOptionPane.showMessageDialog(null,"Huella Guardada Correctamente","Registrar Huella",JOptionPane.INFORMATION_MESSAGE);
          }else{JOptionPane.showMessageDialog(null,"Debe que seleccionar un personal","Registrar Huella", JOptionPane.ERROR_MESSAGE);}
      } catch (Exception ex) {
      //Si ocurre un error lo indica en la consola

@@ -30,33 +30,29 @@ import javax.swing.table.TableCellRenderer;
 public class JFrameFeriados extends javax.swing.JFrame {
     public Controlador Drive;
     public Personal adm;
-    int idsesion;
+//    int idsesion;
     
     Date s=new Date();
     /**
      * Creates new form JFrameFeriados
      */
-    public JFrameFeriados(Controlador unDrive, Personal admin,int id) {
+    public JFrameFeriados(Controlador unDrive, Personal admin) {
         this.Drive=unDrive;
         this.adm=admin;
-        this.idsesion=id;
+//        this.idsesion=id;
         initComponents();
         Controlador auxDrive = new Controlador();
         auxDrive.getPrimerEstablecimiento();
         Drive = auxDrive;
         jTextField1.setText(String.valueOf(s.getYear()+1900));
-        Drive.CargarTablaFeriados(jTable1);
+        Date fec=dateChooserCombo1.getSelectedDate().getTime();
+        Drive.CargarTablaFeriados(jTable1,fec);
         int[] anchos1 = {200,80};
         for(int i = 0; i < jTable1.getColumnCount(); i++) {
             jTable1.getColumnModel().getColumn(i).setPreferredWidth(anchos1[i]);
         }
         jTable1.getTableHeader().setDefaultRenderer(new JFrameFeriados.HeaderRenderer(jTable1));
-        int nivel=adm.getPerfil().getNivel();
-        if(nivel==4||nivel==3){
-            jTable1.setEnabled(false);
-            jButton1.setEnabled(false);
-            jButton2.setEnabled(false);
-        }
+        
         ImageIcon fott2 = new ImageIcon(getClass().getResource("/imagenes/no.png"));
         Icon icono2 = new ImageIcon(fott2.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
         jButton3.setIcon(icono2);
@@ -66,7 +62,12 @@ public class JFrameFeriados extends javax.swing.JFrame {
         ImageIcon fott4 = new ImageIcon(getClass().getResource("/imagenes/Eliminar.png"));
         Icon icono4 = new ImageIcon(fott4.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
         jButton2.setIcon(icono4);
-        
+        if(adm.getPerfil().getConfiguracioneli()==null){
+            jButton2.setEnabled(false);
+        }
+        if(adm.getPerfil().getConfiguracionins()==null){
+            jButton1.setEnabled(false);
+        }
     }
 
     /**
@@ -102,6 +103,7 @@ public class JFrameFeriados extends javax.swing.JFrame {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Ingrese los feriados del año"));
 
+        jTable1.setAutoCreateRowSorter(true);
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -244,7 +246,7 @@ public class JFrameFeriados extends javax.swing.JFrame {
     jPanel1Layout.setVerticalGroup(
         jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-            .addContainerGap()
+            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
@@ -263,8 +265,7 @@ public class JFrameFeriados extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                 .addComponent(jButton3)
                 .addComponent(jButton2)
-                .addComponent(jButton1))
-            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jButton1)))
     );
 
     javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -281,7 +282,7 @@ public class JFrameFeriados extends javax.swing.JFrame {
         .addGroup(layout.createSequentialGroup()
             .addContainerGap()
             .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addContainerGap(22, Short.MAX_VALUE))
     );
 
     pack();
@@ -305,14 +306,14 @@ public class JFrameFeriados extends javax.swing.JFrame {
     
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         if (!jTextField4.getText().isEmpty()) {
-            int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea la registración del feriado?", "Registrar Feriado", JOptionPane.YES_NO_OPTION);
+            int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea cancelar la registración del feriado?", "Registrar Feriado", JOptionPane.YES_NO_OPTION);
             if (JOptionPane.OK_OPTION == confirmado) {
-                Frame vp = new JFramePrincipal(Drive, adm, idsesion);
+                Frame vp = new JFramePrincipal(Drive, adm);
                 this.dispose();
                 vp.show();
             }
         } else {
-            Frame vp = new JFramePrincipal(Drive, adm, idsesion);
+            Frame vp = new JFramePrincipal(Drive, adm);
             this.dispose();
             vp.show();
         }
@@ -320,17 +321,14 @@ public class JFrameFeriados extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         try{
-//            int i=0;
             jTable1.getModel();
-            //i = Integer.parseInt(jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString());
-//            if(i!=0){
-                int confirmado = JOptionPane.showConfirmDialog(null,"¿Esta seguro que desea eliminar la fecha?","",JOptionPane.YES_NO_OPTION);
-                if (JOptionPane.OK_OPTION == confirmado){
-                    Feriado fer=(Feriado)jTable1.getValueAt(jTable1.getSelectedRow(), 0);
-                    fer.eliminarFeriado(fer);
-                    Drive.CargarTablaFeriados(jTable1);
-                }
-//            }
+            int confirmado = JOptionPane.showConfirmDialog(null,"¿Esta seguro que desea eliminar la fecha?","Eliminar feriado",JOptionPane.YES_NO_OPTION);
+            if (JOptionPane.OK_OPTION == confirmado){
+                Feriado fer=(Feriado)jTable1.getValueAt(jTable1.getSelectedRow(), 0);
+                fer.eliminarFeriado(fer);
+                Date fech=dateChooserCombo1.getSelectedDate().getTime();
+                Drive.CargarTablaFeriados(jTable1,fech);
+            }
         }catch (Exception e){
             JOptionPane.showMessageDialog(null,"Para eliminar una fecha debe seleccionarla y luego presionar 'Eliminar'","Eliminar Feriado", JOptionPane.INFORMATION_MESSAGE);
         }
@@ -339,14 +337,15 @@ public class JFrameFeriados extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try{
             Date ingreso=dateChooserCombo1.getSelectedDate().getTime();
-            if(ingreso.getYear()+1900==Integer.parseInt(jTextField1.getText())){
+            if(Drive.ControlarAnoLectivo(ingreso)){
                 if(Drive.existeFeriado(ingreso)==false){
                     Feriado fer=new Feriado();
-                    fer.setEstablecimiento(Drive.getPrimerEstablecimiento());
+                    fer.setAnolectivo(Drive.getAnoLectivo());
                     fer.setDia(ingreso);
                     fer.setComentario(jTextField4.getText());
                     fer.guardarFeriado(fer);
-                    Drive.CargarTablaFeriados(jTable1);
+                    Date fech=dateChooserCombo1.getSelectedDate().getTime();
+                    Drive.CargarTablaFeriados(jTable1,fech);
                 }else{
                 JOptionPane.showMessageDialog(null,"Ya existe el feriado","Registrar Feriado", JOptionPane.ERROR_MESSAGE);
                 }
@@ -362,12 +361,12 @@ public class JFrameFeriados extends javax.swing.JFrame {
         if (!jTextField4.getText().isEmpty()) {
             int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea la registración del feriado?", "Registrar Feriado", JOptionPane.YES_NO_OPTION);
             if (JOptionPane.OK_OPTION == confirmado) {
-                Frame vp = new JFramePrincipal(Drive, adm, idsesion);
+                Frame vp = new JFramePrincipal(Drive, adm);
                 this.dispose();
                 vp.show();
             }
         } else {
-            Frame vp = new JFramePrincipal(Drive, adm, idsesion);
+            Frame vp = new JFramePrincipal(Drive, adm);
             this.dispose();
             vp.show();
         }

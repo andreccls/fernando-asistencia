@@ -1,5 +1,5 @@
 package Clases;
-// Generated 13/11/2012 06:11:39 by Hibernate Tools 3.2.1.GA
+// Generated 06-may-2013 16:29:46 by Hibernate Tools 3.2.1.GA
 
 
 import java.util.HashSet;
@@ -31,12 +31,12 @@ public class DetalleEstablecimiento  implements java.io.Serializable {
        this.establecimiento = establecimiento;
        this.cargos = cargos;
     }
-    
+   
     @Override
     public String toString() {
         return establecimiento.getNombre();
     }
-   
+    
     public Integer getIdDetalleestablecimiento() {
         return this.idDetalleestablecimiento;
     }
@@ -72,25 +72,21 @@ public class DetalleEstablecimiento  implements java.io.Serializable {
     public void guardarDetalleEstablecimiento(DetalleEstablecimiento unDetalleEstablecimiento){
         Controlador.getPERSISTENCIA().insert(this);
 
-        JOptionPane.showMessageDialog(null,"El DetalleEstablecimiento "+ 
-                String.valueOf(unDetalleEstablecimiento.getIdDetalleestablecimiento()) +
-                " se guardo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+//        JOptionPane.showMessageDialog(null,"El DetalleEstablecimiento "+ 
+//                String.valueOf(unDetalleEstablecimiento.getIdDetalleestablecimiento()) +
+//                " se guardo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
     }
     
     public void ActualizarDetalleEstablecimiento(DetalleEstablecimiento unDetalleEstablecimiento){
         Controlador.getPERSISTENCIA().saveupdate(this);
 
-        JOptionPane.showMessageDialog(null,"El DetalleEstablecimiento "+ 
-                String.valueOf(unDetalleEstablecimiento.getIdDetalleestablecimiento()) +
-                " se guardo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null,"El DetalleEstablecimiento se actualizó correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
     }
     
     public void eliminarDetalleEstablecimiento(DetalleEstablecimiento unDetalleEstablecimiento){
         Controlador.getPERSISTENCIA().delete(this);
 
-        JOptionPane.showMessageDialog(null,"El DetalleEstablecimiento "+ 
-                String.valueOf(unDetalleEstablecimiento.getIdDetalleestablecimiento()) +
-                " se elimino correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null,"El DetalleEstablecimiento se elimino correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
     }
     
     public Cargo getCargo(Tipocargo tipo) {
@@ -105,6 +101,7 @@ public class DetalleEstablecimiento  implements java.io.Serializable {
         }
         return tip;
     }
+
 
 }
 

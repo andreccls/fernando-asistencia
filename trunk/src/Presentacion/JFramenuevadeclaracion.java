@@ -4,6 +4,7 @@
  */
 package Presentacion;
 
+import Clases.Anolectivo;
 import Clases.Auditoria;
 import Clases.Cargo;
 import Clases.Controlador;
@@ -18,6 +19,7 @@ import java.awt.Frame;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Date;
@@ -42,13 +44,13 @@ public class JFramenuevadeclaracion extends javax.swing.JFrame{
     Controlador Drive=new Controlador();
     public Personal adm;
     Personal pe;
-    int idsesion;
+//    int idsesion;
     StringBuffer buffer1=new StringBuffer();
     StringBuffer buffer2=new StringBuffer();
     StringBuffer buffer3=new StringBuffer();
     Declaracionjurada dec;
     
-    public JFramenuevadeclaracion(Controlador unDrive,Personal per,Declaracionjurada decju, Personal admin,int id) {
+    public JFramenuevadeclaracion(Controlador unDrive,Personal per,Declaracionjurada decju, Personal admin) {
         initComponents();
         Controlador auxDrive = new Controlador();
         auxDrive.getPrimerEstablecimiento();
@@ -56,7 +58,7 @@ public class JFramenuevadeclaracion extends javax.swing.JFrame{
         this.pe=per;
         this.dec=decju;
         this.adm=admin;
-        this.idsesion=id;
+//        this.idsesion=id;
         Drive.PERSISTENCIA.DecjuradaPer(pe.getIdPersonal());
         Drive.CargarComboEstablecimiento(jComboBox1);
         Drive.CargarComboTipocargo(jComboBox2);
@@ -138,14 +140,14 @@ public class JFramenuevadeclaracion extends javax.swing.JFrame{
             }
         });
         jComboBox1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                jComboBox1KeyPressed(evt);
-            }
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 jComboBox1KeyReleased(evt);
             }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 jComboBox1KeyTyped(evt);
+            }
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jComboBox1KeyPressed(evt);
             }
         });
 
@@ -285,31 +287,25 @@ public class JFramenuevadeclaracion extends javax.swing.JFrame{
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel34, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel16)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(jLabel16)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel34, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel35, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel31)
-                        .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(jLabel31)
+                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel35, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel36, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel32)
-                        .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(jLabel32)
+                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel36, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jLabel33)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -378,6 +374,15 @@ public class JFramenuevadeclaracion extends javax.swing.JFrame{
             JTextField salida = new JTextField();
             JTextField calle = new JTextField();
             JTextField numero = new JTextField();
+            numero.addKeyListener(new KeyAdapter() {
+                public void keyTyped(KeyEvent e) {
+                    char c = e.getKeyChar();
+                    if (!(Character.isDigit(c) || (c == KeyEvent.VK_BACK_SPACE) || (c == KeyEvent.VK_DELETE))) {
+                        getToolkit().beep();
+                        e.consume();
+                    }
+                }
+            });
             JTextField piso = new JTextField();
             JTextField depto = new JTextField();
             String cadSalida;
@@ -386,7 +391,7 @@ public class JFramenuevadeclaracion extends javax.swing.JFrame{
             String cadcalle;
             calle.setText("");
             calle.setSize(25, 25);
-            int cadnumero;
+            int cadnumero=0;
             numero.setText("");
             numero.setSize(25, 25);
             String cadpiso;
@@ -420,7 +425,7 @@ public class JFramenuevadeclaracion extends javax.swing.JFrame{
                     }
                     if(!numero.getText().isEmpty()){
                         cadnumero=Integer.parseInt(numero.getText());
-                    }else{cadnumero=0;}
+                    }
                     cadpiso=piso.getText().toUpperCase();
                     caddepto=depto.getText().toUpperCase();
 
@@ -505,7 +510,7 @@ public class JFramenuevadeclaracion extends javax.swing.JFrame{
     }//GEN-LAST:event_jLabel3MouseClicked
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        JFrameActualizarPersonal ventdec = new JFrameActualizarPersonal(Drive, pe, adm, idsesion);
+        JFrameActualizarPersonal ventdec = new JFrameActualizarPersonal(Drive, pe, adm, false);
         if (!jTextField1.getText().isEmpty()) {
             int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea cancelar la nueva declaración?", "", JOptionPane.YES_NO_OPTION);
             if (JOptionPane.OK_OPTION == confirmado) {
@@ -519,41 +524,42 @@ public class JFramenuevadeclaracion extends javax.swing.JFrame{
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        if(!jTextField1.getText().isEmpty()){
-            Establecimiento est=(Establecimiento) jComboBox1.getSelectedItem();
-            DetalleEstablecimiento detalle=dec.getDetalleEstablecimiento(est);
-            if(detalle.getIdDetalleestablecimiento()==null){
+        if (!jTextField1.getText().isEmpty()) {
+            Establecimiento est = (Establecimiento) jComboBox1.getSelectedItem();
+            DetalleEstablecimiento detalle = dec.getDetalleEstablecimiento(est);
+            if (detalle.getIdDetalleestablecimiento() == null) {
                 detalle.setDeclaracionjurada(dec);
                 detalle.setEstablecimiento(est);
                 detalle.guardarDetalleEstablecimiento(detalle);
             }
-            
-            Tipocargo tip= (Tipocargo) jComboBox2.getSelectedItem();
-            Cargo carg= detalle.getCargo(tip);
-            if(carg.getIdCargo()==null){
+
+            Tipocargo tip = (Tipocargo) jComboBox2.getSelectedItem();
+            Cargo carg = detalle.getCargo(tip);
+            if (carg.getIdCargo() == null) {
                 carg.setDetalleEstablecimiento(detalle);
                 carg.setTipocargo(tip);
                 carg.guardarCargo(carg);
             }
-            
-            Tiponivel tiponiv= (Tiponivel) jComboBox3.getSelectedItem();
+
+            Tiponivel tiponiv = (Tiponivel) jComboBox3.getSelectedItem();
             Nivel niv = carg.getNivel(tiponiv);
-            if(niv.getIdNivel()==null){
+            if (niv.getIdNivel() == null) {
                 niv.setCargo(carg);
                 niv.setTiponivel(tiponiv);
                 niv.setHoras(Integer.parseInt(jTextField1.getText()));
                 niv.guardarNivel(niv);
-            }else{
-                if(niv.getHoras()!= Integer.parseInt(jTextField1.getText())){
+            } else {
+                if (niv.getHoras() != Integer.parseInt(jTextField1.getText())) {
                     niv.setHoras(Integer.parseInt(jTextField1.getText()));
                     niv.ActualizarNivel(niv);
                 }
             }
 
-            JFrameActualizarPersonal ventdec = new JFrameActualizarPersonal(Drive,pe,adm,idsesion);
+            JFrameActualizarPersonal ventdec = new JFrameActualizarPersonal(Drive, pe, adm, false);
             this.hide();
             ventdec.show();
-        }else{JOptionPane.showMessageDialog(null, "INGRESE LAS HORAS","Registrar Declaración", JOptionPane.ERROR_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(null, "INGRESE LAS HORAS", "Registrar Declaración", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -596,7 +602,7 @@ public class JFramenuevadeclaracion extends javax.swing.JFrame{
     }//GEN-LAST:event_jLabel36MouseClicked
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        JFrameActualizarPersonal ventdec = new JFrameActualizarPersonal(Drive, pe, adm, idsesion);
+        JFrameActualizarPersonal ventdec = new JFrameActualizarPersonal(Drive, pe, adm, false);
         if (!jTextField1.getText().isEmpty()) {
             int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea cancelar la nueva declaración?", "", JOptionPane.YES_NO_OPTION);
             if (JOptionPane.OK_OPTION == confirmado) {
