@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 23-may-2013 2:20:56 by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+  <class catalog="asistencia" name="Clases.Anolectivo" table="anolectivo">
+    <id name="idAnolectivo" type="java.lang.Integer">
+      <column name="Id_anolectivo"/>
+      <generator class="identity"/>
+    </id>
+    <many-to-one class="Clases.Establecimiento" fetch="select" name="establecimiento">
+      <column name="Id_establecimiento" not-null="true"/>
+    </many-to-one>
+    <property name="ano" type="java.lang.Integer">
+      <column name="Ano"/>
+    </property>
+    <property name="inicio" type="date">
+      <column length="10" name="Inicio"/>
+    </property>
+    <property name="fin" type="date">
+      <column length="10" name="Fin"/>
+    </property>
+    <set inverse="true" name="feriados">
+      <key>
+        <column name="Id_anolectivo" not-null="true"/>
+      </key>
+      <one-to-many class="Clases.Feriado"/>
+    </set>
+    <set inverse="true" name="declaracionjuradas">
+      <key>
+        <column name="Id_anolectivo" not-null="true"/>
+      </key>
+      <one-to-many class="Clases.Declaracionjurada"/>
+    </set>
+    <set inverse="true" name="agendas">
+      <key>
+        <column name="Id_anolectivo" not-null="true"/>
+      </key>
+      <one-to-many class="Clases.Agenda"/>
+    </set>
+  </class>
+</hibernate-mapping>
