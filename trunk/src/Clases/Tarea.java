@@ -298,7 +298,7 @@ public class Tarea  implements java.io.Serializable {
                     }
                 }
             }
-            break;
+//            break;
         } 
         return mayor;
     }
@@ -332,7 +332,7 @@ public class Tarea  implements java.io.Serializable {
                     }
                 }
             }
-            break;
+//            break;
         } 
         return menor;
     }

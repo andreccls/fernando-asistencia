@@ -2566,21 +2566,25 @@ dateChooserCombo10.addSelectionChangedListener(new datechooser.events.SelectionC
                                 perdoc.setCargohoras(m);
                                 perdoc.setAntiguedadDoc(n);
                                 perdoc.actualizarPersonaldoc(perdoc);
+                                mensaje=true;
                             }
                         } else {
                             PersonaldocenteId iddoc = new PersonaldocenteId();
                             iddoc.setIdPersonal(pe.getIdPersonal());
                             pe.crearPersonaldoc(iddoc, pe, m, n);
+                            mensaje=true;
                         }
                     } else if (jRadioButton3.isSelected() == false) {
                         Personaldocente perdoc = pe.getPersonaldoc(pe.getIdPersonal());
                         if (perdoc.getId() != null) {
                             perdoc.eliminarPersonaldoc(perdoc);
+                            mensaje=true;
                         }
                         int c = 0;
                         while (modeloLista2.size() != c) {
                             PersonalDepartamento perdepto = (PersonalDepartamento) modeloLista2.getElementAt(c);
                             perdepto.eliminarPersonalDepartamento(perdepto);
+                            mensaje=true;
                             c++;
                         }
                     }
@@ -2591,18 +2595,20 @@ dateChooserCombo10.addSelectionChangedListener(new datechooser.events.SelectionC
                                 pernodoc.setActividad((Actividad) jComboBox7.getSelectedItem());
                             }
                             pernodoc.actualizarPersonalnodoc(pernodoc);
+                            mensaje=true;
                         } else {
                             PersonalnodocenteId id = new PersonalnodocenteId();
                             id.setIdPersonal(pe.getIdPersonal());
                             pe.crearPersonalnodoc(id, pe, (Actividad) jComboBox7.getSelectedItem());
+                            mensaje=true;
                         }
 
                     } else if (jRadioButton4.isSelected() == false) {
                         Personalnodocente pernodoc = pe.getPersonalnodoc(pe.getIdPersonal());
                         if (pernodoc.getId() != null) {
                             pernodoc.eliminarPersonalnodoc(pernodoc);
+                            mensaje=true;
                         }
-
                     }
                     if(mensaje==true){
                         JOptionPane.showMessageDialog(null,"La persona se actualizó correctamente","Actualizar Personal",JOptionPane.INFORMATION_MESSAGE);

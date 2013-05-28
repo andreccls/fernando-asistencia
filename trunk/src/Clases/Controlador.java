@@ -487,6 +487,19 @@ public class Controlador {
         }
     }
 
+    public boolean ExisteFecha(Tarea tar, Date fecha){
+        boolean existe= true;
+        Iterator it=PERSISTENCIA.getIniciofinTarea(tar.getIdTarea()).iterator();
+        while(it.hasNext()){
+            Iniciofin in=(Iniciofin) it.next();
+            Date dd=fecha;
+            if(in.getDia().getDia()==dd.getDate() && in.getDia().getMes().getMes()==dd.getMonth()/* && in.getDia().getMes().getAno().getAno()==(dd.getYear()+1900)*/){
+                existe=false;
+            }
+        }
+        return existe;
+    }
+    
     public static void LimpiarCombo(JComboBox JCombo) {
         DefaultComboBoxModel mod = (DefaultComboBoxModel) JCombo.getModel();
         mod.removeAllElements();
@@ -2470,7 +2483,7 @@ public class Controlador {
     }
   
     public static void mostrarReporte(String report, List consulta, String titulo,int total) throws FileNotFoundException, JRException {
-        String path = System.getProperty("user.dir") + "\\src\\Reportes\\";
+        String path = System.getProperty("user.dir") + "\\Reportes\\";
         String templateName = path + report + ".jrxml";
         HashMap parametros = new HashMap();
         parametros.clear();
@@ -2486,7 +2499,7 @@ public class Controlador {
     }
     
     public static void mostrarReporte(String report, List consulta, String titulo, String label,int total) throws FileNotFoundException, JRException {
-        String path = System.getProperty("user.dir") + "\\src\\Reportes\\";
+        String path = System.getProperty("user.dir") + "\\Reportes\\";
         String templateName = path + report + ".jrxml";
 //        String templateName;
 //        String templateName = "/reportes/"+report+".jrxml";
@@ -2511,7 +2524,7 @@ public class Controlador {
     }
     
     public static void mostrarReporte(String report, List consulta, String titulo, String filtro1,String filtro2,int total) throws FileNotFoundException, JRException {
-        String path = System.getProperty("user.dir") + "\\src\\Reportes\\";
+        String path = System.getProperty("user.dir") + "\\Reportes\\";
         String templateName = path + report + ".jrxml";
         HashMap parametros = new HashMap();
         parametros.clear();

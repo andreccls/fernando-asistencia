@@ -336,6 +336,7 @@ public class JFrameConsulta extends javax.swing.JFrame {
                 audi.setPersonalByIdPersonal(per);
                 audi.guardarAuditoria(audi);
                 // </editor-fold>
+                JOptionPane.showMessageDialog(null,"El personal se eliminó correctamente","Eliminar Personal", JOptionPane.INFORMATION_MESSAGE);
             }
             Drive.LimpiarTabla(jTable1);
             String buscar = (String) jComboBox1.getSelectedItem();
