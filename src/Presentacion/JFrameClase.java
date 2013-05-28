@@ -170,14 +170,25 @@ public class JFrameClase extends javax.swing.JFrame {
                 }
             }
             Drive.LimpiarTabla(jTable2);
+            
             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-            Iterator it=tar.getAgendas().iterator();
+            Iterator it=Drive.PERSISTENCIA.getIniciofinTar(mayor.getDate(), mayor.getMonth(), mayor.getYear()+1900,tar.getIdTarea()).iterator();
+//            Iterator it=tar.getAgendas().iterator();
+            List<Agenda> lista=new ArrayList();
             while(it.hasNext()){
-                Agenda agg=(Agenda) it.next();
-                Personal per=agg.getPersonal();
+                Iniciofin in=(Iniciofin) it.next();
+                Agenda age=in.getDia().getMes().getAno().getAgenda();
+                if(!lista.contains(age)){
+                    lista.add(age);
+                }
+            }
+            Iterator ii=lista.iterator();
+            while(ii.hasNext()){
+                Agenda agg=(Agenda) ii.next();
+                Personal pp=agg.getPersonal();
                 Revista rev=agg.getRevista();
                 Object[] fila = new Object[4];
-                fila[0] = per;
+                fila[0] = pp;
                 fila[1] = rev;
                 model.addRow(fila);
             }
@@ -499,10 +510,10 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
     jTable1.addAncestorListener(new javax.swing.event.AncestorListener() {
         public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
         }
-        public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
-        }
         public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
             jTable1AncestorAdded(evt);
+        }
+        public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
         }
     });
     jScrollPane2.setViewportView(jTable1);
@@ -849,6 +860,12 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
 
     jLabel26.setText("*");
 
+    jComboBox1.addItemListener(new java.awt.event.ItemListener() {
+        public void itemStateChanged(java.awt.event.ItemEvent evt) {
+            jComboBox1ItemStateChanged(evt);
+        }
+    });
+
     jLabel35.setText("N");
     jLabel35.setMaximumSize(new java.awt.Dimension(15, 15));
     jLabel35.setMinimumSize(new java.awt.Dimension(15, 15));
@@ -1129,7 +1146,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
         .addGroup(layout.createSequentialGroup()
             .addContainerGap()
             .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addContainerGap(21, Short.MAX_VALUE))
+            .addContainerGap(35, Short.MAX_VALUE))
     );
     layout.setVerticalGroup(
         layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1199,15 +1216,13 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
-            
             if (jTable1.getRowCount() != 0) {
                     Lugar lu=(Lugar)jComboBox3.getSelectedItem();
                 if (!jTextField1.getText().isEmpty()) {
                     jButton1.setEnabled(false);
                     jButton2.setEnabled(false);
                     jButton3.setEnabled(false);
-                    jButton4.setEnabled(false);
-                    
+                    jButton4.setEnabled(false);                   
                     if (tar.getIdTarea() == null) {
                         // <editor-fold defaultstate="collapsed" desc="Guardar tarea nueva"> 
                         boolean band=true;
@@ -1755,6 +1770,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                 Drive=new Controlador();
                                 tar=(Tarea) Drive.PERSISTENCIA.getTarea(tar.getIdTarea()).iterator().next();
                                 c = 0;
+//                                
                                 while (jTable1.getRowCount() != c) {
                                     Personal person = (Personal) modelo.getValueAt(c, 0);
                                     Revista rev = (Revista) modelo.getValueAt(c, 1);
@@ -1768,7 +1784,6 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                         age.setAnolectivo(Drive.getAnoLectivo());
                                         age.guardarAgenda(age);
                                     }
-                                    
                                     Ano anio = new Ano();
                                     anio.setAgenda(age);
                                     anio.setAno(inicio.getYear() + 1900);
@@ -1823,38 +1838,47 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                         }
                                         Date otro2 = ot2;
                                         // <editor-fold defaultstate="collapsed" desc="Actualiza meses y dias">
-                                    while (otro2.compareTo(fin) <= 0) {
+                                        Date aux=new Date();
+                                        
+                                        while (otro2.compareTo(fin) <= 0) {
                                         Mes mes = anio.getMes(otro2.getMonth());
-                                        if (mes == null) {
-                                            mes = new Mes();
-                                            mes.setAno(anio);
-                                            mes.setMes(otro2.getMonth());
-                                            mes.guardarMes(mes);
-                                            int e = mes.getMes();
-                                            while (otro2.getMonth() == e && otro2.compareTo(fin) <= 0) {
-                                                Dia dia = mes.getDia(otro2.getDate());
-                                                if (dia == null) {
-                                                    dia = new Dia();
-                                                    dia.setMes(mes);
-                                                    dia.setDia(otro2.getDate());
-                                                    dia.guardarDia(dia);
-                                                    int f = dia.getDia();
-                                                    while (otro2.getDate() == f && otro2.compareTo(fin) <= 0) {
-                                                        //SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
-                                                        formateador.setLenient(false);
-                                                    Date hini = formateador.parse(jFormattedTextField3.getText());
-                                                    Date hfin = formateador.parse(jFormattedTextField4.getText());
-                                                    Iniciofin in = new Iniciofin();
-                                                    in.setDia(dia);
-                                                    in.setInicio(hini);
-                                                    in.setEstadoInicio(false);
-                                                    in.setFin(hfin);
-                                                    in.setEstadoFin(false);
-                                                    in.guardarIniciofin(in);
-                                                        otro2 = Drive.sumarFechasDias(otro2, 7);
+                                        aux.setYear(inicio.getYear());
+                                        aux.setMonth(otro2.getMonth());
+                                        aux.setDate(otro2.getDate());
+                                        if(Drive.ExisteFecha(tar, aux)){
+                                            if (mes == null) {
+                                                mes = new Mes();
+                                                mes.setAno(anio);
+                                                mes.setMes(otro2.getMonth());
+                                                mes.guardarMes(mes);
+                                                int e = mes.getMes();
+                                                while (otro2.getMonth() == e && otro2.compareTo(fin) <= 0) {
+                                                    Dia dia = mes.getDia(otro2.getDate());
+                                                    if (dia == null) {
+                                                        dia = new Dia();
+                                                        dia.setMes(mes);
+                                                        dia.setDia(otro2.getDate());
+                                                        dia.guardarDia(dia);
+                                                        int f = dia.getDia();
+                                                        while (otro2.getDate() == f && otro2.compareTo(fin) <= 0) {
+                                                            //SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
+                                                            formateador.setLenient(false);
+                                                            Date hini = formateador.parse(jFormattedTextField3.getText());
+                                                            Date hfin = formateador.parse(jFormattedTextField4.getText());
+                                                            Iniciofin in = new Iniciofin();
+                                                            in.setDia(dia);
+                                                            in.setInicio(hini);
+                                                            in.setEstadoInicio(false);
+                                                            in.setFin(hfin);
+                                                            in.setEstadoFin(false);
+                                                            in.guardarIniciofin(in);
+                                                            otro2 = Drive.sumarFechasDias(otro2, 7);
+                                                        }
                                                     }
                                                 }
                                             }
+                                        }else{
+                                            otro2 = Drive.sumarFechasDias(otro2, 7);
                                         }
                                     }
                                     // </editor-fold>
@@ -2033,18 +2057,19 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                     }
                                     c++;
                                 }
-                                Frame vp = new JFrameConsultaActividades(Drive, adm);
-                                this.dispose();
-                                vp.show();
-                            }else{
-                                Frame vp = new JFrameConsultaActividades(Drive, adm);
-                                this.dispose();
-                                vp.show();
                             }
+//                            }else{
+//                                Frame vp = new JFrameConsultaActividades(Drive, adm);
+//                                this.dispose();
+//                                vp.show();
+//                            }
                         }
                         if(mensaje==true){
                             JOptionPane.showMessageDialog(null,"La tarea se actualizó correctamente","Actualizar tarea",JOptionPane.INFORMATION_MESSAGE);
                         }
+                        Frame vp = new JFrameConsultaActividades(Drive, adm);
+                        this.dispose();
+                        vp.show();
                         // </editor-fold>
                     }
                     jButton1.setEnabled(true);
@@ -2521,14 +2546,19 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                     Date inicio = formateador.parse(jFormattedTextField1.getText());
                     Date fe=dateChooserCombo1.getSelectedDate().getTime();
                     Date ahora = new Date();
-                    if (fe.compareTo(ahora)<=0) {
-                        ahora.setDate(inicio.getDate());
-                        ahora.setMonth(inicio.getMonth());
-                        ahora.setYear(inicio.getYear());
-                        if (inicio.compareTo(ahora) <= 0) {
-                            JOptionPane.showMessageDialog(null, "El inicio de la clase debe ser mayor que las: " + formateador.format(ahora), "Registrar Clase", JOptionPane.ERROR_MESSAGE);
-                            jFormattedTextField1.setText("00:00");
-                            return;
+                    if(fe.getDate()==aux.getDate() && fe.getMonth()==aux.getMonth() && fe.getYear()==aux.getYear()){
+                        if(fe.getDate()==ahora.getDate() && fe.getMonth()==ahora.getMonth() && fe.getYear()==ahora.getYear()){
+                            if (fe.compareTo(aux) <= 0) {
+                                aux.setDate(inicio.getDate());
+                                aux.setMonth(inicio.getMonth());
+                                aux.setYear(inicio.getYear());
+                                if (inicio.compareTo(aux) <= 0) {
+                                    JOptionPane.showMessageDialog(null, "El inicio de la clase debe ser mayor que las: " + formateador.format(aux), "Registrar Clase", JOptionPane.ERROR_MESSAGE);
+                                    jFormattedTextField1.setText("00:00");
+                                    jFormattedTextField2.setText("00:00");
+                                    return;
+                                }
+                            }
                         }
                     }
                 }
@@ -2585,14 +2615,19 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                     Date inicio = formateador.parse(jFormattedTextField3.getText());
                     Date fe = dateChooserCombo1.getSelectedDate().getTime();
                     Date ahora = new Date();
-                    if (fe.compareTo(ahora) <= 0) {
-                        ahora.setDate(inicio.getDate());
-                        ahora.setMonth(inicio.getMonth());
-                        ahora.setYear(inicio.getYear());
-                        if (inicio.compareTo(ahora) <= 0) {
-                            JOptionPane.showMessageDialog(null, "El inicio de la clase debe ser mayor que las: " + formateador.format(ahora), "Registrar Clase", JOptionPane.ERROR_MESSAGE);
-                            jFormattedTextField3.setText("00:00");
-                            return;
+                    if(fe.getDate()==aux.getDate() && fe.getMonth()==aux.getMonth() && fe.getYear()==aux.getYear()){
+                        if(fe.getDate()==ahora.getDate() && fe.getMonth()==ahora.getMonth() && fe.getYear()==ahora.getYear()){
+                            if (fe.compareTo(aux) <= 0) {
+                                aux.setDate(inicio.getDate());
+                                aux.setMonth(inicio.getMonth());
+                                aux.setYear(inicio.getYear());
+                                if (inicio.compareTo(aux) <= 0) {
+                                    JOptionPane.showMessageDialog(null, "El inicio de la clase debe ser mayor que las: " + formateador.format(aux), "Registrar Clase", JOptionPane.ERROR_MESSAGE);
+                                    jFormattedTextField3.setText("00:00");
+                                    jFormattedTextField4.setText("00:00");
+                                    return;
+                                }
+                            }
                         }
                     }
                 }
@@ -2687,14 +2722,19 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                     Date inicio = formateador.parse(jFormattedTextField5.getText());
                     Date fe = dateChooserCombo1.getSelectedDate().getTime();
                     Date ahora = new Date();
-                    if (fe.compareTo(ahora) <= 0) {
-                        ahora.setDate(inicio.getDate());
-                        ahora.setMonth(inicio.getMonth());
-                        ahora.setYear(inicio.getYear());
-                        if (inicio.compareTo(ahora) <= 0) {
-                            JOptionPane.showMessageDialog(null, "El inicio de la clase debe ser mayor que las: " + formateador.format(ahora), "Registrar Clase", JOptionPane.ERROR_MESSAGE);
-                            jFormattedTextField5.setText("00:00");
-                            return;
+                    if(fe.getDate()==aux.getDate() && fe.getMonth()==aux.getMonth() && fe.getYear()==aux.getYear()){
+                        if(fe.getDate()==ahora.getDate() && fe.getMonth()==ahora.getMonth() && fe.getYear()==ahora.getYear()){
+                            if (fe.compareTo(aux) <= 0) {
+                                aux.setDate(inicio.getDate());
+                                aux.setMonth(inicio.getMonth());
+                                aux.setYear(inicio.getYear());
+                                if (inicio.compareTo(aux) <= 0) {
+                                    JOptionPane.showMessageDialog(null, "El inicio de la clase debe ser mayor que las: " + formateador.format(aux), "Registrar Clase", JOptionPane.ERROR_MESSAGE);
+                                    jFormattedTextField5.setText("00:00");
+                                    jFormattedTextField6.setText("00:00");
+                                    return;
+                                }
+                            }
                         }
                     }
                 }
@@ -2831,14 +2871,19 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                     Date inicio = formateador.parse(jFormattedTextField8.getText());
                     Date fe = dateChooserCombo1.getSelectedDate().getTime();
                     Date ahora = new Date();
-                    if (fe.compareTo(ahora) <= 0) {
-                        ahora.setDate(inicio.getDate());
-                        ahora.setMonth(inicio.getMonth());
-                        ahora.setYear(inicio.getYear());
-                        if (inicio.compareTo(ahora) <= 0) {
-                            JOptionPane.showMessageDialog(null, "El inicio de la clase debe ser mayor que las: " + formateador.format(ahora), "Registrar Clase", JOptionPane.ERROR_MESSAGE);
-                            jFormattedTextField8.setText("00:00");
-                            return;
+                    if(fe.getDate()==aux.getDate() && fe.getMonth()==aux.getMonth() && fe.getYear()==aux.getYear()){
+                        if(fe.getDate()==ahora.getDate() && fe.getMonth()==ahora.getMonth() && fe.getYear()==ahora.getYear()){
+                            if (fe.compareTo(aux) <= 0) {
+                                aux.setDate(inicio.getDate());
+                                aux.setMonth(inicio.getMonth());
+                                aux.setYear(inicio.getYear());
+                                if (inicio.compareTo(aux) <= 0) {
+                                    JOptionPane.showMessageDialog(null, "El inicio de la clase debe ser mayor que las: " + formateador.format(aux), "Registrar Clase", JOptionPane.ERROR_MESSAGE);
+                                    jFormattedTextField8.setText("00:00");
+                                    jFormattedTextField7.setText("00:00");
+                                    return;
+                                }
+                            }
                         }
                     }
                 }
@@ -2891,14 +2936,19 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                     Date inicio = formateador.parse(jFormattedTextField9.getText());
                     Date fe = dateChooserCombo1.getSelectedDate().getTime();
                     Date ahora = new Date();
-                    if (fe.compareTo(ahora) <= 0) {
-                        ahora.setDate(inicio.getDate());
-                        ahora.setMonth(inicio.getMonth());
-                        ahora.setYear(inicio.getYear());
-                        if (inicio.compareTo(ahora) <= 0) {
-                            JOptionPane.showMessageDialog(null, "El inicio de la clase debe ser mayor que las: " + formateador.format(ahora), "Registrar Clase", JOptionPane.ERROR_MESSAGE);
-                            jFormattedTextField9.setText("00:00");
-                            return;
+                    if(fe.getDate()==aux.getDate() && fe.getMonth()==aux.getMonth() && fe.getYear()==aux.getYear()){
+                        if(fe.getDate()==ahora.getDate() && fe.getMonth()==ahora.getMonth() && fe.getYear()==ahora.getYear()){
+                            if (fe.compareTo(aux) <= 0) {
+                                aux.setDate(inicio.getDate());
+                                aux.setMonth(inicio.getMonth());
+                                aux.setYear(inicio.getYear());
+                                if (inicio.compareTo(aux) <= 0) {
+                                    JOptionPane.showMessageDialog(null, "El inicio de la clase debe ser mayor que las: " + formateador.format(aux), "Registrar Clase", JOptionPane.ERROR_MESSAGE);
+                                    jFormattedTextField9.setText("00:00");
+                                    jFormattedTextField10.setText("00:00");
+                                    return;
+                                }
+                            }
                         }
                     }
                 }
@@ -2993,14 +3043,19 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                     Date inicio = formateador.parse(jFormattedTextField11.getText());
                     Date fe = dateChooserCombo1.getSelectedDate().getTime();
                     Date ahora = new Date();
-                    if (fe.compareTo(ahora) <= 0) {
-                        ahora.setDate(inicio.getDate());
-                        ahora.setMonth(inicio.getMonth());
-                        ahora.setYear(inicio.getYear());
-                        if (inicio.compareTo(ahora) <= 0) {
-                            JOptionPane.showMessageDialog(null, "El inicio de la clase debe ser mayor que las: " + formateador.format(ahora), "Registrar Clase", JOptionPane.ERROR_MESSAGE);
-                            jFormattedTextField11.setText("00:00");
-                            return;
+                    if(fe.getDate()==aux.getDate() && fe.getMonth()==aux.getMonth() && fe.getYear()==aux.getYear()){
+                        if(fe.getDate()==ahora.getDate() && fe.getMonth()==ahora.getMonth() && fe.getYear()==ahora.getYear()){
+                            if (fe.compareTo(aux) <= 0) {
+                                aux.setDate(inicio.getDate());
+                                aux.setMonth(inicio.getMonth());
+                                aux.setYear(inicio.getYear());
+                                if (inicio.compareTo(aux) <= 0) {
+                                    JOptionPane.showMessageDialog(null, "El inicio de la clase debe ser mayor que las: " + formateador.format(aux), "Registrar Clase", JOptionPane.ERROR_MESSAGE);
+                                    jFormattedTextField11.setText("00:00");
+                                    jFormattedTextField12.setText("00:00");
+                                    return;
+                                }
+                            }
                         }
                     }
                 }
@@ -3264,8 +3319,12 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
             if(!salida.getText().isEmpty()&&salida.getText().length()<=20){
                 cadSalida = salida.getText().toUpperCase();
                 JOptionPane.showMessageDialog(null,numero, "Ingrese el numero de aula", JOptionPane.INFORMATION_MESSAGE);
-                if(!salida.getText().isEmpty()){
+                String h=numero.getText();
+                if(!salida.getText().isEmpty()&& !h.equals("")){
                         cadnumero=Integer.parseInt(numero.getText());
+                }else{
+                    JOptionPane.showMessageDialog(null, "El nombre y numero de aula son obligatorios","Registrar Aula", JOptionPane.ERROR_MESSAGE);
+                    return;
                 }
                 Iterator it=Drive.PERSISTENCIA.getAulas().iterator();
                 boolean w=false;
@@ -3365,6 +3424,101 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
     private void jLabel21MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel21MouseReleased
         // TODO add your handling code here:
     }//GEN-LAST:event_jLabel21MouseReleased
+
+    private void jComboBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox1ItemStateChanged
+        try{
+        if(tar.getIdTarea()!=null){
+            boolean ba=true;
+            Object o=jComboBox1.getSelectedItem();
+            if(!Drive.ControlarAnoLectivo(mayor, menor)){
+                JOptionPane.showMessageDialog(null, "El la fecha de inicio y fin debe estar contemplado dentro del año lectivo", "Verificar Año lectivo", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            if(o!=null){
+                SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
+                Date inicio = dateChooserCombo1.getSelectedDate().getTime();
+                Date fin = dateChooserCombo2.getSelectedDate().getTime();
+                // <editor-fold defaultstate="collapsed" desc="verificar">
+                            Date inn = new Date();
+                            Date fii = new Date();
+                            if (jCheckBox1.isSelected()) {
+                                items.put(1,"LUNES");
+                                inn = formateador.parse(jFormattedTextField1.getText());
+                                fii = formateador.parse(jFormattedTextField2.getText());
+                                Iniciofin aux = new Iniciofin();
+                                aux.setInicio(inn);
+                                aux.setFin(fii);
+                                listini.put(1,aux);
+                            }
+                            if (jCheckBox2.isSelected()) {
+                                items.put(2,"MARTES");
+                                inn = formateador.parse(jFormattedTextField3.getText());
+                                fii = formateador.parse(jFormattedTextField4.getText());
+                                Iniciofin aux = new Iniciofin();
+                                aux.setInicio(inn);
+                                aux.setFin(fii);
+                                listini.put(2,aux);
+                            }
+                            if (jCheckBox3.isSelected()) {
+                                items.put(3,"MIERCOLES");
+                                inn = formateador.parse(jFormattedTextField5.getText());
+                                fii = formateador.parse(jFormattedTextField6.getText());
+                                Iniciofin aux = new Iniciofin();
+                                aux.setInicio(inn);
+                                aux.setFin(fii);
+                                listini.put(3,aux);
+                            }
+                            if (jCheckBox4.isSelected()) {
+                                items.put(4,"JUEVES");
+                                inn = formateador.parse(jFormattedTextField8.getText());
+                                fii = formateador.parse(jFormattedTextField7.getText());
+                                Iniciofin aux = new Iniciofin();
+                                aux.setInicio(inn);
+                                aux.setFin(fii);
+                                listini.put(4,aux);
+                            }
+                            if (jCheckBox5.isSelected()) {
+                                items.put(5,"VIERNES");
+                                inn = formateador.parse(jFormattedTextField9.getText());
+                                fii = formateador.parse(jFormattedTextField10.getText());
+                                Iniciofin aux = new Iniciofin();
+                                aux.setInicio(inn);
+                                aux.setFin(fii);
+                                listini.put(5,aux);
+                            }
+                            if (jCheckBox6.isSelected()) {
+                                items.put(6,"SABADO");
+                                inn = formateador.parse(jFormattedTextField11.getText());
+                                fii = formateador.parse(jFormattedTextField12.getText());
+                                Iniciofin aux = new Iniciofin();
+                                aux.setInicio(inn);
+                                aux.setFin(fii);
+                                listini.put(6,aux);
+                            }
+//                            Date inicioo = dateChooserCombo1.getSelectedDate().getTime();
+//                            Date finn = dateChooserCombo2.getSelectedDate().getTime();
+                            // </editor-fold>
+                Aula au=(Aula) o;
+                if(tar.getIdTarea()!=null){
+                    ba=au.DisponibilidadAula(inicio, fin, listini, items,tar.getIdTarea(), au);
+                }else{
+                    ba=au.DisponibilidadAula(inicio, fin, listini, items,0, au);
+                }
+                
+            }else{
+                JOptionPane.showMessageDialog(null, "Debe seleccionar un aula", "Verificar Aula", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            if (ba==false) {
+                JOptionPane.showMessageDialog(null, "El aula esta ocupada en ese horario", "Registrar Clase", JOptionPane.ERROR_MESSAGE);
+                Tareaclase tarcla=tar.getTareaclases().iterator().next();
+                jComboBox1.setSelectedItem(tarcla.getAula());
+            }
+        }
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, e.toString(), "Registrar Clase", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jComboBox1ItemStateChanged
 
     /**
     * @param args the command line arguments
