@@ -700,7 +700,10 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
             if (Drive.VerificarCheckTabla(jTable1)) {
                 if (!jTextField3.getText().isEmpty() && !jFormattedTextField1.getText().contains(" ") && !jFormattedTextField2.getText().contains(" ")) {
                     Lugar lu=(Lugar) jComboBox2.getSelectedItem();
+                    
                     if (tar.getIdTarea() == null) {
+                        jButton1.setEnabled(false);
+                        jButton2.setEnabled(false);
                         // <editor-fold defaultstate="collapsed" desc="Guardar tarea nueva">
                         SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
                         formateador.setLenient(false);
@@ -941,6 +944,8 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                         }
                         // </editor-fold>
                     } else {
+                        jButton1.setEnabled(false);
+                        jButton2.setEnabled(false);
                         // <editor-fold defaultstate="collapsed" desc="Actualizar tarea">
                         boolean mensaje=false;
                         SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
@@ -1223,6 +1228,12 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                         vp.show();
                         // </editor-fold>
                     }
+                    jButton1.setEnabled(true);
+                    jButton2.setEnabled(true);
+                    jFormattedTextField1.setText("00:00");
+                    jFormattedTextField2.setText("00:00");
+                    dateChooserCombo1.setSelectedDate(Calendar.getInstance());
+                    dateChooserCombo2.setSelectedDate(Calendar.getInstance());
                 } else {
                     JOptionPane.showMessageDialog(null, "Todos los campos con '*' son obligatorios y los horarios no pueden contener espacios en blanco", "Registrar Tarea extracurricular", JOptionPane.ERROR_MESSAGE);
                 }
@@ -1338,6 +1349,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                 if(inicio.compareTo(fin)>=0){
                     JOptionPane.showMessageDialog(null,"El horario de fin debe ser mayor al horario de inicio","Registrar Tarea extracurricular", JOptionPane.ERROR_MESSAGE);
                     jFormattedTextField2.setText("00:00");
+                    jFormattedTextField2.setText("00:00");
                     return;
                 }
             }
@@ -1369,7 +1381,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                 Calendar cal = Calendar.getInstance();
                 dateChooserCombo1.setSelectedDate(cal);
                 dateChooserCombo2.setSelectedDate(cal);
-                jFormattedTextField2.setText("");
+                jFormattedTextField2.setText("00:00");
                 return;
             }
         if(tar.getIdTarea()!=null){
@@ -1399,7 +1411,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                 Calendar cal = Calendar.getInstance();
                 dateChooserCombo1.setSelectedDate(cal);
                 dateChooserCombo2.setSelectedDate(cal);
-                jFormattedTextField2.setText("");
+                jFormattedTextField2.setText("00:00");
                 return;
             }
             inicio.setHours(fech.getDate());
@@ -1441,14 +1453,17 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
             }
             SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
             Date inicio = formateador.parse(jFormattedTextField1.getText());
-            Date ahora=new Date();
-            ahora.setDate(inicio.getDate());
-            ahora.setMonth(inicio.getMonth());
-            ahora.setYear(inicio.getYear());
-            if(inicio.compareTo(ahora)<=0) {
-                JOptionPane.showMessageDialog(null,"El inicio de la tarea debe ser mayor que las: "+formateador.format(ahora),"Registrar Tarea extracurricular", JOptionPane.ERROR_MESSAGE);
-                jFormattedTextField1.setText("00:00");
-                return;
+            Date fe=dateChooserCombo1.getSelectedDate().getTime();
+            Date ahora = new Date();
+            if (fe.compareTo(ahora)<=0) {
+                ahora.setDate(inicio.getDate());
+                ahora.setMonth(inicio.getMonth());
+                ahora.setYear(inicio.getYear());
+                if (inicio.compareTo(ahora) <= 0) {
+                    JOptionPane.showMessageDialog(null, "El inicio de la reunión debe ser mayor que las: " + formateador.format(ahora), "Registrar Tarea extracurricular", JOptionPane.ERROR_MESSAGE);
+                    jFormattedTextField1.setText("00:00");
+                    return;
+                }
             }
             if (tar.getIdTarea() != null) {
                 Agenda age = tar.getAgendas().iterator().next();
@@ -1507,7 +1522,9 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                 int cc=0;
                 while (jTable1.getRowCount() != cc) {
                     Personal per = (Personal) model.getValueAt(cc, 1);
-                    lista.add(per);
+                    if(!lista.contains(per)){
+                        lista.add(per);
+                    }
                     cc++;
                 }
                 Drive.LimpiarTabla(jTable1);
@@ -1515,7 +1532,15 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
             }else{
                 lista.clear();
                 Drive.LimpiarTabla(jTable1);
-                Drive.CargarTablacheck(jTable1,buffer.toString(), buffer.toString().toUpperCase(),lista);
+                String buscar;
+                Object aux= jComboBox1.getSelectedItem();
+                if(aux.equals("TODOS")){
+                    buscar=(String) aux;
+                }else{
+                    Departamento dep=(Departamento) aux;
+                    buscar=dep.getNombre();
+                }
+                Drive.CargarTablacheck(jTable1,buscar, buffer.toString().toUpperCase(),lista);
             }
         }catch(Exception e){}
     }//GEN-LAST:event_jCheckBox1ItemStateChanged

@@ -29,10 +29,10 @@ public class Tareareunion  implements java.io.Serializable {
        this.caracter = caracter;
     }
     
-    @Override
-    public String toString() {
-        return tarea.getNombre();
-    }
+//    @Override
+//    public String toString() {
+//        return tarea.getNombre();
+//    }
    
     public TareareunionId getId() {
         return this.id;

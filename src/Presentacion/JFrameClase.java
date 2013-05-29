@@ -1576,6 +1576,10 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                         }
                         // </editor-fold>
                     }else{
+                        jButton1.setEnabled(false);
+                        jButton2.setEnabled(false);
+                        jButton3.setEnabled(false);
+                        jButton4.setEnabled(false);   
                         boolean mensaje=false;
                         // <editor-fold defaultstate="collapsed" desc="Actualizar tarea"> 
                         if (tar.getLugar().getIdLugar()!=lu.getIdLugar()) {

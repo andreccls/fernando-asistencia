@@ -27,10 +27,10 @@ public class Tareaclase  implements java.io.Serializable {
        this.tarea = tarea;
     }
     
-    @Override
-    public String toString() {
-        return tarea.getNombre();
-    }
+//    @Override
+//    public String toString() {
+//        return tarea.getNombre();
+//    }
    
     public TareaclaseId getId() {
         return this.id;

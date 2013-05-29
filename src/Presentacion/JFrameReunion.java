@@ -102,7 +102,7 @@ public class JFrameReunion extends javax.swing.JFrame {
                 jTextField3.setEnabled(false);
                 jComboBox3.setSelectedItem(tar.getLugar());
                 Tareareunion tareu = tar.getTareareunions().iterator().next();
-                jTextField1.setText(tareu.getCaracter());
+                jTextField1.setText(tareu.getMotivo());
                 jComboBox2.setSelectedItem(tareu.getCaracter());
                 fecha = tar.ObtenerFechaMayor(new Date().getYear());
                 if (fecha != null) {
@@ -636,6 +636,8 @@ public class JFrameReunion extends javax.swing.JFrame {
             if (Drive.VerificarCheckTabla(jTable1)) {
                 if (!jTextField3.getText().isEmpty() && !jFormattedTextField1.getText().contains(" ") && !jFormattedTextField2.getText().contains(" ")) {
                     Lugar lu=(Lugar) jComboBox3.getSelectedItem();
+                    jButton1.setEnabled(false);
+                    jButton2.setEnabled(false);
                     if (tar.getIdTarea() == null) {
                         // <editor-fold defaultstate="collapsed" desc="Guardar tarea nueva"> 
                         SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
@@ -772,8 +774,6 @@ public class JFrameReunion extends javax.swing.JFrame {
                                 Drive.CargarTablacheck(jTable1, buscar, buffer.toString().toUpperCase(), lista);
                                 Drive = new Controlador();
                             }
-                            jFormattedTextField1.setText("");
-                            jFormattedTextField2.setText("");
                         }
                         // </editor-fold>
                     } else {
@@ -994,6 +994,11 @@ public class JFrameReunion extends javax.swing.JFrame {
                         vp.show();
                         // </editor-fold>
                     }
+                    jButton1.setEnabled(true);
+                    jButton2.setEnabled(true);
+                    jFormattedTextField1.setText("00:00");
+                    jFormattedTextField2.setText("00:00");
+                    dateChooserCombo1.setSelectedDate(Calendar.getInstance());
                 } else {
                     JOptionPane.showMessageDialog(null, "Todos los campos con '*' son obligatorios y los horarios no pueden contener espacios en blanco", "Registrar Reunión", JOptionPane.ERROR_MESSAGE);
                 }
@@ -1222,7 +1227,9 @@ public class JFrameReunion extends javax.swing.JFrame {
                 int cc=0;
                 while (jTable1.getRowCount() != cc) {
                     Personal per = (Personal) model.getValueAt(cc, 1);
-                    lista.add(per);
+                    if(!lista.contains(per)){
+                        lista.add(per);
+                    }
                     cc++;
                 }
                 Drive.LimpiarTabla(jTable1);
@@ -1230,7 +1237,15 @@ public class JFrameReunion extends javax.swing.JFrame {
             }else{
                 lista.clear();
                 Drive.LimpiarTabla(jTable1);
-                Drive.CargarTablacheck(jTable1,buffer.toString(), buffer.toString().toUpperCase(),lista);
+                String buscar;
+                Object aux= jComboBox1.getSelectedItem();
+                if(aux.equals("TODOS")){
+                    buscar=(String) aux;
+                }else{
+                    Departamento dep=(Departamento) aux;
+                    buscar=dep.getNombre();
+                }
+                Drive.CargarTablacheck(jTable1,buscar, buffer.toString().toUpperCase(),lista);
             }
         }catch(Exception e){}
     }//GEN-LAST:event_jCheckBox1ItemStateChanged

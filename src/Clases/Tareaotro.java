@@ -27,10 +27,10 @@ public class Tareaotro  implements java.io.Serializable {
        this.caracteristica = caracteristica;
     }
     
-    @Override
-    public String toString() {
-        return tarea.getNombre();
-    }
+//    @Override
+//    public String toString() {
+//        return tarea.getNombre();
+//    }
    
     public TareaotroId getId() {
         return this.id;
