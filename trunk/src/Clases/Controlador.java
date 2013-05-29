@@ -619,7 +619,7 @@ public class Controlador {
                         int i = ac.getTarea().getNombre().indexOf(valor);
                         if (i == 0) {
                             Object[] fila = new Object[3];
-                            fila[0] = ac;
+                            fila[0] = ac.getTarea();
                             fila[1] = ac.getTarea().getLugar();
                             fila[2] = ac.getTarea().getComentario();
                             model.addRow(fila);
@@ -628,7 +628,7 @@ public class Controlador {
                         int i = ac.getTarea().getLugar().getNombre().indexOf(valor);
                         if (i == 0) {
                             Object[] fila = new Object[3];
-                            fila[0] = ac;
+                            fila[0] = ac.getTarea();
                             fila[1] = ac.getTarea().getLugar();
                             fila[2] = ac.getTarea().getComentario();
                             model.addRow(fila);
@@ -649,7 +649,7 @@ public class Controlador {
                         int i = ac.getTarea().getNombre().indexOf(valor);
                         if (i == 0) {
                             Object[] fila = new Object[3];
-                            fila[0] = ac;
+                            fila[0] = ac.getTarea();
                             fila[1] = ac.getTarea().getLugar();
                             fila[2] = ac.getTarea().getComentario();
                             model.addRow(fila);
@@ -658,7 +658,7 @@ public class Controlador {
                         int i = ac.getTarea().getLugar().getNombre().indexOf(valor);
                         if (i == 0) {
                             Object[] fila = new Object[3];
-                            fila[0] = ac;
+                            fila[0] = ac.getTarea();
                             fila[1] = ac.getTarea().getLugar();
                             fila[2] = ac.getTarea().getComentario();
                             model.addRow(fila);
@@ -679,7 +679,7 @@ public class Controlador {
                         int i = ac.getNombre().indexOf(valor);
                         if (i == 0) {
                             Object[] fila = new Object[3];
-                            fila[0] = acc;
+                            fila[0] = acc.getTarea();
                             fila[1] = ac.getLugar();
                             fila[2] = ac.getComentario();
                             model.addRow(fila);
@@ -688,7 +688,7 @@ public class Controlador {
                         int i = ac.getLugar().getNombre().indexOf(valor);
                         if (i == 0) {
                             Object[] fila = new Object[3];
-                            fila[0] = acc;
+                            fila[0] = acc.getTarea();
                             fila[1] = ac.getLugar();
                             fila[2] = ac.getComentario();
                             model.addRow(fila);
@@ -710,7 +710,7 @@ public class Controlador {
                         int i = ac.getNombre().indexOf(valor);
                         if (i == 0) {
                             Object[] fila = new Object[3];
-                            fila[0] = acc;
+                            fila[0] = acc.getTarea();
                             fila[1] = ac.getLugar();
                             fila[2] = ac.getComentario();
                             model.addRow(fila);
@@ -719,7 +719,7 @@ public class Controlador {
                         int i = ac.getLugar().getNombre().indexOf(valor);
                         if (i == 0) {
                             Object[] fila = new Object[3];
-                            fila[0] = acc;
+                            fila[0] = acc.getTarea();
                             fila[1] = ac.getLugar();
                             fila[2] = ac.getComentario();
                             model.addRow(fila);

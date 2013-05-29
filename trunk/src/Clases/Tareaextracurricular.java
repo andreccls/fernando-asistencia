@@ -27,10 +27,10 @@ public class Tareaextracurricular  implements java.io.Serializable {
        this.comentario = comentario;
     }
     
-    @Override
-    public String toString() {
-        return tarea.getNombre();
-    }
+//    @Override
+//    public String toString() {
+//        return tarea.getNombre();
+//    }
    
     public TareaextracurricularId getId() {
         return this.id;
