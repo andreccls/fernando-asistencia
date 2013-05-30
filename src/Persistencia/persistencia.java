@@ -237,6 +237,46 @@ public class persistencia {
         return items;
     }
     
+    public List getOutHomeInactivoPer(Date fecha, int idper) throws ArrayStoreException {
+        String hql = "from Inactivo as ini where ini.fechaInicio<'"+fecha+"' and ini.fechaFin>'"+fecha+"' and ini.nivel.cargo.detalleEstablecimiento.declaracionjurada.personal.idPersonal="+idper;
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
+    }
+    
+    public List getOutHomeInactivos(Date fecha) throws ArrayStoreException {
+        String hql = "from Inactivo as ini where ini.fechaInicio<'"+fecha+"' and ini.fechaFin>'"+fecha+"'";
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
+    }
+    
+    public List getOutHomeActivoPer(String dia, int idper) throws ArrayStoreException {
+        String hql = "from ActivoIniciofin as ini where ini.activo.dia='"+dia+"' and ini.activo.nivel.cargo.detalleEstablecimiento.declaracionjurada.personal.idPersonal="+idper;
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
+    }
+    
+    public List getOutHomeActivos(String dia) throws ArrayStoreException {
+        String hql = "from ActivoIniciofin as ini where ini.activo.dia='"+dia+"'";
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
+    }
+    
     public List getIniciofinTar(int dia, int mes, int ano,int idtar) throws ArrayStoreException {
         String hql = "from Iniciofin as ini where ini.dia.dia="+dia+" and ini.dia.mes.mes="+mes+" and ini.dia.mes.ano.ano="+ano+" and ini.dia.mes.ano.agenda.tarea.idTarea="+idtar;
         List items = new ArrayList();
