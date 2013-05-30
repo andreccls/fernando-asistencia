@@ -19,10 +19,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.URL;
 import java.nio.file.Files;
@@ -374,70 +376,116 @@ public class Controlador {
         }
     }
     
-    public boolean BackupDB(String dbName, String dbUserName, String dbPassword, String path) {
-        String executeCmd = "mysqldump -u " + dbUserName + " -p" + dbPassword + " --add-drop-database -B " + dbName + " -r " + path;
-        Process runtimeProcess;
-        try {
-            runtimeProcess = Runtime.getRuntime().exec(executeCmd);
-            int processComplete = runtimeProcess.waitFor();
-            if (processComplete == 0) {
-                System.out.println("Backup created successfully");
-                return true;
-            } else {
-                System.out.println("Could not create the backup");
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return false;
-    }
-    
-    
-//    private int BUFFER = 10485760;  
-//    //para guardar en memmoria
-//    private StringBuffer temp = null;
-//    //para guardar el archivo SQL
-//    private FileWriter  fichero = null;
-//    private PrintWriter pw = null;
-//    
-//    public boolean CrearBackup(String host, String port, String user, String password, String db, String file_backup) {
-//        boolean ok = false;
+//    public boolean BackupDB(/*String dbName, String dbUserName, String dbPassword, String path*/) {
+//        
+//        String rut = System.getProperty("user.home") + System.getProperty("file.separator") + "Desktop";
+//        String command = "C:\\Program Files (x86)\\MySQL\\MySQL Server 5.1\\bin\\mysqldump -h localhost  -u root -p root database asistencia -r "+rut+"";
+//        Process runtimeProcess;
 //        try {
-//            //sentencia para crear el BackUp
-//            Process run = Runtime.getRuntime().exec(
-//                    "mysqldump --host=" + host + " --port=" + port
-//                    + " --user=" + user + " --password=" + password
-//                    + " --compact --complete-insert --extended-insert --skip-quote-names"
-//                    + " --skip-comments --skip-triggers " + db);
-//            //se guarda en memoria el backup
-//            InputStream in = run.getInputStream();
-//            BufferedReader br = new BufferedReader(new InputStreamReader(in));
-//            temp = new StringBuffer();
-//            int count;
-//            char[] cbuf = new char[BUFFER];
-//            while ((count = br.read(cbuf, 0, BUFFER)) != -1) {
-//                temp.append(cbuf, 0, count);
+//            runtimeProcess = Runtime.getRuntime().exec(command);
+//            int processComplete = runtimeProcess.waitFor();
+//            
+//            if (processComplete == 0) {
+//                System.out.println("Backup created successfully");
+//                return true;
+//            } else {
+//                System.out.println("Could not create the backup");
 //            }
-//            br.close();
-//            in.close();
-//            /* se crea y escribe el archivo SQL */
-//            fichero = new FileWriter(file_backup);
-//            pw = new PrintWriter(fichero);
-//            pw.println(temp.toString());
-//            ok = true;
 //        } catch (Exception ex) {
 //            ex.printStackTrace();
-//        } finally {
-//            try {
-//                if (null != fichero) {
-//                    fichero.close();
-//                }
-//            } catch (Exception e2) {
-//                e2.printStackTrace();
-//            }
 //        }
-//        return ok;
+//        return false;
 //    }
+//    
+//    public void transfer(InputStream input, OutputStream output) throws Exception {
+//        byte[] buf = new byte[1024];
+//        int len;
+//        while ((len = input.read(buf)) > 0) {
+//            output.write(buf, 0, len);
+//        }
+//        input.close();
+//        output.close();
+//    }
+
+//    public boolean BackupDB2(/*String dbName, String dbUserName, String dbPassword, String path*/) throws IOException, Exception {
+//        try {
+//            String rut = System.getProperty("user.home") + System.getProperty("file.separator") + "Desktop";
+//            String command = "C:\\Program Files (x86)\\MySQL\\MySQL Server 5.1\\bin\\mysqldump -h localhost  -u root -p root database asistencia -r "+rut+"";
+//
+//            java.lang.Process child = Runtime.getRuntime().exec(command);
+//            InputStream input = child.getInputStream();
+//
+//            FileOutputStream output = new FileOutputStream(""+rut+"\\back.sql");
+//            transfer(input, output);
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//        }
+//        //////////////////////////////////////
+//        String executeCmd = "C:\\Program Files (x86)\\MySQL\\MySQL Server 5.1\\bin\\mysqldump --opt --password=root --user=root --databases asistencia";
+//        Process runtimeProcess;
+//        try {
+//            runtimeProcess = Runtime.getRuntime().exec(executeCmd);
+//            int processComplete = runtimeProcess.waitFor();
+//            if (processComplete == 0) {
+//                System.out.println("Backup created successfully");
+//                return true;
+//            } else {
+//                System.out.println("Could not create the backup");
+//            }
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//        }
+//        return false;
+//    }
+    
+    
+    private int BUFFER = 10485760;  
+    //para guardar en memmoria
+    private StringBuffer temp = null;
+    //para guardar el archivo SQL
+    private FileWriter  fichero = null;
+    private PrintWriter pw = null;
+    
+    public boolean CrearBackup(/*String host, String port, String user, String password, String db, String file_backup*/) {
+        boolean ok = false;
+        try {
+            //sentencia para crear el BackUp
+            Process run = Runtime.getRuntime().exec(
+                    "mysqldump --host=" + "localhost" + " --port=" + "3306"
+                    + " --user=" + "root" + " --password=" + "root"
+                    + " --compact --complete-insert --extended-insert --skip-quote-names"
+                    + " --skip-comments --skip-triggers " + "asistencia");
+            //se guarda en memoria el backup
+            InputStream in = run.getInputStream();
+            BufferedReader br = new BufferedReader(new InputStreamReader(in));
+            temp = new StringBuffer();
+            int count;
+            char[] cbuf = new char[BUFFER];
+            while ((count = br.read(cbuf, 0, BUFFER)) != -1) {
+                temp.append(cbuf, 0, count);
+            }
+            br.close();
+            in.close();
+            /* se crea y escribe el archivo SQL */
+            String rut = System.getProperty("user.home") + System.getProperty("file.separator") + "Desktop";
+            fichero = new FileWriter(""+rut+"\\back2.sql");
+            pw = new PrintWriter(fichero);
+            pw.println(temp.toString());
+            ok = true;
+            JOptionPane.showMessageDialog(null, "ok");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                if (null != fichero) {
+                    fichero.close();
+                }
+            } catch (Exception e2) {
+                e2.printStackTrace();
+            }
+        }
+        return ok;
+    }
 
     public void CargarComboEstablecimiento(JComboBox JCombo) {
         try {
