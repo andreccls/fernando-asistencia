@@ -12,11 +12,15 @@ import Clases.Perfil;
 import Clases.Personal;
 import java.awt.Frame;
 import java.awt.Image;
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.sql.Blob;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -106,6 +110,12 @@ public class JFrameConfiguracion extends javax.swing.JFrame {
         ImageIcon fott2 = new ImageIcon(getClass().getResource("/imagenes/Menos.png"));
         Icon icono2 = new ImageIcon(fott2.getImage().getScaledInstance(jLabel19.getWidth(), jLabel19.getHeight(), Image.SCALE_DEFAULT));
         jLabel19.setIcon(icono2);
+        ImageIcon fott5 = new ImageIcon(getClass().getResource("/imagenes/Backup.png"));
+        Icon icono5 = new ImageIcon(fott5.getImage().getScaledInstance(75, 75, Image.SCALE_DEFAULT));
+        jButton5.setIcon(icono5);
+        ImageIcon fott6= new ImageIcon(getClass().getResource("/imagenes/Restore.jpg"));
+        Icon icono6 = new ImageIcon(fott6.getImage().getScaledInstance(75, 75, Image.SCALE_DEFAULT));
+        jButton6.setIcon(icono6);
         
         if(adm.getIdPersonal()!=null && adm.getPerfil().getConfiguracionact()==null){
             jButton2.setEnabled(false);
@@ -174,6 +184,9 @@ public class JFrameConfiguracion extends javax.swing.JFrame {
         jTextField7 = new javax.swing.JTextField();
         jButton3 = new javax.swing.JButton();
         jLabel19 = new javax.swing.JLabel();
+        jPanel5 = new javax.swing.JPanel();
+        jButton5 = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -595,14 +608,14 @@ jPanel4Layout.setHorizontalGroup(
     jPanel2.setLayout(jPanel2Layout);
     jPanel2Layout.setHorizontalGroup(
         jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+        .addGroup(jPanel2Layout.createSequentialGroup()
             .addContainerGap()
-            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 397, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createSequentialGroup()
+            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 397, Short.MAX_VALUE)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
                     .addComponent(jButton3))
-                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createSequentialGroup()
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
                             .addComponent(jLabel18)
@@ -615,7 +628,8 @@ jPanel4Layout.setHorizontalGroup(
                             .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGap(0, 0, Short.MAX_VALUE)))
             .addContainerGap())
     );
     jPanel2Layout.setVerticalGroup(
@@ -639,6 +653,50 @@ jPanel4Layout.setHorizontalGroup(
     );
 
     jTabbedPane1.addTab("Perfiles de usuario", jPanel2);
+
+    jButton5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+    jButton5.setText("Generar BackUp");
+    jButton5.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            jButton5ActionPerformed(evt);
+        }
+    });
+
+    jButton6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+    jButton6.setText("Restaurar BackUp");
+    jButton6.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            jButton6ActionPerformed(evt);
+        }
+    });
+
+    javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+    jPanel5.setLayout(jPanel5Layout);
+    jPanel5Layout.setHorizontalGroup(
+        jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGroup(jPanel5Layout.createSequentialGroup()
+            .addGap(108, 108, 108)
+            .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                .addComponent(jButton6)
+                .addComponent(jButton5))
+            .addContainerGap(172, Short.MAX_VALUE))
+    );
+
+    jPanel5Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jButton5, jButton6});
+
+    jPanel5Layout.setVerticalGroup(
+        jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGroup(jPanel5Layout.createSequentialGroup()
+            .addGap(123, 123, 123)
+            .addComponent(jButton5)
+            .addGap(26, 26, 26)
+            .addComponent(jButton6)
+            .addContainerGap(329, Short.MAX_VALUE))
+    );
+
+    jPanel5Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jButton5, jButton6});
+
+    jTabbedPane1.addTab("BackUp", jPanel5);
 
     jButton1.setText("Salir");
     jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -1035,6 +1093,75 @@ jPanel4Layout.setHorizontalGroup(
         jTextField1.setEnabled(true);
     }//GEN-LAST:event_jLabel22MouseClicked
 
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivos de imagen...(*.png, *.jpg, *.gif)", "png", "jpg", "gif");
+        JFileChooser RealizarBackupMySQL = new JFileChooser();
+        RealizarBackupMySQL.setFileFilter(filtro);
+        RealizarBackupMySQL.setDialogTitle("Guardar archivo...");
+        String rut = System.getProperty("user.home") + System.getProperty("file.separator") + "Desktop";
+        File ruta = new File(rut);
+        RealizarBackupMySQL.setCurrentDirectory(ruta);
+        int resp;
+        Date hoy=new Date();
+        resp = RealizarBackupMySQL.showSaveDialog(this);//JFileChooser de nombre RealizarBackupMySQL
+        if (resp == JFileChooser.APPROVE_OPTION) {//Si el usuario presiona aceptar; se genera el Backup
+            try {
+                Runtime runtime = Runtime.getRuntime();
+                File backupFile;
+                backupFile = new File(String.valueOf(RealizarBackupMySQL.getSelectedFile().toString()) + " "+hoy.getDate()+"-"+(hoy.getMonth()+1)+"-"+(hoy.getYear()+1900)+".sql");
+                FileWriter fw = new FileWriter(backupFile);
+                Process child = runtime.exec("C:\\Program Files (x86)\\MySQL\\MySQL Server 5.1\\bin\\mysqldump --opt --password=root --user=root --databases asistencia");
+                InputStreamReader irs = new InputStreamReader(child.getInputStream());
+                BufferedReader br = new BufferedReader(irs);
+                String line;
+                while ((line = br.readLine()) != null) {
+                    fw.write(line + "\n");
+                }
+                fw.close();
+                irs.close();
+                br.close();
+                JOptionPane.showMessageDialog(null, "El Backup ha sido generado", "Generar Backup", JOptionPane.INFORMATION_MESSAGE);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Error no se genero el archivo por el siguiente motivo:" + e.getMessage(), "Verificar", JOptionPane.ERROR_MESSAGE);
+            }
+        } else if (resp == JFileChooser.CANCEL_OPTION) {
+            JOptionPane.showMessageDialog(null, "Ha sido cancelada la generacion del Backup");
+        }
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivos de texto....(*.sql, *.txt)", "sql", "txt");
+        JFileChooser RealizarBackupMySQL = new JFileChooser();
+        RealizarBackupMySQL.setFileFilter(filtro);
+        RealizarBackupMySQL.setDialogTitle("Abrir archivo...");
+        String rut = System.getProperty("user.home") + System.getProperty("file.separator") + "Desktop";
+        File ruta = new File(rut);
+        RealizarBackupMySQL.setCurrentDirectory(ruta);
+        int resp;
+        Date hoy=new Date();
+        resp = RealizarBackupMySQL.showSaveDialog(this);//JFileChooser de nombre RealizarBackupMySQL
+        if (resp == JFileChooser.APPROVE_OPTION){
+            String r = RealizarBackupMySQL.getSelectedFile().getAbsolutePath();
+            try {
+                Process p = Runtime.getRuntime().exec("C:\\Program Files (x86)\\MySQL\\MySQL Server 5.1\\bin\\mysqldump --opt --password=root --user=root --databases asistencia"); 
+                InputStream is = p.getInputStream();
+                BufferedReader br = new BufferedReader(new InputStreamReader(is));
+                FileWriter fileW = new FileWriter(r);
+                PrintWriter pw = new PrintWriter(fileW);
+                String aux = br.readLine();
+                while (aux != null) {
+                    pw.println(aux);
+                    aux = br.readLine();
+                }
+                pw.close();
+                fileW.close();
+                JOptionPane.showMessageDialog(null, "La restauración ha sido generada", "Generar Restauración", JOptionPane.INFORMATION_MESSAGE);
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+        }
+    }//GEN-LAST:event_jButton6ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1076,6 +1203,8 @@ jPanel4Layout.setHorizontalGroup(
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -1104,6 +1233,7 @@ jPanel4Layout.setHorizontalGroup(
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;

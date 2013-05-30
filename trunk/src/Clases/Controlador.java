@@ -13,13 +13,17 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.awt.image.WritableRaster;
 import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.URL;
 import java.nio.file.Files;
 import java.sql.Connection;
@@ -369,6 +373,71 @@ public class Controlador {
             JOptionPane.showMessageDialog(null, ex.toString());
         }
     }
+    
+    public boolean BackupDB(String dbName, String dbUserName, String dbPassword, String path) {
+        String executeCmd = "mysqldump -u " + dbUserName + " -p" + dbPassword + " --add-drop-database -B " + dbName + " -r " + path;
+        Process runtimeProcess;
+        try {
+            runtimeProcess = Runtime.getRuntime().exec(executeCmd);
+            int processComplete = runtimeProcess.waitFor();
+            if (processComplete == 0) {
+                System.out.println("Backup created successfully");
+                return true;
+            } else {
+                System.out.println("Could not create the backup");
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return false;
+    }
+    
+    
+//    private int BUFFER = 10485760;  
+//    //para guardar en memmoria
+//    private StringBuffer temp = null;
+//    //para guardar el archivo SQL
+//    private FileWriter  fichero = null;
+//    private PrintWriter pw = null;
+//    
+//    public boolean CrearBackup(String host, String port, String user, String password, String db, String file_backup) {
+//        boolean ok = false;
+//        try {
+//            //sentencia para crear el BackUp
+//            Process run = Runtime.getRuntime().exec(
+//                    "mysqldump --host=" + host + " --port=" + port
+//                    + " --user=" + user + " --password=" + password
+//                    + " --compact --complete-insert --extended-insert --skip-quote-names"
+//                    + " --skip-comments --skip-triggers " + db);
+//            //se guarda en memoria el backup
+//            InputStream in = run.getInputStream();
+//            BufferedReader br = new BufferedReader(new InputStreamReader(in));
+//            temp = new StringBuffer();
+//            int count;
+//            char[] cbuf = new char[BUFFER];
+//            while ((count = br.read(cbuf, 0, BUFFER)) != -1) {
+//                temp.append(cbuf, 0, count);
+//            }
+//            br.close();
+//            in.close();
+//            /* se crea y escribe el archivo SQL */
+//            fichero = new FileWriter(file_backup);
+//            pw = new PrintWriter(fichero);
+//            pw.println(temp.toString());
+//            ok = true;
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//        } finally {
+//            try {
+//                if (null != fichero) {
+//                    fichero.close();
+//                }
+//            } catch (Exception e2) {
+//                e2.printStackTrace();
+//            }
+//        }
+//        return ok;
+//    }
 
     public void CargarComboEstablecimiento(JComboBox JCombo) {
         try {
@@ -1080,6 +1149,91 @@ public class Controlador {
                 fila[3] = formateador.format(in.getFin());
                 model.addRow(fila);
             }
+        }
+    }
+    
+    public void CargarTablaOutHome(JTable tabla/*, Personal per*/,Date fecha){
+        LimpiarTabla(tabla);
+        DefaultTableModel model = (DefaultTableModel) tabla.getModel();
+        List lista=new ArrayList();
+        int i=fecha.getDay();
+        String dia=ObtenerDia(i);
+        Iterator it=PERSISTENCIA.getOutHomeActivos(dia).iterator();
+        while(it.hasNext()){
+            ActivoIniciofin in=(ActivoIniciofin) it.next();
+            Date inicio= new Date();
+//            inicio=fecha;
+            inicio.setHours(in.getInicio().getHours());
+            inicio.setMinutes(in.getInicio().getMinutes());
+            inicio.setSeconds(in.getInicio().getSeconds());
+            Date fin= new Date();
+//            fin=fecha;
+            fin.setHours(in.getFin().getHours());
+            fin.setMinutes(in.getFin().getMinutes());
+            fin.setSeconds(in.getFin().getSeconds());
+            Personal per=in.getActivo().getNivel().getCargo().getDetalleEstablecimiento().getDeclaracionjurada().getPersonal();
+            if(fecha.compareTo(inicio)>=0 && fecha.compareTo(fin)<=0){
+                if(!lista.contains(per)){
+                    lista.add(per);
+                    Object[] fila = new Object[4];
+                    fila[0] = per;
+                    fila[1] = per.getDni();
+                    SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+                    fila[2] = per.getCorreoElectronico();
+                    fila[3] = formateador.format(per.getIngreso());
+                    model.addRow(fila);
+                }
+            }
+        }
+        java.sql.Date sqldate = new java.sql.Date(fecha.getTime());
+        Iterator itt=PERSISTENCIA.getOutHomeInactivos(sqldate).iterator();
+        while(itt.hasNext()){
+            Inactivo in=(Inactivo) itt.next();
+            Personal per=in.getNivel().getCargo().getDetalleEstablecimiento().getDeclaracionjurada().getPersonal();
+            if(!lista.contains(per)){
+                lista.add(per);
+                Object[] fila = new Object[4];
+                fila[0] = per;
+                fila[1] = per.getDni();
+                SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+                fila[2] = per.getCorreoElectronico();
+                fila[3] = formateador.format(per.getIngreso());
+                model.addRow(fila);
+            }
+        }
+    }
+    
+    public void CargarTablaOutHomePer(JTable tabla, Personal per,Date fecha){
+        LimpiarTabla(tabla);
+        DefaultTableModel model = (DefaultTableModel) tabla.getModel();
+        int i=fecha.getDay();
+        String dia=ObtenerDia(i);
+        Iterator it=PERSISTENCIA.getOutHomeActivoPer(dia, per.getIdPersonal()).iterator();
+        while(it.hasNext()){
+            ActivoIniciofin in=(ActivoIniciofin) it.next();
+            Object[] fila = new Object[6];
+            fila[0] = in.getActivo().getNivel().getCargo().getDetalleEstablecimiento().getEstablecimiento();
+            fila[1] = in.getActivo().getNivel().getCargo();
+            fila[2] = in.getActivo().getNivel();
+            fila[3] = "ACTIVO";
+            SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
+            fila[4] = formateador.format(in.getInicio());
+            fila[5] = formateador.format(in.getFin());
+            model.addRow(fila);
+        }
+        java.sql.Date sqldate = new java.sql.Date(fecha.getTime());
+        Iterator itt=PERSISTENCIA.getOutHomeInactivoPer(sqldate, per.getIdPersonal()).iterator();
+        while(itt.hasNext()){
+            Inactivo in=(Inactivo) itt.next();
+            Object[] fila = new Object[6];
+            fila[0] = in.getNivel().getCargo().getDetalleEstablecimiento().getEstablecimiento();
+            fila[1] = in.getNivel().getCargo();
+            fila[2] = in.getNivel();
+            fila[3] = "INACTIVO";
+            SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+            fila[4] = formateador.format(in.getFechaInicio());
+            fila[5] = formateador.format(in.getFechaFin());
+            model.addRow(fila);
         }
     }
     
