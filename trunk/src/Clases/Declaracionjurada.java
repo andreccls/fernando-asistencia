@@ -75,17 +75,13 @@ public class Declaracionjurada  implements java.io.Serializable {
     public void guardarDeclaracionjurada(Declaracionjurada unaDeclaracionjurada){
         Controlador.getPERSISTENCIA().insert(this);
 
-        JOptionPane.showMessageDialog(null,"La Declaración jurada "+ 
-                String.valueOf(unaDeclaracionjurada.getIdDeclaracionjurada()) +
-                " se guardo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null,"La Declaración jurada creo correctamente","Registrar declaración jurada",JOptionPane.INFORMATION_MESSAGE);
     }
    
     public void ActualizarDeclaracionjurada(Declaracionjurada unaDeclaracionjurada){
         Controlador.getPERSISTENCIA().update(this);
 
-        JOptionPane.showMessageDialog(null,"La Declaración jurada "+ 
-                String.valueOf(unaDeclaracionjurada.getIdDeclaracionjurada()) +
-                " se actualizó correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null,"La Declaración jurada se actualizó correctamente","Actualizar declaración jurada",JOptionPane.INFORMATION_MESSAGE);
     }
     
     

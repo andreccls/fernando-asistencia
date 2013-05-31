@@ -510,10 +510,10 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
     jTable1.addAncestorListener(new javax.swing.event.AncestorListener() {
         public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
         }
-        public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
-        }
         public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
             jTable1AncestorAdded(evt);
+        }
+        public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
         }
     });
     jScrollPane2.setViewportView(jTable1);
@@ -2094,6 +2094,10 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         try {
+            jButton1.setEnabled(false);
+            jButton2.setEnabled(false);
+            jButton3.setEnabled(false);
+            jButton4.setEnabled(false);
             boolean ba=true;
             Object o=jComboBox1.getSelectedItem();
             if(!Drive.ControlarAnoLectivo(mayor, menor)){
@@ -2217,6 +2221,10 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
             }else {
                     JOptionPane.showMessageDialog(null, "El aula esta ocupada en ese horario", "Registrar Clase", JOptionPane.ERROR_MESSAGE);
             }
+            jButton1.setEnabled(true);
+            jButton2.setEnabled(true);
+            jButton3.setEnabled(true);
+            jButton4.setEnabled(true);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "Seleccione una situación de revista para el personal", "Verificar Aula", JOptionPane.ERROR_MESSAGE);
         }        // TODO add your handling code here:

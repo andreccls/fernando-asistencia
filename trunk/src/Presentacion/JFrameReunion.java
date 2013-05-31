@@ -774,7 +774,11 @@ public class JFrameReunion extends javax.swing.JFrame {
                                 Drive.CargarTablacheck(jTable1, buscar, buffer.toString().toUpperCase(), lista);
                                 Drive = new Controlador();
                             }
+                        }else{
+                            JOptionPane.showMessageDialog(null, "Por favor ingrese la hora correctamente", "Registrar Reunión", JOptionPane.ERROR_MESSAGE);
                         }
+//                        jButton1.setEnabled(true);
+//                        jButton2.setEnabled(true);
                         // </editor-fold>
                     } else {
                         // <editor-fold defaultstate="collapsed" desc="Actualizar tarea"> 
@@ -988,6 +992,11 @@ public class JFrameReunion extends javax.swing.JFrame {
                             if(mensaje==true){
                                 JOptionPane.showMessageDialog(null,"La tarea se actualizó correctamente","Actualizar tarea",JOptionPane.INFORMATION_MESSAGE);
                             }
+                        }else{
+                            JOptionPane.showMessageDialog(null, "Por favor ingrese la hora correctamente", "Registrar Reunión", JOptionPane.ERROR_MESSAGE);
+                            jButton1.setEnabled(true);
+                            jButton2.setEnabled(true);
+                            return;
                         }
                         Frame vp = new JFrameConsultaActividades(Drive, adm);
                         this.dispose();
@@ -996,9 +1005,9 @@ public class JFrameReunion extends javax.swing.JFrame {
                     }
                     jButton1.setEnabled(true);
                     jButton2.setEnabled(true);
-                    jFormattedTextField1.setText("00:00");
-                    jFormattedTextField2.setText("00:00");
-                    dateChooserCombo1.setSelectedDate(Calendar.getInstance());
+//                    jFormattedTextField1.setText("00:00");
+//                    jFormattedTextField2.setText("00:00");
+//                    dateChooserCombo1.setSelectedDate(Calendar.getInstance());
                 } else {
                     JOptionPane.showMessageDialog(null, "Todos los campos con '*' son obligatorios y los horarios no pueden contener espacios en blanco", "Registrar Reunión", JOptionPane.ERROR_MESSAGE);
                 }
