@@ -636,9 +636,17 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                         formateador.setLenient(false);
                         Date inicio = formateador.parse(jFormattedTextField1.getText());
                         Date fin = formateador.parse(jFormattedTextField2.getText());
-                        if (inicio.compareTo(fin) < 0) {
-                            Date fecha_inicio = dateChooserCombo1.getSelectedDate().getTime();
-                            Date fecha_fin = dateChooserCombo2.getSelectedDate().getTime();
+                        Date fecha_inicio = dateChooserCombo1.getSelectedDate().getTime();
+                        Date fecha_fin = dateChooserCombo2.getSelectedDate().getTime();
+                        boolean con=false;
+                        if(fecha_inicio.getDate()==fecha_fin.getDate() && fecha_inicio.getMonth()==fecha_fin.getMonth() && fecha_inicio.getYear()==fecha_fin.getYear()){
+                            if (inicio.compareTo(fin) < 0) {
+                                con=true;
+                            }
+                        }else{
+                            con=true;
+                        }
+                        if (con) {
                             inicio.setYear(fecha_inicio.getYear());
                             inicio.setMonth(fecha_inicio.getMonth());
                             inicio.setDate(fecha_inicio.getDate());
@@ -791,7 +799,11 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                 jButton2.setEnabled(true);
                                 return;
                             }
+                        }else{
+                            JOptionPane.showMessageDialog(null, "Por favor ingrese la hora correctamente", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);
                         }
+                        jButton1.setEnabled(true);
+                        jButton2.setEnabled(true);
                         // </editor-fold>
                     } else {
                         // <editor-fold defaultstate="collapsed" desc="Actualizar tarea"> 
@@ -800,9 +812,17 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                         formateador.setLenient(false);
                         Date inicio = formateador.parse(jFormattedTextField1.getText());
                         Date fin = formateador.parse(jFormattedTextField2.getText());
-                        if (inicio.compareTo(fin) < 0) {
-                            Date fecha_inicio = dateChooserCombo1.getSelectedDate().getTime();
-                            Date fecha_fin = dateChooserCombo2.getSelectedDate().getTime();
+                        Date fecha_inicio = dateChooserCombo1.getSelectedDate().getTime();
+                        Date fecha_fin = dateChooserCombo2.getSelectedDate().getTime();
+                        boolean con=false;
+                        if(fecha_inicio.getDate()==fecha_fin.getDate() && fecha_inicio.getMonth()==fecha_fin.getMonth() && fecha_inicio.getYear()==fecha_fin.getYear()){
+                            if (inicio.compareTo(fin) < 0) {
+                                con=true;
+                            }
+                        }else{
+                            con=true;
+                        }
+                        if (con) {
                             inicio.setYear(fecha_inicio.getYear());
                             inicio.setMonth(fecha_inicio.getMonth());
                             inicio.setDate(fecha_inicio.getDate());
@@ -998,12 +1018,23 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                             if(mensaje==true){
                                JOptionPane.showMessageDialog(null,"La tarea se actualizó correctamente","Actualizar tarea",JOptionPane.INFORMATION_MESSAGE);
                             }
+                        }else{
+                            JOptionPane.showMessageDialog(null, "Por favor ingrese la hora correctamente", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);
+                            jButton1.setEnabled(true);
+                            jButton2.setEnabled(true);
+                            return;
                         }
                         Frame vp = new JFrameConsultaActividades(Drive, adm);
                         this.dispose();
                         vp.show();
                         // </editor-fold>
                     }
+//                    jButton1.setEnabled(true);
+//                    jButton2.setEnabled(true);
+//                    jFormattedTextField1.setText("00:00");
+//                    jFormattedTextField2.setText("00:00");
+//                    dateChooserCombo1.setSelectedDate(Calendar.getInstance());
+//                    dateChooserCombo2.setSelectedDate(Calendar.getInstance());
                 } else {
                     JOptionPane.showMessageDialog(null, "Todos los campos con '*' son obligatorios y los horarios no pueden contener espacios en blanco", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);
                 }

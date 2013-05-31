@@ -906,7 +906,17 @@ public class persistencia {
     }
     
     public List getAgendas(int idper) throws ArrayStoreException {
-        String hql = "from Agenda where id_personal="+idper;
+        String hql = "from Agenda as age where age.personal.idPersonal="+idper+"  and age.personal.estado=1 and age.tarea.estado=1";
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
+    }
+    
+    public List getAgendasClases(int idper) throws ArrayStoreException {
+        String hql = "from Agenda as age where age.personal.idPersonal="+idper+"  and age.personal.estado=1 and age.tarea.estado=1 and age.tarea.comentario='CLASE'";
         List items = new ArrayList();
         Transaction tx = session.beginTransaction();
         Query q = session.createQuery(hql);
@@ -916,7 +926,7 @@ public class persistencia {
     }
     
     public List getAgendasTar(int idtar) throws ArrayStoreException {
-        String hql = "from Agenda where id_tarea="+idtar;
+        String hql = "from Agenda as age where age.tarea.idTarea="+idtar+"  and age.personal.estado=1 and age.tarea.estado=1";
         List items = new ArrayList();
         Transaction tx = session.beginTransaction();
         Query q = session.createQuery(hql);

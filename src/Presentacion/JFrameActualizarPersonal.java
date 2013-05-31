@@ -1505,14 +1505,11 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel34)
-                        .addComponent(jLabel50))
-                    .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addGap(3, 3, 3)
-                        .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(jLabel34)
+                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel50))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
@@ -2957,55 +2954,78 @@ dateChooserCombo10.addSelectionChangedListener(new datechooser.events.SelectionC
 
     private void jButton14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton14ActionPerformed
          try {
+             jButton14.setEnabled(false);
                 Nivel nivels=(Nivel) jComboBox11.getSelectedItem();
-                Iterator it=Drive.PERSISTENCIA.getActivos(nivels.getIdNivel()).iterator();
-                //ELIMINA TODOS LOS ACTIVOS DE LA BD
-                while(it.hasNext()){
-                    Activo act=(Activo) it.next();
-                    Iterator<ActivoIniciofin> itt=act.getActivoIniciofins().iterator();
-                    while(itt.hasNext()){
-                        ActivoIniciofin actini= itt.next();
-                        actini.eliminarActivoiniciofin(actini);
-                    }
-                    act.eliminarActivo(act);
-                }
-                
                 DefaultTableModel modelo = (DefaultTableModel)jTable3.getModel();
                 int e=0;
+                boolean band=true;
                 while(modelo.getRowCount()!=e){
-                    Activo ac=new Activo();
-                    ac.setNivel(nivels);
-                    ac.setDia(modelo.getValueAt(e,0).toString());
-                    Boolean existe=nivels.existeActivo(ac, nivels);
-                    if(existe==false){
-                        ac.guardarActivo(ac);
-                        ActivoIniciofin inifin=new ActivoIniciofin();
-                        inifin.setActivo(ac);
-                        SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
-                        formateador.setLenient(false);
-                        inifin.setInicio(formateador.parse(modelo.getValueAt(e, 1).toString()));
-                        inifin.setFin(formateador.parse(modelo.getValueAt(e, 2).toString()));
-                        inifin.guardarActivoiniciofin(inifin);
-                    }else{
-                        Activo aux=nivels.getActivo(ac,nivels);
-                        ActivoIniciofin inifin=new ActivoIniciofin();
-                        inifin.setActivo(aux);
-                        SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
-                        formateador.setLenient(false);
-                        String in=modelo.getValueAt(e, 1).toString();
-                        String fi=modelo.getValueAt(e, 2).toString();
-                        inifin.setInicio(formateador.parse(in));
-                        inifin.setFin(formateador.parse(fi));
-                        inifin.guardarActivoiniciofin(inifin);
+                    ActivoIniciofin ac=new ActivoIniciofin();                        
+                    SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
+                    formateador.setLenient(false);
+                    ac.setInicio(formateador.parse(modelo.getValueAt(e, 1).toString()));
+                    ac.setFin(formateador.parse(modelo.getValueAt(e, 2).toString()));
+                    String dia=modelo.getValueAt(e,0).toString();
+                    if(Drive.ControlarDeclaración(pe, dia,ac)){
+                        band=false;
+                        break;
                     }
                     e++;
                 }
-                Personal pp=Drive.getPersonal(pe.getTipodoc(), pe.getDni());
-                pe=pp;
-                //Nivel niv=(Nivel)Drive.PERSISTENCIA.NivelPerso(nivels.getIdNivel()).iterator().next();
-                Drive.CargarTablaActivo(jTable3, nivels);
-//                int ii= Integer.valueOf(jFormattedTextField6.getText());
-//                Drive.CargarComboEstablecimientosPerso(jComboBox9, pe,ii);
+                if(band){
+                    Iterator it=Drive.PERSISTENCIA.getActivos(nivels.getIdNivel()).iterator();
+                    //ELIMINA TODOS LOS ACTIVOS DE LA BD
+                    while(it.hasNext()){
+                        Activo act=(Activo) it.next();
+                        Iterator<ActivoIniciofin> itt=act.getActivoIniciofins().iterator();
+                        while(itt.hasNext()){
+                            ActivoIniciofin actini= itt.next();
+                            actini.eliminarActivoiniciofin(actini);
+                        }
+                        act.eliminarActivo(act);
+                    }
+
+//                    DefaultTableModel modelo = (DefaultTableModel)jTable3.getModel();
+                    int ee=0;
+                    while(modelo.getRowCount()!=ee){
+                        Activo ac=new Activo();
+                        ac.setNivel(nivels);
+                        ac.setDia(modelo.getValueAt(ee,0).toString());
+                        Boolean existe=nivels.existeActivo(ac, nivels);
+                        if(existe==false){
+                            ac.guardarActivo(ac);
+                            ActivoIniciofin inifin=new ActivoIniciofin();
+                            inifin.setActivo(ac);
+                            SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
+                            formateador.setLenient(false);
+                            inifin.setInicio(formateador.parse(modelo.getValueAt(ee, 1).toString()));
+                            inifin.setFin(formateador.parse(modelo.getValueAt(ee, 2).toString()));
+                            inifin.guardarActivoiniciofin(inifin);
+                        }else{
+                            Activo aux=nivels.getActivo(ac,nivels);
+                            ActivoIniciofin inifin=new ActivoIniciofin();
+                            inifin.setActivo(aux);
+                            SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
+                            formateador.setLenient(false);
+                            String in=modelo.getValueAt(ee, 1).toString();
+                            String fi=modelo.getValueAt(ee, 2).toString();
+                            inifin.setInicio(formateador.parse(in));
+                            inifin.setFin(formateador.parse(fi));
+                            inifin.guardarActivoiniciofin(inifin);
+                        }
+                        ee++;
+                    }
+                    Personal pp=Drive.getPersonal(pe.getTipodoc(), pe.getDni());
+                    pe=pp;
+                    //Nivel niv=(Nivel)Drive.PERSISTENCIA.NivelPerso(nivels.getIdNivel()).iterator().next();
+                    Drive.CargarTablaActivo(jTable3, nivels);
+    //                int ii= Integer.valueOf(jFormattedTextField6.getText());
+    //                Drive.CargarComboEstablecimientosPerso(jComboBox9, pe,ii);
+                }else{
+                    Drive.CargarTablaActivo(jTable3, nivels);
+                }
+                jButton14.setEnabled(true);
+                Drive=new Controlador();
              } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, ex.toString());
             }

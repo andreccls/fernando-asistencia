@@ -2517,6 +2517,58 @@ public class Controlador {
         }
         return ban;
     }
+    
+    public Boolean ControlarDeclaración(Personal pe, String dia, ActivoIniciofin ac) {
+        Boolean ban = false;
+        Iterator it=PERSISTENCIA.getAgendasClases(pe.getIdPersonal()).iterator();
+        while(it.hasNext()){
+            Agenda age=(Agenda) it.next();
+            String ff=age.getTarea().getNombre();
+            String hh=ff;
+            Date aux=new Date();
+            Iterator ita=age.getAnos().iterator();
+            while(ita.hasNext()){
+                Ano an=(Ano) ita.next();
+                aux.setYear(an.getAno()-1900);
+                Iterator itm=an.getMeses().iterator();
+                while(itm.hasNext()){
+                    Mes me=(Mes) itm.next();
+                    aux.setMonth(me.getMes());
+                    Iterator itd=me.getDias().iterator();
+                    while(itd.hasNext()){
+                        Dia di=(Dia) itd.next();
+                        aux.setDate(di.getDia());
+                        int y=aux.getDay();
+                        String dd= ObtenerDia(y);
+                        if(dd.equals(dia)){
+                            Iterator iti=di.getIniciofins().iterator();
+                            while(iti.hasNext()){
+                                Iniciofin ini=(Iniciofin) iti.next();
+                                if(ini.getInicio().compareTo(ac.getInicio())<=0 && ini.getFin().compareTo(ac.getInicio())>=0){
+                                    JOptionPane.showMessageDialog(null, "Verifique los horarios porque el personal tiene "+age.getTarea().toString(),"Registrar Activo",JOptionPane.ERROR_MESSAGE);
+                                    ban=true;
+                                    return ban;
+                                }else if(ini.getInicio().compareTo(ac.getFin())<=0 && ini.getFin().compareTo(ac.getFin())>=0){
+                                    JOptionPane.showMessageDialog(null, "Verifique los horarios porque el personal tiene "+age.getTarea().toString(),"Registrar Activo",JOptionPane.ERROR_MESSAGE);
+                                    ban=true;
+                                    return ban;
+                                }else if(ini.getInicio().compareTo(ac.getInicio())<=0 && ini.getFin().compareTo(ac.getFin())>=0){
+                                    JOptionPane.showMessageDialog(null, "Verifique los horarios porque el personal tiene "+age.getTarea().toString(),"Registrar Activo",JOptionPane.ERROR_MESSAGE);
+                                    ban=true;
+                                    return ban;
+                                }else if(ini.getInicio().compareTo(ac.getInicio())>=0 && ini.getFin().compareTo(ac.getFin())<=0){
+                                    JOptionPane.showMessageDialog(null, "Verifique los horarios porque el personal tiene "+age.getTarea().toString(),"Registrar Activo",JOptionPane.ERROR_MESSAGE);
+                                    ban=true;
+                                    return ban;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return ban;
+    }
 
     public Tiporelacion gettiporelacion(Tiporelacion unTiporelacion) {
         Tiporelacion t = new Tiporelacion();
@@ -3454,15 +3506,15 @@ public class Controlador {
                                 Date hhfin = age.getTarea().getDiaFin();
                                 if(hini.compareTo(hinicio)<=0&&hfin.compareTo(hinicio)>=0){
                                     band = 1;
-                                    if(control==true){JOptionPane.showMessageDialog(null, "El personal "+ toString() +" tiene otra tarea no obligatoria", "Registrar Reunión", JOptionPane.INFORMATION_MESSAGE);}
+                                    if(control==true){JOptionPane.showMessageDialog(null, "El personal "+ per.toString() +" tiene otra tarea no obligatoria", "Registrar Reunión", JOptionPane.INFORMATION_MESSAGE);}
                                     //return band;
                                 }else if(hini.compareTo(hhfin)<=0&&hfin.compareTo(hhfin)>=0){
                                     band = 1;
-                                    if(control==true){JOptionPane.showMessageDialog(null, "El personal "+ toString() +" tiene otra tarea no obligatoria", "Registrar Reunión", JOptionPane.INFORMATION_MESSAGE);}
+                                    if(control==true){JOptionPane.showMessageDialog(null, "El personal "+ per.toString() +" tiene otra tarea no obligatoria", "Registrar Reunión", JOptionPane.INFORMATION_MESSAGE);}
                                     //return band;
                                 }else if(hini.compareTo(hinicio)>=0&&hfin.compareTo(hinicio)>=0&&hini.compareTo(hhfin)<=0&&hfin.compareTo(hhfin)<=0){
                                     band = 1;
-                                    if(control==true){JOptionPane.showMessageDialog(null, "El personal "+ toString() +" tiene otra tarea no obligatoria", "Registrar Reunión", JOptionPane.INFORMATION_MESSAGE);}
+                                    if(control==true){JOptionPane.showMessageDialog(null, "El personal "+ per.toString() +" tiene otra tarea no obligatoria", "Registrar Reunión", JOptionPane.INFORMATION_MESSAGE);}
                                     //return band;
                                 }
                             }
@@ -3478,19 +3530,19 @@ public class Controlador {
                             hfin.setDate(diaini.getDate());
                             if(hini.compareTo(inicio)<=0&&hfin.compareTo(inicio)>=0){
                                 band = 0;
-                                if(control==true){JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para "+ toString() +" porque existe una tarea extracurricular a ese horario", "Registrar Reunión", JOptionPane.ERROR_MESSAGE);}
+                                if(control==true){JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para "+ per.toString() +" porque existe una tarea extracurricular a ese horario", "Registrar Reunión", JOptionPane.ERROR_MESSAGE);}
                                 return band;
                             }else if(hini.compareTo(fin)<=0&&hfin.compareTo(fin)>=0){
                                 band = 0;
-                                if(control==true){JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para "+ toString() +" porque existe una tarea extracurricular a ese horario", "Registrar Reunión", JOptionPane.ERROR_MESSAGE);}
+                                if(control==true){JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para "+ per.toString() +" porque existe una tarea extracurricular a ese horario", "Registrar Reunión", JOptionPane.ERROR_MESSAGE);}
                                 return band;
                             }else if(hini.compareTo(inicio)>=0&&hfin.compareTo(inicio)>=0&&hini.compareTo(fin)<=0&&hfin.compareTo(fin)<=0){
                                 band = 0;
-                                if(control==true){JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para "+ toString() +" porque existe una tarea extracurricular a ese horario", "Registrar Reunión", JOptionPane.ERROR_MESSAGE);}
+                                if(control==true){JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para "+ per.toString() +" porque existe una tarea extracurricular a ese horario", "Registrar Reunión", JOptionPane.ERROR_MESSAGE);}
                                 return band;
                             }else if(hini.compareTo(inicio)<=0&&hfin.compareTo(fin)>=0){
                                 band = 0;
-                                if(control==true){JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para "+ toString() +" porque existe una tarea extracurricular a ese horario", "Registrar Reunión", JOptionPane.ERROR_MESSAGE);}
+                                if(control==true){JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para "+ per.toString() +" porque existe una tarea extracurricular a ese horario", "Registrar Reunión", JOptionPane.ERROR_MESSAGE);}
                                 return band;
                             }
                         }else if(age.getTarea().getTareaclases().iterator().hasNext()){
@@ -3506,7 +3558,7 @@ public class Controlador {
                                     Date fin = formateador.parse(ii);
                                     if(hini.compareTo(inicio)<=0&&hfin.compareTo(inicio)>=0){
                                         if(control==true){
-                                            JOptionPane.showMessageDialog(null, "El personal "+ toString() +" continuará con su clase luego de realizar la reunión", "Registrar Reunión", JOptionPane.INFORMATION_MESSAGE);
+                                            JOptionPane.showMessageDialog(null, "El personal "+ per.toString() +" continuará con su clase luego de realizar la reunión", "Registrar Reunión", JOptionPane.INFORMATION_MESSAGE);
                                             band = 1;
                                             //return band;
                                         }
@@ -3514,7 +3566,7 @@ public class Controlador {
                                         in.actualizarIniciofin(in);
                                     }else if(hini.compareTo(fin)<=0&&hfin.compareTo(fin)>=0){
                                         if(control==true){
-                                            JOptionPane.showMessageDialog(null, "El personal "+ toString() +" suspenderá su clase para realizar la reunión", "Registrar Reunión", JOptionPane.INFORMATION_MESSAGE);
+                                            JOptionPane.showMessageDialog(null, "El personal "+ per.toString() +" suspenderá su clase para realizar la reunión", "Registrar Reunión", JOptionPane.INFORMATION_MESSAGE);
                                             band = 1;
                                             //return band;
                                         }
@@ -3522,13 +3574,13 @@ public class Controlador {
                                         in.actualizarIniciofin(in);
                                     }else if(hini.compareTo(inicio)>=0&&hfin.compareTo(inicio)>=0&&hini.compareTo(fin)<=0&&hfin.compareTo(fin)<=0){
                                         if(control==true){
-                                            JOptionPane.showMessageDialog(null, "El personal "+ toString() +" suspenderá su clase para realizar la reunión", "Registrar Reunión", JOptionPane.INFORMATION_MESSAGE);
+                                            JOptionPane.showMessageDialog(null, "El personal "+ per.toString() +" suspenderá su clase para realizar la reunión", "Registrar Reunión", JOptionPane.INFORMATION_MESSAGE);
                                             band = 2;
                                             //return band;
                                         }
                                     }else if(hini.compareTo(inicio)<=0&&hfin.compareTo(inicio)>=0&&hini.compareTo(fin)<=0&&hfin.compareTo(fin)>=0){
                                         if(control==true){
-                                            JOptionPane.showMessageDialog(null, "El personal "+ toString() +" suspenderá su clase para realizar la reunión", "Registrar Reunión", JOptionPane.INFORMATION_MESSAGE);
+                                            JOptionPane.showMessageDialog(null, "El personal "+ per.toString() +" suspenderá su clase para realizar la reunión", "Registrar Reunión", JOptionPane.INFORMATION_MESSAGE);
                                             band = 1;
                                             //return band;
                                         }
@@ -3550,15 +3602,15 @@ public class Controlador {
                                     Date fin = formateador.parse(ii);
                                     if (hini.compareTo(inicio) <= 0 && hfin.compareTo(inicio) >= 0) {
                                         band = 0;
-                                        if(control==true){JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para " + toString() + " porque existe otra reunión a ese horario", "Registrar Reunión", JOptionPane.ERROR_MESSAGE);}
+                                        if(control==true){JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para " + per.toString() + " porque existe otra reunión a ese horario", "Registrar Reunión", JOptionPane.ERROR_MESSAGE);}
                                         return band;
                                     } else if (hini.compareTo(fin) <= 0 && hfin.compareTo(fin) >= 0) {
                                         band = 0;
-                                        if(control==true){JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para " + toString() + " porque existe otra reunión a ese horario", "Registrar Reunión", JOptionPane.ERROR_MESSAGE);}
+                                        if(control==true){JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para " + per.toString() + " porque existe otra reunión a ese horario", "Registrar Reunión", JOptionPane.ERROR_MESSAGE);}
                                         return band;
                                     } else if (hini.compareTo(inicio) >= 0 && hfin.compareTo(inicio) >= 0 && hini.compareTo(fin) <= 0 && hfin.compareTo(fin) <= 0) {
                                         band = 0;
-                                        if(control==true){JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para " + toString() + " porque existe otra reunión a ese horario", "Registrar Reunión", JOptionPane.ERROR_MESSAGE);}
+                                        if(control==true){JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para " + per.toString() + " porque existe otra reunión a ese horario", "Registrar Reunión", JOptionPane.ERROR_MESSAGE);}
                                         return band;
                                     }
                                 }
@@ -3617,15 +3669,15 @@ public class Controlador {
                                 Date hhfin = age.getTarea().getDiaFin();
                                 if(hini.compareTo(hinicio)<=0&&hfin.compareTo(hinicio)>=0){
                                     band = 1;
-                                    if(control==true){JOptionPane.showMessageDialog(null, "El personal "+ toString() +" tiene una tarea no obligatoria a este horario", "Registrar Tarea Extracurricular", JOptionPane.ERROR_MESSAGE);}
+                                    if(control==true){JOptionPane.showMessageDialog(null, "El personal "+ per.toString() +" tiene una tarea no obligatoria a este horario", "Registrar Tarea Extracurricular", JOptionPane.ERROR_MESSAGE);}
                                     //return band;
                                 }else if(hini.compareTo(hhfin)<=0&&hfin.compareTo(hhfin)>=0){
                                     band = 1;
-                                    if(control==true){JOptionPane.showMessageDialog(null, "El personal "+ toString() +" tiene una tarea no obligatoria a este horario", "Registrar Tarea Extracurricular", JOptionPane.ERROR_MESSAGE);}
+                                    if(control==true){JOptionPane.showMessageDialog(null, "El personal "+ per.toString() +" tiene una tarea no obligatoria a este horario", "Registrar Tarea Extracurricular", JOptionPane.ERROR_MESSAGE);}
                                     //return band;
                                 }else if(hini.compareTo(hinicio)>=0&&hfin.compareTo(hinicio)>=0&&hini.compareTo(hhfin)<=0&&hfin.compareTo(hhfin)<=0){
                                     band = 1;
-                                    if(control==true){JOptionPane.showMessageDialog(null, "El personal "+ toString() +" tiene una tarea no obligatoria a este horario", "Registrar Tarea Extracurricular", JOptionPane.ERROR_MESSAGE);}
+                                    if(control==true){JOptionPane.showMessageDialog(null, "El personal "+ per.toString() +" tiene una tarea no obligatoria a este horario", "Registrar Tarea Extracurricular", JOptionPane.ERROR_MESSAGE);}
                                     //return band;
                                 }
                             }
@@ -3638,15 +3690,15 @@ public class Controlador {
                                 Date hhfin = age.getTarea().getDiaFin();
                                 if(hini.compareTo(hinicio)<=0&&hfin.compareTo(hinicio)>=0){
                                     band = 0;
-                                    if(control==true){JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para "+ toString() +" porque existe una tarea extracurricular a ese horario", "Registrar Tarea Extracurricular", JOptionPane.ERROR_MESSAGE);}
+                                    if(control==true){JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para "+ per.toString() +" porque existe una tarea extracurricular a ese horario", "Registrar Tarea Extracurricular", JOptionPane.ERROR_MESSAGE);}
                                     return band;
                                 }else if(hini.compareTo(hhfin)<=0&&hfin.compareTo(hhfin)>=0){
                                     band = 0;
-                                    if(control==true){JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para "+ toString() +" porque existe una tarea extracurricular a ese horario", "Registrar Tarea Extracurricular", JOptionPane.ERROR_MESSAGE);}
+                                    if(control==true){JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para "+ per.toString() +" porque existe una tarea extracurricular a ese horario", "Registrar Tarea Extracurricular", JOptionPane.ERROR_MESSAGE);}
                                     return band;
                                 }else if(hini.compareTo(hinicio)>=0&&hfin.compareTo(hinicio)>=0&&hini.compareTo(hhfin)<=0&&hfin.compareTo(hhfin)<=0){
                                     band = 0;
-                                    if(control==true){JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para "+ toString() +" porque existe una tarea extracurricular a ese horario", "Registrar Tarea Extracurricular", JOptionPane.ERROR_MESSAGE);}
+                                    if(control==true){JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para "+ per.toString() +" porque existe una tarea extracurricular a ese horario", "Registrar Tarea Extracurricular", JOptionPane.ERROR_MESSAGE);}
                                     return band;
                                 }
                             }
@@ -3665,7 +3717,7 @@ public class Controlador {
                                         Date fin = formateador.parse(ii);
                                         if(hini.compareTo(inicio)<=0&&hfin.compareTo(inicio)>=0){
                                             if(control==true){
-                                                JOptionPane.showMessageDialog(null, "El personal "+ toString() +" continuará con su clase luego de realizar la tarea", "Registrar Tarea Extracurricular", JOptionPane.INFORMATION_MESSAGE);
+                                                JOptionPane.showMessageDialog(null, "El personal "+ per.toString() +" continuará con su clase luego de realizar la tarea", "Registrar Tarea Extracurricular", JOptionPane.INFORMATION_MESSAGE);
                                                 band = 1;
                                                 //return band;
                                             }
@@ -3673,7 +3725,7 @@ public class Controlador {
                                             in.actualizarIniciofin(in);
                                         }else if(hini.compareTo(fin)<=0&&hfin.compareTo(fin)>=0){
                                             if(control==true){
-                                                JOptionPane.showMessageDialog(null, "El personal "+ toString() +" suspenderá su clase para realizar la tarea", "Registrar Tarea Extracurricular", JOptionPane.INFORMATION_MESSAGE);
+                                                JOptionPane.showMessageDialog(null, "El personal "+ per.toString() +" suspenderá su clase para realizar la tarea", "Registrar Tarea Extracurricular", JOptionPane.INFORMATION_MESSAGE);
                                                 band = 1;
                                                 //return band;
                                             }
@@ -3681,13 +3733,13 @@ public class Controlador {
                                             in.actualizarIniciofin(in);
                                         }else if(hini.compareTo(inicio)>=0&&hfin.compareTo(inicio)>=0&&hini.compareTo(fin)<=0&&hfin.compareTo(fin)<=0){
                                             if(control==true){
-                                                JOptionPane.showMessageDialog(null, "El personal "+ toString() +" suspenderá su clase para realizar la tarea", "Registrar Tarea Extracurricular", JOptionPane.INFORMATION_MESSAGE);
+                                                JOptionPane.showMessageDialog(null, "El personal "+ per.toString() +" suspenderá su clase para realizar la tarea", "Registrar Tarea Extracurricular", JOptionPane.INFORMATION_MESSAGE);
                                                 band = 2;
                                                 //return band;
                                             }
                                         }else if(hini.compareTo(inicio)<=0&&hfin.compareTo(inicio)>=0&&hini.compareTo(fin)<=0&&hfin.compareTo(fin)>=0){
                                             if(control==true){
-                                                JOptionPane.showMessageDialog(null, "El personal "+ toString() +" suspenderá su clase para realizar la tarea", "Registrar Tarea Extracurricular", JOptionPane.INFORMATION_MESSAGE);
+                                                JOptionPane.showMessageDialog(null, "El personal "+ per.toString() +" suspenderá su clase para realizar la tarea", "Registrar Tarea Extracurricular", JOptionPane.INFORMATION_MESSAGE);
                                                 band = 1;
                                                 //return band;
                                             }
@@ -3711,7 +3763,7 @@ public class Controlador {
                                             if(diaini.getDate()<di.getDia()&&diafin.getDate()>di.getDia()){
                                                 if(in.getEstadoInicio()!=null || in.getEstadoFin()!=null){
                                                     if(control==true){
-                                                        JOptionPane.showMessageDialog(null, "El personal " + toString() + " tiene clases pero se suspenderán por la tarea extracurricular", "Registrar Tarea Extracurricular", JOptionPane.INFORMATION_MESSAGE);
+                                                        JOptionPane.showMessageDialog(null, "El personal " + per.toString() + " tiene clases pero se suspenderán por la tarea extracurricular", "Registrar Tarea Extracurricular", JOptionPane.INFORMATION_MESSAGE);
                                                         band = 1;
                                                         //return band;
                                                     }
@@ -3723,7 +3775,7 @@ public class Controlador {
                                                 if(hini.compareTo(inicio)<=0){
                                                     if(in.getEstadoInicio()!=null || in.getEstadoFin()!=null){
                                                         if(control==true){
-                                                            JOptionPane.showMessageDialog(null, "El personal " + toString() + " tiene clases pero se suspenderán por la tarea extracurricular", "Registrar Tarea Extracurricular", JOptionPane.INFORMATION_MESSAGE);
+                                                            JOptionPane.showMessageDialog(null, "El personal " + per.toString() + " tiene clases pero se suspenderán por la tarea extracurricular", "Registrar Tarea Extracurricular", JOptionPane.INFORMATION_MESSAGE);
                                                             band = 1;
                                                             //return band;
                                                         }
@@ -3734,7 +3786,7 @@ public class Controlador {
                                                 }else if(hini.compareTo(inicio)>=0){
                                                     if(in.getEstadoFin()!=null){
                                                         if(control==true){
-                                                            JOptionPane.showMessageDialog(null, "El personal " + toString() + " tiene clases pero se suspenderán por la tarea extracurricular", "Registrar Tarea Extracurricular", JOptionPane.INFORMATION_MESSAGE);
+                                                            JOptionPane.showMessageDialog(null, "El personal " + per.toString() + " tiene clases pero se suspenderán por la tarea extracurricular", "Registrar Tarea Extracurricular", JOptionPane.INFORMATION_MESSAGE);
                                                             band = 2;
                                                             //return band;
                                                         }
@@ -3746,7 +3798,7 @@ public class Controlador {
                                                 if(hfin.compareTo(fin)>=0){
                                                     if(in.getEstadoInicio()!=null || in.getEstadoFin()!=null){
                                                         if(control==true){
-                                                            JOptionPane.showMessageDialog(null, "El personal " + toString() + " tiene clases pero se suspenderán por la tarea extracurricular", "Registrar Tarea Extracurricular", JOptionPane.INFORMATION_MESSAGE);
+                                                            JOptionPane.showMessageDialog(null, "El personal " + per.toString() + " tiene clases pero se suspenderán por la tarea extracurricular", "Registrar Tarea Extracurricular", JOptionPane.INFORMATION_MESSAGE);
                                                             band = 1;
                                                             //return band;
                                                         }
@@ -3757,7 +3809,7 @@ public class Controlador {
                                                 }else if(hini.compareTo(fin)<=0){
                                                     if(in.getEstadoInicio()!=null || in.getEstadoFin()!=null){
                                                         if(control==true){
-                                                            JOptionPane.showMessageDialog(null, "El personal " + toString() + " tiene clases pero se suspenderán por la tarea extracurricular", "Registrar Tarea Extracurricular", JOptionPane.INFORMATION_MESSAGE);
+                                                            JOptionPane.showMessageDialog(null, "El personal " + per.toString() + " tiene clases pero se suspenderán por la tarea extracurricular", "Registrar Tarea Extracurricular", JOptionPane.INFORMATION_MESSAGE);
                                                             band = 1;
                                                             //return band;
                                                         }
@@ -3788,7 +3840,7 @@ public class Controlador {
                                         if (diaini.getDate() < di.getDia() && diafin.getDate() > di.getDia()) {
                                             if (in.getEstadoInicio() != null || in.getEstadoFin() != null) {
                                                 if (control == true) {
-                                                    JOptionPane.showMessageDialog(null, "El personal " + toString() + " tiene reuniones pero se suspenderán por la tarea extracurricular", "Registrar Tarea Extracurricular", JOptionPane.INFORMATION_MESSAGE);
+                                                    JOptionPane.showMessageDialog(null, "El personal " + per.toString() + " tiene reuniones pero se suspenderán por la tarea extracurricular", "Registrar Tarea Extracurricular", JOptionPane.INFORMATION_MESSAGE);
                                                     band = 1;
                                                     //return band;
                                                 }
@@ -3799,7 +3851,7 @@ public class Controlador {
                                             if (hini.compareTo(inicio) <= 0) {
                                                 if (in.getEstadoInicio() != null || in.getEstadoFin() != null) {
                                                     if (control == true) {
-                                                        JOptionPane.showMessageDialog(null, "El personal " + toString() + " tiene reuniones pero se suspenderán por la tarea extracurricular", "Registrar Tarea Extracurricular", JOptionPane.INFORMATION_MESSAGE);
+                                                        JOptionPane.showMessageDialog(null, "El personal " + per.toString() + " tiene reuniones pero se suspenderán por la tarea extracurricular", "Registrar Tarea Extracurricular", JOptionPane.INFORMATION_MESSAGE);
                                                         band = 1;
                                                         //return band;   
                                                     }
@@ -3810,7 +3862,7 @@ public class Controlador {
                                             } else if (hini.compareTo(inicio) >= 0) {
                                                 if (in.getEstadoFin() != null) {
                                                     if (control == true) {
-                                                        JOptionPane.showMessageDialog(null, "El personal " + toString() + " tiene reuniones pero se suspenderán por la tarea extracurricular", "Registrar Tarea Extracurricular", JOptionPane.INFORMATION_MESSAGE);
+                                                        JOptionPane.showMessageDialog(null, "El personal " + per.toString() + " tiene reuniones pero se suspenderán por la tarea extracurricular", "Registrar Tarea Extracurricular", JOptionPane.INFORMATION_MESSAGE);
                                                         band = 2;
                                                         //return band;
                                                     }
@@ -3851,15 +3903,15 @@ public class Controlador {
                                 Date hhfin = age.getTarea().getDiaFin();
                                 if(hini.compareTo(hinicio)<=0&&hfin.compareTo(hinicio)>=0){
                                     band = false;
-                                    JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para "+ toString() +" porque existe otra tarea a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);
+                                    JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para "+ per.toString() +" porque existe otra tarea a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);
                                     return band;
                                 }else if(hini.compareTo(hhfin)<=0&&hfin.compareTo(hhfin)>=0){
                                     band = false;
-                                    JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para "+ toString() +" porque existe otra tarea a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);
+                                    JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para "+ per.toString() +" porque existe otra tarea a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);
                                     return band;
                                 }else if(hini.compareTo(hinicio)>=0&&hfin.compareTo(hinicio)>=0&&hini.compareTo(hhfin)<=0&&hfin.compareTo(hhfin)<=0){
                                     band = false;
-                                    JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para "+ toString() +" porque existe otra tarea a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);
+                                    JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para "+ per.toString() +" porque existe otra tarea a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);
                                     return band;
                                 }
                             }
@@ -3877,19 +3929,19 @@ public class Controlador {
 
                                 if(hini.compareTo(inicio)<=0&&hfin.compareTo(inicio)>=0){
                                     band = false;
-                                    JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para "+ toString() +" porque existe una tarea extracurricular a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);
+                                    JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para "+ per.toString() +" porque existe una tarea extracurricular a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);
                                     return band;
                                 }else if(hini.compareTo(fin)<=0&&hfin.compareTo(fin)>=0){
                                     band = false;
-                                    JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para "+ toString() +" porque existe una tarea extracurricular a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);
+                                    JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para "+ per.toString() +" porque existe una tarea extracurricular a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);
                                     return band;
                                 }else if(hini.compareTo(inicio)>=0&&hfin.compareTo(fin)<=0){
                                     band = false;
-                                    JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para "+ toString() +" porque existe una tarea extracurricular a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);
+                                    JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para "+ per.toString() +" porque existe una tarea extracurricular a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);
                                     return band;
                                 }else if(hini.compareTo(inicio)<=0&&hfin.compareTo(fin)>=0){
                                     band = false;
-                                    if(control==true){JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para "+ toString() +" porque existe una tarea extracurricular a ese horario", "Registrar Reunión", JOptionPane.ERROR_MESSAGE);}
+                                    if(control==true){JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para "+ per.toString() +" porque existe una tarea extracurricular a ese horario", "Registrar Reunión", JOptionPane.ERROR_MESSAGE);}
                                     return band;
                                 }
                             }
@@ -3906,20 +3958,20 @@ public class Controlador {
                                         Date inicio = formateador.parse(i);
                                         Date fin = formateador.parse(ii);
                                         if(hini.compareTo(inicio)<=0&&hfin.compareTo(inicio)>=0){
-                                            if(control==true){JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para " + toString() + " porque existe una clase a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);}
+                                            if(control==true){JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para " + per.toString() + " porque existe una clase a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);}
                                             band = false;
                                             return band;
                                         }else if(hini.compareTo(fin)<=0&&hfin.compareTo(fin)>=0){
-                                            if(control==true){JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para " + toString() + " porque existe una clase a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);}
+                                            if(control==true){JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para " + per.toString() + " porque existe una clase a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);}
                                             band = false;
                                             return band;
                                         }else if(hini.compareTo(inicio)>=0&&hfin.compareTo(inicio)>=0&&hini.compareTo(fin)<=0&&hfin.compareTo(fin)<=0){
                                             band = false;
-                                            if(control==true){JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para " + toString() + " porque existe una clase a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);}
+                                            if(control==true){JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para " + per.toString() + " porque existe una clase a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);}
                                             return band;
                                         }else if(hini.compareTo(inicio)<=0&&hfin.compareTo(inicio)>=0&&hini.compareTo(fin)<=0&&hfin.compareTo(fin)>=0){
                                             band = false;
-                                            if(control==true){JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para " + toString() + " porque existe una clase a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);}
+                                            if(control==true){JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para " + per.toString() + " porque existe una clase a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);}
                                             return band;
                                         }
                                     }
@@ -3938,26 +3990,26 @@ public class Controlador {
                                             Date inicio = formateador.parse(i);
                                             Date fin = formateador.parse(ii);
                                             if(diaini.getDate()<di.getDia()&&diafin.getDate()>di.getDia()){
-                                                if(control==true){JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para " + toString() + " porque existe una clase a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);}
+                                                if(control==true){JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para " + per.toString() + " porque existe una clase a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);}
                                                 band = false;
                                                 return band;
                                             }else if(diaini.getDate()==di.getDia()){
                                                 if(hini.compareTo(inicio)<=0&&hfin.compareTo(inicio)>=0){
-                                                    if(control==true){JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para " + toString() + " porque existe una clase a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);}
+                                                    if(control==true){JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para " + per.toString() + " porque existe una clase a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);}
                                                     band = false;
                                                     return band;
                                                 }else if(hini.compareTo(inicio)>=0&&hini.compareTo(fin)<=0){
-                                                    if(control==true){JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para " + toString() + " porque existe una clase a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);}
+                                                    if(control==true){JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para " + per.toString() + " porque existe una clase a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);}
                                                     band = false;
                                                     return band;
                                                 }
                                             }else if(diafin.getDate()==di.getDia()){
                                                 if(hfin.compareTo(fin)>=0){
-                                                    if(control==true){JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para " + toString() + " porque existe una clase a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);}
+                                                    if(control==true){JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para " + per.toString() + " porque existe una clase a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);}
                                                     band = false;
                                                     return band;
                                                 }else if(hini.compareTo(inicio)>=0&&hfin.compareTo(fin)<=0){
-                                                    if(control==true){JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para " + toString() + " porque existe una clase a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);}
+                                                    if(control==true){JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para " + per.toString() + " porque existe una clase a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);}
                                                     band = false;
                                                     return band;
                                                 }
@@ -3982,15 +4034,15 @@ public class Controlador {
                                         Date fin = formateador.parse(ii);
                                         if (hini.compareTo(inicio) <= 0 && hfin.compareTo(inicio) >= 0) {
                                             band = false;
-                                            JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para " + toString() + " porque existe una reunión a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);
+                                            JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para " + per.toString() + " porque existe una reunión a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);
                                             return band;
                                         } else if (hini.compareTo(fin) <= 0 && hfin.compareTo(fin) >= 0) {
                                             band = false;
-                                            JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para " + toString() + " porque existe una reunión a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);
+                                            JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para " + per.toString() + " porque existe una reunión a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);
                                             return band;
                                         } else if (hini.compareTo(inicio) >= 0 && hfin.compareTo(inicio) >= 0 && hini.compareTo(fin) <= 0 && hfin.compareTo(fin) <= 0) {
                                             band = false;
-                                            JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para " + toString() + " porque existe una reunión a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);
+                                            JOptionPane.showMessageDialog(null, "No existe disponibilidad de horario para " + per.toString() + " porque existe una reunión a ese horario", "Registrar Tarea", JOptionPane.ERROR_MESSAGE);
                                             return band;
                                         }
                                     }
