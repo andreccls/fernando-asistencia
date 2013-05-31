@@ -510,10 +510,10 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
     jTable1.addAncestorListener(new javax.swing.event.AncestorListener() {
         public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
         }
+        public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+        }
         public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
             jTable1AncestorAdded(evt);
-        }
-        public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
         }
     });
     jScrollPane2.setViewportView(jTable1);
@@ -1235,7 +1235,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                         while (jTable1.getRowCount() != c) {
                             Personal person = (Personal) modelo.getValueAt(c, 0);
                             
-                            if (person.DisponibilidadClase(inicio, fin, listini, items,0)) {
+                            if (Drive.DisponibilidadClase(person,inicio, fin, listini, items,0)) {
                                 band=true;
                             }else{
                                 band=false;
@@ -1723,7 +1723,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                 Date inicioo = dateChooserCombo1.getSelectedDate().getTime();
                                 Date finn = dateChooserCombo2.getSelectedDate().getTime();
                                 // </editor-fold>
-                                if (person.DisponibilidadClase(inicioo, finn, listini, items,tar.getIdTarea())) {
+                                if (Drive.DisponibilidadClase(person,inicioo, finn, listini, items,tar.getIdTarea())) {
                                     band=true;
                                 }else{
                                     band=false;
@@ -2166,9 +2166,9 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                             // </editor-fold>
                 Aula au=(Aula) o;
                 if(tar.getIdTarea()!=null){
-                    ba=au.DisponibilidadAula(inicio, fin, listini, items,tar.getIdTarea(), au);
+                    ba=Drive.DisponibilidadAula(inicio, fin, listini, items,tar.getIdTarea(), au);
                 }else{
-                    ba=au.DisponibilidadAula(inicio, fin, listini, items,0, au);
+                    ba=Drive.DisponibilidadAula(inicio, fin, listini, items,0, au);
                 }
                 
             }else{
@@ -3504,9 +3504,9 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                             // </editor-fold>
                 Aula au=(Aula) o;
                 if(tar.getIdTarea()!=null){
-                    ba=au.DisponibilidadAula(inicio, fin, listini, items,tar.getIdTarea(), au);
+                    ba=Drive.DisponibilidadAula(inicio, fin, listini, items,tar.getIdTarea(), au);
                 }else{
-                    ba=au.DisponibilidadAula(inicio, fin, listini, items,0, au);
+                    ba=Drive.DisponibilidadAula(inicio, fin, listini, items,0, au);
                 }
                 
             }else{

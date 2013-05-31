@@ -661,7 +661,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                     control=true;
                                     int id=0;
                                     if(tar.getIdTarea()!=null){id=tar.getIdTarea();}
-                                    if (per.OtrosVerificarDisponibilidad(fecha_inicio, ini, fi, fecha_fin,control,id)) {
+                                    if (Drive.OtrosVerificarDisponibilidad(per,fecha_inicio, ini, fi, fecha_fin,control,id)) {
                                         est = true;
                                     }
                                 }
@@ -696,7 +696,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                         control=true;
                                         int idd=0;
                                         if(tar.getIdTarea()!=null){idd=tar.getIdTarea();}
-                                        if (per.OtrosVerificarDisponibilidad(fecha_inicio, ini, fi, fecha_fin,control,idd)) {
+                                        if (Drive.OtrosVerificarDisponibilidad(per,fecha_inicio, ini, fi, fecha_fin,control,idd)) {
                                             AgendaId ida = new AgendaId(per.getIdPersonal(), tarr.getIdTarea());
                                             Agenda age = new Agenda();
                                             age.setAnolectivo(Drive.getAnoLectivo());
@@ -859,7 +859,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                     if (!lista.contains(person)) {
                                         cambio = true;
                                     }
-                                    if (!person.OtrosVerificarDisponibilidad(fecha_inicio, inicio, fin, fecha_fin,controll,tar.getIdTarea())) {
+                                    if (!Drive.OtrosVerificarDisponibilidad(person,fecha_inicio, inicio, fin, fecha_fin,controll,tar.getIdTarea())) {
                                         controll=false;
                                         break;
                                     }
@@ -916,7 +916,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                         aux.setInicio(inicio);
                                         aux.setFin(fin);
                                         boolean control=false;
-                                        if (per.OtrosVerificarDisponibilidad(fecha_inicio, inicio, fin, fecha_fin,control,tar.getIdTarea())) {
+                                        if (Drive.OtrosVerificarDisponibilidad(per,fecha_inicio, inicio, fin, fecha_fin,control,tar.getIdTarea())) {
                                             Agenda age = tar.ObtenerAgenda(per.getIdPersonal());
                                             if (age.getId() == null) {
                                                 AgendaId ida = new AgendaId(per.getIdPersonal(), tar.getIdTarea());
