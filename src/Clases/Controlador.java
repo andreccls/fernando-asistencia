@@ -2784,6 +2784,7 @@ public class Controlador {
             while (i.hasNext()) {
                 Tareaclase tarcla = (Tareaclase) i.next();
                 Tarea tar = tarcla.getTarea();
+                otro=ot1;
                 while (otro.compareTo(finn) <= 0) {
                     if (!PERSISTENCIA.getAgendasTar(tar.getIdTarea()).isEmpty()) {
                         Iterator it = PERSISTENCIA.getAgendasTar(tar.getIdTarea()).iterator();
@@ -2796,6 +2797,8 @@ public class Controlador {
                                         Iterator itin = di.getIniciofins().iterator();
                                         while (itin.hasNext()) {
                                             Iniciofin in = (Iniciofin) itin.next();
+                                            Date ii=ini.getInicio();
+                                            Date iii=ini.getFin();
                                             if (ini.getInicio().compareTo(in.getInicio()) <= 0 && ini.getFin().compareTo(in.getInicio()) >= 0) {
                                                 a = false;
                                                 break;
@@ -2830,6 +2833,7 @@ public class Controlador {
             while (i.hasNext()) {
                 Tareaclase tarcla = (Tareaclase) i.next();
                 Tarea tar = tarcla.getTarea();
+                otro=ot2;
                 while (otro.compareTo(finn) <= 0) {
                     if (!PERSISTENCIA.getAgendasTar(tar.getIdTarea()).isEmpty()) {
                         Iterator it = PERSISTENCIA.getAgendasTar(tar.getIdTarea()).iterator();
@@ -2876,6 +2880,7 @@ public class Controlador {
             while (i.hasNext()) {
                 Tareaclase tarcla = (Tareaclase) i.next();
                 Tarea tar = tarcla.getTarea();
+                otro=ot3;
                 while (otro.compareTo(finn) <= 0) {
                     if (!PERSISTENCIA.getAgendasTar(tar.getIdTarea()).isEmpty()) {
                         Iterator it = PERSISTENCIA.getAgendasTar(tar.getIdTarea()).iterator();
@@ -2922,6 +2927,7 @@ public class Controlador {
             while (i.hasNext()) {
                 Tareaclase tarcla = (Tareaclase) i.next();
                 Tarea tar = tarcla.getTarea();
+                otro=ot4;
                 while (otro.compareTo(finn) <= 0) {
                     if (!PERSISTENCIA.getAgendasTar(tar.getIdTarea()).isEmpty()) {
                         Iterator it = PERSISTENCIA.getAgendasTar(tar.getIdTarea()).iterator();
@@ -2968,6 +2974,7 @@ public class Controlador {
             while (i.hasNext()) {
                 Tareaclase tarcla = (Tareaclase) i.next();
                 Tarea tar = tarcla.getTarea();
+                otro=ot5;
                 while (otro.compareTo(finn) <= 0) {
                     if (!PERSISTENCIA.getAgendasTar(tar.getIdTarea()).isEmpty()) {
                         Iterator it = PERSISTENCIA.getAgendasTar(tar.getIdTarea()).iterator();
@@ -3014,6 +3021,7 @@ public class Controlador {
             while (i.hasNext()) {
                 Tareaclase tarcla = (Tareaclase) i.next();
                 Tarea tar = tarcla.getTarea();
+                otro=ot2;
                 while (otro.compareTo(finn) <= 0) {
                     if (!PERSISTENCIA.getAgendasTar(tar.getIdTarea()).isEmpty()) {
                         Iterator it = PERSISTENCIA.getAgendasTar(tar.getIdTarea()).iterator();

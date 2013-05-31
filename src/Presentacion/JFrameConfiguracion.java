@@ -127,6 +127,7 @@ public class JFrameConfiguracion extends javax.swing.JFrame {
         if(adm.getIdPersonal()!=null && adm.getPerfil().getConfiguracioneli()==null){
             jLabel17.setVisible(false);
         }
+//        jTable1.getColumnModel().getColumn(4).setCellEditor(boolean.class);
     }
 
     /**
