@@ -734,7 +734,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                     control=true;
                                     int id=0;
                                     if(tar.getIdTarea()!=null){id=tar.getIdTarea();}
-                                    int res=per.ExtracurricularVerificarDisponibilidad(fecha_inicio, ini, fi, fecha_fin,control,id);
+                                    int res=Drive.ExtracurricularVerificarDisponibilidad(per,fecha_inicio, ini, fi, fecha_fin,control,id);
                                     if (res==1||res==2) {
                                         est = true;
                                     }
@@ -771,7 +771,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                         control=false;
                                         int idd=0;
                                         if(tar.getIdTarea()!=null){idd=tar.getIdTarea();}
-                                        if (per.ExtracurricularVerificarDisponibilidad(fecha_inicio, ini, fi, fecha_fin,control,idd)==1) {
+                                        if (Drive.ExtracurricularVerificarDisponibilidad(per,fecha_inicio, ini, fi, fecha_fin,control,idd)==1) {
                                             AgendaId ida = new AgendaId(per.getIdPersonal(), tarr.getIdTarea());
                                             Agenda age = new Agenda();
                                             age.setAnolectivo(Drive.getAnoLectivo());
@@ -844,7 +844,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                                 in.setFin(fin);
                                                 in.guardarIniciofin(in);
                                             }
-                                        }else if(per.ExtracurricularVerificarDisponibilidad(fecha_inicio, inicio, fin, fecha_fin,control,idd)==2){
+                                        }else if(Drive.ExtracurricularVerificarDisponibilidad(per,fecha_inicio, inicio, fin, fecha_fin,control,idd)==2){
                                             AgendaId ida = new AgendaId(per.getIdPersonal(), tarr.getIdTarea());
                                             Agenda age = new Agenda();
                                             age.setId(ida);
@@ -1015,7 +1015,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                     if (!lista.contains(person)) {
                                         cambio = true;
                                     }
-                                    if (person.ExtracurricularVerificarDisponibilidad(fecha_inicio, ini, fi, fecha_fin,controll,tar.getIdTarea()) == 0) {
+                                    if (Drive.ExtracurricularVerificarDisponibilidad(person,fecha_inicio, ini, fi, fecha_fin,controll,tar.getIdTarea()) == 0) {
                                         controll=false;
                                         break;
                                     }
@@ -1069,7 +1069,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                     if (modelo.getValueAt(c, 0).equals(true)) {
                                         Personal per = (Personal) modelo.getValueAt(c, 1);
                                         boolean control=false;
-                                        if (per.ExtracurricularVerificarDisponibilidad(fecha_inicio, ini, fi, fecha_fin,control,tar.getIdTarea())==1) {
+                                        if (Drive.ExtracurricularVerificarDisponibilidad(per,fecha_inicio, ini, fi, fecha_fin,control,tar.getIdTarea())==1) {
                                             AgendaId ida = new AgendaId(per.getIdPersonal(), tar.getIdTarea());
                                             Agenda age = new Agenda();
                                             age.setAnolectivo(Drive.getAnoLectivo());
@@ -1142,7 +1142,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                                 in.setFin(fin);
                                                 in.guardarIniciofin(in);
                                             }
-                                        } else if(per.ExtracurricularVerificarDisponibilidad(fecha_inicio, inicio, fin, fecha_fin,control,tar.getIdTarea())==2){
+                                        } else if(Drive.ExtracurricularVerificarDisponibilidad(per,fecha_inicio, inicio, fin, fecha_fin,control,tar.getIdTarea())==2){
                                             AgendaId ida = new AgendaId(per.getIdPersonal(), tar.getIdTarea());
                                             Agenda age = new Agenda();
                                             age.setId(ida);

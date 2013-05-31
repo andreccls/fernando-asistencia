@@ -656,7 +656,7 @@ public class JFrameReunion extends javax.swing.JFrame {
                                     control=true;
                                     int id=0;
                                     if(tar.getIdTarea()!=null){id=tar.getIdTarea();}
-                                    int res=per.ReunionVerificarDisponibilidad(fecha, inicio, fin, control,id);
+                                    int res=Drive.ReunionVerificarDisponibilidad(per,fecha, inicio, fin, control,id);
                                     if (res==1||res==2) {
                                         est = true;
                                     }
@@ -704,7 +704,7 @@ public class JFrameReunion extends javax.swing.JFrame {
                                         control=false;
                                         int idd=0;
                                         if(tar.getIdTarea()!=null){idd=tar.getIdTarea();}
-                                        if (per.ReunionVerificarDisponibilidad(fecha, inicio, fin, control,idd)==1) {
+                                        if (Drive.ReunionVerificarDisponibilidad(per,fecha, inicio, fin, control,idd)==1) {
                                             AgendaId ida = new AgendaId(per.getIdPersonal(), tarr.getIdTarea());
                                             Agenda age = new Agenda();
                                             age.setAnolectivo(Drive.getAnoLectivo());
@@ -733,7 +733,7 @@ public class JFrameReunion extends javax.swing.JFrame {
                                             in.setEstadoInicio(false);
                                             in.setFin(fin);
                                             in.guardarIniciofin(in);
-                                        }else if(per.ReunionVerificarDisponibilidad(fecha, inicio, fin, control,tar.getIdTarea())==2){
+                                        }else if(Drive.ReunionVerificarDisponibilidad(per,fecha, inicio, fin, control,tar.getIdTarea())==2){
                                             AgendaId ida = new AgendaId(per.getIdPersonal(), tarr.getIdTarea());
                                             Agenda age = new Agenda();
                                             age.setId(ida);
@@ -855,7 +855,7 @@ public class JFrameReunion extends javax.swing.JFrame {
                                     if (!lista.contains(person)) {
                                         cambio = true;
                                     }
-                                    if (person.ReunionVerificarDisponibilidad(fecha, inicio, fin, controll,tar.getIdTarea()) == 0) {
+                                    if (Drive.ReunionVerificarDisponibilidad(person,fecha, inicio, fin, controll,tar.getIdTarea()) == 0) {
                                         controll=false;
                                         break;
                                     }
@@ -917,7 +917,7 @@ public class JFrameReunion extends javax.swing.JFrame {
                                     if (modelo.getValueAt(c, 0).equals(true)) {
                                         Personal per = (Personal) modelo.getValueAt(c, 1);
                                         boolean control=false;
-                                        if (per.ReunionVerificarDisponibilidad(fecha, inicio, fin,control,tar.getIdTarea())==1) {
+                                        if (Drive.ReunionVerificarDisponibilidad(per,fecha, inicio, fin,control,tar.getIdTarea())==1) {
                                             Agenda age = tar.ObtenerAgenda(per.getIdPersonal());
                                             if (age.getId() == null) {
                                                 AgendaId ida = new AgendaId(per.getIdPersonal(), tar.getIdTarea());
@@ -948,7 +948,7 @@ public class JFrameReunion extends javax.swing.JFrame {
                                             in.setEstadoInicio(false);
                                             in.setFin(fin);
                                             in.guardarIniciofin(in);
-                                        } else if(per.ReunionVerificarDisponibilidad(fecha, inicio, fin,control,tar.getIdTarea())==2) {
+                                        } else if(Drive.ReunionVerificarDisponibilidad(per,fecha, inicio, fin,control,tar.getIdTarea())==2) {
                                             Agenda age = tar.ObtenerAgenda(per.getIdPersonal());
                                             if (age.getId() == null) {
                                                 AgendaId ida = new AgendaId(per.getIdPersonal(), tar.getIdTarea());
