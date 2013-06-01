@@ -167,8 +167,57 @@ public class persistencia {
         return items;
     }
 
-    public List getAuditoria(int idper) throws ArrayStoreException {
+    public List getAuditoriaPerTodos(int idper) throws ArrayStoreException {
         String hql = "from Auditoria where personalByIdPersonal="+idper;
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
+    }
+    public List getAuditoriaPerActivos(int idper) throws ArrayStoreException {
+        String hql = "from Auditoria where personalByIdPersonal="+idper+" and operacion='Insertar'";
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
+    }
+    
+    public List getAuditoriaPerInactivos(int idper) throws ArrayStoreException {
+        String hql = "from Auditoria where personalByIdPersonal="+idper+" and operacion='Eliminar'";
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
+    }
+    
+    public List getAuditoriaPerAno(int ano) throws ArrayStoreException {
+        String hql = "from Auditoria where personalByIdPersonal!=null and year(fecha)="+ano;
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
+    }
+    
+    public List getAuditoriaPerMes(int ano,int mes) throws ArrayStoreException {
+        String hql = "from Auditoria where personalByIdPersonal!=null and year(fecha)="+ano+" and month(fecha)="+mes;
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
+    }
+    
+    public List getAuditoriaPerDia(int ano,int mes,int dia) throws ArrayStoreException {
+        String hql = "from Auditoria where personalByIdPersonal!=null and year(fecha)="+ano+" and month(fecha)="+mes+" and day(fecha)="+dia;
         List items = new ArrayList();
         Transaction tx = session.beginTransaction();
         Query q = session.createQuery(hql);
@@ -197,8 +246,57 @@ public class persistencia {
 //        return items;
 //    }
     
-    public List getAuditoriaTarea(int idtar) throws ArrayStoreException {
+    public List getAuditoriaTareaTodos(int idtar) throws ArrayStoreException {
         String hql = "from Auditoria where tarea="+idtar;
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
+    }
+    public List getAuditoriaTarAno(int ano) throws ArrayStoreException {
+        String hql = "from Auditoria where tarea!=null and year(fecha)="+ano;
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
+    }
+    
+    public List getAuditoriaTarMes(int ano,int mes) throws ArrayStoreException {
+        String hql = "from Auditoria where tarea!=null and year(fecha)="+ano+" and month(fecha)="+mes;
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
+    }
+    
+    public List getAuditoriaTarDia(int ano,int mes,int dia) throws ArrayStoreException {
+        String hql = "from Auditoria where tarea!=null and year(fecha)="+ano+" and month(fecha)="+mes+" and day(fecha)="+dia;
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
+    }
+    
+    public List getAuditoriaTareaActivos(int idtar) throws ArrayStoreException {
+        String hql = "from Auditoria where tarea="+idtar+" and operacion='Insertar'";
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
+    }
+    
+    public List getAuditoriaTareaInactivos(int idtar) throws ArrayStoreException {
+        String hql = "from Auditoria where tarea="+idtar+" and operacion='Eliminar'";
         List items = new ArrayList();
         Transaction tx = session.beginTransaction();
         Query q = session.createQuery(hql);
