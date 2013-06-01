@@ -2305,7 +2305,7 @@ public class Controlador {
     public void CargarTablaflia(JTable Tabla, Personal per) {
         try {
             DefaultTableModel modelo = (DefaultTableModel) Tabla.getModel();
-            Iterator<PersonalFamiliar> rs = per.getPersonalFamiliarsForIdPersonal().iterator();
+            Iterator<PersonalFamiliar> rs = PERSISTENCIA.getFamiliaresPersonal(per.getIdPersonal()).iterator();
             while (rs.hasNext()) {
                 PersonalFamiliar perfam = (PersonalFamiliar) rs.next();
                     Object fila[] = new Object[6];
@@ -2546,6 +2546,7 @@ public class Controlador {
 
     public void CargarTablaInasistencias(JTable Tabla, String m, int ano) {
         try {
+            LimpiarTabla(Tabla);
             DefaultTableModel modelo = (DefaultTableModel) Tabla.getModel();
 //            Establecimiento col = getPrimerEstablecimiento();
             Controlador cc=new Controlador();
@@ -2863,6 +2864,36 @@ public class Controlador {
             m = 10;
         } else if (mes.equals("DICIEMBRE")) {
             m = 11;
+        }
+        return m;
+    }
+    
+    public String ObtenerMes(int mes) {
+        String m = null;
+        if (mes==0) {
+            m = "ENERO";
+        } else if (mes==1) {
+            m = "FEBRERO";
+        } else if (mes==2) {
+            m = "MARZO";
+        } else if (mes==3) {
+            m = "ABRIL";
+        } else if (mes==4) {
+            m = "MAYO";
+        } else if (mes==5) {
+            m = "JUNIO";
+        } else if (mes==6) {
+            m = "JULIO";
+        } else if (mes==7) {
+            m = "AGOSTO";
+        } else if (mes==8) {
+            m = "SEPTIEMBRE";
+        } else if (mes==9) {
+            m = "OCTUBRE";
+        } else if (mes==10) {
+            m = "NOVIEMBRE";
+        } else if (mes==11) {
+            m = "DICIEMBRE";
         }
         return m;
     }

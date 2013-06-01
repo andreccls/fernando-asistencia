@@ -95,6 +95,14 @@ public class PersonalFamiliar  implements java.io.Serializable {
 //                String.valueOf(unPersonalFamiliar.getId().getIdFamiliar()) +
 //                " se actualizó correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
     }
+    
+    public void EliminarPersonalFamiliar(PersonalFamiliar unPersonalFamiliar){
+        Controlador.getPERSISTENCIA().delete(this);
+
+//        JOptionPane.showMessageDialog(null,"El personal_Familiar "+ 
+//                String.valueOf(unPersonalFamiliar.getId().getIdFamiliar()) +
+//                " se actualizó correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+    }
 
 
 }

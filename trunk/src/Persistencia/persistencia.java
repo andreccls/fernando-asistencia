@@ -8,6 +8,7 @@ import Clases.Asistencia;
 import Clases.Establecimiento;
 import Clases.Iniciofin;
 import Clases.Nivel;
+import Clases.Personal;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -627,6 +628,17 @@ public class persistencia {
 
     public List getPersonales() throws ArrayStoreException {
         String hql = "from Personal";
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
+
+    }
+    
+    public List getFamiliaresPersonal(int idper) throws ArrayStoreException {
+        String hql = "from PersonalFamiliar where personalByIdPersonal.idPersonal="+idper;
         List items = new ArrayList();
         Transaction tx = session.beginTransaction();
         Query q = session.createQuery(hql);

@@ -101,7 +101,7 @@ public class Personal  implements java.io.Serializable {
     
     @Override
     public String toString() {
-        return apellido+" "+nombre;
+        return apellido+", "+nombre;
     }
    
     public Integer getIdPersonal() {
@@ -411,23 +411,23 @@ public class Personal  implements java.io.Serializable {
 //        //} 
 //     }
 
-     public Boolean getEstadoPersonalFamiliar(Personal per, Personal otro) {
-        Boolean bandera=false;
-        Iterator<PersonalFamiliar> it=per.personalFamiliarsForIdPersonal.iterator();
-           while(it.hasNext()){
-           PersonalFamiliar perfam= it.next();
-           Personal pp= perfam.getPersonalByIdFamiliar();
-           if(pp.getEstado()==true && pp.getFamiliar()==true){
-               int id1=pp.getIdPersonal();
-               int id2=otro.getIdPersonal();
-               if(id1 != id2){
-                   bandera=true;
-                   break;
-               }
-           }
-         }
-        return bandera;
-    }
+//     public Boolean getEstadoPersonalFamiliar(Personal per, Personal otro) {
+//        Boolean bandera=false;
+//        Iterator<PersonalFamiliar> it=per.personalFamiliarsForIdPersonal.iterator();
+//           while(it.hasNext()){
+//           PersonalFamiliar perfam= it.next();
+//           Personal pp= perfam.getPersonalByIdFamiliar();
+//           if(pp.getEstado()==true && pp.getFamiliar()==true){
+//               int id1=pp.getIdPersonal();
+//               int id2=otro.getIdPersonal();
+//               if(id1 != id2){
+//                   bandera=true;
+//                   break;
+//               }
+//           }
+//         }
+//        return bandera;
+//    }
     
      
     public void crearPersonalFamiliar(PersonalFamiliarId id, Personal personalByIdPersonal, Personal personalByIdFamiliar, Tiporelacion tiporelacion, Boolean asignacionFamiliar){

@@ -2372,6 +2372,7 @@ dateChooserCombo10.addSelectionChangedListener(new datechooser.events.SelectionC
                         // <editor-fold defaultstate="collapsed" desc="Actualizar familiar"> 
                         familiar.setApellido(jTextField2.getText().toUpperCase());
                         familiar.setNombre(jTextField3.getText().toUpperCase());
+                        familiar.setFamiliar(true);
                         familiar.setFechaNac(fechanac);
                         PersonalFamiliar pp=Drive.getPersonalFamiliar(pe, familiar);
                         pp.setTiporelacion(rel);
@@ -2824,27 +2825,26 @@ dateChooserCombo10.addSelectionChangedListener(new datechooser.events.SelectionC
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         try {
-            Establecimiento col=(Establecimiento) Drive.getPrimerEstablecimiento();
-            Object i= jTable1.getValueAt(jTable1.getSelectedRow(),0);
-            
-            int id=Integer.parseInt(i.toString());
-            Personal per=col.getPersonal(id);
-            Boolean est=pe.getEstadoPersonalFamiliar(pe,per);
-            if(per.getFamiliar()==true){
-                per.setFamiliar(false);
-                per.actualizarPersonal(per);
+            int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea eliminar la relación?", "Eliminar Relación", JOptionPane.YES_NO_OPTION);
+            if (JOptionPane.OK_OPTION == confirmado) {
+                PersonalFamiliar perfam = (PersonalFamiliar) jTable1.getValueAt(jTable1.getSelectedRow(), 0);
+                Personal per = perfam.getPersonalByIdFamiliar();
+//            Boolean est=pe.getEstadoPersonalFamiliar(pe,per);
+                boolean d = per.getFamiliar();
+                if (d == true) {
+                    per.setFamiliar(false);
+                    per.actualizarPersonal(per);
+                    perfam.EliminarPersonalFamiliar(perfam);
+                }
+//            if(est==false){
+//                pe.setFamiliar(false);
+//                pe.actualizarPersonal(pe);
+//            }
+                Drive.LimpiarTabla(jTable1);
+                Drive.CargarTablaflia(jTable1, pe);
             }
-            if(est==false){
-                pe.setFamiliar(false);
-                pe.actualizarPersonal(pe);
-            }
-            Drive.LimpiarTabla(jTable1);
-            Drive.CargarTablaflia(jTable1, pe);
-//            Familiar fam = per.getFamiliar(per, rel, apel, nom, cargo, doc, ingreso, as);
-//            per.eliminarFamiliar(fam);
-//            modelo.removeRow(jTable1.getSelectedRow());
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, ex.toString(),"Actualizar Personal", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Por favor seleccione un personal", "Actualizar Personal", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton7ActionPerformed
 

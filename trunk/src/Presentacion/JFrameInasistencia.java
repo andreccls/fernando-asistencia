@@ -24,6 +24,7 @@ import java.awt.Image;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -78,6 +79,9 @@ public class JFrameInasistencia extends javax.swing.JFrame {
         initComponents();
 
         jTextField1.setText(String.valueOf(Calendar.getInstance().getTime().getYear() + 1900));
+        Date hoy=new Date();
+        String m=Drive.ObtenerMes(hoy.getMonth());
+        jComboBox1.setSelectedItem(m);
         String mes = String.valueOf(jComboBox1.getSelectedItem());
         Drive.CargarTablaInasistencias(jTable1, mes, Integer.parseInt(jTextField1.getText()));
 
@@ -313,7 +317,7 @@ public class JFrameInasistencia extends javax.swing.JFrame {
     }
 
     private void jComboBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox1ItemStateChanged
-        Drive.LimpiarTabla(jTable1);
+//        Drive.LimpiarTabla(jTable1);
         String mes = String.valueOf(jComboBox1.getSelectedItem());
         Drive.CargarTablaInasistencias(jTable1, mes, Integer.parseInt(jTextField1.getText()));
     }//GEN-LAST:event_jComboBox1ItemStateChanged
@@ -477,7 +481,7 @@ public class JFrameInasistencia extends javax.swing.JFrame {
                 }
                 e++;
             }
-            Drive.LimpiarTabla(jTable1);
+//            Drive.LimpiarTabla(jTable1);
             String mes = String.valueOf(jComboBox1.getSelectedItem());
             Drive.CargarTablaInasistencias(jTable1, mes, Integer.parseInt(jTextField1.getText()));
         } catch (Exception e) {
