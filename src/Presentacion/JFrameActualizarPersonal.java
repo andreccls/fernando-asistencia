@@ -311,7 +311,7 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
             jButton11.setEnabled(false);
             jButton12.setEnabled(false);
             jButton13.setEnabled(false);
-            jButton14.setEnabled(false);
+//            jButton14.setEnabled(false);
             jButton17.setEnabled(false);
             jButton19.setEnabled(false);
             jButton2.setEnabled(false);
@@ -383,6 +383,7 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
             jButton8.setEnabled(false);
             jButton17.setEnabled(false);
         }
+        jButton14.setEnabled(false);
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -1365,6 +1366,16 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
             }
         ));
         jTable3.setRowHeight(25);
+        jTable3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable3MouseClicked(evt);
+            }
+        });
+        jTable3.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentResized(java.awt.event.ComponentEvent evt) {
+                jTable3ComponentResized(evt);
+            }
+        });
         jScrollPane3.setViewportView(jTable3);
 
         jButton6.setPreferredSize(new java.awt.Dimension(37, 23));
@@ -3618,6 +3629,14 @@ dateChooserCombo10.addSelectionChangedListener(new datechooser.events.SelectionC
 
         }catch(Exception e){}
     }//GEN-LAST:event_dateChooserCombo10OnSelectionChange
+
+    private void jTable3ComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jTable3ComponentResized
+
+    }//GEN-LAST:event_jTable3ComponentResized
+
+    private void jTable3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable3MouseClicked
+        jButton14.setEnabled(true);
+    }//GEN-LAST:event_jTable3MouseClicked
 
     /**
      * @param args the command line arguments
