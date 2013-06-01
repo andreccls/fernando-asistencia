@@ -35,6 +35,11 @@ public class PersonalFamiliar  implements java.io.Serializable {
        this.tiporelacion = tiporelacion;
        this.asignacionFamiliar = asignacionFamiliar;
     }
+    
+    @Override
+    public String toString() {
+        return personalByIdFamiliar.getApellido()+", "+personalByIdFamiliar.getNombre();
+    }
    
     public PersonalFamiliarId getId() {
         return this.id;

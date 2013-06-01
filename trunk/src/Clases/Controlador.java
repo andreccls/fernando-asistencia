@@ -2305,30 +2305,23 @@ public class Controlador {
     public void CargarTablaflia(JTable Tabla, Personal per) {
         try {
             DefaultTableModel modelo = (DefaultTableModel) Tabla.getModel();
-            Establecimiento col = getPrimerEstablecimiento();
-            //Personal ppp=col.getPersonal(per.getIdPersonal());
             Iterator<PersonalFamiliar> rs = per.getPersonalFamiliarsForIdPersonal().iterator();
             while (rs.hasNext()) {
                 PersonalFamiliar perfam = (PersonalFamiliar) rs.next();
-                Personal pe = col.getPersonal(perfam.getId().getIdFamiliar());
-                if (pe.getFamiliar() == true) {
-                    Object fila[] = new Object[8];
-                    fila[0] = pe.getIdPersonal();
-                    fila[1] = pe.toString();
-                    fila[2] = pe.getTipodoc().getTipodoc();
-                    fila[3] = pe.getDni();
-                    fila[4] = perfam.getTiporelacion().getRelacion();
+                    Object fila[] = new Object[6];
+                    fila[0] = perfam;
+                    fila[1] = perfam.getPersonalByIdFamiliar().getTipodoc().getTipodoc();
+                    fila[2] = perfam.getPersonalByIdFamiliar().getDni();
+                    fila[3] = perfam.getTiporelacion().getRelacion();
                     SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
-                    fila[5] = formateador.format(pe.getFechaNac());
-
+                    fila[4] = formateador.format(perfam.getPersonalByIdFamiliar().getFechaNac());
                     Boolean asig = perfam.getAsignacionFamiliar().booleanValue();
                     if (asig == true) {
-                        fila[6] = "Si";
+                        fila[5] = "Si";
                     } else if (asig == false) {
-                        fila[6] = "No";
+                        fila[5] = "No";
                     }
                     modelo.addRow(fila);
-                }
             }
             Tabla.setModel(modelo);
         } catch (Exception ex) {
@@ -2523,6 +2516,20 @@ public class Controlador {
             JOptionPane.showMessageDialog(null, ex.toString());
         }
     }
+    
+     
+     public PersonalFamiliar getPersonalFamiliar(Personal per, Personal otro) {
+        PersonalFamiliar bandera = new PersonalFamiliar();
+        Iterator<PersonalFamiliar> it = per.getPersonalFamiliarsForIdPersonal().iterator();
+        while (it.hasNext()) {
+            PersonalFamiliar perfam = (PersonalFamiliar) it.next();
+            if (perfam.getId().getIdFamiliar() == otro.getIdPersonal()) {
+                bandera = perfam;
+                break;
+            }
+        }
+        return bandera;
+    }
 
     public Agenda getAgenda(Tarea tar, int per) {
         Agenda band = new Agenda();
@@ -2658,34 +2665,41 @@ public class Controlador {
         }
     }
     
-    public Boolean ControlFamiliar(Personal pe, Tiporelacion rel, Boolean bandera) {
+//    public boolean ControlarDNI(String dni){
+//        boolean ban=true;
+//        Iterator it=PERSISTENCIA.getPersonal(dni).iterator();
+//        if(it.hasNext()){
+//            ban=false;
+//        }
+//        return ban;
+//    }
+    
+    public Boolean ControlFamiliar(Personal pe, Tiporelacion rel) {
         Boolean ban = true;
-        if (bandera == false) {
-            if (rel.getRelacion().equals("MADRE") || rel.getRelacion().equals("PADRE")) {
-                ban = false;
-                int contadorma = 0;
-                int contadorpa = 0;
-                if (rel.getRelacion().equals("MADRE")) {
+        if (rel.getRelacion().equals("MADRE") || rel.getRelacion().equals("PADRE")) {
+            ban = false;
+            int contadorma = 0;
+            int contadorpa = 0;
+            if (rel.getRelacion().equals("MADRE")) {
+                contadorma++;
+            } else if (rel.getRelacion().equals("PADRE")) {
+                contadorpa++;
+            }
+            Iterator<PersonalFamiliar> rs = pe.getPersonalFamiliarsForIdPersonal().iterator();
+            while (rs.hasNext()) {
+                PersonalFamiliar perfam = (PersonalFamiliar) rs.next();
+                if (perfam.getTiporelacion().getRelacion().equals("MADRE")) {
                     contadorma++;
-                } else if (rel.getRelacion().equals("PADRE")) {
+                } else if (perfam.getTiporelacion().getRelacion().equals("PADRE")) {
                     contadorpa++;
                 }
-                Iterator<PersonalFamiliar> rs = pe.getPersonalFamiliarsForIdPersonal().iterator();
-                while (rs.hasNext()) {
-                    PersonalFamiliar perfam = (PersonalFamiliar) rs.next();
-                    if (perfam.getTiporelacion().getRelacion().equals("MADRE")) {
-                        contadorma++;
-                    } else if (perfam.getTiporelacion().getRelacion().equals("PADRE")) {
-                        contadorpa++;
-                    }
-                }
-                if (contadorma == 2 && contadorpa == 0) {
-                    ban = true;
-                } else if (contadorpa == 2 && contadorma == 0) {
-                    ban = true;
-                } else if (contadorma <= 1 && contadorpa <= 1) {
-                    ban = true;
-                }
+            }
+            if (contadorma == 2 && contadorpa == 0) {
+                ban = true;
+            } else if (contadorpa == 2 && contadorma == 0) {
+                ban = true;
+            } else if (contadorma <= 1 && contadorpa <= 1) {
+                ban = true;
             }
         }
         return ban;
@@ -2771,8 +2785,9 @@ public class Controlador {
 
     public Personal getPersonal(Tipodoc tipo, String dni) {
         Personal pe = new Personal();
-        if (!PERSISTENCIA.existePersonal(tipo.getIdTipodoc(), dni).isEmpty()) {
-            pe = (Personal) PERSISTENCIA.existePersonal(tipo.getIdTipodoc(), dni).get(0);
+        Iterator it=PERSISTENCIA.existePersonal(tipo.getIdTipodoc(), dni).iterator();
+        if (it.hasNext()) {
+            pe = (Personal) it.next();
         }
         return pe;
     }

@@ -69,6 +69,9 @@ public class JFramePersonal extends javax.swing.JFrame {
         Drive.CargarComboPerfil(jComboBox7);
         jList1.setModel(modeloLista);
         jList2.setModel(modeloLista2);
+        Calendar ca = Calendar.getInstance();
+        ca.add(Calendar.YEAR, -19);
+        dateChooserCombo1.setSelectedDate(ca);
         ///ICONO EDITAR
         ImageIcon fot = new ImageIcon(getClass().getResource("/imagenes/image.jpg"));
 //        ImageIcon fot = new ImageIcon(getClass().getResource("src\\imagenes\\image.jpg"));
@@ -1316,6 +1319,7 @@ jPanel1Layout.setHorizontalGroup(
             jFormattedTextField2.setText(cuil.generar(Integer.parseInt(d),s ));
         }else{
             JOptionPane.showMessageDialog(null, "Ingrese correctamente el numero de documento","Registrar Tipo de Documento", JOptionPane.ERROR_MESSAGE);
+            jFormattedTextField5.setText(" ");
         }
     }//GEN-LAST:event_jFormattedTextField5FocusLost
 
@@ -1500,16 +1504,18 @@ jPanel1Layout.setHorizontalGroup(
     }//GEN-LAST:event_jTextField13KeyTyped
 
     private void dateChooserCombo1OnSelectionChange(datechooser.events.SelectionChangedEvent evt) {//GEN-FIRST:event_dateChooserCombo1OnSelectionChange
-//        Date fechanac= dateChooserCombo1.getSelectedDate().getTime();
-//        Date hoy=new Date();
-//        Calendar cal = new GregorianCalendar();
-//        cal.setTimeInMillis(fechanac.getTime());
-//        cal.add(Calendar.YEAR, 18);
-//        Date aux=new Date(cal.getTimeInMillis());
-//        if(aux.compareTo(hoy)>0){
-//            JOptionPane.showMessageDialog(null,"El Personal debe ser mayor de edad","Registrar Personal", JOptionPane.ERROR_MESSAGE);
-//            dateChooserCombo1.setSelectedDate(new GregorianCalendar());
-//        }
+        Date fechanac= dateChooserCombo1.getSelectedDate().getTime();
+        Date hoy=new Date();
+        Calendar cal = new GregorianCalendar();
+        cal.setTimeInMillis(fechanac.getTime());
+        cal.add(Calendar.YEAR, 18);
+        Date aux=new Date(cal.getTimeInMillis());
+        if(aux.compareTo(hoy)>0){
+            JOptionPane.showMessageDialog(null,"El Personal debe ser mayor de edad","Registrar Personal", JOptionPane.ERROR_MESSAGE);
+            Calendar ca = Calendar.getInstance();
+            ca.add(Calendar.YEAR, -19);
+            dateChooserCombo1.setSelectedDate(ca);
+        }
     }//GEN-LAST:event_dateChooserCombo1OnSelectionChange
 
     

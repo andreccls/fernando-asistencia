@@ -58,20 +58,16 @@ public class Tiporelacion  implements java.io.Serializable {
     public void guardarTiporelacion(Tiporelacion unTiporelacion){
         Controlador.getPERSISTENCIA().insert(this);
 
-        JOptionPane.showMessageDialog(null,"El Tiporelacion "+ 
-                String.valueOf(unTiporelacion.getIdTiporelacion()) +
-                " se guardo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null,"El Tipo de relacion se guardo correctamente","Registrar Relación",JOptionPane.INFORMATION_MESSAGE);
     }
     
     public void eliminarTiporelacion(Tiporelacion unTiporelacion){
         Iterator it=personalFamiliars.iterator();
         if(it.hasNext()){
-            JOptionPane.showMessageDialog(null,"El Tiporelacion no se puede eliminar porque esta relacionada con otros familiares","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null,"El Tipo de relacion no se puede eliminar porque esta relacionada con otros familiares","Eliminar Relación",JOptionPane.INFORMATION_MESSAGE);
         }else{
             Controlador.getPERSISTENCIA().delete(this);
-            JOptionPane.showMessageDialog(null,"El Tiporelacion "+ 
-                String.valueOf(unTiporelacion.getIdTiporelacion()) +
-                " se guardo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null,"El Tipo de relacion se eliminó correctamente","Eliminar Relación",JOptionPane.INFORMATION_MESSAGE);
         }
         
     }
