@@ -339,7 +339,7 @@ public class Personal  implements java.io.Serializable {
 // GENERADO POR GONZALEZ FERNANDO
     
     public int guardarPersonal(Personal unPersonal){
-        Controlador.getPERSISTENCIA().insertstring(this);
+        Controlador.getPERSISTENCIA().insert(this);
         JOptionPane.showMessageDialog(null,"La persona fue registrada correctamente","Registro de Persona",JOptionPane.INFORMATION_MESSAGE);
         return unPersonal.getIdPersonal();
     }
@@ -428,19 +428,7 @@ public class Personal  implements java.io.Serializable {
          }
         return bandera;
     }
-     
-     public PersonalFamiliar getPersonalFamiliar(Personal per, Personal otro) {
-        Iterator<PersonalFamiliar> it= per.personalFamiliarsForIdPersonal.iterator();
-        PersonalFamiliar bandera=new PersonalFamiliar();
-           while(it.hasNext()){
-           PersonalFamiliar perfam=(PersonalFamiliar) it.next();
-           if(perfam.getId().getIdFamiliar()== otro.getIdPersonal()){
-                   bandera=perfam;
-                   break;
-           }
-         }
-        return bandera;
-    }
+    
      
     public void crearPersonalFamiliar(PersonalFamiliarId id, Personal personalByIdPersonal, Personal personalByIdFamiliar, Tiporelacion tiporelacion, Boolean asignacionFamiliar){
         PersonalFamiliar unPersonalFamiliar=new PersonalFamiliar (id, personalByIdPersonal, personalByIdFamiliar, tiporelacion,asignacionFamiliar);

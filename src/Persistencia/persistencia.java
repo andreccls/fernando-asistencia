@@ -636,6 +636,17 @@ public class persistencia {
 
     }
     
+    public List getPersonal(String dni) throws ArrayStoreException {
+        String hql = "from Personal where dni='"+dni+"'";
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
+
+    }
+    
     public List getPersonalesTrue(int i) throws ArrayStoreException {
         String hql = "from Personal where estado="+i;
         List items = new ArrayList();
@@ -761,7 +772,7 @@ public class persistencia {
     }
 
     public List existePersonal(int tipodoc, String nrodoc) throws ArrayStoreException {
-        String hql = "from Personal where id_tipodoc =" + tipodoc + " and dni='" + nrodoc + "'";
+        String hql = "from Personal where tipodoc.idTipodoc =" + tipodoc + " and dni='" + nrodoc + "'";
         List items = new ArrayList();
         Transaction tx = session.beginTransaction();
         Query q = session.createQuery(hql);

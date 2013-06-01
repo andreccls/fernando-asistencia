@@ -201,21 +201,21 @@ public class Establecimiento  implements java.io.Serializable {
         return per;
     }
     //Controlador Drive=new Controlador();
-    public Personal getPersonal(Tipodoc tipo,String dni) {
-        Personal per=new Personal();
-        Iterator it=personals.iterator();
-           while(it.hasNext()){
-           Personal p=(Personal) it.next();
-           if(p.getDni().equals(dni)){
-               Tipodoc tip=p.getTipodoc();
-               if(tip.getTipodoc().equals(tipo.getTipodoc())){
-                   per=p;
-                   break;
-               }
-           }
-         }
-        return per;
-    }
+//    public Personal getPersonal(Tipodoc tipo,String dni) {
+//        Personal per=new Personal();
+//        Iterator it=personals.iterator();
+//           while(it.hasNext()){
+//           Personal p=(Personal) it.next();
+//           if(p.getDni().equals(dni)){
+//               Tipodoc tip=p.getTipodoc();
+//               if(tip.getTipodoc().equals(tipo.getTipodoc())){
+//                   per=p;
+//                   break;
+//               }
+//           }
+//         }
+//        return per;
+//    }
       
      public boolean existePersonal(Personal unPersonal){
           boolean tmpres=false;
