@@ -52,7 +52,9 @@ public class JFrameHistorial extends javax.swing.JFrame {
         Date fecha=dateChooserCombo1.getSelectedDate().getTime();
         String buscar = (String) jComboBox1.getSelectedItem();
         String filtro = (String) jComboBox2.getSelectedItem();
-        Drive.CargarTablaHistorial(jTable1,fecha, buscar,filtro,jTable2);
+        Drive.CargarTablaHistorialPer(jTable1,fecha, buscar,filtro);
+        String filtrotar = (String) jComboBox3.getSelectedItem();
+        Drive.CargarTablaHistorialTar(fecha, buscar,filtrotar,jTable2);
         if(buscar.equals("DIA")){
         jLabel4.setText(String.valueOf(fecha.getDate()));
         }else if(buscar.equals("MES")){
@@ -122,6 +124,8 @@ public class JFrameHistorial extends javax.swing.JFrame {
         jScrollPane4 = new javax.swing.JScrollPane();
         jTable4 = new javax.swing.JTable();
         jButton5 = new javax.swing.JButton();
+        jComboBox3 = new javax.swing.JComboBox();
+        jLabel5 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         dateChooserCombo1 = new datechooser.beans.DateChooserCombo();
@@ -245,8 +249,8 @@ public class JFrameHistorial extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -323,6 +327,15 @@ public class JFrameHistorial extends javax.swing.JFrame {
             }
         });
 
+        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Todos", "Activos", "Inactivos" }));
+        jComboBox3.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboBox3ItemStateChanged(evt);
+            }
+        });
+
+        jLabel5.setText("Ver:");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -332,22 +345,31 @@ public class JFrameHistorial extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 655, Short.MAX_VALUE)
                     .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 655, Short.MAX_VALUE)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton5, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jButton3, javax.swing.GroupLayout.Alignment.TRAILING))))
+                            .addComponent(jButton3, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jButton5, javax.swing.GroupLayout.Alignment.TRAILING))))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton3)
                 .addContainerGap())
@@ -520,7 +542,9 @@ public class JFrameHistorial extends javax.swing.JFrame {
             Date fecha=dateChooserCombo1.getSelectedDate().getTime();
             String buscar = (String) jComboBox1.getSelectedItem();
             String filtro = (String) jComboBox2.getSelectedItem();
-            Drive.CargarTablaHistorial(jTable1,fecha, buscar,filtro,jTable2);
+            Drive.CargarTablaHistorialPer(jTable1,fecha, buscar,filtro);
+            String filtro2 = (String) jComboBox3.getSelectedItem();
+            Drive.CargarTablaHistorialTar(fecha, buscar,filtro2,jTable2);
             if(buscar.equals("DIA")){
             jLabel4.setText(String.valueOf(fecha.getDate()));
             }else if(buscar.equals("MES")){
@@ -542,7 +566,9 @@ public class JFrameHistorial extends javax.swing.JFrame {
             Date fecha=dateChooserCombo1.getSelectedDate().getTime();
             String buscar = (String) jComboBox1.getSelectedItem();
             String filtro = (String) jComboBox2.getSelectedItem();
-            Drive.CargarTablaHistorial(jTable1,fecha, buscar,filtro,jTable2);
+            Drive.CargarTablaHistorialPer(jTable1,fecha, buscar,filtro);
+            String filtro2 = (String) jComboBox3.getSelectedItem();
+            Drive.CargarTablaHistorialTar(fecha, buscar,filtro2,jTable2);
         }catch(Exception e){
             JOptionPane.showMessageDialog(null, e);
         }
@@ -557,7 +583,9 @@ public class JFrameHistorial extends javax.swing.JFrame {
             Date fecha=dateChooserCombo1.getSelectedDate().getTime();
             String buscar = (String) jComboBox1.getSelectedItem();
             String filtro = (String) jComboBox2.getSelectedItem();
-            Drive.CargarTablaHistorial(jTable1,fecha, buscar,filtro,jTable2);
+            Drive.CargarTablaHistorialPer(jTable1,fecha, buscar,filtro);
+            String filtro2 = (String) jComboBox3.getSelectedItem();
+            Drive.CargarTablaHistorialTar(fecha, buscar,filtro2,jTable2);
             if(buscar.equals("DIA")){
             jLabel4.setText(String.valueOf(fecha.getDate()));
             }else if(buscar.equals("MES")){
@@ -573,13 +601,11 @@ public class JFrameHistorial extends javax.swing.JFrame {
     private void jComboBox2ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox2ItemStateChanged
         try{
             Drive.LimpiarTabla(jTable1);
-            Drive.LimpiarTabla(jTable2);
             Drive.LimpiarTabla(jTable3);
-            Drive.LimpiarTabla(jTable4);
             Date fecha=dateChooserCombo1.getSelectedDate().getTime();
             String buscar = (String) jComboBox1.getSelectedItem();
             String filtro = (String) jComboBox2.getSelectedItem();
-            Drive.CargarTablaHistorial(jTable1,fecha, buscar,filtro,jTable2);
+            Drive.CargarTablaHistorialPer(jTable1,fecha, buscar,filtro);
         }catch(Exception e){
             JOptionPane.showMessageDialog(null, e);
         }
@@ -702,6 +728,19 @@ public class JFrameHistorial extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton5ActionPerformed
 
+    private void jComboBox3ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox3ItemStateChanged
+        try{
+            Drive.LimpiarTabla(jTable2);
+            Drive.LimpiarTabla(jTable4);
+            Date fecha=dateChooserCombo1.getSelectedDate().getTime();
+            String buscar = (String) jComboBox1.getSelectedItem();
+            String filtrotar = (String) jComboBox3.getSelectedItem();
+            Drive.CargarTablaHistorialTar(fecha, buscar,filtrotar,jTable2);
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }//GEN-LAST:event_jComboBox3ItemStateChanged
+
     /**
      * @param args the command line arguments
      */
@@ -745,10 +784,12 @@ public class JFrameHistorial extends javax.swing.JFrame {
     private javax.swing.JButton jButton5;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JComboBox jComboBox2;
+    private javax.swing.JComboBox jComboBox3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
