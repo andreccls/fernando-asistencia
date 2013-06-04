@@ -322,7 +322,7 @@ public class JFrameFeriados extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         try{
             jTable1.getModel();
-            int confirmado = JOptionPane.showConfirmDialog(null,"¿Esta seguro que desea eliminar la fecha?","Eliminar feriado",JOptionPane.YES_NO_OPTION);
+            int confirmado = JOptionPane.showConfirmDialog(null,"¿Esta seguro que desea eliminar el feriado?","Eliminar feriado",JOptionPane.YES_NO_OPTION);
             if (JOptionPane.OK_OPTION == confirmado){
                 Feriado fer=(Feriado)jTable1.getValueAt(jTable1.getSelectedRow(), 0);
                 fer.eliminarFeriado(fer);
@@ -330,7 +330,7 @@ public class JFrameFeriados extends javax.swing.JFrame {
                 Drive.CargarTablaFeriados(jTable1,fech);
             }
         }catch (Exception e){
-            JOptionPane.showMessageDialog(null,"Para eliminar una fecha debe seleccionarla y luego presionar 'Eliminar'","Eliminar Feriado", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null,"Para eliminar un feriado debe seleccionarlo y luego presionar 'Eliminar'","Eliminar Feriado", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -346,6 +346,8 @@ public class JFrameFeriados extends javax.swing.JFrame {
                     fer.guardarFeriado(fer);
                     Date fech=dateChooserCombo1.getSelectedDate().getTime();
                     Drive.CargarTablaFeriados(jTable1,fech);
+                    jTextField4.setText("");
+                    dateChooserCombo1.setSelectedDate(Calendar.getInstance());
                 }else{
                 JOptionPane.showMessageDialog(null,"Ya existe el feriado","Registrar Feriado", JOptionPane.ERROR_MESSAGE);
                 }

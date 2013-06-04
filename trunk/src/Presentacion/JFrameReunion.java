@@ -92,7 +92,7 @@ public class JFrameReunion extends javax.swing.JFrame {
             Departamento dep=(Departamento) aux;
             buscar=dep.getNombre();
         }
-        Drive.CargarTablacheck(jTable1, buscar, buffer.toString().toUpperCase(), lista);
+        Drive.CargarTablacheck2(jTable1, buscar, buffer.toString().toUpperCase(), lista);
         jFormattedTextField1.setText("00:00");
         jFormattedTextField2.setText("00:00");
         ///Verificar si vengo desde principal o desde consultar tarea
@@ -120,9 +120,9 @@ public class JFrameReunion extends javax.swing.JFrame {
                 Iterator it = tar.getAgendas().iterator();
                 while (it.hasNext()) {
                     Agenda agg = (Agenda) it.next();
-                    lista.add(agg.getPersonal());
+                    lista.add(agg.getPersonal().getIdPersonal());
                 }
-                Drive.CargarTablacheck(jTable1, buscar, buffer.toString().toUpperCase(), lista);
+                Drive.CargarTablacheck2(jTable1, buscar, buffer.toString().toUpperCase(), lista);
             } catch (Exception e) {
             }
         }
@@ -771,7 +771,7 @@ public class JFrameReunion extends javax.swing.JFrame {
                                 Drive.LimpiarTabla(jTable1);
                                 lista.removeAll(lista);
                                 String buscar = (String) jComboBox1.getSelectedItem();
-                                Drive.CargarTablacheck(jTable1, buscar, buffer.toString().toUpperCase(), lista);
+                                Drive.CargarTablacheck2(jTable1, buscar, buffer.toString().toUpperCase(), lista);
                                 Drive = new Controlador();
                             }
                         }else{
@@ -1069,7 +1069,7 @@ public class JFrameReunion extends javax.swing.JFrame {
                     Departamento dep=(Departamento) aux;
                     buscar=dep.getNombre();
                 }
-                Drive.CargarTablacheck(jTable1,buscar, es.toUpperCase(),lista);
+                Drive.CargarTablacheck2(jTable1,buscar, es.toUpperCase(),lista);
             }else if(car==(char)KeyEvent.VK_BACK_SPACE){
                 int m= buffer.length();
                 if(m!=0){
@@ -1084,7 +1084,7 @@ public class JFrameReunion extends javax.swing.JFrame {
                     Departamento dep=(Departamento) aux;
                     buscar=dep.getNombre();
                 }
-                Drive.CargarTablacheck(jTable1,buscar, es.toUpperCase(),lista);
+                Drive.CargarTablacheck2(jTable1,buscar, es.toUpperCase(),lista);
             }
         }catch(Exception e){
             JOptionPane.showMessageDialog(null, "ERROR","Registrar Reunión", JOptionPane.ERROR_MESSAGE);
@@ -1102,7 +1102,7 @@ public class JFrameReunion extends javax.swing.JFrame {
             Departamento dep=(Departamento) aux;
             buscar=dep.getNombre();
         }
-        Drive.CargarTablacheck(jTable1,buscar, buffer.toString().toUpperCase(),lista);
+        Drive.CargarTablacheck2(jTable1,buscar, buffer.toString().toUpperCase(),lista);
     }//GEN-LAST:event_jComboBox1ItemStateChanged
 
     private void jFormattedTextField2FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jFormattedTextField2FocusLost
@@ -1236,13 +1236,13 @@ public class JFrameReunion extends javax.swing.JFrame {
                 int cc=0;
                 while (jTable1.getRowCount() != cc) {
                     Personal per = (Personal) model.getValueAt(cc, 1);
-                    if(!lista.contains(per)){
-                        lista.add(per);
+                    if(!lista.contains(per.getIdPersonal())){
+                        lista.add(per.getIdPersonal());
                     }
                     cc++;
                 }
                 Drive.LimpiarTabla(jTable1);
-                Drive.CargarTablacheck(jTable1,buffer.toString(), buffer.toString().toUpperCase(),lista);
+                Drive.CargarTablacheck2(jTable1,buffer.toString(), buffer.toString().toUpperCase(),lista);
             }else{
                 lista.clear();
                 Drive.LimpiarTabla(jTable1);
@@ -1254,7 +1254,7 @@ public class JFrameReunion extends javax.swing.JFrame {
                     Departamento dep=(Departamento) aux;
                     buscar=dep.getNombre();
                 }
-                Drive.CargarTablacheck(jTable1,buscar, buffer.toString().toUpperCase(),lista);
+                Drive.CargarTablacheck2(jTable1,buscar, buffer.toString().toUpperCase(),lista);
             }
         }catch(Exception e){}
     }//GEN-LAST:event_jCheckBox1ItemStateChanged

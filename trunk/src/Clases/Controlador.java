@@ -272,7 +272,6 @@ public class Controlador {
 
     public void CargarComboPerfil(JComboBox JCombo) {
         try {
-//            LimpiarCombo(JCombo);
             Iterator rs = PERSISTENCIA.getPerfiles().iterator();
             while (rs.hasNext()) {
                 Perfil perf = (Perfil) rs.next();
@@ -637,7 +636,7 @@ public class Controlador {
             boolean check = (Boolean) Tabla.getValueAt(c, 0);
             if (check == true) {
                 Personal per = (Personal) Tabla.getValueAt(c, 1);
-                lista.add(per);
+                lista.add(per.getIdPersonal());
 
             }
             c++;
@@ -886,14 +885,26 @@ public class Controlador {
         Iterator<Circular> it = PERSISTENCIA.getCirculares().iterator();
         while (it.hasNext()) {
             Circular cir = it.next();
-            if (cir.getInicio().compareTo(dia)<=0 && cir.getFin().compareTo(dia)>=0) {
-                Object[] fila = new Object[4];
-                fila[0] = cir;
-                SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
-                fila[1] = formateador.format(cir.getInicio());
-                fila[2] = formateador.format(cir.getFin());
-                fila[3] = cir.getFirma();
-                model.addRow(fila);
+            if(cir.getInicio().compareTo(cir.getFin())==0){
+                if (cir.getInicio().compareTo(dia)<=0) {
+                    Object[] fila = new Object[4];
+                    fila[0] = cir;
+                    SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+                    fila[1] = formateador.format(cir.getInicio());
+                    fila[2] = formateador.format(cir.getFin());
+                    fila[3] = cir.getFirma();
+                    model.addRow(fila);
+                }
+            }else{
+                if (cir.getInicio().compareTo(dia)<=0 && cir.getFin().compareTo(dia)>=0) {
+                    Object[] fila = new Object[4];
+                    fila[0] = cir;
+                    SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+                    fila[1] = formateador.format(cir.getInicio());
+                    fila[2] = formateador.format(cir.getFin());
+                    fila[3] = cir.getFirma();
+                    model.addRow(fila);
+                }
             }
         }
         tabla.setModel(model);
@@ -1095,7 +1106,7 @@ public class Controlador {
                 }
             }
         }else if(valor.equals("DIA")){
-            Iterator it = PERSISTENCIA.getAuditoriaPerDia(fecha.getYear() + 1900,fecha.getMonth(),fecha.getDate()).iterator();
+            Iterator it = PERSISTENCIA.getAuditoriaPerDia(fecha.getYear() + 1900,fecha.getMonth()+1,fecha.getDate()).iterator();
             while (it.hasNext()) {
                 Auditoria audi = (Auditoria) it.next();
                 Personal per=audi.getPersonalByIdPersonal();
@@ -1249,7 +1260,7 @@ public class Controlador {
                 }
             }
         }else if (valor.equals("DIA")) {
-            Iterator it = PERSISTENCIA.getAuditoriaTarDia(fecha.getYear() + 1900,fecha.getMonth(),fecha.getDate()).iterator();
+            Iterator it = PERSISTENCIA.getAuditoriaTarDia(fecha.getYear() + 1900,fecha.getMonth()+1,fecha.getDate()).iterator();
             while (it.hasNext()) {
                 Auditoria audi = (Auditoria) it.next();
                 Tarea tar=audi.getTarea();
@@ -2163,73 +2174,124 @@ public class Controlador {
         return bandera;
     }
     
+//    public void CargarTablacheck(JTable tabla, String buscarpor, String valor, List personales) {
+//        try {
+//            DefaultTableModel model = (DefaultTableModel) tabla.getModel();
+//            if (!personales.isEmpty()) {
+//                //Cargar lista de checkeados
+//                Iterator<Personal> it = getPrimerEstablecimiento().getPersonals().iterator();
+//                while (it.hasNext()) {
+//                    Personal person = (Personal) it.next();
+//                    Iterator<Personal> itt = personales.iterator();
+//                    while (itt.hasNext()) {
+//                        Personal per = itt.next();
+//                        if (per.getIdPersonal() == person.getIdPersonal()) {
+//                            Object fila[] = new Object[3];
+//                            fila[0] = new Boolean(true);
+//                            fila[1] = person;
+//                            fila[2] = person.getDni();
+//                            model.addRow(fila);
+//                        }
+//                    }
+//                }
+//            }
+//            boolean band = true;
+//            Iterator<Personal> ite = getPrimerEstablecimiento().getPersonals().iterator();
+//            while (ite.hasNext()) {
+//                band = true;
+//                Personal person = (Personal) ite.next();
+//                //No cargar la lista de personales checkeados
+//                if (!personales.isEmpty()) {
+//                    Iterator<Personal> iter = personales.iterator();
+//                    while (iter.hasNext()) {
+//                        Personal per = iter.next();
+//                        if (per.getIdPersonal() == person.getIdPersonal()) {
+//                            band = false;
+//                            break;
+//                        }
+//                    }
+//                }
+//                if (band == true) {
+//                    //Cargar resto de personales
+//                    boolean band2 = false;
+//                    if (!buscarpor.equals("TODOS")) {
+//                        Iterator it = person.getPersonalDepartamentos().iterator();
+//                        while (it.hasNext()) {
+//                            PersonalDepartamento perd = (PersonalDepartamento) it.next();
+//                            if (perd.getDepartamento().getNombre().equals(buscarpor)) {
+//                                band2 = true;
+//                            }
+//                        }
+//                    } else {
+//                        band2 = true;
+//                    }
+//
+//                    if (person.getEstado() == true && band2 == true) {
+//                        int i = person.getApellido().indexOf(valor);
+//                        int e = person.getNombre().indexOf(valor);
+//                        if (i == 0 || e == 0) {
+//                            Object fila[] = new Object[3];
+//                            fila[0] = new Boolean(false);
+//                            fila[1] = person;
+//                            fila[2] = person.getDni();
+//                            model.addRow(fila);
+//                        }
+//                    }
+//                    tabla.setModel(model);
+//                }
+//            }
+//        } catch (Exception ex) {
+//            JOptionPane.showMessageDialog(null, ex.toString());
+//        }
+//    }
     
-    public void CargarTablacheck(JTable tabla, String buscarpor, String valor, List personales) {
+    public void CargarTablacheck2(JTable tabla, String buscarpor, String valor, List personales) {
         try {
             DefaultTableModel model = (DefaultTableModel) tabla.getModel();
             if (!personales.isEmpty()) {
                 //Cargar lista de checkeados
-                Iterator<Personal> it = getPrimerEstablecimiento().getPersonals().iterator();
+                Iterator it = PERSISTENCIA.getPersonalesTrue(1).iterator();
                 while (it.hasNext()) {
                     Personal person = (Personal) it.next();
-                    Iterator<Personal> itt = personales.iterator();
-                    while (itt.hasNext()) {
-                        Personal per = itt.next();
-                        if (per.getIdPersonal() == person.getIdPersonal()) {
-                            Object fila[] = new Object[3];
-                            fila[0] = new Boolean(true);
-                            fila[1] = person;
-                            fila[2] = person.getDni();
-                            model.addRow(fila);
-                        }
+                    if (personales.contains(person.getIdPersonal())) {
+                        Object fila[] = new Object[3];
+                        fila[0] = new Boolean(true);
+                        fila[1] = person;
+                        fila[2] = person.getDni();
+                        model.addRow(fila);
                     }
                 }
             }
-            boolean band = true;
-            Iterator<Personal> ite = getPrimerEstablecimiento().getPersonals().iterator();
+            Iterator ite = PERSISTENCIA.getPersonalesTrue(1).iterator();
             while (ite.hasNext()) {
-                band = true;
-                Personal person = (Personal) ite.next();
-                //No cargar la lista de personales checkeados
-                if (!personales.isEmpty()) {
-                    Iterator<Personal> iter = personales.iterator();
-                    while (iter.hasNext()) {
-                        Personal per = iter.next();
-                        if (per.getIdPersonal() == person.getIdPersonal()) {
-                            band = false;
-                            break;
-                        }
-                    }
-                }
-                if (band == true) {
-                    //Cargar resto de personales
-                    boolean band2 = false;
-                    if (!buscarpor.equals("TODOS")) {
-                        Iterator it = person.getPersonalDepartamentos().iterator();
-                        while (it.hasNext()) {
-                            PersonalDepartamento perd = (PersonalDepartamento) it.next();
-                            if (perd.getDepartamento().getNombre().equals(buscarpor)) {
-                                band2 = true;
-                            }
-                        }
-                    } else {
-                        band2 = true;
-                    }
-
-                    if (person.getEstado() == true && band2 == true) {
-                        int i = person.getApellido().indexOf(valor);
-                        int e = person.getNombre().indexOf(valor);
+                Personal per = (Personal) ite.next();
+                if (!personales.contains(per.getIdPersonal())) {
+                    if (buscarpor.equals("TODOS")) {
+                        int i = per.getApellido().indexOf(valor);
+                        int e = per.getNombre().indexOf(valor);
                         if (i == 0 || e == 0) {
                             Object fila[] = new Object[3];
                             fila[0] = new Boolean(false);
-                            fila[1] = person;
-                            fila[2] = person.getDni();
+                            fila[1] = per;
+                            fila[2] = per.getDni();
                             model.addRow(fila);
                         }
+                    } else {
+                        Iterator it = per.getPersonalDepartamentos().iterator();
+                        while (it.hasNext()) {
+                            PersonalDepartamento perd = (PersonalDepartamento) it.next();
+                            if (perd.getDepartamento().getNombre().equals(buscarpor)) {
+                                Object fila[] = new Object[3];
+                                fila[0] = new Boolean(false);
+                                fila[1] = per;
+                                fila[2] = per.getDni();
+                                model.addRow(fila);
+                            }
+                        }
                     }
-                    tabla.setModel(model);
                 }
             }
+            tabla.setModel(model);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, ex.toString());
         }
@@ -3039,6 +3101,14 @@ public class Controlador {
             }
         }
         return circ;
+    }
+    
+    public void BorrarCircularpersonales(Circular cir){
+        Iterator it = PERSISTENCIA.getCircularPersonales(cir.getIdCircular()).iterator();
+        while(it.hasNext()){
+            Circularpersonal cirper=(Circularpersonal) it.next();
+            cirper.eliminarCircularpersonal(cirper);
+        }
     }
     
     public boolean DisponibilidadAula(Date inici, Date finn, HashMap inic, HashMap dsem, int id, Aula au) {
