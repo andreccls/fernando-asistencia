@@ -30,7 +30,7 @@ public class JFrameConsultaCircular extends javax.swing.JFrame {
     /**
      * Creates new form JFrameConsultaCircular
      */
-    public Controlador Drive;
+    public Controlador Drive=new Controlador();;
     public Personal adm;
     Personal per= new Personal();
     StringBuffer buffer= new StringBuffer();
@@ -235,10 +235,10 @@ public class JFrameConsultaCircular extends javax.swing.JFrame {
         jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
             .addContainerGap()
-            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                .addComponent(jButton1)
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                .addComponent(jLabel3)
                 .addComponent(dateChooserCombo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addComponent(jLabel3))
+                .addComponent(jButton1))
             .addGap(28, 28, 28)
             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addGap(18, 18, 18)
@@ -297,7 +297,7 @@ public class JFrameConsultaCircular extends javax.swing.JFrame {
         if(evt.getClickCount()==2){
             if(adm.getPerfil().getCircularesact()){
                 jTable1.getModel();
-                cir=(Circular)jTable1.getValueAt(jTable1.rowAtPoint(evt.getPoint()), 2);
+                cir=(Circular)jTable1.getValueAt(jTable1.rowAtPoint(evt.getPoint()), 0);
                 JFrameCircular vent2 = new JFrameCircular(Drive,adm,cir);
                 this.hide();
                 vent2.show();
@@ -342,8 +342,8 @@ public class JFrameConsultaCircular extends javax.swing.JFrame {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         try {
             jTable1.getModel();
-            cir = (Circular) jTable1.getValueAt(jTable1.getSelectedRow(), 2);
-            int confirmado = JOptionPane.showConfirmDialog(null, "¿Esta seguro que desea eliminar la circular?", "", JOptionPane.YES_NO_OPTION);
+            cir = (Circular) jTable1.getValueAt(jTable1.getSelectedRow(), 0);
+            int confirmado = JOptionPane.showConfirmDialog(null, "¿Esta seguro que desea eliminar la circular?", "Eliminar circular", JOptionPane.YES_NO_OPTION);
             if (JOptionPane.OK_OPTION == confirmado) {
                 if (jTable1.getSelectedRow() >= 0) {
 

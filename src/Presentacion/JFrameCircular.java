@@ -35,7 +35,7 @@ public class JFrameCircular extends javax.swing.JFrame {
     /**
      * Creates new form JFrameCircular
      */
-    Controlador Drive;
+    Controlador Drive=new Controlador();;
     Personal adm;
 //    int idsesion;
     StringBuffer buffer= new StringBuffer();
@@ -60,9 +60,9 @@ public class JFrameCircular extends javax.swing.JFrame {
             Departamento dep=(Departamento) aux;
             buscar=dep.getNombre();
         }
-        Drive.CargarTablacheck(jTable2, buscar, buffer.toString().toUpperCase(), lista);
+        Drive.CargarTablacheck2(jTable2, buscar, buffer.toString().toUpperCase(), lista);
         if(circu.getIdCircular()!=null){
-            jTextField1.setText(circu.getCircularpersonals().iterator().next().getDescripcion());
+            jTextField1.setText(circu.getNombre());
             jTextField1.setEnabled(false);
             Calendar ffecha = Calendar.getInstance();
             ffecha.setTime(circu.getInicio());
@@ -70,13 +70,14 @@ public class JFrameCircular extends javax.swing.JFrame {
             ffecha.setTime(circu.getFin());
             dateChooserCombo2.setSelectedDate(ffecha);
             jTextArea1.setText(circu.getDescripcion());
+            jTextArea1.setEnabled(true);
             Iterator it = circu.getCircularpersonals().iterator();
             while (it.hasNext()) {
                 Circularpersonal cirper = (Circularpersonal) it.next();
-                lista.add(cirper.getPersonal());
+                lista.add(cirper.getPersonal().getIdPersonal());
             }
             Drive.LimpiarTabla(jTable2);
-            Drive.CargarTablacheck(jTable2, buscar, buffer.toString().toUpperCase(), lista);
+            Drive.CargarTablacheck2(jTable2, buscar, buffer.toString().toUpperCase(), lista);
         }
         ImageIcon fott1 = new ImageIcon(getClass().getResource("/imagenes/no.png"));
         Icon icono1 = new ImageIcon(fott1.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
@@ -487,19 +488,26 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                             Drive.LimpiarTabla(jTable2);
                             lista.removeAll(lista);
                             String buscar = (String) jComboBox1.getSelectedItem();
-                            Drive.CargarTablacheck(jTable2, buscar, buffer.toString().toUpperCase(), lista);
+                            Drive.CargarTablacheck2(jTable2, buscar, buffer.toString().toUpperCase(), lista);
                             Drive = new Controlador();
                             // </editor-fold>
                         } else {
                             // <editor-fold defaultstate="collapsed" desc="Actualizar tarea"> 
-                            circu.setFirma(adm.toString());
-                            circu.setInicio(inicio);
+//                            if(circu.getFirma().equals(adm.toString())){
+                                circu.setFirma(adm.toString());
+//                                circu.actualizarCircular(circu);
+//                            }
+//                            if(circu.getInicio().getYear()!=inicio.getYear() || circu.getInicio().getMonth()!=inicio.getMonth() || circu.getInicio().getDate()!=inicio.getDate()){
+                                circu.setInicio(inicio);
+//                                circu.actualizarCircular(circu);
+//                            }
+                            
                             circu.setFin(fin);
                             circu.setDescripcion(jTextArea1.getText());
                             circu.setEstablecimiento(Drive.getPrimerEstablecimiento());
                             circu.actualizarCircular(circu);
                             
-                            circu.BorrarCircularpersonales();
+                            Drive.BorrarCircularpersonales(circu);
                             DefaultTableModel modelo = (DefaultTableModel) jTable2.getModel();
                             int c = 0;
                             while (jTable2.getRowCount() != c) {
@@ -517,6 +525,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                 }
                                 c++;
                             }
+//                            Drive=new Controlador();
                             JFrameConsultaCircular vent2 = new JFrameConsultaCircular(Drive,adm);
                             this.hide();
                             vent2.show();
@@ -529,16 +538,12 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
 //                            Drive.CargarTablacheck(jTable2, buscar, buffer.toString().toUpperCase(), lista);
 //                            Drive = new Controlador();
                             // </editor-fold>
-                        }
-                        
+                        }  
                     }
                 }
             }
-            
-//            cirper.set
-            
         }catch(Exception e){
-            JOptionPane.showMessageDialog(null, "ERROR","Registrar Tarea Extracurricular", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "ERROR","Registrar Circular", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -553,7 +558,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
             Departamento dep=(Departamento) aux;
             buscar=dep.getNombre();
         }
-        Drive.CargarTablacheck(jTable2,buscar, buffer.toString().toUpperCase(),lista);
+        Drive.CargarTablacheck2(jTable2,buscar, buffer.toString().toUpperCase(),lista);
     }//GEN-LAST:event_jComboBox1ItemStateChanged
 
     private void jTextField2KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField2KeyTyped
@@ -572,7 +577,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                     Departamento dep=(Departamento) aux;
                     buscar=dep.getNombre();
                 }
-                Drive.CargarTablacheck(jTable2,buscar, es.toUpperCase(),lista);
+                Drive.CargarTablacheck2(jTable2,buscar, es.toUpperCase(),lista);
             }else if(car==(char)KeyEvent.VK_BACK_SPACE){
                 int m= buffer.length();
                 if(m!=0){
@@ -587,7 +592,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                     Departamento dep=(Departamento) aux;
                     buscar=dep.getNombre();
                 }
-                Drive.CargarTablacheck(jTable2,buscar, es.toUpperCase(),lista);
+                Drive.CargarTablacheck2(jTable2,buscar, es.toUpperCase(),lista);
             }
         }catch(Exception e){
             JOptionPane.showMessageDialog(null, "ERROR","Registrar Tarea Extracurricular", JOptionPane.ERROR_MESSAGE);
@@ -687,15 +692,25 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                 int cc=0;
                 while (jTable2.getRowCount() != cc) {
                     Personal per = (Personal) model.getValueAt(cc, 1);
-                    lista.add(per);
+                    if(!lista.contains(per)){
+                        lista.add(per.getIdPersonal());
+                    }
                     cc++;
                 }
                 Drive.LimpiarTabla(jTable2);
-                Drive.CargarTablacheck(jTable2,buffer.toString(), buffer.toString().toUpperCase(),lista);
+                Drive.CargarTablacheck2(jTable2,buffer.toString(), buffer.toString().toUpperCase(),lista);
             }else{
                 lista.clear();
                 Drive.LimpiarTabla(jTable2);
-                Drive.CargarTablacheck(jTable2,buffer.toString(), buffer.toString().toUpperCase(),lista);
+                String buscar;
+                Object aux= jComboBox1.getSelectedItem();
+                if(aux.equals("TODOS")){
+                    buscar=(String) aux;
+                }else{
+                    Departamento dep=(Departamento) aux;
+                    buscar=dep.getNombre();
+                }
+                Drive.CargarTablacheck2(jTable2,buscar, buffer.toString().toUpperCase(),lista);
             }
         }catch(Exception e){}
     }//GEN-LAST:event_jCheckBox1ItemStateChanged

@@ -101,7 +101,7 @@ public class Personal  implements java.io.Serializable {
     
     @Override
     public String toString() {
-        return apellido+", "+nombre;
+        return apellido+" "+nombre;
     }
    
     public Integer getIdPersonal() {

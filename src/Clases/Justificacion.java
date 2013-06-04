@@ -65,13 +65,13 @@ public class Justificacion  implements java.io.Serializable {
     public void guardarJustificacion(Justificacion unaJustificacion){
         Controlador.getPERSISTENCIA().insert(this);
 
-        JOptionPane.showMessageDialog(null,"La Justificacion se guardo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null,"La Justificacion se guardo correctamente","Registrar justificación",JOptionPane.INFORMATION_MESSAGE);
     }
     
     public void actualizarJustificacion(Justificacion unaJustificacion){
         Controlador.getPERSISTENCIA().update2(this);
 
-        JOptionPane.showMessageDialog(null,"La Justificacion se actualizo correctamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null,"La Justificacion se actualizo correctamente","Actualizar justificación",JOptionPane.INFORMATION_MESSAGE);
     }
 
     public void eliminarJustificacion(Justificacion unaJustificacion){

@@ -107,8 +107,7 @@ public class Circular  implements java.io.Serializable {
     
     public void guardarCircular(Circular unCircular){
         Controlador.getPERSISTENCIA().insert(this);
-
-        JOptionPane.showMessageDialog(null,"La circular se guardó correctamente","Registrar departamento",JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null,"La circular se guardó correctamente","Registrar circular",JOptionPane.INFORMATION_MESSAGE);
     }
     
     public void eliminarCircular(Circular unCircular){
@@ -117,7 +116,7 @@ public class Circular  implements java.io.Serializable {
 //            JOptionPane.showMessageDialog(null,"El Departamento no se puede eliminar porque esta relacionada con otros personales","Eliminar departamento",JOptionPane.ERROR_MESSAGE);
 //        }else{
         Controlador.getPERSISTENCIA().delete(this);
-//        JOptionPane.showMessageDialog(null,"El Departamento se eliminó correctamente","Eliminar departamento",JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null,"La circular se eliminó correctamente","Eliminar circular",JOptionPane.INFORMATION_MESSAGE);
 //        }
     }
     
@@ -127,17 +126,11 @@ public class Circular  implements java.io.Serializable {
 //            JOptionPane.showMessageDialog(null,"El Departamento no se puede eliminar porque esta relacionada con otros personales","Eliminar departamento",JOptionPane.ERROR_MESSAGE);
 //        }else{
         Controlador.getPERSISTENCIA().update(this);
-//        JOptionPane.showMessageDialog(null,"El Departamento se eliminó correctamente","Eliminar departamento",JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null,"La circular se actualizó correctamente","Actualizar circular",JOptionPane.INFORMATION_MESSAGE);
 //        }
     }
 
-    public void BorrarCircularpersonales(){
-        Iterator it = circularpersonals.iterator();
-        while(it.hasNext()){
-            Circularpersonal cirper=(Circularpersonal) it.next();
-            cirper.eliminarCircularpersonal(cirper);
-        }
-    }
+    
 
 
 }

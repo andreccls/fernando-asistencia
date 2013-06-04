@@ -62,7 +62,8 @@ public class JFrameRegistro extends javax.swing.JFrame {
         initComponents();
         Date dia= dateChooserCombo1.getSelectedDate().getTime();
         String buscar = (String) jComboBox2.getSelectedItem();
-        Drive.Cargarpersonal(jTable2, buffer.toString(), buffer.toString().toUpperCase());
+        String buscar1 = (String) jComboBox1.getSelectedItem();
+        Drive.Cargarpersonal(jTable2, buscar1, buffer.toString().toUpperCase());
         Drive.CargarTablaRegistro(jTable1, per, dia, buscar);
         String hora=Drive.Obtenerhoras(jTable1);
         jLabel4.setText(hora);
@@ -558,6 +559,8 @@ public class JFrameRegistro extends javax.swing.JFrame {
         Date dia= dateChooserCombo1.getSelectedDate().getTime();
         String buscar = (String) jComboBox2.getSelectedItem();
         Drive.CargarTablaRegistro(jTable1, per, dia, buscar);
+        String hora=Drive.Obtenerhoras(jTable1);
+        jLabel4.setText(hora);
     }//GEN-LAST:event_jTable2MouseClicked
 
     private void jTable2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseEntered

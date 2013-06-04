@@ -120,7 +120,15 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
         jTextField1.disable();
         jComboBox2.setSelectedItem(per.getSexo());
         jComboBox5.setSelectedItem(per.getEstadoCivil());
-        jComboBox12.setSelectedItem(per.getPerfil());
+        Iterator iti=Drive.PERSISTENCIA.getPerfiles().iterator();
+        while(iti.hasNext()){
+            Perfil perf=(Perfil) iti.next();
+            int perfi=perf.getIdPerfil();
+            int perfid=per.getPerfil().getIdPerfil();
+            if(perfi==perfid){
+                jComboBox12.setSelectedItem(perf);
+            }
+        }
         jTextField21.setText(per.getCorreoElectronico());
         jTextField11.setText(per.getCalle());
         jTextField14.setText(String.valueOf(per.getAltura()));
@@ -289,16 +297,8 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
             dateChooserCombo9.setEnabled(false);
             dateChooserCombo10.setEnabled(false);
             dateChooserCombo11.setEnabled(false);
-//            Object o=jComboBox13.getSelectedItem();
-//            Anolectivo an=(Anolectivo) jComboBox13.getSelectedItem();
-//            Calendar ca=Calendar.getInstance();
-//            ca.setTime(an.getInicio());
-//            dateChooserCombo6.setSelectedDate(ca);
             dateChooserCombo6.setEnabled(false);
-//            ca.setTime(an.getFin());
-//            dateChooserCombo7.setSelectedDate(ca);
             dateChooserCombo7.setEnabled(false);
-            
             jLabel2.setVisible(false);
             jLabel1.setVisible(false);
             jTextField4.setVisible(false);
@@ -314,7 +314,6 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
             jButton11.setEnabled(false);
             jButton12.setEnabled(false);
             jButton13.setEnabled(false);
-//            jButton14.setEnabled(false);
             jButton17.setEnabled(false);
             jButton19.setEnabled(false);
             jButton2.setEnabled(false);
@@ -340,7 +339,6 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
             jComboBox8.setEnabled(false);
             jComboBox15.setEnabled(false);
             jComboBox14.setEnabled(false);
-            
             jFormattedTextField7.setEnabled(false);
             jFormattedTextField8.setEnabled(false);
             jList1.setEnabled(false);
@@ -364,7 +362,6 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
             jTextField20.setEnabled(false);
             jTextField21.setEnabled(false);
             jTextField3.setEnabled(false);
-            
             jTextField5.setEnabled(false);
             jTextField7.setEnabled(false);
             jTextField8.setEnabled(false);
