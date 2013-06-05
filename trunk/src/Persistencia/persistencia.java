@@ -326,6 +326,16 @@ public class persistencia {
         return items;
     }
     
+    public List getIniciofin(int iddia) throws ArrayStoreException {
+        String hql = "from Iniciofin as ini where dia="+iddia+" and ini.dia.mes.ano.agenda.personal.estado=1 and ini.dia.mes.ano.agenda.tarea.estado=1";
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
+    }
+    
     public List getIniciofinPer(int dia, int mes, int ano,int idper) throws ArrayStoreException {
         String hql = "from Iniciofin as ini where ini.dia.dia="+dia+" and ini.dia.mes.mes="+mes+" and ini.dia.mes.ano.ano="+ano+" and ini.dia.mes.ano.agenda.personal.idPersonal="+idper;
         List items = new ArrayList();
