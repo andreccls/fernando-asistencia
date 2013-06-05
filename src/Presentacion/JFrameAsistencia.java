@@ -64,7 +64,7 @@ import javax.swing.JOptionPane;
 public class JFrameAsistencia extends javax.swing.JFrame {
 
     public Controlador Drive;
-    public ControladorTarea Drive2;
+    public ControladorTarea Drive2= new ControladorTarea();
     Establecimiento es=new Establecimiento();
     public Personal per;
     private DPFPCapture Lector = DPFPGlobal.getCaptureFactory().createCapture();
@@ -390,8 +390,8 @@ public class JFrameAsistencia extends javax.swing.JFrame {
                                             String s = new SimpleDateFormat("dd/MM/yyyy HH:mm").format(cal.getTime());
                                             String tex="Que tenga buen dia " + pp.toString()+ "\nHora: "+ s;
                                             JOptionPane.showMessageDialog(null, tex, "Registrar salida", JOptionPane.INFORMATION_MESSAGE);
-                                            ControladorTarea con = new ControladorTarea();
-                                            con.GuardarAsistencia(ca, per);
+                                            
+                                            Drive2.GuardarAsistencia(ca, per);
                                             existe = true;
                                             break;
                                         }else{

@@ -297,6 +297,7 @@ public class ControladorTarea {
 
     public void GuardarAsistencia(Calendar cel, Personal per) {
         try {
+            Long a=cel.getTime().getTime();
             Iterator<Iniciofin> it = ControladorTarea.getPERSISTENCIA().ObtenerInicioFinPer(cel.getTime().getDate(), cel.getTime().getMonth(), cel.getTime().getYear() + 1900, per.getIdPersonal()).iterator();
             while (it.hasNext()) {
                 Iniciofin in = it.next();
@@ -307,7 +308,7 @@ public class ControladorTarea {
                         if (!ControladorLicencia(cel.getTime(), per)) {
                             if (!existeAsistencia(in)) {
                                 if (in.getDia().getMes().getAno().getAgenda().getTarea().getEstado() == true && per.getEstado() == true) {
-                                    java.sql.Date sqldate = new java.sql.Date(aux.getTime());
+                                    java.sql.Date sqldate = new java.sql.Date(a);
                                     Iterator itt = PERSISTENCIA.getRegistroaccesoss(sqldate, per.getIdPersonal()).iterator();
                                     while (itt.hasNext()) {
                                         Registroacceso reg = (Registroacceso) itt.next();
@@ -349,7 +350,6 @@ public class ControladorTarea {
                                             }
                                         }
                                     }
-
                                 }
                             }
                         }
@@ -358,7 +358,7 @@ public class ControladorTarea {
                     if (!ControladorLicencia(cel.getTime(), per)) {
                         if (!existeAsistencia(in)) {
                             if (in.getDia().getMes().getAno().getAgenda().getTarea().getEstado() == true && per.getEstado() == true) {
-                                java.sql.Date sqldate = new java.sql.Date(aux.getTime());
+                                java.sql.Date sqldate = new java.sql.Date(a);
                                 Iterator itt = PERSISTENCIA.getRegistroaccesoss(sqldate, per.getIdPersonal()).iterator();
                                 while (itt.hasNext()) {
                                     Registroacceso reg = (Registroacceso) itt.next();
@@ -407,7 +407,7 @@ public class ControladorTarea {
                     if (!ControladorLicencia(cel.getTime(), per)) {
                         if (!existeAsistencia(in)) {
                             if (in.getDia().getMes().getAno().getAgenda().getTarea().getEstado() == true && per.getEstado() == true) {
-                                java.sql.Date sqldate = new java.sql.Date(aux.getTime());
+                                java.sql.Date sqldate = new java.sql.Date(a);
                                 Iterator itt = PERSISTENCIA.getRegistroaccesoss(sqldate, per.getIdPersonal()).iterator();
                                 while (itt.hasNext()) {
                                     Registroacceso reg = (Registroacceso) itt.next();
@@ -445,7 +445,7 @@ public class ControladorTarea {
                     if (!ControladorLicencia(cel.getTime(), per)) {
                         if (!existeAsistencia(in)) {
                             if (in.getDia().getMes().getAno().getAgenda().getTarea().getEstado() == true && per.getEstado() == true) {
-                                java.sql.Date sqldate = new java.sql.Date(aux.getTime());
+                                java.sql.Date sqldate = new java.sql.Date(a);
                                 Iterator itt = PERSISTENCIA.getRegistroaccesoss(sqldate, per.getIdPersonal()).iterator();
                                 while (itt.hasNext()) {
                                     Registroacceso reg = (Registroacceso) itt.next();
@@ -495,6 +495,5 @@ public class ControladorTarea {
         } catch (Exception e) {
             System.out.println(e.toString());
         }
-    }
-    
+    }  
 }

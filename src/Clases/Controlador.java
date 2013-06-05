@@ -3447,34 +3447,40 @@ public class Controlador {
              Date otro = ot1;
              Iniciofin ini= (Iniciofin) inic.get(1);
             // <editor-fold defaultstate="collapsed" desc="Guarda meses y dias">
-        while (otro.compareTo(finn) <= 0) {
-            if (!PERSISTENCIA.getAgendas(per.getIdPersonal()).isEmpty()) {
-                Iterator it = PERSISTENCIA.getAgendas(per.getIdPersonal()).iterator();
-                while (it.hasNext()) {
-                    Agenda age = (Agenda) it.next();
-                    if (age.getPersonal().getEstado() == true && age.getTarea().getEstado() == true && age.getTarea().getIdTarea()!=id) {
-                        if (age.getTarea().getTareaclases().iterator().hasNext()) {
-                            Dia di = age.getDia2(otro);
-                            if (di.getIdDia() != null) {
-                                Iterator itin = di.getIniciofins().iterator();
-                                while (itin.hasNext()) {
-                                    Iniciofin in = (Iniciofin) itin.next();
-                                    if (ini.getInicio().compareTo(in.getInicio()) <= 0 && ini.getFin().compareTo(in.getInicio()) >= 0) {
-                                        a=false;
-                                        break;
-                                    } else if (ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) >= 0) {
-                                        a=false;
-                                        break;
-                                    } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getInicio()) >= 0 && ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
-                                        a=false;
-                                        break;
+            while (otro.compareTo(finn) <= 0) {
+                if (!PERSISTENCIA.getAgendas(per.getIdPersonal()).isEmpty()) {
+                    Iterator it = PERSISTENCIA.getAgendas(per.getIdPersonal()).iterator();
+                    while (it.hasNext()) {
+                        Agenda age = (Agenda) it.next();
+                        if (age.getPersonal().getEstado() == true && age.getTarea().getEstado() == true && age.getTarea().getIdTarea() != id) {
+                            if (age.getTarea().getTareaclases().iterator().hasNext()) {
+                                Dia di = age.getDia2(otro);
+                                if (di.getIdDia() != null) {
+                                    Iterator itin = PERSISTENCIA.getIniciofin(di.getIdDia()).iterator();
+                                    while (itin.hasNext()) {
+                                        Iniciofin in = (Iniciofin) itin.next();
+                                        if (ini.getInicio().compareTo(in.getInicio()) < 0 && ini.getFin().compareTo(in.getInicio()) > 0) {
+                                            a = false;
+                                            break;
+                                        } else if (ini.getInicio().compareTo(in.getFin()) < 0 && ini.getFin().compareTo(in.getFin()) > 0) {
+                                            a = false;
+                                            break;
+                                        } else if (ini.getInicio().compareTo(in.getInicio()) > 0 && ini.getFin().compareTo(in.getInicio()) > 0 && ini.getInicio().compareTo(in.getFin()) < 0 && ini.getFin().compareTo(in.getFin()) < 0) {
+                                            a = false;
+                                            break;
+                                        } else if (ini.getInicio().compareTo(in.getInicio()) == 0 && ini.getFin().compareTo(in.getInicio()) == 0) {
+                                            a = false;
+                                            break;
+                                        } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
+                                            a = false;
+                                            break;
+                                        }
                                     }
                                 }
                             }
-                        } 
+                        }
                     }
                 }
-            }
             if (!per.getDeclaracionjuradas().isEmpty()) {
                 Iterator itact = per.getDeclaracionjuradas().iterator().next().ObtenerActivos("LUNES").iterator();
                 while (itact.hasNext()) {
@@ -3507,35 +3513,41 @@ public class Controlador {
             }
              Date otro = ot2;
              Iniciofin ini=  (Iniciofin) inic.get(2);
-            // <editor-fold defaultstate="collapsed" desc="Guardar meses y dias">
-        while (otro.compareTo(finn) <= 0) {
-            if (!PERSISTENCIA.getAgendas(per.getIdPersonal()).isEmpty()) {
-                Iterator it = PERSISTENCIA.getAgendas(per.getIdPersonal()).iterator();
-                while (it.hasNext()) {
-                    Agenda age = (Agenda) it.next();
-                    if (age.getPersonal().getEstado() == true && age.getTarea().getEstado() == true &&age.getTarea().getIdTarea()!=id) {
-                        if (age.getTarea().getTareaclases().iterator().hasNext()) {
-                            Dia di = age.getDia2(otro);
-                            if (di.getIdDia() != null) {
-                                Iterator itin = di.getIniciofins().iterator();
-                                while (itin.hasNext()) {
-                                    Iniciofin in = (Iniciofin) itin.next();
-                                    if (ini.getInicio().compareTo(in.getInicio()) <= 0 && ini.getFin().compareTo(in.getInicio()) >= 0) {
-                                        a=false;
-                                        break;
-                                    } else if (ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) >= 0) {
-                                        a=false;
-                                        break;
-                                    } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getInicio()) >= 0 && ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
-                                        a=false;
-                                        break;
+            // <editor-fold defaultstate="collapsed" desc="Guarda meses y dias">
+            while (otro.compareTo(finn) <= 0) {
+                if (!PERSISTENCIA.getAgendas(per.getIdPersonal()).isEmpty()) {
+                    Iterator it = PERSISTENCIA.getAgendas(per.getIdPersonal()).iterator();
+                    while (it.hasNext()) {
+                        Agenda age = (Agenda) it.next();
+                        if (age.getPersonal().getEstado() == true && age.getTarea().getEstado() == true && age.getTarea().getIdTarea() != id) {
+                            if (age.getTarea().getTareaclases().iterator().hasNext()) {
+                                Dia di = age.getDia2(otro);
+                                if (di.getIdDia() != null) {
+                                    Iterator itin = PERSISTENCIA.getIniciofin(di.getIdDia()).iterator();
+                                    while (itin.hasNext()) {
+                                        Iniciofin in = (Iniciofin) itin.next();
+                                        if (ini.getInicio().compareTo(in.getInicio()) < 0 && ini.getFin().compareTo(in.getInicio()) > 0) {
+                                            a = false;
+                                            break;
+                                        } else if (ini.getInicio().compareTo(in.getFin()) < 0 && ini.getFin().compareTo(in.getFin()) > 0) {
+                                            a = false;
+                                            break;
+                                        } else if (ini.getInicio().compareTo(in.getInicio()) > 0 && ini.getFin().compareTo(in.getInicio()) > 0 && ini.getInicio().compareTo(in.getFin()) < 0 && ini.getFin().compareTo(in.getFin()) < 0) {
+                                            a = false;
+                                            break;
+                                        } else if (ini.getInicio().compareTo(in.getInicio()) == 0 && ini.getFin().compareTo(in.getInicio()) == 0) {
+                                            a = false;
+                                            break;
+                                        } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
+                                            a = false;
+                                            break;
+                                        }
                                     }
                                 }
                             }
-                        } 
+                        }
                     }
                 }
-            }
             if (!per.getDeclaracionjuradas().isEmpty()) {
                 Iterator itact = per.getDeclaracionjuradas().iterator().next().ObtenerActivos("LUNES").iterator();
                 while (itact.hasNext()) {
@@ -3568,34 +3580,40 @@ public class Controlador {
              Date otro = ot3;
              Iniciofin ini= (Iniciofin) inic.get(3);
             // <editor-fold defaultstate="collapsed" desc="Guarda meses y dias">
-        while (otro.compareTo(finn) <= 0) {
-            if (!PERSISTENCIA.getAgendas(per.getIdPersonal()).isEmpty()) {
-                Iterator it = PERSISTENCIA.getAgendas(per.getIdPersonal()).iterator();
-                while (it.hasNext()) {
-                    Agenda age = (Agenda) it.next();
-                    if (age.getPersonal().getEstado() == true && age.getTarea().getEstado() == true && age.getTarea().getIdTarea()!=id) {
-                        if (age.getTarea().getTareaclases().iterator().hasNext()) {
-                            Dia di = age.getDia2(otro);
-                            if (di.getIdDia() != null) {
-                                Iterator itin = di.getIniciofins().iterator();
-                                while (itin.hasNext()) {
-                                    Iniciofin in = (Iniciofin) itin.next();
-                                    if (ini.getInicio().compareTo(in.getInicio()) <= 0 && ini.getFin().compareTo(in.getInicio()) >= 0) {
-                                        a=false;
-                                        break;
-                                    } else if (ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) >= 0) {
-                                        a=false;
-                                        break;
-                                    } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getInicio()) >= 0 && ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
-                                        a=false;
-                                        break;
+            while (otro.compareTo(finn) <= 0) {
+                if (!PERSISTENCIA.getAgendas(per.getIdPersonal()).isEmpty()) {
+                    Iterator it = PERSISTENCIA.getAgendas(per.getIdPersonal()).iterator();
+                    while (it.hasNext()) {
+                        Agenda age = (Agenda) it.next();
+                        if (age.getPersonal().getEstado() == true && age.getTarea().getEstado() == true && age.getTarea().getIdTarea() != id) {
+                            if (age.getTarea().getTareaclases().iterator().hasNext()) {
+                                Dia di = age.getDia2(otro);
+                                if (di.getIdDia() != null) {
+                                    Iterator itin = PERSISTENCIA.getIniciofin(di.getIdDia()).iterator();
+                                    while (itin.hasNext()) {
+                                        Iniciofin in = (Iniciofin) itin.next();
+                                        if (ini.getInicio().compareTo(in.getInicio()) < 0 && ini.getFin().compareTo(in.getInicio()) > 0) {
+                                            a = false;
+                                            break;
+                                        } else if (ini.getInicio().compareTo(in.getFin()) < 0 && ini.getFin().compareTo(in.getFin()) > 0) {
+                                            a = false;
+                                            break;
+                                        } else if (ini.getInicio().compareTo(in.getInicio()) > 0 && ini.getFin().compareTo(in.getInicio()) > 0 && ini.getInicio().compareTo(in.getFin()) < 0 && ini.getFin().compareTo(in.getFin()) < 0) {
+                                            a = false;
+                                            break;
+                                        } else if (ini.getInicio().compareTo(in.getInicio()) == 0 && ini.getFin().compareTo(in.getInicio()) == 0) {
+                                            a = false;
+                                            break;
+                                        } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
+                                            a = false;
+                                            break;
+                                        }
                                     }
                                 }
                             }
-                        } 
+                        }
                     }
                 }
-            }
             if (!per.getDeclaracionjuradas().isEmpty()) {
                 Iterator itact = per.getDeclaracionjuradas().iterator().next().ObtenerActivos("LUNES").iterator();
                 while (itact.hasNext()) {
@@ -3629,34 +3647,40 @@ public class Controlador {
              Date otro = ot4;
              Iniciofin ini= (Iniciofin) inic.get(4);
             // <editor-fold defaultstate="collapsed" desc="Guarda meses y dias">
-        while (otro.compareTo(finn) <= 0) {
-            if (!PERSISTENCIA.getAgendas(per.getIdPersonal()).isEmpty()) {
-                Iterator it = PERSISTENCIA.getAgendas(per.getIdPersonal()).iterator();
-                while (it.hasNext()) {
-                    Agenda age = (Agenda) it.next();
-                    if (age.getPersonal().getEstado() == true && age.getTarea().getEstado() == true && age.getTarea().getIdTarea()!=id) {
-                        if (age.getTarea().getTareaclases().iterator().hasNext()) {
-                            Dia di = age.getDia2(otro);
-                            if (di.getIdDia() != null) {
-                                Iterator itin = di.getIniciofins().iterator();
-                                while (itin.hasNext()) {
-                                    Iniciofin in = (Iniciofin) itin.next();
-                                    if (ini.getInicio().compareTo(in.getInicio()) <= 0 && ini.getFin().compareTo(in.getInicio()) >= 0) {
-                                        a=false;
-                                        break;
-                                    } else if (ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) >= 0) {
-                                        a=false;
-                                        break;
-                                    } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getInicio()) >= 0 && ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
-                                        a=false;
-                                        break;
+            while (otro.compareTo(finn) <= 0) {
+                if (!PERSISTENCIA.getAgendas(per.getIdPersonal()).isEmpty()) {
+                    Iterator it = PERSISTENCIA.getAgendas(per.getIdPersonal()).iterator();
+                    while (it.hasNext()) {
+                        Agenda age = (Agenda) it.next();
+                        if (age.getPersonal().getEstado() == true && age.getTarea().getEstado() == true && age.getTarea().getIdTarea() != id) {
+                            if (age.getTarea().getTareaclases().iterator().hasNext()) {
+                                Dia di = age.getDia2(otro);
+                                if (di.getIdDia() != null) {
+                                    Iterator itin = PERSISTENCIA.getIniciofin(di.getIdDia()).iterator();
+                                    while (itin.hasNext()) {
+                                        Iniciofin in = (Iniciofin) itin.next();
+                                        if (ini.getInicio().compareTo(in.getInicio()) < 0 && ini.getFin().compareTo(in.getInicio()) > 0) {
+                                            a = false;
+                                            break;
+                                        } else if (ini.getInicio().compareTo(in.getFin()) < 0 && ini.getFin().compareTo(in.getFin()) > 0) {
+                                            a = false;
+                                            break;
+                                        } else if (ini.getInicio().compareTo(in.getInicio()) > 0 && ini.getFin().compareTo(in.getInicio()) > 0 && ini.getInicio().compareTo(in.getFin()) < 0 && ini.getFin().compareTo(in.getFin()) < 0) {
+                                            a = false;
+                                            break;
+                                        } else if (ini.getInicio().compareTo(in.getInicio()) == 0 && ini.getFin().compareTo(in.getInicio()) == 0) {
+                                            a = false;
+                                            break;
+                                        } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
+                                            a = false;
+                                            break;
+                                        }
                                     }
                                 }
                             }
-                        } 
+                        }
                     }
                 }
-            }
             if (!per.getDeclaracionjuradas().isEmpty()) {
                 Iterator itact = per.getDeclaracionjuradas().iterator().next().ObtenerActivos("LUNES").iterator();
                 while (itact.hasNext()) {
@@ -3690,34 +3714,40 @@ public class Controlador {
              Date otro = ot5;
              Iniciofin ini= (Iniciofin) inic.get(5);
              // <editor-fold defaultstate="collapsed" desc="Guarda meses y dias">
-        while (otro.compareTo(finn) <= 0) {
-            if (!PERSISTENCIA.getAgendas(per.getIdPersonal()).isEmpty()) {
-                Iterator it = PERSISTENCIA.getAgendas(per.getIdPersonal()).iterator();
-                while (it.hasNext()) {
-                    Agenda age = (Agenda) it.next();
-                    if (age.getPersonal().getEstado() == true && age.getTarea().getEstado() == true && age.getTarea().getIdTarea()!=id) {
-                        if (age.getTarea().getTareaclases().iterator().hasNext()) {
-                            Dia di = age.getDia2(otro);
-                            if (di.getIdDia() != null) {
-                                Iterator itin = di.getIniciofins().iterator();
-                                while (itin.hasNext()) {
-                                    Iniciofin in = (Iniciofin) itin.next();
-                                    if (ini.getInicio().compareTo(in.getInicio()) <= 0 && ini.getFin().compareTo(in.getInicio()) >= 0) {
-                                        a=false;
-                                        break;
-                                    } else if (ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) >= 0) {
-                                        a=false;
-                                        break;
-                                    } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getInicio()) >= 0 && ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
-                                        a=false;
-                                        break;
+            while (otro.compareTo(finn) <= 0) {
+                if (!PERSISTENCIA.getAgendas(per.getIdPersonal()).isEmpty()) {
+                    Iterator it = PERSISTENCIA.getAgendas(per.getIdPersonal()).iterator();
+                    while (it.hasNext()) {
+                        Agenda age = (Agenda) it.next();
+                        if (age.getPersonal().getEstado() == true && age.getTarea().getEstado() == true && age.getTarea().getIdTarea() != id) {
+                            if (age.getTarea().getTareaclases().iterator().hasNext()) {
+                                Dia di = age.getDia2(otro);
+                                if (di.getIdDia() != null) {
+                                    Iterator itin = PERSISTENCIA.getIniciofin(di.getIdDia()).iterator();
+                                    while (itin.hasNext()) {
+                                        Iniciofin in = (Iniciofin) itin.next();
+                                        if (ini.getInicio().compareTo(in.getInicio()) < 0 && ini.getFin().compareTo(in.getInicio()) > 0) {
+                                            a = false;
+                                            break;
+                                        } else if (ini.getInicio().compareTo(in.getFin()) < 0 && ini.getFin().compareTo(in.getFin()) > 0) {
+                                            a = false;
+                                            break;
+                                        } else if (ini.getInicio().compareTo(in.getInicio()) > 0 && ini.getFin().compareTo(in.getInicio()) > 0 && ini.getInicio().compareTo(in.getFin()) < 0 && ini.getFin().compareTo(in.getFin()) < 0) {
+                                            a = false;
+                                            break;
+                                        } else if (ini.getInicio().compareTo(in.getInicio()) == 0 && ini.getFin().compareTo(in.getInicio()) == 0) {
+                                            a = false;
+                                            break;
+                                        } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
+                                            a = false;
+                                            break;
+                                        }
                                     }
                                 }
                             }
-                        } 
+                        }
                     }
                 }
-            }
             if (!per.getDeclaracionjuradas().isEmpty()) {
                 Iterator itact = per.getDeclaracionjuradas().iterator().next().ObtenerActivos("LUNES").iterator();
                 while (itact.hasNext()) {
@@ -3751,34 +3781,40 @@ public class Controlador {
              Date otro = ot6;
              Iniciofin ini= (Iniciofin) inic.get(6);
              // <editor-fold defaultstate="collapsed" desc="Guarda meses y dias">
-        while (otro.compareTo(finn) <= 0) {
-            if (!PERSISTENCIA.getAgendas(per.getIdPersonal()).isEmpty()) {
-                Iterator it = PERSISTENCIA.getAgendas(per.getIdPersonal()).iterator();
-                while (it.hasNext()) {
-                    Agenda age = (Agenda) it.next();
-                    if (age.getPersonal().getEstado() == true && age.getTarea().getEstado() == true && age.getTarea().getIdTarea()!=id) {
-                        if (age.getTarea().getTareaclases().iterator().hasNext()) {
-                            Dia di = age.getDia2(otro);
-                            if (di.getIdDia() != null) {
-                                Iterator itin = di.getIniciofins().iterator();
-                                while (itin.hasNext()) {
-                                    Iniciofin in = (Iniciofin) itin.next();
-                                    if (ini.getInicio().compareTo(in.getInicio()) <= 0 && ini.getFin().compareTo(in.getInicio()) >= 0) {
-                                        a=false;
-                                        break;
-                                    } else if (ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) >= 0) {
-                                        a=false;
-                                        break;
-                                    } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getInicio()) >= 0 && ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
-                                        a=false;
-                                        break;
+            while (otro.compareTo(finn) <= 0) {
+                if (!PERSISTENCIA.getAgendas(per.getIdPersonal()).isEmpty()) {
+                    Iterator it = PERSISTENCIA.getAgendas(per.getIdPersonal()).iterator();
+                    while (it.hasNext()) {
+                        Agenda age = (Agenda) it.next();
+                        if (age.getPersonal().getEstado() == true && age.getTarea().getEstado() == true && age.getTarea().getIdTarea() != id) {
+                            if (age.getTarea().getTareaclases().iterator().hasNext()) {
+                                Dia di = age.getDia2(otro);
+                                if (di.getIdDia() != null) {
+                                    Iterator itin = PERSISTENCIA.getIniciofin(di.getIdDia()).iterator();
+                                    while (itin.hasNext()) {
+                                        Iniciofin in = (Iniciofin) itin.next();
+                                        if (ini.getInicio().compareTo(in.getInicio()) < 0 && ini.getFin().compareTo(in.getInicio()) > 0) {
+                                            a = false;
+                                            break;
+                                        } else if (ini.getInicio().compareTo(in.getFin()) < 0 && ini.getFin().compareTo(in.getFin()) > 0) {
+                                            a = false;
+                                            break;
+                                        } else if (ini.getInicio().compareTo(in.getInicio()) > 0 && ini.getFin().compareTo(in.getInicio()) > 0 && ini.getInicio().compareTo(in.getFin()) < 0 && ini.getFin().compareTo(in.getFin()) < 0) {
+                                            a = false;
+                                            break;
+                                        } else if (ini.getInicio().compareTo(in.getInicio()) == 0 && ini.getFin().compareTo(in.getInicio()) == 0) {
+                                            a = false;
+                                            break;
+                                        } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
+                                            a = false;
+                                            break;
+                                        }
                                     }
                                 }
                             }
-                        } 
+                        }
                     }
                 }
-            }
             if (!per.getDeclaracionjuradas().isEmpty()) {
                 Iterator itact = per.getDeclaracionjuradas().iterator().next().ObtenerActivos("LUNES").iterator();
                 while (itact.hasNext()) {
