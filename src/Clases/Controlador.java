@@ -3135,18 +3135,22 @@ public class Controlador {
                                 if (age.getTarea().getTareaclases().iterator().hasNext()) {
                                     Dia di = age.getDia2(otro);
                                     if (di.getIdDia() != null) {
-                                        Iterator itin = di.getIniciofins().iterator();
+                                        Iterator itin = PERSISTENCIA.getIniciofin(di.getIdDia()).iterator();
                                         while (itin.hasNext()) {
                                             Iniciofin in = (Iniciofin) itin.next();
-                                            Date ii=ini.getInicio();
-                                            Date iii=ini.getFin();
-                                            if (ini.getInicio().compareTo(in.getInicio()) <= 0 && ini.getFin().compareTo(in.getInicio()) >= 0) {
+                                            if (ini.getInicio().compareTo(in.getInicio()) < 0 && ini.getFin().compareTo(in.getInicio()) > 0) {
                                                 a = false;
                                                 break;
-                                            } else if (ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) >= 0) {
+                                            } else if (ini.getInicio().compareTo(in.getFin()) < 0 && ini.getFin().compareTo(in.getFin()) > 0) {
                                                 a = false;
                                                 break;
-                                            } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getInicio()) >= 0 && ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
+                                            } else if (ini.getInicio().compareTo(in.getInicio()) > 0 && ini.getFin().compareTo(in.getInicio()) > 0 && ini.getInicio().compareTo(in.getFin()) < 0 && ini.getFin().compareTo(in.getFin()) < 0) {
+                                                a = false;
+                                                break;
+                                            } else if (ini.getInicio().compareTo(in.getInicio()) == 0 && ini.getFin().compareTo(in.getFin()) == 0) {
+                                                a = false;
+                                                break;
+                                            } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
                                                 a = false;
                                                 break;
                                             }
@@ -3174,7 +3178,7 @@ public class Controlador {
             while (i.hasNext()) {
                 Tareaclase tarcla = (Tareaclase) i.next();
                 Tarea tar = tarcla.getTarea();
-                otro=ot2;
+                otro=ot1;
                 while (otro.compareTo(finn) <= 0) {
                     if (!PERSISTENCIA.getAgendasTar(tar.getIdTarea()).isEmpty()) {
                         Iterator it = PERSISTENCIA.getAgendasTar(tar.getIdTarea()).iterator();
@@ -3184,16 +3188,22 @@ public class Controlador {
                                 if (age.getTarea().getTareaclases().iterator().hasNext()) {
                                     Dia di = age.getDia2(otro);
                                     if (di.getIdDia() != null) {
-                                        Iterator itin = di.getIniciofins().iterator();
+                                        Iterator itin = PERSISTENCIA.getIniciofin(di.getIdDia()).iterator();
                                         while (itin.hasNext()) {
                                             Iniciofin in = (Iniciofin) itin.next();
-                                            if (ini.getInicio().compareTo(in.getInicio()) <= 0 && ini.getFin().compareTo(in.getInicio()) >= 0) {
+                                            if (ini.getInicio().compareTo(in.getInicio()) < 0 && ini.getFin().compareTo(in.getInicio()) > 0) {
                                                 a = false;
                                                 break;
-                                            } else if (ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) >= 0) {
+                                            } else if (ini.getInicio().compareTo(in.getFin()) < 0 && ini.getFin().compareTo(in.getFin()) > 0) {
                                                 a = false;
                                                 break;
-                                            } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getInicio()) >= 0 && ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
+                                            } else if (ini.getInicio().compareTo(in.getInicio()) > 0 && ini.getFin().compareTo(in.getInicio()) > 0 && ini.getInicio().compareTo(in.getFin()) < 0 && ini.getFin().compareTo(in.getFin()) < 0) {
+                                                a = false;
+                                                break;
+                                            } else if (ini.getInicio().compareTo(in.getInicio()) == 0 && ini.getFin().compareTo(in.getFin()) == 0) {
+                                                a = false;
+                                                break;
+                                            } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
                                                 a = false;
                                                 break;
                                             }
@@ -3221,7 +3231,7 @@ public class Controlador {
             while (i.hasNext()) {
                 Tareaclase tarcla = (Tareaclase) i.next();
                 Tarea tar = tarcla.getTarea();
-                otro=ot3;
+                otro=ot1;
                 while (otro.compareTo(finn) <= 0) {
                     if (!PERSISTENCIA.getAgendasTar(tar.getIdTarea()).isEmpty()) {
                         Iterator it = PERSISTENCIA.getAgendasTar(tar.getIdTarea()).iterator();
@@ -3231,16 +3241,22 @@ public class Controlador {
                                 if (age.getTarea().getTareaclases().iterator().hasNext()) {
                                     Dia di = age.getDia2(otro);
                                     if (di.getIdDia() != null) {
-                                        Iterator itin = di.getIniciofins().iterator();
+                                        Iterator itin = PERSISTENCIA.getIniciofin(di.getIdDia()).iterator();
                                         while (itin.hasNext()) {
                                             Iniciofin in = (Iniciofin) itin.next();
-                                            if (ini.getInicio().compareTo(in.getInicio()) <= 0 && ini.getFin().compareTo(in.getInicio()) >= 0) {
+                                            if (ini.getInicio().compareTo(in.getInicio()) < 0 && ini.getFin().compareTo(in.getInicio()) > 0) {
                                                 a = false;
                                                 break;
-                                            } else if (ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) >= 0) {
+                                            } else if (ini.getInicio().compareTo(in.getFin()) < 0 && ini.getFin().compareTo(in.getFin()) > 0) {
                                                 a = false;
                                                 break;
-                                            } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getInicio()) >= 0 && ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
+                                            } else if (ini.getInicio().compareTo(in.getInicio()) > 0 && ini.getFin().compareTo(in.getInicio()) > 0 && ini.getInicio().compareTo(in.getFin()) < 0 && ini.getFin().compareTo(in.getFin()) < 0) {
+                                                a = false;
+                                                break;
+                                            } else if (ini.getInicio().compareTo(in.getInicio()) == 0 && ini.getFin().compareTo(in.getFin()) == 0) {
+                                                a = false;
+                                                break;
+                                            } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
                                                 a = false;
                                                 break;
                                             }
@@ -3268,7 +3284,7 @@ public class Controlador {
             while (i.hasNext()) {
                 Tareaclase tarcla = (Tareaclase) i.next();
                 Tarea tar = tarcla.getTarea();
-                otro=ot4;
+                otro=ot1;
                 while (otro.compareTo(finn) <= 0) {
                     if (!PERSISTENCIA.getAgendasTar(tar.getIdTarea()).isEmpty()) {
                         Iterator it = PERSISTENCIA.getAgendasTar(tar.getIdTarea()).iterator();
@@ -3278,16 +3294,22 @@ public class Controlador {
                                 if (age.getTarea().getTareaclases().iterator().hasNext()) {
                                     Dia di = age.getDia2(otro);
                                     if (di.getIdDia() != null) {
-                                        Iterator itin = di.getIniciofins().iterator();
+                                        Iterator itin = PERSISTENCIA.getIniciofin(di.getIdDia()).iterator();
                                         while (itin.hasNext()) {
                                             Iniciofin in = (Iniciofin) itin.next();
-                                            if (ini.getInicio().compareTo(in.getInicio()) <= 0 && ini.getFin().compareTo(in.getInicio()) >= 0) {
+                                            if (ini.getInicio().compareTo(in.getInicio()) < 0 && ini.getFin().compareTo(in.getInicio()) > 0) {
                                                 a = false;
                                                 break;
-                                            } else if (ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) >= 0) {
+                                            } else if (ini.getInicio().compareTo(in.getFin()) < 0 && ini.getFin().compareTo(in.getFin()) > 0) {
                                                 a = false;
                                                 break;
-                                            } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getInicio()) >= 0 && ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
+                                            } else if (ini.getInicio().compareTo(in.getInicio()) > 0 && ini.getFin().compareTo(in.getInicio()) > 0 && ini.getInicio().compareTo(in.getFin()) < 0 && ini.getFin().compareTo(in.getFin()) < 0) {
+                                                a = false;
+                                                break;
+                                            } else if (ini.getInicio().compareTo(in.getInicio()) == 0 && ini.getFin().compareTo(in.getFin()) == 0) {
+                                                a = false;
+                                                break;
+                                            } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
                                                 a = false;
                                                 break;
                                             }
@@ -3315,7 +3337,7 @@ public class Controlador {
             while (i.hasNext()) {
                 Tareaclase tarcla = (Tareaclase) i.next();
                 Tarea tar = tarcla.getTarea();
-                otro=ot5;
+                otro=ot1;
                 while (otro.compareTo(finn) <= 0) {
                     if (!PERSISTENCIA.getAgendasTar(tar.getIdTarea()).isEmpty()) {
                         Iterator it = PERSISTENCIA.getAgendasTar(tar.getIdTarea()).iterator();
@@ -3325,16 +3347,22 @@ public class Controlador {
                                 if (age.getTarea().getTareaclases().iterator().hasNext()) {
                                     Dia di = age.getDia2(otro);
                                     if (di.getIdDia() != null) {
-                                        Iterator itin = di.getIniciofins().iterator();
+                                        Iterator itin = PERSISTENCIA.getIniciofin(di.getIdDia()).iterator();
                                         while (itin.hasNext()) {
                                             Iniciofin in = (Iniciofin) itin.next();
-                                            if (ini.getInicio().compareTo(in.getInicio()) <= 0 && ini.getFin().compareTo(in.getInicio()) >= 0) {
+                                            if (ini.getInicio().compareTo(in.getInicio()) < 0 && ini.getFin().compareTo(in.getInicio()) > 0) {
                                                 a = false;
                                                 break;
-                                            } else if (ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) >= 0) {
+                                            } else if (ini.getInicio().compareTo(in.getFin()) < 0 && ini.getFin().compareTo(in.getFin()) > 0) {
                                                 a = false;
                                                 break;
-                                            } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getInicio()) >= 0 && ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
+                                            } else if (ini.getInicio().compareTo(in.getInicio()) > 0 && ini.getFin().compareTo(in.getInicio()) > 0 && ini.getInicio().compareTo(in.getFin()) < 0 && ini.getFin().compareTo(in.getFin()) < 0) {
+                                                a = false;
+                                                break;
+                                            } else if (ini.getInicio().compareTo(in.getInicio()) == 0 && ini.getFin().compareTo(in.getFin()) == 0) {
+                                                a = false;
+                                                break;
+                                            } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
                                                 a = false;
                                                 break;
                                             }
@@ -3357,12 +3385,12 @@ public class Controlador {
             }
             Date otro = ot6;
             Iniciofin ini = (Iniciofin) inic.get(6);
-            // <editor-fold defaultstate="collapsed" desc="Controlar aula">
+         // <editor-fold defaultstate="collapsed" desc="Controlar aula">
             Iterator i = PERSISTENCIA.getTareaclase(au.getIdAula()).iterator();
             while (i.hasNext()) {
                 Tareaclase tarcla = (Tareaclase) i.next();
                 Tarea tar = tarcla.getTarea();
-                otro=ot2;
+                otro=ot1;
                 while (otro.compareTo(finn) <= 0) {
                     if (!PERSISTENCIA.getAgendasTar(tar.getIdTarea()).isEmpty()) {
                         Iterator it = PERSISTENCIA.getAgendasTar(tar.getIdTarea()).iterator();
@@ -3372,16 +3400,22 @@ public class Controlador {
                                 if (age.getTarea().getTareaclases().iterator().hasNext()) {
                                     Dia di = age.getDia2(otro);
                                     if (di.getIdDia() != null) {
-                                        Iterator itin = di.getIniciofins().iterator();
+                                        Iterator itin = PERSISTENCIA.getIniciofin(di.getIdDia()).iterator();
                                         while (itin.hasNext()) {
                                             Iniciofin in = (Iniciofin) itin.next();
-                                            if (ini.getInicio().compareTo(in.getInicio()) <= 0 && ini.getFin().compareTo(in.getInicio()) >= 0) {
+                                            if (ini.getInicio().compareTo(in.getInicio()) < 0 && ini.getFin().compareTo(in.getInicio()) > 0) {
                                                 a = false;
                                                 break;
-                                            } else if (ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) >= 0) {
+                                            } else if (ini.getInicio().compareTo(in.getFin()) < 0 && ini.getFin().compareTo(in.getFin()) > 0) {
                                                 a = false;
                                                 break;
-                                            } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getInicio()) >= 0 && ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
+                                            } else if (ini.getInicio().compareTo(in.getInicio()) > 0 && ini.getFin().compareTo(in.getInicio()) > 0 && ini.getInicio().compareTo(in.getFin()) < 0 && ini.getFin().compareTo(in.getFin()) < 0) {
+                                                a = false;
+                                                break;
+                                            } else if (ini.getInicio().compareTo(in.getInicio()) == 0 && ini.getFin().compareTo(in.getFin()) == 0) {
+                                                a = false;
+                                                break;
+                                            } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
                                                 a = false;
                                                 break;
                                             }
@@ -3397,7 +3431,6 @@ public class Controlador {
             // </editor-fold>
 
         }
-
         return a;
     }
     
