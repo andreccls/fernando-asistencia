@@ -295,24 +295,6 @@ public class Controlador {
         return bFile;
     }
     
-    
-//    public byte[] extractBytes(String ImageName) throws IOException {
-//        // open image
-//        File imgPath = new File(ImageName);
-//        BufferedImage bufferedImage = ImageIO.read(imgPath);
-//        // get DataBufferBytes from Raster
-//        WritableRaster raster = bufferedImage.getRaster();
-//        DataBufferByte data = (DataBufferByte) raster.getDataBuffer();
-//
-//        return (data.getData());
-//    }
-    
-//    public byte[] simple(String ImageName) throws IOException {
-//        File fi = new File(ImageName);
-//        byte[] fileContent = Files.readAllBytes(fi.toPath());
-//        return fileContent;
-//    }
-    
     public void CargarComboRelacion(JComboBox JCombo) {
         try {
             Iterator rs = Controlador.getPERSISTENCIA().getRelaciones().iterator();
@@ -2174,77 +2156,6 @@ public class Controlador {
         return bandera;
     }
     
-//    public void CargarTablacheck(JTable tabla, String buscarpor, String valor, List personales) {
-//        try {
-//            DefaultTableModel model = (DefaultTableModel) tabla.getModel();
-//            if (!personales.isEmpty()) {
-//                //Cargar lista de checkeados
-//                Iterator<Personal> it = getPrimerEstablecimiento().getPersonals().iterator();
-//                while (it.hasNext()) {
-//                    Personal person = (Personal) it.next();
-//                    Iterator<Personal> itt = personales.iterator();
-//                    while (itt.hasNext()) {
-//                        Personal per = itt.next();
-//                        if (per.getIdPersonal() == person.getIdPersonal()) {
-//                            Object fila[] = new Object[3];
-//                            fila[0] = new Boolean(true);
-//                            fila[1] = person;
-//                            fila[2] = person.getDni();
-//                            model.addRow(fila);
-//                        }
-//                    }
-//                }
-//            }
-//            boolean band = true;
-//            Iterator<Personal> ite = getPrimerEstablecimiento().getPersonals().iterator();
-//            while (ite.hasNext()) {
-//                band = true;
-//                Personal person = (Personal) ite.next();
-//                //No cargar la lista de personales checkeados
-//                if (!personales.isEmpty()) {
-//                    Iterator<Personal> iter = personales.iterator();
-//                    while (iter.hasNext()) {
-//                        Personal per = iter.next();
-//                        if (per.getIdPersonal() == person.getIdPersonal()) {
-//                            band = false;
-//                            break;
-//                        }
-//                    }
-//                }
-//                if (band == true) {
-//                    //Cargar resto de personales
-//                    boolean band2 = false;
-//                    if (!buscarpor.equals("TODOS")) {
-//                        Iterator it = person.getPersonalDepartamentos().iterator();
-//                        while (it.hasNext()) {
-//                            PersonalDepartamento perd = (PersonalDepartamento) it.next();
-//                            if (perd.getDepartamento().getNombre().equals(buscarpor)) {
-//                                band2 = true;
-//                            }
-//                        }
-//                    } else {
-//                        band2 = true;
-//                    }
-//
-//                    if (person.getEstado() == true && band2 == true) {
-//                        int i = person.getApellido().indexOf(valor);
-//                        int e = person.getNombre().indexOf(valor);
-//                        if (i == 0 || e == 0) {
-//                            Object fila[] = new Object[3];
-//                            fila[0] = new Boolean(false);
-//                            fila[1] = person;
-//                            fila[2] = person.getDni();
-//                            model.addRow(fila);
-//                        }
-//                    }
-//                    tabla.setModel(model);
-//                }
-//            }
-//        } catch (Exception ex) {
-//            JOptionPane.showMessageDialog(null, ex.toString());
-//        }
-//    }
-    
     public void CargarTablacheck2(JTable tabla, String buscarpor, String valor, List personales) {
         try {
             DefaultTableModel model = (DefaultTableModel) tabla.getModel();
@@ -2728,15 +2639,6 @@ public class Controlador {
         }
     }
     
-//    public boolean ControlarDNI(String dni){
-//        boolean ban=true;
-//        Iterator it=PERSISTENCIA.getPersonal(dni).iterator();
-//        if(it.hasNext()){
-//            ban=false;
-//        }
-//        return ban;
-//    }
-    
     public Boolean ControlFamiliar(Personal pe, Tiporelacion rel) {
         Boolean ban = true;
         if (rel.getRelacion().equals("MADRE") || rel.getRelacion().equals("PADRE")) {
@@ -2870,14 +2772,6 @@ public class Controlador {
                 }
             }
         }
-//        if (!PERSISTENCIA.DecjuradaPer(per.getIdPersonal()).isEmpty()) {
-//            Declaracionjurada dec = (Declaracionjurada) PERSISTENCIA.DecjuradaPer(per.getIdPersonal()).get(0);
-//            Iterator<DetalleEstablecimiento> car = PERSISTENCIA.DetalledecjuradaPer(dec.getIdDeclaracionjurada()).iterator();
-//            while (car.hasNext()) {
-//                DetalleEstablecimiento ca = (DetalleEstablecimiento) car.next();
-//                JCombo.addItem(ca);
-//            }
-//        }
     }
 
     public String ObtenerDia(int i) {
@@ -3845,7 +3739,7 @@ public class Controlador {
     }
     //     </editor-fold>
     
-        ///REUNIONES
+    ///REUNIONES
     // <editor-fold defaultstate="collapsed" desc="REUNIONES"> 
     public int ReunionVerificarDisponibilidad (Personal per,Date diaini,Date hini,Date hfin, boolean control, int id){
         int band=1;
