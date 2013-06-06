@@ -346,7 +346,6 @@ public class JFrameConsultaCircular extends javax.swing.JFrame {
             int confirmado = JOptionPane.showConfirmDialog(null, "¿Esta seguro que desea eliminar la circular?", "Eliminar circular", JOptionPane.YES_NO_OPTION);
             if (JOptionPane.OK_OPTION == confirmado) {
                 if (jTable1.getSelectedRow() >= 0) {
-
                     Iterator it=cir.getCircularpersonals().iterator();
                     while(it.hasNext()){
                         Circularpersonal cirper=(Circularpersonal)it.next();
