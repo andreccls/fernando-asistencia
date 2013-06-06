@@ -521,6 +521,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                     cirper.setPersonal(per);
                                     cirper.setCircular(circu);
                                     cirper.setDescripcion(jTextField1.getText().toUpperCase());
+                                    cirper.setEstado(false);
                                     cirper.guardarCircularpersonal(cirper);
                                 }
                                 c++;
