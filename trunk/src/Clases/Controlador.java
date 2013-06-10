@@ -2396,7 +2396,6 @@ public class Controlador {
                             }
                         }
                     }
-
                 }
             } else if (!tar.getTareareunions().isEmpty()) {
                 if (tar.getEstado() == true) {
@@ -2483,6 +2482,63 @@ public class Controlador {
                         modelo.addRow(fila);
                     }
                 }
+            } else {
+                if (tar.getEstado() == true) {
+                    Object fila[] = new Object[7];
+                    Iterator it = tar.getAgendas().iterator();
+                    while (it.hasNext()) {
+                        Agenda age = (Agenda) it.next();
+                        Iterator ita = age.getAnos().iterator();
+                        while (ita.hasNext()) {
+                            Ano an = (Ano) ita.next();
+                            Iterator itm = an.getMeses().iterator();
+                            while (itm.hasNext()) {
+                                Mes me = (Mes) itm.next();
+                                Iterator itd = me.getDias().iterator();
+                                while (itd.hasNext()) {
+                                    Dia di = (Dia) itd.next();
+                                    Iterator itini = di.getIniciofins().iterator();
+                                    while (itini.hasNext()) {
+                                        Iniciofin ini = (Iniciofin) itini.next();
+//                                        Tareaclase tarcla = tar.getTareaclases().iterator().next();
+                                        Date fecha = new Date();
+                                        fecha.setYear(an.getAno() - 1900);
+                                        fecha.setMonth(me.getMes());
+                                        fecha.setDate(di.getDia());
+                                        fila[0] = age.getPersonal();
+                                        fila[1] = tar.getLugar();
+                                        fila[2] = tar.getComentario();
+//                                        fila[3] = tarcla.getAula().getNumero();
+                                        SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+                                        SimpleDateFormat formateador2 = new SimpleDateFormat("HH:mm");
+                                        fila[4] = formateador.format(fecha);
+                                        fila[5] = formateador2.format(ini.getInicio());
+                                        fila[6] = formateador2.format(ini.getFin());
+                                        modelo.addRow(fila);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+//                if (tar.getEstado() == true) {
+//                    Object fila[] = new Object[7];
+//                    Iterator it = tar.getAgendas().iterator();
+//                    while (it.hasNext()) {
+//                        Agenda age = (Agenda) it.next();
+//                        //Date fecha = new Date();
+//                        fila[0] = age.getPersonal();
+//                        fila[1] = tar.getLugar();
+//                        fila[2] = tar.getComentario();
+//                        SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+//                        SimpleDateFormat formateador2 = new SimpleDateFormat("HH:mm");
+//                        fila[3] = formateador.format(tar.getDiaFin());
+//                        fila[4] = formateador.format(tar.getDiaInicio());
+//                        fila[5] = formateador2.format(tar.getDiaInicio());
+//                        fila[6] = formateador2.format(tar.getDiaFin());
+//                        modelo.addRow(fila);
+//                    }
+//                }
             }
             Tabla.setModel(modelo);
         } catch (Exception ex) {
@@ -3327,6 +3383,417 @@ public class Controlador {
         }
         return a;
     }
+    
+    //Administrativos
+    // <editor-fold defaultstate="collapsed" desc="Administrativos"> 
+    public boolean DisponibilidadAdm(Personal per,Date inici, Date finn, HashMap inic,HashMap dsem, int id){
+        boolean a=true;
+//        int d=0;
+        Date ot1 = inici;
+        if (dsem.containsValue("LUNES")) {
+            while (ot1.getDay() != 1) {
+                ot1 = Controlador.sumarFechasDias(ot1, 1);
+            }
+             Date otro = ot1;
+             Iniciofin ini= (Iniciofin) inic.get(1);
+            // <editor-fold defaultstate="collapsed" desc="Guarda meses y dias">
+            while (otro.compareTo(finn) <= 0) {
+                if (!PERSISTENCIA.getAgendas(per.getIdPersonal()).isEmpty()) {
+                    Iterator it = PERSISTENCIA.getAgendas(per.getIdPersonal()).iterator();
+                    while (it.hasNext()) {
+                        Agenda age = (Agenda) it.next();
+                        if (age.getPersonal().getEstado() == true && age.getTarea().getEstado() == true && age.getTarea().getIdTarea() != id) {
+                            if (age.getTarea()!=null) {
+                                Dia di = age.getDia2(otro);
+                                if (di.getIdDia() != null) {
+                                    Iterator itin = PERSISTENCIA.getIniciofin(di.getIdDia()).iterator();
+                                    while (itin.hasNext()) {
+                                        Iniciofin in = (Iniciofin) itin.next();
+                                        if (ini.getInicio().compareTo(in.getInicio()) < 0 && ini.getFin().compareTo(in.getInicio()) > 0) {
+                                            a = false;
+                                            break;
+                                        } else if (ini.getInicio().compareTo(in.getFin()) < 0 && ini.getFin().compareTo(in.getFin()) > 0) {
+                                            a = false;
+                                            break;
+                                        } else if (ini.getInicio().compareTo(in.getInicio()) > 0 && ini.getFin().compareTo(in.getInicio()) > 0 && ini.getInicio().compareTo(in.getFin()) < 0 && ini.getFin().compareTo(in.getFin()) < 0) {
+                                            a = false;
+                                            break;
+                                        } else if (ini.getInicio().compareTo(in.getInicio()) == 0 && ini.getFin().compareTo(in.getInicio()) == 0) {
+                                            a = false;
+                                            break;
+                                        } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
+                                            a = false;
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            if (!per.getDeclaracionjuradas().isEmpty()) {
+                Iterator itact = per.getDeclaracionjuradas().iterator().next().ObtenerActivos("LUNES").iterator();
+                while (itact.hasNext()) {
+                    Activo act = (Activo) itact.next();
+                    Iterator itin = act.getActivoIniciofins().iterator();
+                    while (itin.hasNext()) {
+                        ActivoIniciofin in = (ActivoIniciofin) itin.next();
+                        if (ini.getInicio().compareTo(in.getInicio()) <= 0 && ini.getFin().compareTo(in.getInicio()) >= 0) {
+                            a=false;
+                            break;
+                        } else if (ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) >= 0) {
+                            a=false;
+                            break;
+                        } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getInicio()) >= 0 && ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
+                            a=false;
+                            break;
+                        }
+                    }
+                }
+            }
+            otro = Controlador.sumarFechasDias(otro, 7);
+        }
+        // </editor-fold>
+        
+        }
+        Date ot2 = inici;
+        if (dsem.containsValue("MARTES")) {
+            while (ot2.getDay() != 2) {
+                ot2 = Controlador.sumarFechasDias(ot2, 1);
+            }
+             Date otro = ot2;
+             Iniciofin ini=  (Iniciofin) inic.get(2);
+            // <editor-fold defaultstate="collapsed" desc="Guarda meses y dias">
+            while (otro.compareTo(finn) <= 0) {
+                if (!PERSISTENCIA.getAgendas(per.getIdPersonal()).isEmpty()) {
+                    Iterator it = PERSISTENCIA.getAgendas(per.getIdPersonal()).iterator();
+                    while (it.hasNext()) {
+                        Agenda age = (Agenda) it.next();
+                        if (age.getPersonal().getEstado() == true && age.getTarea().getEstado() == true && age.getTarea().getIdTarea() != id) {
+                            if (age.getTarea()!=null) {
+                                Dia di = age.getDia2(otro);
+                                if (di.getIdDia() != null) {
+                                    Iterator itin = PERSISTENCIA.getIniciofin(di.getIdDia()).iterator();
+                                    while (itin.hasNext()) {
+                                        Iniciofin in = (Iniciofin) itin.next();
+                                        if (ini.getInicio().compareTo(in.getInicio()) < 0 && ini.getFin().compareTo(in.getInicio()) > 0) {
+                                            a = false;
+                                            break;
+                                        } else if (ini.getInicio().compareTo(in.getFin()) < 0 && ini.getFin().compareTo(in.getFin()) > 0) {
+                                            a = false;
+                                            break;
+                                        } else if (ini.getInicio().compareTo(in.getInicio()) > 0 && ini.getFin().compareTo(in.getInicio()) > 0 && ini.getInicio().compareTo(in.getFin()) < 0 && ini.getFin().compareTo(in.getFin()) < 0) {
+                                            a = false;
+                                            break;
+                                        } else if (ini.getInicio().compareTo(in.getInicio()) == 0 && ini.getFin().compareTo(in.getInicio()) == 0) {
+                                            a = false;
+                                            break;
+                                        } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
+                                            a = false;
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            if (!per.getDeclaracionjuradas().isEmpty()) {
+                Iterator itact = per.getDeclaracionjuradas().iterator().next().ObtenerActivos("LUNES").iterator();
+                while (itact.hasNext()) {
+                    Activo act = (Activo) itact.next();
+                    Iterator itin = act.getActivoIniciofins().iterator();
+                    while (itin.hasNext()) {
+                        ActivoIniciofin in = (ActivoIniciofin) itin.next();
+                        if (ini.getInicio().compareTo(in.getInicio()) <= 0 && ini.getFin().compareTo(in.getInicio()) >= 0) {
+                            a=false;
+                            break;
+                        } else if (ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) >= 0) {
+                            a=false;
+                            break;
+                        } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getInicio()) >= 0 && ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
+                            a=false;
+                            break;
+                        }
+                    }
+                }
+            }
+            otro = Controlador.sumarFechasDias(otro, 7);
+        }
+        // </editor-fold>
+        }
+        Date ot3 = inici;
+        if (dsem.containsValue("MIERCOLES")) {
+            while (ot3.getDay() != 3) {
+                ot3 = Controlador.sumarFechasDias(ot3, 1);
+            }
+             Date otro = ot3;
+             Iniciofin ini= (Iniciofin) inic.get(3);
+            // <editor-fold defaultstate="collapsed" desc="Guarda meses y dias">
+            while (otro.compareTo(finn) <= 0) {
+                if (!PERSISTENCIA.getAgendas(per.getIdPersonal()).isEmpty()) {
+                    Iterator it = PERSISTENCIA.getAgendas(per.getIdPersonal()).iterator();
+                    while (it.hasNext()) {
+                        Agenda age = (Agenda) it.next();
+                        if (age.getPersonal().getEstado() == true && age.getTarea().getEstado() == true && age.getTarea().getIdTarea() != id) {
+                            if (age.getTarea()!=null) {
+                                Dia di = age.getDia2(otro);
+                                if (di.getIdDia() != null) {
+                                    Iterator itin = PERSISTENCIA.getIniciofin(di.getIdDia()).iterator();
+                                    while (itin.hasNext()) {
+                                        Iniciofin in = (Iniciofin) itin.next();
+                                        if (ini.getInicio().compareTo(in.getInicio()) < 0 && ini.getFin().compareTo(in.getInicio()) > 0) {
+                                            a = false;
+                                            break;
+                                        } else if (ini.getInicio().compareTo(in.getFin()) < 0 && ini.getFin().compareTo(in.getFin()) > 0) {
+                                            a = false;
+                                            break;
+                                        } else if (ini.getInicio().compareTo(in.getInicio()) > 0 && ini.getFin().compareTo(in.getInicio()) > 0 && ini.getInicio().compareTo(in.getFin()) < 0 && ini.getFin().compareTo(in.getFin()) < 0) {
+                                            a = false;
+                                            break;
+                                        } else if (ini.getInicio().compareTo(in.getInicio()) == 0 && ini.getFin().compareTo(in.getInicio()) == 0) {
+                                            a = false;
+                                            break;
+                                        } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
+                                            a = false;
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            if (!per.getDeclaracionjuradas().isEmpty()) {
+                Iterator itact = per.getDeclaracionjuradas().iterator().next().ObtenerActivos("LUNES").iterator();
+                while (itact.hasNext()) {
+                    Activo act = (Activo) itact.next();
+                    Iterator itin = act.getActivoIniciofins().iterator();
+                    while (itin.hasNext()) {
+                        ActivoIniciofin in = (ActivoIniciofin) itin.next();
+                        if (ini.getInicio().compareTo(in.getInicio()) <= 0 && ini.getFin().compareTo(in.getInicio()) >= 0) {
+                            a=false;
+                            break;
+                        } else if (ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) >= 0) {
+                            a=false;
+                            break;
+                        } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getInicio()) >= 0 && ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
+                            a=false;
+                            break;
+                        }
+                    }
+                }
+            }
+            otro = Controlador.sumarFechasDias(otro, 7);
+        }
+        // </editor-fold>
+        
+        }
+        Date ot4 = inici;
+        if (dsem.containsValue("JUEVES")) {
+            while (ot4.getDay() != 4) {
+                ot4= Controlador.sumarFechasDias(ot4, 1);
+            }
+             Date otro = ot4;
+             Iniciofin ini= (Iniciofin) inic.get(4);
+            // <editor-fold defaultstate="collapsed" desc="Guarda meses y dias">
+            while (otro.compareTo(finn) <= 0) {
+                if (!PERSISTENCIA.getAgendas(per.getIdPersonal()).isEmpty()) {
+                    Iterator it = PERSISTENCIA.getAgendas(per.getIdPersonal()).iterator();
+                    while (it.hasNext()) {
+                        Agenda age = (Agenda) it.next();
+                        if (age.getPersonal().getEstado() == true && age.getTarea().getEstado() == true && age.getTarea().getIdTarea() != id) {
+                            if (age.getTarea()!=null) {
+                                Dia di = age.getDia2(otro);
+                                if (di.getIdDia() != null) {
+                                    Iterator itin = PERSISTENCIA.getIniciofin(di.getIdDia()).iterator();
+                                    while (itin.hasNext()) {
+                                        Iniciofin in = (Iniciofin) itin.next();
+                                        if (ini.getInicio().compareTo(in.getInicio()) < 0 && ini.getFin().compareTo(in.getInicio()) > 0) {
+                                            a = false;
+                                            break;
+                                        } else if (ini.getInicio().compareTo(in.getFin()) < 0 && ini.getFin().compareTo(in.getFin()) > 0) {
+                                            a = false;
+                                            break;
+                                        } else if (ini.getInicio().compareTo(in.getInicio()) > 0 && ini.getFin().compareTo(in.getInicio()) > 0 && ini.getInicio().compareTo(in.getFin()) < 0 && ini.getFin().compareTo(in.getFin()) < 0) {
+                                            a = false;
+                                            break;
+                                        } else if (ini.getInicio().compareTo(in.getInicio()) == 0 && ini.getFin().compareTo(in.getInicio()) == 0) {
+                                            a = false;
+                                            break;
+                                        } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
+                                            a = false;
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            if (!per.getDeclaracionjuradas().isEmpty()) {
+                Iterator itact = per.getDeclaracionjuradas().iterator().next().ObtenerActivos("LUNES").iterator();
+                while (itact.hasNext()) {
+                    Activo act = (Activo) itact.next();
+                    Iterator itin = act.getActivoIniciofins().iterator();
+                    while (itin.hasNext()) {
+                        ActivoIniciofin in = (ActivoIniciofin) itin.next();
+                        if (ini.getInicio().compareTo(in.getInicio()) <= 0 && ini.getFin().compareTo(in.getInicio()) >= 0) {
+                            a=false;
+                            break;
+                        } else if (ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) >= 0) {
+                            a=false;
+                            break;
+                        } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getInicio()) >= 0 && ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
+                            a=false;
+                            break;
+                        }
+                    }
+                }
+            }
+            otro = Controlador.sumarFechasDias(otro, 7);
+        }
+        // </editor-fold>
+        
+        }
+        Date ot5 = inici;
+        if (dsem.containsValue("VIERNES")) {
+            while (ot5.getDay() != 5) {
+                ot5 = Controlador.sumarFechasDias(ot5, 1);
+            }
+             Date otro = ot5;
+             Iniciofin ini= (Iniciofin) inic.get(5);
+             // <editor-fold defaultstate="collapsed" desc="Guarda meses y dias">
+            while (otro.compareTo(finn) <= 0) {
+                if (!PERSISTENCIA.getAgendas(per.getIdPersonal()).isEmpty()) {
+                    Iterator it = PERSISTENCIA.getAgendas(per.getIdPersonal()).iterator();
+                    while (it.hasNext()) {
+                        Agenda age = (Agenda) it.next();
+                        if (age.getPersonal().getEstado() == true && age.getTarea().getEstado() == true && age.getTarea().getIdTarea() != id) {
+                            if (age.getTarea()!=null) {
+                                Dia di = age.getDia2(otro);
+                                if (di.getIdDia() != null) {
+                                    Iterator itin = PERSISTENCIA.getIniciofin(di.getIdDia()).iterator();
+                                    while (itin.hasNext()) {
+                                        Iniciofin in = (Iniciofin) itin.next();
+                                        if (ini.getInicio().compareTo(in.getInicio()) < 0 && ini.getFin().compareTo(in.getInicio()) > 0) {
+                                            a = false;
+                                            break;
+                                        } else if (ini.getInicio().compareTo(in.getFin()) < 0 && ini.getFin().compareTo(in.getFin()) > 0) {
+                                            a = false;
+                                            break;
+                                        } else if (ini.getInicio().compareTo(in.getInicio()) > 0 && ini.getFin().compareTo(in.getInicio()) > 0 && ini.getInicio().compareTo(in.getFin()) < 0 && ini.getFin().compareTo(in.getFin()) < 0) {
+                                            a = false;
+                                            break;
+                                        } else if (ini.getInicio().compareTo(in.getInicio()) == 0 && ini.getFin().compareTo(in.getInicio()) == 0) {
+                                            a = false;
+                                            break;
+                                        } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
+                                            a = false;
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            if (!per.getDeclaracionjuradas().isEmpty()) {
+                Iterator itact = per.getDeclaracionjuradas().iterator().next().ObtenerActivos("LUNES").iterator();
+                while (itact.hasNext()) {
+                    Activo act = (Activo) itact.next();
+                    Iterator itin = act.getActivoIniciofins().iterator();
+                    while (itin.hasNext()) {
+                        ActivoIniciofin in = (ActivoIniciofin) itin.next();
+                        if (ini.getInicio().compareTo(in.getInicio()) <= 0 && ini.getFin().compareTo(in.getInicio()) >= 0) {
+                            a=false;
+                            break;
+                        } else if (ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) >= 0) {
+                            a=false;
+                            break;
+                        } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getInicio()) >= 0 && ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
+                            a=false;
+                            break;
+                        }
+                    }
+                }
+            }
+            otro = Controlador.sumarFechasDias(otro, 7);
+        }
+        // </editor-fold>
+        
+        }
+        Date ot6 = inici;
+        if (dsem.containsValue("SABADO")) {
+            while (ot6.getDay() != 6) {
+                ot6 = Controlador.sumarFechasDias(ot6, 1);
+            }
+             Date otro = ot6;
+             Iniciofin ini= (Iniciofin) inic.get(6);
+             // <editor-fold defaultstate="collapsed" desc="Guarda meses y dias">
+            while (otro.compareTo(finn) <= 0) {
+                if (!PERSISTENCIA.getAgendas(per.getIdPersonal()).isEmpty()) {
+                    Iterator it = PERSISTENCIA.getAgendas(per.getIdPersonal()).iterator();
+                    while (it.hasNext()) {
+                        Agenda age = (Agenda) it.next();
+                        if (age.getPersonal().getEstado() == true && age.getTarea().getEstado() == true && age.getTarea().getIdTarea() != id) {
+                            if (age.getTarea()!=null) {
+                                Dia di = age.getDia2(otro);
+                                if (di.getIdDia() != null) {
+                                    Iterator itin = PERSISTENCIA.getIniciofin(di.getIdDia()).iterator();
+                                    while (itin.hasNext()) {
+                                        Iniciofin in = (Iniciofin) itin.next();
+                                        if (ini.getInicio().compareTo(in.getInicio()) < 0 && ini.getFin().compareTo(in.getInicio()) > 0) {
+                                            a = false;
+                                            break;
+                                        } else if (ini.getInicio().compareTo(in.getFin()) < 0 && ini.getFin().compareTo(in.getFin()) > 0) {
+                                            a = false;
+                                            break;
+                                        } else if (ini.getInicio().compareTo(in.getInicio()) > 0 && ini.getFin().compareTo(in.getInicio()) > 0 && ini.getInicio().compareTo(in.getFin()) < 0 && ini.getFin().compareTo(in.getFin()) < 0) {
+                                            a = false;
+                                            break;
+                                        } else if (ini.getInicio().compareTo(in.getInicio()) == 0 && ini.getFin().compareTo(in.getInicio()) == 0) {
+                                            a = false;
+                                            break;
+                                        } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
+                                            a = false;
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            if (!per.getDeclaracionjuradas().isEmpty()) {
+                Iterator itact = per.getDeclaracionjuradas().iterator().next().ObtenerActivos("LUNES").iterator();
+                while (itact.hasNext()) {
+                    Activo act = (Activo) itact.next();
+                    Iterator itin = act.getActivoIniciofins().iterator();
+                    while (itin.hasNext()) {
+                        ActivoIniciofin in = (ActivoIniciofin) itin.next();
+                        if (ini.getInicio().compareTo(in.getInicio()) <= 0 && ini.getFin().compareTo(in.getInicio()) >= 0) {
+                            a=false;
+                            break;
+                        } else if (ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) >= 0) {
+                            a=false;
+                            break;
+                        } else if (ini.getInicio().compareTo(in.getInicio()) >= 0 && ini.getFin().compareTo(in.getInicio()) >= 0 && ini.getInicio().compareTo(in.getFin()) <= 0 && ini.getFin().compareTo(in.getFin()) <= 0) {
+                            a=false;
+                            break;
+                        }
+                    }
+                }
+            }
+            otro = Controlador.sumarFechasDias(otro, 7);
+        }
+        // </editor-fold>
+        
+        }
+
+        return a;
+    }
+    //     </editor-fold>
     
     //CLASES
     // <editor-fold defaultstate="collapsed" desc="Clase"> 

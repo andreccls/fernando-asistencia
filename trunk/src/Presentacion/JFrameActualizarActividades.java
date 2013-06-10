@@ -135,6 +135,19 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
 //            tc1.setHeaderValue("Numero");
             th.repaint();
             jTable1.setEnabled(false);
+        } else {
+            JTableHeader th = jTable1.getTableHeader();
+            TableColumnModel tcm = th.getColumnModel();
+            TableColumn t = tcm.getColumn(1); //recordemos que las columnas inician a enumerarse desde cero
+            t.setHeaderValue("Lugar");
+            TableColumn tc = tcm.getColumn(2); //recordemos que las columnas inician a enumerarse desde cero
+            tc.setHeaderValue("Comentario");
+//            TableColumn tc1 = tcm.getColumn(3);
+//            tc1.setHeaderValue("Fecha fin");
+//            TableColumn tc2 = tcm.getColumn(4);
+//            tc2.setHeaderValue("Fecha");
+            th.repaint();
+            jTable1.setEnabled(false);
         }
         Drive.CargarTablaActividad(jTable1, tar);
         ImageIcon fott1 = new ImageIcon(getClass().getResource("/imagenes/no.png"));
