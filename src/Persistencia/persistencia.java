@@ -666,7 +666,16 @@ public class persistencia {
         items = q.list();
         tx.commit();
         return items;
-
+    }
+    
+    public List getPersonal(int idper) throws ArrayStoreException {
+        String hql = "from Personal where idPersonal="+idper;
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
     }
     
     public List getPersonalesTrue(int i) throws ArrayStoreException {

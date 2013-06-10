@@ -183,6 +183,9 @@ public class JFramePrincipal extends javax.swing.JFrame {
         ImageIcon fott18 = new ImageIcon(getClass().getResource("/imagenes/Consulta.png"));
         Icon icono18 = new ImageIcon(fott18.getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
         jMenuItem17.setIcon(icono18);
+        ImageIcon fott19 = new ImageIcon(getClass().getResource("/imagenes/adm.png"));
+        Icon icono19 = new ImageIcon(fott19.getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
+        jMenuItem18.setIcon(icono19);
 //        
 //        ImageIcon fondo = new ImageIcon("src\\imagenes\\fondo.png");
 //        Icon icon = new ImageIcon(fondo.getImage().getScaledInstance(jPanel1.getWidth(), jPanel1.getHeight(), Image.SCALE_DEFAULT));

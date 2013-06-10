@@ -173,6 +173,7 @@ public class JFrameAdministrativo extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane2 = new javax.swing.JScrollPane();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -960,14 +961,14 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
         .addGroup(layout.createSequentialGroup()
             .addContainerGap()
             .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addContainerGap(37, Short.MAX_VALUE))
     );
     layout.setVerticalGroup(
         layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
         .addGroup(layout.createSequentialGroup()
             .addContainerGap()
             .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addContainerGap(35, Short.MAX_VALUE))
+            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
     );
 
     pack();
@@ -1391,75 +1392,78 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                             boolean band=true;
                             SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
                             while (jTable1.getRowCount() != c) {
-                                Personal person = (Personal) modelo.getValueAt(c, 0);
-                                // <editor-fold defaultstate="collapsed" desc="verificar">
-                                Date inn = new Date();
-                                Date fii = new Date();
-                                HashMap items = new HashMap();
-                                HashMap listini = new HashMap();
-                                if (jCheckBox1.isSelected()) {
-                                    items.put(1,"LUNES");
-                                    inn = formateador.parse(jFormattedTextField1.getText());
-                                    fii = formateador.parse(jFormattedTextField2.getText());
-                                    Iniciofin aux = new Iniciofin();
-                                    aux.setInicio(inn);
-                                    aux.setFin(fii);
-                                    listini.put(1,aux);
-                                }
-                                if (jCheckBox2.isSelected()) {
-                                    items.put(2,"MARTES");
-                                    inn = formateador.parse(jFormattedTextField3.getText());
-                                    fii = formateador.parse(jFormattedTextField4.getText());
-                                    Iniciofin aux = new Iniciofin();
-                                    aux.setInicio(inn);
-                                    aux.setFin(fii);
-                                    listini.put(2,aux);
-                                }
-                                if (jCheckBox3.isSelected()) {
-                                    items.put(3,"MIERCOLES");
-                                    inn = formateador.parse(jFormattedTextField5.getText());
-                                    fii = formateador.parse(jFormattedTextField6.getText());
-                                    Iniciofin aux = new Iniciofin();
-                                    aux.setInicio(inn);
-                                    aux.setFin(fii);
-                                    listini.put(3,aux);
-                                }
-                                if (jCheckBox4.isSelected()) {
-                                    items.put(4,"JUEVES");
-                                    inn = formateador.parse(jFormattedTextField8.getText());
-                                    fii = formateador.parse(jFormattedTextField7.getText());
-                                    Iniciofin aux = new Iniciofin();
-                                    aux.setInicio(inn);
-                                    aux.setFin(fii);
-                                    listini.put(4,aux);
-                                }
-                                if (jCheckBox5.isSelected()) {
-                                    items.put(5,"VIERNES");
-                                    inn = formateador.parse(jFormattedTextField9.getText());
-                                    fii = formateador.parse(jFormattedTextField10.getText());
-                                    Iniciofin aux = new Iniciofin();
-                                    aux.setInicio(inn);
-                                    aux.setFin(fii);
-                                    listini.put(5,aux);
-                                }
-                                if (jCheckBox6.isSelected()) {
-                                    items.put(6,"SABADO");
-                                    inn = formateador.parse(jFormattedTextField11.getText());
-                                    fii = formateador.parse(jFormattedTextField12.getText());
-                                    Iniciofin aux = new Iniciofin();
-                                    aux.setInicio(inn);
-                                    aux.setFin(fii);
-                                    listini.put(6,aux);
-                                }
-                                Date inicioo = dateChooserCombo1.getSelectedDate().getTime();
-                                Date finn = dateChooserCombo2.getSelectedDate().getTime();
-                                // </editor-fold>
-                                if (Drive.DisponibilidadAdm(person,inicioo, finn, listini, items,tar.getIdTarea())) {
-                                    band=true;
-                                }else{
-                                    band=false;
-                                    JOptionPane.showMessageDialog(null,"No existe disponibilidad", "Actualizar clase",JOptionPane.ERROR_MESSAGE);
-                                    break;
+                                boolean b= (Boolean) modelo.getValueAt(c, 0);
+                                if(b){
+                                    Personal person = (Personal) modelo.getValueAt(c, 1);
+                                    // <editor-fold defaultstate="collapsed" desc="verificar">
+                                    Date inn = new Date();
+                                    Date fii = new Date();
+                                    HashMap items = new HashMap();
+                                    HashMap listini = new HashMap();
+                                    if (jCheckBox1.isSelected()) {
+                                        items.put(1,"LUNES");
+                                        inn = formateador.parse(jFormattedTextField1.getText());
+                                        fii = formateador.parse(jFormattedTextField2.getText());
+                                        Iniciofin aux = new Iniciofin();
+                                        aux.setInicio(inn);
+                                        aux.setFin(fii);
+                                        listini.put(1,aux);
+                                    }
+                                    if (jCheckBox2.isSelected()) {
+                                        items.put(2,"MARTES");
+                                        inn = formateador.parse(jFormattedTextField3.getText());
+                                        fii = formateador.parse(jFormattedTextField4.getText());
+                                        Iniciofin aux = new Iniciofin();
+                                        aux.setInicio(inn);
+                                        aux.setFin(fii);
+                                        listini.put(2,aux);
+                                    }
+                                    if (jCheckBox3.isSelected()) {
+                                        items.put(3,"MIERCOLES");
+                                        inn = formateador.parse(jFormattedTextField5.getText());
+                                        fii = formateador.parse(jFormattedTextField6.getText());
+                                        Iniciofin aux = new Iniciofin();
+                                        aux.setInicio(inn);
+                                        aux.setFin(fii);
+                                        listini.put(3,aux);
+                                    }
+                                    if (jCheckBox4.isSelected()) {
+                                        items.put(4,"JUEVES");
+                                        inn = formateador.parse(jFormattedTextField8.getText());
+                                        fii = formateador.parse(jFormattedTextField7.getText());
+                                        Iniciofin aux = new Iniciofin();
+                                        aux.setInicio(inn);
+                                        aux.setFin(fii);
+                                        listini.put(4,aux);
+                                    }
+                                    if (jCheckBox5.isSelected()) {
+                                        items.put(5,"VIERNES");
+                                        inn = formateador.parse(jFormattedTextField9.getText());
+                                        fii = formateador.parse(jFormattedTextField10.getText());
+                                        Iniciofin aux = new Iniciofin();
+                                        aux.setInicio(inn);
+                                        aux.setFin(fii);
+                                        listini.put(5,aux);
+                                    }
+                                    if (jCheckBox6.isSelected()) {
+                                        items.put(6,"SABADO");
+                                        inn = formateador.parse(jFormattedTextField11.getText());
+                                        fii = formateador.parse(jFormattedTextField12.getText());
+                                        Iniciofin aux = new Iniciofin();
+                                        aux.setInicio(inn);
+                                        aux.setFin(fii);
+                                        listini.put(6,aux);
+                                    }
+                                    Date inicioo = dateChooserCombo1.getSelectedDate().getTime();
+                                    Date finn = dateChooserCombo2.getSelectedDate().getTime();
+                                    // </editor-fold>
+                                    if (Drive.DisponibilidadAdm(person,inicioo, finn, listini, items,tar.getIdTarea())) {
+                                        band=true;
+                                    }else{
+                                        band=false;
+                                        JOptionPane.showMessageDialog(null,"No existe disponibilidad", "Actualizar clase",JOptionPane.ERROR_MESSAGE);
+                                        break;
+                                    }
                                 }
                                 c++;
                             }
@@ -1510,7 +1514,8 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                 while (li.hasNext()) {
 //                                while (jTable1.getRowCount() != c) {
 //                                    Personal person = (Personal) modelo.getValueAt(c, 0);
-                                    Personal person = (Personal) li.next();
+                                    int i=(Integer) li.next();
+                                    Personal person = (Personal) Drive.PERSISTENCIA.getPersonal(i).iterator().next();
                                     Agenda age=tar.ObtenerAgenda(person.getIdPersonal());
                                     if(age.getId()==null){
                                         AgendaId idage = new AgendaId(person.getIdPersonal(), tar.getIdTarea());
@@ -3037,6 +3042,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JTable jTable1;

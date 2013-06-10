@@ -2812,6 +2812,7 @@ public class Controlador {
         }
         return pe;
     }
+    
 
     public void CargarComboEstablecimientosPerso(JComboBox JCombo, Personal per, int ano) {
         LimpiarCombo(JCombo);
