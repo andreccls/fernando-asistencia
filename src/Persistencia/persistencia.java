@@ -615,6 +615,36 @@ public class persistencia {
         tx.commit();
         return items;
     }
+    
+    public List getTareasAdm() throws ArrayStoreException {
+        String hql = "from Tarea where comentario='ADMINISTRATIVO'";
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
+    }
+    
+    public List getTareasMaes() throws ArrayStoreException {
+        String hql = "from Tarea where comentario='MAESTRANZA'";
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
+    }
+    
+    public List getTareasOtro() throws ArrayStoreException {
+        String hql = "from Tarea where comentario='OTROS'";
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
+    }
 
     public List getFeriados(int ano) throws ArrayStoreException {
         String hql = "from Feriado where year(dia)="+ano;
