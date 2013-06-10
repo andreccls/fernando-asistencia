@@ -64,7 +64,7 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
         jTextField1.setText(tarr.getNombre());
         jTextField1.setEnabled(false);
         jButton1.setEnabled(false);
-        int[] anchos1 = {170,120,90,80,80,80,80};
+        int[] anchos1 = {170,120,90,90,80,80,80};
         for(int i = 0; i < jTable1.getColumnCount(); i++) {
             jTable1.getColumnModel().getColumn(i).setPreferredWidth(anchos1[i]);
         }
@@ -549,14 +549,13 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
                             vent2.show();
                         }
                     }
-//                    else if(jTable1.getRowCount()==0){
-//                        JFrameReunion vent2 = new JFrameReunion(Drive, adm, idsesion,tar);
-//                        this.hide();
-//                        vent2.show();
-//                    }
                 } catch (Exception e) {
                 }
                 
+            }else{
+                JFrameAdministrativo vent2 = new JFrameAdministrativo(Drive, adm, tar);
+                this.hide();
+                vent2.show();
             }
         }
     }//GEN-LAST:event_jButton4ActionPerformed
