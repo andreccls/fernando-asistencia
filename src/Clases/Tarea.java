@@ -417,6 +417,7 @@ public class Tarea  implements java.io.Serializable {
         }
         return age;
     }
+    
     public Agenda ObtenerAgenda(int idper) {
         Agenda age = new Agenda();
         Iterator it=agendas.iterator();
