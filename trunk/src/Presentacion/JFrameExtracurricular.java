@@ -941,14 +941,6 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                             }
                             jFormattedTextField1.setText("");
                             jFormattedTextField2.setText("");
-
-//                            jTextField3.setText("");
-//                            jTextField4.setText("");
-//                            Drive.LimpiarTabla(jTable1);
-//                            lista.removeAll(lista);
-//                            String buscar = (String) jComboBox1.getSelectedItem();
-//                            Drive.CargarTablacheck(jTable1, buscar, buffer.toString().toUpperCase(), lista);
-//                            Drive = new Controlador();
                         }else{
                             JOptionPane.showMessageDialog(null, "Por favor ingrese la hora correctamente", "Registrar Tarea extracurricular", JOptionPane.ERROR_MESSAGE);
                         }
@@ -1255,8 +1247,6 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                     jButton2.setEnabled(true);
                     jFormattedTextField1.setText("00:00");
                     jFormattedTextField2.setText("00:00");
-//                    dateChooserCombo1.setSelectedDate(Calendar.getInstance());
-//                    dateChooserCombo2.setSelectedDate(Calendar.getInstance());
                 } else {
                     JOptionPane.showMessageDialog(null, "Todos los campos con '*' son obligatorios y los horarios no pueden contener espacios en blanco", "Registrar Tarea extracurricular", JOptionPane.ERROR_MESSAGE);
                 }

@@ -722,6 +722,11 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
     jLabel6.setText("Trabajo:");
 
     jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "ADMINISTRATIVO", "MAESTRANZA", "OTROS" }));
+    jComboBox2.addItemListener(new java.awt.event.ItemListener() {
+        public void itemStateChanged(java.awt.event.ItemEvent evt) {
+            jComboBox2ItemStateChanged(evt);
+        }
+    });
 
     javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
     jPanel1.setLayout(jPanel1Layout);
@@ -1502,6 +1507,23 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                     audi.guardarAuditoria(audi);
                                     // </editor-fold>
                                     tar.setDiaFin(fin);
+                                    tar.ActualizarTarea(tar);
+                                    mensaje=true;
+                                }
+                                String com=(String) jComboBox2.getSelectedItem();
+                                if(!tar.getComentario().equals(com)){
+                                    // <editor-fold defaultstate="collapsed" desc="Auditoria">
+                                    Auditoria audi=new Auditoria();
+                                    audi.setPersonalByIdAuditor(adm);
+                                    audi.setOperacion("Actualizar");
+                                    audi.setFecha(new Date());
+                                    audi.setTarea(tar);
+                                    audi.setCampo("Comentario");
+                                    audi.setElementoAnterior(tar.getComentario());
+                                    audi.setElementoNuevo(com);
+                                    audi.guardarAuditoria(audi);
+                                    // </editor-fold>
+                                    tar.setComentario(com);
                                     tar.ActualizarTarea(tar);
                                     mensaje=true;
                                 }
@@ -2957,6 +2979,13 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
         } catch (Exception e) {
         }
     }//GEN-LAST:event_jTable1MouseClicked
+
+    private void jComboBox2ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox2ItemStateChanged
+        String com=(String) jComboBox2.getSelectedItem();
+        if(!tar.getComentario().equals(com)){
+            cambio=true;
+        }
+    }//GEN-LAST:event_jComboBox2ItemStateChanged
 
     /**
      * @param args the command line arguments

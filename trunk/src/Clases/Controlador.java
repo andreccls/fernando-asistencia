@@ -826,10 +826,97 @@ public class Controlador {
                 }
                 }
             }
+            Iterator acto = PERSISTENCIA.getTareasOtro().iterator();
+            while (acto.hasNext()) {
+                Tarea ac = (Tarea) acto.next();
+                if (ac.getEstado()&&ac.getAgendas().size()>0) {
+                    Agenda ag=ac.getAgendas().iterator().next();
+                    if(ag.getAnolectivo().getIdAnolectivo()==ano.getIdAnolectivo()){
+                    if (buscarpor.equals("Nombre") && ac.getEstado() == true) {
+                        int i = ac.getNombre().indexOf(valor);
+                        if (i == 0) {
+                            Object[] fila = new Object[3];
+                            fila[0] = ac;
+                            fila[1] = ac.getLugar();
+                            fila[2] = ac.getComentario();
+                            model.addRow(fila);
+                        }
+                    } else if (buscarpor.equals("Lugar") && ac.getEstado() == true) {
+                        int i = ac.getLugar().getNombre().indexOf(valor);
+                        if (i == 0) {
+                            Object[] fila = new Object[3];
+                            fila[0] = ac;
+                            fila[1] = ac.getLugar();
+                            fila[2] = ac.getComentario();
+                            model.addRow(fila);
+                        }
+                    }
+                }
+                }
+            }
         } else if (tipo.equals("Todos")) {
             Iterator<Tarea> act = PERSISTENCIA.getTareas().iterator();
             while (act.hasNext()) {
                 Tarea ac = act.next();
+//                Agenda ag=ac.getAgendas().iterator().next();
+                if (ac.getEstado()&&ac.getAgendas().size()>0) {
+                    Agenda ag=ac.getAgendas().iterator().next();
+                    if(ag.getAnolectivo().getIdAnolectivo()==ano.getIdAnolectivo()){
+                    if (buscarpor.equals("Nombre") && ac.getEstado() == true) {
+                        int i = ac.getNombre().indexOf(valor);
+                        if (i == 0) {
+                            Object[] fila = new Object[3];
+                            fila[0] = ac;
+                            fila[1] = ac.getLugar();
+                            fila[2] = ac.getComentario();
+                            model.addRow(fila);
+                        }
+                    } else if (buscarpor.equals("Lugar") && ac.getEstado() == true) {
+                        int i = ac.getLugar().getNombre().indexOf(valor);
+                        if (i == 0) {
+                            Object[] fila = new Object[3];
+                            fila[0] = ac;
+                            fila[1] = ac.getLugar();
+                            fila[2] = ac.getComentario();
+                            model.addRow(fila);
+                        }
+                    }
+                }
+                }
+            }
+        } else if (tipo.equals("Administrativo")) {
+            Iterator act = PERSISTENCIA.getTareasAdm().iterator();
+            while (act.hasNext()) {
+                Tarea ac =(Tarea) act.next();
+                if (ac.getEstado()&&ac.getAgendas().size()>0) {
+                    Agenda ag=ac.getAgendas().iterator().next();
+                    if(ag.getAnolectivo().getIdAnolectivo()==ano.getIdAnolectivo()){
+                    if (buscarpor.equals("Nombre") && ac.getEstado() == true) {
+                        int i = ac.getNombre().indexOf(valor);
+                        if (i == 0) {
+                            Object[] fila = new Object[3];
+                            fila[0] = ac;
+                            fila[1] = ac.getLugar();
+                            fila[2] = ac.getComentario();
+                            model.addRow(fila);
+                        }
+                    } else if (buscarpor.equals("Lugar") && ac.getEstado() == true) {
+                        int i = ac.getLugar().getNombre().indexOf(valor);
+                        if (i == 0) {
+                            Object[] fila = new Object[3];
+                            fila[0] = ac;
+                            fila[1] = ac.getLugar();
+                            fila[2] = ac.getComentario();
+                            model.addRow(fila);
+                        }
+                    }
+                }
+                }
+            }
+        } else if (tipo.equals("Maestranza")) {
+            Iterator act = PERSISTENCIA.getTareasMaes().iterator();
+            while (act.hasNext()) {
+                Tarea ac =(Tarea) act.next();
 //                Agenda ag=ac.getAgendas().iterator().next();
                 if (ac.getEstado()&&ac.getAgendas().size()>0) {
                     Agenda ag=ac.getAgendas().iterator().next();
@@ -4372,7 +4459,7 @@ public class Controlador {
     
     ///EXTRACURRICULARES
     // <editor-fold defaultstate="collapsed" desc="EXTRACURRICULARES"> 
-    public int ExtracurricularVerificarDisponibilidad (Personal per,Date diaini,Date hini,Date hfin,Date diafin,boolean control, int id){
+    public int ExtracurricularVerificarDisponibilidad (Personal per,Date diaini,Date hini,Date hfin,Date diafin,boolean control, int id,boolean bandera){
         int band=1;
         try {
             if (!PERSISTENCIA.getAgendas(per.getIdPersonal()).isEmpty()) {
