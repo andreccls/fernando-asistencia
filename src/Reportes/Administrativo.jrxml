@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Clases" pageWidth="595" pageHeight="842" columnWidth="511" leftMargin="56" rightMargin="28" topMargin="28" bottomMargin="28">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Administrativo" pageWidth="595" pageHeight="842" columnWidth="511" leftMargin="56" rightMargin="28" topMargin="28" bottomMargin="28">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="45"/>
@@ -8,12 +8,24 @@
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
 	<parameter name="total" class="java.lang.Integer"/>
+	<parameter name="Titulo" class="java.lang.String"/>
 	<queryString language="hql">
-		<![CDATA[from Tareaclase]]>
+		<![CDATA[from Tarea]]>
 	</queryString>
-	<field name="aula" class="Clases.Aula"/>
-	<field name="id" class="Clases.TareaclaseId"/>
-	<field name="tarea" class="Clases.Tarea"/>
+	<field name="agendas" class="java.util.Set"/>
+	<field name="auditorias" class="java.util.Set"/>
+	<field name="comentario" class="java.lang.String"/>
+	<field name="diaFin" class="java.util.Date"/>
+	<field name="diaInicio" class="java.util.Date"/>
+	<field name="establecimiento" class="Clases.Establecimiento"/>
+	<field name="estado" class="java.lang.Boolean"/>
+	<field name="idTarea" class="java.lang.Integer"/>
+	<field name="lugar" class="Clases.Lugar"/>
+	<field name="nombre" class="java.lang.String"/>
+	<field name="tareaclases" class="java.util.Set"/>
+	<field name="tareaextracurriculars" class="java.util.Set"/>
+	<field name="tareaotros" class="java.util.Set"/>
+	<field name="tareareunions" class="java.util.Set"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -24,20 +36,20 @@
 				<textElement markup="none">
 					<font size="12" isBold="true" isItalic="true" isUnderline="false" isStrikeThrough="false"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["Instituto "+$F{tarea}.getEstablecimiento().getNombre()]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA["Instituto "+$F{establecimiento}.getNombre()]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="0" y="119" width="228" height="35"/>
 				<textElement markup="none"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{tarea}.getEstablecimiento().getLeyenda()]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{establecimiento}.getLeyenda()]]></textFieldExpression>
 			</textField>
-			<staticText>
+			<textField>
 				<reportElement mode="Opaque" x="228" y="78" width="282" height="73" forecolor="#000000" backcolor="#FFFFFF"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
+				<textElement textAlignment="Right" verticalAlignment="Middle" markup="none">
 					<font size="30" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Clases]]></text>
-			</staticText>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{Titulo}]]></textFieldExpression>
+			</textField>
 			<line>
 				<reportElement mode="Transparent" x="0" y="155" width="511" height="1"/>
 				<graphicElement>
@@ -48,69 +60,64 @@
 				<reportElement x="-1" y="156" width="1" height="23"/>
 			</line>
 			<staticText>
-				<reportElement x="0" y="156" width="154" height="23"/>
+				<reportElement x="0" y="156" width="182" height="23"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[TOTAL:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="155" y="156" width="145" height="23"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="12" isBold="true"/>
-				</textElement>
+				<reportElement x="183" y="156" width="68" height="23"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$P{total}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="154" y="157" width="1" height="22"/>
+				<reportElement x="182" y="157" width="1" height="22"/>
 			</line>
 			<image hAlign="Center">
 				<reportElement mode="Transparent" x="0" y="0" width="100" height="100"/>
-				<imageExpression class="java.io.InputStream"><![CDATA[new java.io.ByteArrayInputStream ($F{tarea}.getEstablecimiento().getImagen())]]></imageExpression>
+				<imageExpression class="java.io.InputStream"><![CDATA[new java.io.ByteArrayInputStream ($F{establecimiento}.getImagen())]]></imageExpression>
 			</image>
 		</band>
 	</title>
 	<columnHeader>
 		<band height="22" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="0" width="154" height="22"/>
+				<reportElement x="0" y="0" width="182" height="22"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="14" isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[Nombre]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="154" y="0" width="147" height="22"/>
+				<reportElement x="183" y="0" width="140" height="22"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="14" isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[Lugar]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="301" y="0" width="126" height="22"/>
+				<reportElement x="324" y="0" width="91" height="22"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="14" isBold="true" isItalic="true"/>
 				</textElement>
-				<text><![CDATA[Aula]]></text>
+				<text><![CDATA[Fecha inicio]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="427" y="0" width="84" height="22"/>
+				<reportElement x="416" y="0" width="95" height="22"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="14" isBold="true" isItalic="true"/>
 				</textElement>
-				<text><![CDATA[Numero]]></text>
+				<text><![CDATA[Fecha fin]]></text>
 			</staticText>
 			<line>
 				<reportElement x="0" y="0" width="511" height="1"/>
 			</line>
 			<line>
-				<reportElement x="154" y="0" width="1" height="22"/>
+				<reportElement x="182" y="0" width="1" height="22"/>
 			</line>
 			<line>
-				<reportElement x="300" y="0" width="1" height="22"/>
-			</line>
-			<line>
-				<reportElement x="426" y="0" width="1" height="22"/>
+				<reportElement x="323" y="0" width="1" height="22"/>
 			</line>
 			<line>
 				<reportElement x="510" y="0" width="1" height="22"/>
@@ -121,28 +128,28 @@
 			<line>
 				<reportElement x="0" y="21" width="511" height="1"/>
 			</line>
+			<line>
+				<reportElement x="415" y="0" width="1" height="22"/>
+			</line>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="37" splitType="Stretch">
 			<textField>
-				<reportElement mode="Transparent" x="0" y="0" width="154" height="37"/>
+				<reportElement mode="Transparent" x="0" y="0" width="182" height="37"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{tarea}.getNombre()]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{nombre}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="154" y="0" width="1" height="37"/>
+				<reportElement x="182" y="0" width="1" height="37"/>
 			</line>
 			<line>
-				<reportElement x="300" y="0" width="1" height="37"/>
-			</line>
-			<line>
-				<reportElement x="426" y="0" width="1" height="37"/>
+				<reportElement x="323" y="0" width="1" height="37"/>
 			</line>
 			<textField>
-				<reportElement x="155" y="0" width="145" height="37"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{tarea}.getLugar()]]></textFieldExpression>
+				<reportElement x="183" y="0" width="140" height="37"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{lugar}.getNombre()]]></textFieldExpression>
 			</textField>
 			<line>
 				<reportElement x="510" y="0" width="1" height="37"/>
@@ -150,18 +157,21 @@
 			<line>
 				<reportElement x="-1" y="0" width="1" height="37"/>
 			</line>
-			<textField>
-				<reportElement x="301" y="0" width="125" height="37"/>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{aula}.getNombre()]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="426" y="0" width="84" height="37"/>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="324" y="0" width="91" height="37"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{aula}.getNumero()]]></textFieldExpression>
+				<textFieldExpression class="java.util.Date"><![CDATA[$F{diaInicio}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="416" y="0" width="94" height="37"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.util.Date"><![CDATA[$F{diaFin}]]></textFieldExpression>
 			</textField>
 			<line>
 				<reportElement x="0" y="36" width="511" height="1"/>
+			</line>
+			<line>
+				<reportElement x="415" y="0" width="1" height="37"/>
 			</line>
 		</band>
 	</detail>
