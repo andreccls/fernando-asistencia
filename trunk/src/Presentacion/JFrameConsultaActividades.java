@@ -385,8 +385,9 @@ public class JFrameConsultaActividades extends javax.swing.JFrame {
                 while (modelo.getRowCount() != c) {
                     Object o=jTable1.getValueAt(c, 0);
                     if (o != null) {
-                        Tareaclase audi = (Tareaclase) o;
-                        lista.add(audi);
+                        Tarea audi = (Tarea) o;
+                        Tareaclase tarcla=audi.getTareaclases().iterator().next();
+                        lista.add(tarcla);
                     }
                     c++;
                 }
@@ -398,8 +399,9 @@ public class JFrameConsultaActividades extends javax.swing.JFrame {
                 while (modelo.getRowCount() != c) {
                     Object o=jTable1.getValueAt(c, 0);
                     if (o != null) {
-                        Tareareunion audi = (Tareareunion) o;
-                        lista.add(audi);
+                        Tarea audi = (Tarea) o;
+                        Tareareunion tarcla=audi.getTareareunions().iterator().next();
+                        lista.add(tarcla);
                     }
                     c++;
                 }
@@ -411,8 +413,9 @@ public class JFrameConsultaActividades extends javax.swing.JFrame {
                 while (modelo.getRowCount() != c) {
                     Object o=jTable1.getValueAt(c, 0);
                     if (o != null) {
-                        Tareaextracurricular audi = (Tareaextracurricular) o;
-                        lista.add(audi);
+                        Tarea audi = (Tarea) o;
+                        Tareaextracurricular tarcla=audi.getTareaextracurriculars().iterator().next();
+                        lista.add(tarcla);
                     }
                     c++;
                 }
@@ -424,13 +427,40 @@ public class JFrameConsultaActividades extends javax.swing.JFrame {
                 while (modelo.getRowCount() != c) {
                     Object o=jTable1.getValueAt(c, 0);
                     if (o != null) {
-                        Tareaotro audi = (Tareaotro) o;
-                        lista.add(audi);
+                        Tarea audi = (Tarea) o;
+                        Tareaotro tarcla=audi.getTareaotros().iterator().next();
+                        lista.add(tarcla);
                     }
                     c++;
                 }
                 Drive.mostrarReporte("OtrasActividades",lista,"Lista de Otras Actividades",lista.size());
-            }else if(bandera.equals("Todos")){
+            } else if(bandera.equals("Administrativo")){
+                List lista = new ArrayList();
+                DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+                int c = 0;
+                while (modelo.getRowCount() != c) {
+                    Object o=jTable1.getValueAt(c, 0);
+                    if (o != null) {
+                        Tarea audi = (Tarea) o;
+                        lista.add(audi);
+                    }
+                    c++;
+                }
+                Drive.mostrarReporte("Administrativo",lista,"Lista de Administrativos","Administrativos",lista.size());
+            } else if(bandera.equals("Maestranza")){
+                List lista = new ArrayList();
+                DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+                int c = 0;
+                while (modelo.getRowCount() != c) {
+                    Object o=jTable1.getValueAt(c, 0);
+                    if (o != null) {
+                        Tarea audi = (Tarea) o;
+                        lista.add(audi);
+                    }
+                    c++;
+                }
+                Drive.mostrarReporte("Administrativo",lista,"Lista de Administrativos","Maestranza",lista.size());
+            } else if(bandera.equals("Todos")){
                 JOptionPane.showMessageDialog(null,"No se pueden imprimir todas las actividades, por favor seleccione una actividad en especial","Error de impresión", JOptionPane.ERROR_MESSAGE);
             }
         }catch (Exception e){

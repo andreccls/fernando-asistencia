@@ -127,7 +127,7 @@
 			<textField pattern="dd/MM/yyyy HH:mm">
 				<reportElement x="341" y="0" width="84" height="31"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{tarea}.getDiaInicio()]]></textFieldExpression>
+				<textFieldExpression class="java.util.Date"><![CDATA[$F{tarea}.getDiaInicio()]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="192" y="0" width="148" height="31"/>

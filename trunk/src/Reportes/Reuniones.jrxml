@@ -4,15 +4,10 @@
 	<queryString language="hql">
 		<![CDATA[from Tareareunion]]>
 	</queryString>
-	<field name="tarea" class="Clases.Tarea">
-		<fieldDescription><![CDATA[tarea]]></fieldDescription>
-	</field>
-	<field name="caracter" class="java.lang.String">
-		<fieldDescription><![CDATA[caracter]]></fieldDescription>
-	</field>
-	<field name="motivo" class="java.lang.String">
-		<fieldDescription><![CDATA[motivo]]></fieldDescription>
-	</field>
+	<field name="caracter" class="java.lang.String"/>
+	<field name="id" class="Clases.TareareunionId"/>
+	<field name="motivo" class="java.lang.String"/>
+	<field name="tarea" class="Clases.Tarea"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -51,13 +46,15 @@
 			</line>
 			<textField>
 				<reportElement x="155" y="156" width="116" height="21"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$P{total}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="0" y="156" width="154" height="21"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="true"/>
+					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[TOTAL:]]></text>
 			</staticText>
