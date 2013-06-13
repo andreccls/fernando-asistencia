@@ -391,7 +391,7 @@ public class JFrameConsultaActividades extends javax.swing.JFrame {
                     }
                     c++;
                 }
-                Drive.mostrarReporte("Clases",lista,"Lista de Clases",lista.size());
+                Drive.mostrarReporte("Clase",lista,"Lista de Clases",lista.size());
             }else if(bandera.equals("Reunión")){
                 List lista = new ArrayList();
                 DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
@@ -446,7 +446,7 @@ public class JFrameConsultaActividades extends javax.swing.JFrame {
                     }
                     c++;
                 }
-                Drive.mostrarReporte("Administrativo",lista,"Lista de Administrativos","Administrativos",lista.size());
+                Drive.mostrarReporte("Administ",lista,"Lista de Administrativos","Administrativos",lista.size());
             } else if(bandera.equals("Maestranza")){
                 List lista = new ArrayList();
                 DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
@@ -459,7 +459,7 @@ public class JFrameConsultaActividades extends javax.swing.JFrame {
                     }
                     c++;
                 }
-                Drive.mostrarReporte("Administrativo",lista,"Lista de Administrativos","Maestranza",lista.size());
+                Drive.mostrarReporte("Administ",lista,"Lista de Administrativos","Maestranza",lista.size());
             } else if(bandera.equals("Todos")){
                 JOptionPane.showMessageDialog(null,"No se pueden imprimir todas las actividades, por favor seleccione una actividad en especial","Error de impresión", JOptionPane.ERROR_MESSAGE);
             }

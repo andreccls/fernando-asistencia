@@ -229,9 +229,10 @@ public class JFrameAdministrativo extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jComboBox2 = new javax.swing.JComboBox();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("SISTEMA DE ASISTENCIA DE PERSONAL EDUCATIVO");
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos de la clase"));
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos de la actividad"));
 
         jLabel1.setText("Nombre:");
 
@@ -721,7 +722,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
 
     jLabel6.setText("Trabajo:");
 
-    jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "ADMINISTRATIVO", "MAESTRANZA", "OTROS" }));
+    jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "ADMINISTRATIVO", "MAESTRANZA" }));
     jComboBox2.addItemListener(new java.awt.event.ItemListener() {
         public void itemStateChanged(java.awt.event.ItemEvent evt) {
             jComboBox2ItemStateChanged(evt);
@@ -1838,7 +1839,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
             }
 
         } else {
-            JOptionPane.showMessageDialog(null, "Debe ingresar un personal", "Registrar Clase", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Debe ingresar un personal", "Registrar actividad", JOptionPane.ERROR_MESSAGE);
         }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, ex.toString(), "Registrar Clase", JOptionPane.ERROR_MESSAGE);
@@ -1848,7 +1849,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         if (tar.getIdTarea() == null) {
             if (!jTextField1.getText().isEmpty()) {
-                int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea cancelar la registración de la clase?", "Registrar clase", JOptionPane.YES_NO_OPTION);
+                int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea cancelar la registración de la actividad?", "Registrar actividad", JOptionPane.YES_NO_OPTION);
                 if (JOptionPane.OK_OPTION == confirmado) {
                     Frame vp = new JFramePrincipal(Drive, adm);
                     this.dispose();
@@ -1861,7 +1862,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
             }
         } else {
             if (!cambio == true) {
-                int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea cancelar la actualización de la clase?", "Actualizar clase", JOptionPane.YES_NO_OPTION);
+                int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea cancelar la actualización de la actividad?", "Actualizar actividad", JOptionPane.YES_NO_OPTION);
                 if (JOptionPane.OK_OPTION == confirmado) {
                     Frame vp = new JFrameConsultaActividades(Drive, adm);
                     this.dispose();
@@ -1892,7 +1893,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                 int conta_hora = Integer.parseInt(h);
                 int conta_minuto = Integer.parseInt(m);
                 if(conta_hora > 23 || conta_minuto > 59) {
-                    JOptionPane.showMessageDialog(null, "Ingrese correctamente la hora" ,"Registrar Clase",JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Ingrese correctamente la hora" ,"Registrar actividad",JOptionPane.ERROR_MESSAGE);
                     jFormattedTextField1.setText("00:00");
                     return;
                 }
@@ -1903,7 +1904,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                     aux = Controlador.sumarFechasDias(aux, 1);
                 }
                 if (aux.compareTo(fin)>0){
-                    JOptionPane.showMessageDialog(null,"Ingrese correctamente el inicio y fin porque no hay ningun lunes entre esas fechas","Registrar Clase", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null,"Ingrese correctamente el inicio y fin porque no hay ningun lunes entre esas fechas","Registrar actividad", JOptionPane.ERROR_MESSAGE);
                     jCheckBox1.setSelected(false);
                 }else{
                     SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
@@ -1917,7 +1918,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                 aux.setMonth(inicio.getMonth());
                                 aux.setYear(inicio.getYear());
                                 if (inicio.compareTo(aux) <= 0) {
-                                    JOptionPane.showMessageDialog(null, "El inicio de la clase debe ser mayor que las: " + formateador.format(aux), "Registrar Clase", JOptionPane.ERROR_MESSAGE);
+                                    JOptionPane.showMessageDialog(null, "El inicio de la clase debe ser mayor que las: " + formateador.format(aux), "Registrar actividad", JOptionPane.ERROR_MESSAGE);
                                     jFormattedTextField1.setText("00:00");
                                     jFormattedTextField2.setText("00:00");
                                     return;
@@ -1939,7 +1940,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                 }
             }
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Ingrese correctamente la hora", "Registrar Clase", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Ingrese correctamente la hora", "Registrar actividad", JOptionPane.ERROR_MESSAGE);
             jFormattedTextField1.setText("00:00");
         }
     }//GEN-LAST:event_jFormattedTextField1FocusLost
@@ -1957,7 +1958,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                 int conta_hora = Integer.parseInt(h);
                 int conta_minuto = Integer.parseInt(m);
                 if(conta_hora > 23 || conta_minuto > 59) {
-                    JOptionPane.showMessageDialog(null, "Ingrese correctamente la hora" ,"Registrar Clase",JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Ingrese correctamente la hora" ,"Registrar actividad",JOptionPane.ERROR_MESSAGE);
                     jFormattedTextField2.setText("00:00");
                     return;
                 }
@@ -1966,7 +1967,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
             Date inicio = formateador.parse(jFormattedTextField1.getText());
             Date fin = formateador.parse(jFormattedTextField2.getText());
             if(inicio.compareTo(fin)>=0){
-                JOptionPane.showMessageDialog(null,"El horario de fin debe ser mayor al horario de inicio","Registrar Clase", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null,"El horario de fin debe ser mayor al horario de inicio","Registrar actividad", JOptionPane.ERROR_MESSAGE);
                 jFormattedTextField1.setText("00:00");
                 jFormattedTextField2.setText("00:00");
             }
@@ -1981,7 +1982,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                 }
             }
         }catch(Exception e){
-            JOptionPane.showMessageDialog(null,"Ingrese correctamente la hora","Registrar Clase", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"Ingrese correctamente la hora","Registrar actividad", JOptionPane.ERROR_MESSAGE);
             jFormattedTextField2.setText("00:00");
         }
 
@@ -1994,7 +1995,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
             Date fecha=new Date();
             Anolectivo an=Drive.getPrimerEstablecimiento().getAnoLectivo(fecha.getYear()+1900);
             if(inicio.compareTo(fin)>0 || an.getInicio().compareTo(inicio)>0 || an.getFin().compareTo(fin)<0){
-                JOptionPane.showMessageDialog(null,"La fecha de inicio debe ser menor que la fecha de fin y estar contemplado dentro del año lectivo","Registrar clase",JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null,"La fecha de inicio debe ser menor que la fecha de fin y estar contemplado dentro del año lectivo","Registrar actividad",JOptionPane.ERROR_MESSAGE);
                 Calendar cal = Calendar.getInstance();
                 dateChooserCombo1.setSelectedDate(cal);
                 dateChooserCombo2.setSelectedDate(cal);
@@ -2023,7 +2024,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
             Date fecha=new Date();
             Anolectivo an=Drive.getPrimerEstablecimiento().getAnoLectivo(fecha.getYear()+1900);
             if(inicio.compareTo(fin)>0 || an.getInicio().compareTo(inicio)>0 || an.getFin().compareTo(fin)<0){
-                JOptionPane.showMessageDialog(null,"La fecha de inicio debe ser menor que la fecha de fin y estar contemplado dentro del año lectivo","Registrar clase",JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null,"La fecha de inicio debe ser menor que la fecha de fin y estar contemplado dentro del año lectivo","Registrar actividad",JOptionPane.ERROR_MESSAGE);
                 Calendar cal = Calendar.getInstance();
                 //dateChooserCombo1.setSelectedDate(cal);
                 dateChooserCombo2.setSelectedDate(cal);
@@ -2058,7 +2059,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                 aux = Controlador.sumarFechasDias(aux, 1);
             }
             if (aux.compareTo(fin)>0){
-                JOptionPane.showMessageDialog(null,"Ingrese correctamente el inicio y fin porque no hay ningun lunes entre esas fechas","Registrar Clase", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null,"Ingrese correctamente el inicio y fin porque no hay ningun lunes entre esas fechas","Registrar actividad", JOptionPane.ERROR_MESSAGE);
                 jCheckBox1.setSelected(false);
             }
         }else{
@@ -2087,7 +2088,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                 aux = Controlador.sumarFechasDias(aux, 1);
             }
             if (aux.compareTo(fin)>0){
-                JOptionPane.showMessageDialog(null,"Ingrese correctamente el inicio y fin porque no hay ningun martes entre esas fechas","Registrar Clase", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null,"Ingrese correctamente el inicio y fin porque no hay ningun martes entre esas fechas","Registrar actividad", JOptionPane.ERROR_MESSAGE);
                 jCheckBox2.setSelected(false);
             }
         }else{
@@ -2116,7 +2117,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                 aux = Controlador.sumarFechasDias(aux, 1);
             }
             if (aux.compareTo(fin)>0){
-                JOptionPane.showMessageDialog(null,"Ingrese correctamente el inicio y fin porque no hay ningun miercoles entre esas fechas","Registrar Clase", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null,"Ingrese correctamente el inicio y fin porque no hay ningun miercoles entre esas fechas","Registrar actividad", JOptionPane.ERROR_MESSAGE);
                 jCheckBox3.setSelected(false);
             }
         }else{
@@ -2145,7 +2146,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                 aux = Controlador.sumarFechasDias(aux, 1);
             }
             if (aux.compareTo(fin)>0){
-                JOptionPane.showMessageDialog(null,"Ingrese correctamente el inicio y fin porque no hay ningun jueves entre esas fechas","Registrar Clase", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null,"Ingrese correctamente el inicio y fin porque no hay ningun jueves entre esas fechas","Registrar actividad", JOptionPane.ERROR_MESSAGE);
                 jCheckBox4.setSelected(false);
             }
         }else{
@@ -2174,7 +2175,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                 aux = Controlador.sumarFechasDias(aux, 1);
             }
             if (aux.compareTo(fin)>0){
-                JOptionPane.showMessageDialog(null,"Ingrese correctamente el inicio y fin porque no hay ningun viernes entre esas fechas","Registrar Clase", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null,"Ingrese correctamente el inicio y fin porque no hay ningun viernes entre esas fechas","Registrar actividad", JOptionPane.ERROR_MESSAGE);
                 jCheckBox5.setSelected(false);
             }
         }else{
@@ -2203,7 +2204,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                 aux = Controlador.sumarFechasDias(aux, 1);
             }
             if (aux.compareTo(fin)>0){
-                JOptionPane.showMessageDialog(null,"Ingrese correctamente el inicio y fin porque no hay ningun sabado entre esas fechas","Registrar Clase", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null,"Ingrese correctamente el inicio y fin porque no hay ningun sabado entre esas fechas","Registrar actividad", JOptionPane.ERROR_MESSAGE);
                 jCheckBox6.setSelected(false);
             }
         }else{
@@ -2229,7 +2230,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                 int conta_hora = Integer.parseInt(h);
                 int conta_minuto = Integer.parseInt(m);
                 if(conta_hora > 23 || conta_minuto > 59) {
-                    JOptionPane.showMessageDialog(null, "Ingrese correctamente la hora" ,"Registrar Clase",JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Ingrese correctamente la hora" ,"Registrar actividad",JOptionPane.ERROR_MESSAGE);
                     jFormattedTextField3.setText("00:00");
                     return;
                 }
@@ -2240,7 +2241,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                     aux = Controlador.sumarFechasDias(aux, 1);
                 }
                 if (aux.compareTo(fin) > 0) {
-                    JOptionPane.showMessageDialog(null, "Ingrese correctamente el inicio y fin porque no hay ningun martes entre esas fechas", "Registrar Clase", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Ingrese correctamente el inicio y fin porque no hay ningun martes entre esas fechas", "Registrar actividad", JOptionPane.ERROR_MESSAGE);
                     jCheckBox2.setSelected(false);
                 } else {
                     SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
@@ -2254,7 +2255,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                 aux.setMonth(inicio.getMonth());
                                 aux.setYear(inicio.getYear());
                                 if (inicio.compareTo(aux) <= 0) {
-                                    JOptionPane.showMessageDialog(null, "El inicio de la clase debe ser mayor que las: " + formateador.format(aux), "Registrar Clase", JOptionPane.ERROR_MESSAGE);
+                                    JOptionPane.showMessageDialog(null, "El inicio de la clase debe ser mayor que las: " + formateador.format(aux), "Registrar actividad", JOptionPane.ERROR_MESSAGE);
                                     jFormattedTextField3.setText("00:00");
                                     jFormattedTextField4.setText("00:00");
                                     return;
@@ -2276,7 +2277,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                 }
             }
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Ingrese correctamente la hora", "Registrar Clase", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Ingrese correctamente la hora", "Registrar actividad", JOptionPane.ERROR_MESSAGE);
             jFormattedTextField3.setText("00:00");
         }
     }//GEN-LAST:event_jFormattedTextField3FocusLost
@@ -2294,7 +2295,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                 int conta_hora = Integer.parseInt(h);
                 int conta_minuto = Integer.parseInt(m);
                 if(conta_hora > 23 || conta_minuto > 59) {
-                    JOptionPane.showMessageDialog(null, "Ingrese correctamente la hora" ,"Registrar Clase",JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Ingrese correctamente la hora" ,"Registrar actividad",JOptionPane.ERROR_MESSAGE);
                     jFormattedTextField4.setText("00:00");
                     return;
                 }
@@ -2303,7 +2304,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
             Date inicio = formateador.parse(jFormattedTextField3.getText());
             Date fin = formateador.parse(jFormattedTextField4.getText());
             if(inicio.compareTo(fin)>=0){
-                JOptionPane.showMessageDialog(null,"El horario de fin debe ser mayor al horario de inicio","Registrar Clase", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null,"El horario de fin debe ser mayor al horario de inicio","Registrar actividad", JOptionPane.ERROR_MESSAGE);
                 jFormattedTextField3.setText("00:00");
                 jFormattedTextField4.setText("00:00");
             }
@@ -2318,7 +2319,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                 }
             }
         }catch(Exception e){
-            JOptionPane.showMessageDialog(null,"Ingrese correctamente la hora","Registrar Clase", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"Ingrese correctamente la hora","Registrar actividad", JOptionPane.ERROR_MESSAGE);
             jFormattedTextField4.setText("00:00");
         }
     }//GEN-LAST:event_jFormattedTextField4FocusLost
@@ -2336,7 +2337,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                 int conta_hora = Integer.parseInt(h);
                 int conta_minuto = Integer.parseInt(m);
                 if(conta_hora > 23 || conta_minuto > 59) {
-                    JOptionPane.showMessageDialog(null, "Ingrese correctamente la hora" ,"Registrar Clase",JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Ingrese correctamente la hora" ,"Registrar actividad",JOptionPane.ERROR_MESSAGE);
                     jFormattedTextField5.setText("00:00");
                     return;
                 }
@@ -2347,7 +2348,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                     aux = Controlador.sumarFechasDias(aux, 1);
                 }
                 if (aux.compareTo(fin) > 0) {
-                    JOptionPane.showMessageDialog(null, "Ingrese correctamente el inicio y fin porque no hay ningun miercoles entre esas fechas", "Registrar Clase", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Ingrese correctamente el inicio y fin porque no hay ningun miercoles entre esas fechas", "Registrar actividad", JOptionPane.ERROR_MESSAGE);
                     jCheckBox3.setSelected(false);
                 } else {
                     SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
@@ -2361,7 +2362,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                 aux.setMonth(inicio.getMonth());
                                 aux.setYear(inicio.getYear());
                                 if (inicio.compareTo(aux) <= 0) {
-                                    JOptionPane.showMessageDialog(null, "El inicio de la clase debe ser mayor que las: " + formateador.format(aux), "Registrar Clase", JOptionPane.ERROR_MESSAGE);
+                                    JOptionPane.showMessageDialog(null, "El inicio de la clase debe ser mayor que las: " + formateador.format(aux), "Registrar actividad", JOptionPane.ERROR_MESSAGE);
                                     jFormattedTextField5.setText("00:00");
                                     jFormattedTextField6.setText("00:00");
                                     return;
@@ -2383,7 +2384,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                 }
             }
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Ingrese correctamente la hora", "Registrar Clase", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Ingrese correctamente la hora", "Registrar actividad", JOptionPane.ERROR_MESSAGE);
             jFormattedTextField5.setText("00:00");
         }
     }//GEN-LAST:event_jFormattedTextField5FocusLost
@@ -2401,7 +2402,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                 int conta_hora = Integer.parseInt(h);
                 int conta_minuto = Integer.parseInt(m);
                 if(conta_hora > 23 || conta_minuto > 59) {
-                    JOptionPane.showMessageDialog(null, "Ingrese correctamente la hora" ,"Registrar Clase",JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Ingrese correctamente la hora" ,"Registrar actividad",JOptionPane.ERROR_MESSAGE);
                     jFormattedTextField6.setText("00:00");
                     return;
                 }
@@ -2410,7 +2411,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
             Date inicio = formateador.parse(jFormattedTextField5.getText());
             Date fin = formateador.parse(jFormattedTextField6.getText());
             if(inicio.compareTo(fin)>=0){
-                JOptionPane.showMessageDialog(null,"El horario de fin debe ser mayor al horario de inicio","Registrar Clase", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null,"El horario de fin debe ser mayor al horario de inicio","Registrar actividad", JOptionPane.ERROR_MESSAGE);
                 jFormattedTextField5.setText("00:00");
                 jFormattedTextField6.setText("00:00");
             }
@@ -2425,7 +2426,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                 }
             }
         }catch(Exception e){
-            JOptionPane.showMessageDialog(null,"Ingrese correctamente la hora","Registrar Clase", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"Ingrese correctamente la hora","Registrar actividad", JOptionPane.ERROR_MESSAGE);
             jFormattedTextField6.setText("00:00");
         }
     }//GEN-LAST:event_jFormattedTextField6FocusLost
@@ -2443,7 +2444,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                 int conta_hora = Integer.parseInt(h);
                 int conta_minuto = Integer.parseInt(m);
                 if(conta_hora > 23 || conta_minuto > 59) {
-                    JOptionPane.showMessageDialog(null, "Ingrese correctamente la hora" ,"Registrar Clase",JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Ingrese correctamente la hora" ,"Registrar actividad",JOptionPane.ERROR_MESSAGE);
                     jFormattedTextField7.setText("00:00");
                     return;
                 }
@@ -2452,7 +2453,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
             Date inicio = formateador.parse(jFormattedTextField8.getText());
             Date fin = formateador.parse(jFormattedTextField7.getText());
             if(inicio.compareTo(fin)>=0){
-                JOptionPane.showMessageDialog(null,"El horario de fin debe ser mayor al horario de inicio","Registrar Clase", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null,"El horario de fin debe ser mayor al horario de inicio","Registrar actividad", JOptionPane.ERROR_MESSAGE);
                 jFormattedTextField8.setText("00:00");
                 jFormattedTextField7.setText("00:00");
             }
@@ -2467,7 +2468,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                 }
             }
         }catch(Exception e){
-            JOptionPane.showMessageDialog(null,"Ingrese correctamente la hora","Registrar Clase", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"Ingrese correctamente la hora","Registrar actividad", JOptionPane.ERROR_MESSAGE);
             jFormattedTextField7.setText("00:00");
         }
     }//GEN-LAST:event_jFormattedTextField7FocusLost
@@ -2485,7 +2486,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                 int conta_hora = Integer.parseInt(h);
                 int conta_minuto = Integer.parseInt(m);
                 if(conta_hora > 23 || conta_minuto > 59) {
-                    JOptionPane.showMessageDialog(null, "Ingrese correctamente la hora" ,"Registrar Clase",JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Ingrese correctamente la hora" ,"Registrar actividad",JOptionPane.ERROR_MESSAGE);
                     jFormattedTextField8.setText("00:00");
                     return;
                 }
@@ -2496,7 +2497,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                     aux = Controlador.sumarFechasDias(aux, 1);
                 }
                 if (aux.compareTo(fin) > 0) {
-                    JOptionPane.showMessageDialog(null, "Ingrese correctamente el inicio y fin porque no hay ningun jueves entre esas fechas", "Registrar Clase", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Ingrese correctamente el inicio y fin porque no hay ningun jueves entre esas fechas", "Registrar actividad", JOptionPane.ERROR_MESSAGE);
                     jCheckBox4.setSelected(false);
                 } else {
                     SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
@@ -2510,7 +2511,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                 aux.setMonth(inicio.getMonth());
                                 aux.setYear(inicio.getYear());
                                 if (inicio.compareTo(aux) <= 0) {
-                                    JOptionPane.showMessageDialog(null, "El inicio de la clase debe ser mayor que las: " + formateador.format(aux), "Registrar Clase", JOptionPane.ERROR_MESSAGE);
+                                    JOptionPane.showMessageDialog(null, "El inicio de la clase debe ser mayor que las: " + formateador.format(aux), "Registrar actividad", JOptionPane.ERROR_MESSAGE);
                                     jFormattedTextField8.setText("00:00");
                                     jFormattedTextField7.setText("00:00");
                                     return;
@@ -2532,7 +2533,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                 }
             }
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Ingrese correctamente la hora", "Registrar Clase", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Ingrese correctamente la hora", "Registrar actividad", JOptionPane.ERROR_MESSAGE);
             jFormattedTextField8.setText("00:00");
         }
     }//GEN-LAST:event_jFormattedTextField8FocusLost
@@ -2550,7 +2551,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                 int conta_hora = Integer.parseInt(h);
                 int conta_minuto = Integer.parseInt(m);
                 if(conta_hora > 23 || conta_minuto > 59) {
-                    JOptionPane.showMessageDialog(null, "Ingrese correctamente la hora" ,"Registrar Clase",JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Ingrese correctamente la hora" ,"Registrar actividad",JOptionPane.ERROR_MESSAGE);
                     jFormattedTextField9.setText("00:00");
                     return;
                 }
@@ -2561,7 +2562,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                     aux = Controlador.sumarFechasDias(aux, 1);
                 }
                 if (aux.compareTo(fin) > 0) {
-                    JOptionPane.showMessageDialog(null, "Ingrese correctamente el inicio y fin porque no hay ningun viernes entre esas fechas", "Registrar Clase", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Ingrese correctamente el inicio y fin porque no hay ningun viernes entre esas fechas", "Registrar actividad", JOptionPane.ERROR_MESSAGE);
                     jCheckBox5.setSelected(false);
                 } else {
                     SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
@@ -2575,7 +2576,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                 aux.setMonth(inicio.getMonth());
                                 aux.setYear(inicio.getYear());
                                 if (inicio.compareTo(aux) <= 0) {
-                                    JOptionPane.showMessageDialog(null, "El inicio de la clase debe ser mayor que las: " + formateador.format(aux), "Registrar Clase", JOptionPane.ERROR_MESSAGE);
+                                    JOptionPane.showMessageDialog(null, "El inicio de la clase debe ser mayor que las: " + formateador.format(aux), "Registrar actividad", JOptionPane.ERROR_MESSAGE);
                                     jFormattedTextField9.setText("00:00");
                                     jFormattedTextField10.setText("00:00");
                                     return;
@@ -2597,7 +2598,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                 }
             }
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Ingrese correctamente la hora", "Registrar Clase", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Ingrese correctamente la hora", "Registrar actividad", JOptionPane.ERROR_MESSAGE);
             jFormattedTextField9.setText("00:00");
         }
     }//GEN-LAST:event_jFormattedTextField9FocusLost
@@ -2615,7 +2616,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                 int conta_hora = Integer.parseInt(h);
                 int conta_minuto = Integer.parseInt(m);
                 if(conta_hora > 23 || conta_minuto > 59) {
-                    JOptionPane.showMessageDialog(null, "Ingrese correctamente la hora" ,"Registrar Clase",JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Ingrese correctamente la hora" ,"Registrar actividad",JOptionPane.ERROR_MESSAGE);
                     jFormattedTextField10.setText("00:00");
                     return;
                 }
@@ -2624,7 +2625,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
             Date inicio = formateador.parse(jFormattedTextField9.getText());
             Date fin = formateador.parse(jFormattedTextField10.getText());
             if(inicio.compareTo(fin)>=0){
-                JOptionPane.showMessageDialog(null,"El horario de fin debe ser mayor al horario de inicio","Registrar Clase", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null,"El horario de fin debe ser mayor al horario de inicio","Registrar actividad", JOptionPane.ERROR_MESSAGE);
                 jFormattedTextField9.setText("00:00");
                 jFormattedTextField10.setText("00:00");
             }
@@ -2639,7 +2640,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                 }
             }
         }catch(Exception e){
-            JOptionPane.showMessageDialog(null,"Ingrese correctamente la hora","Registrar Clase", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"Ingrese correctamente la hora","Registrar actividad", JOptionPane.ERROR_MESSAGE);
             jFormattedTextField10.setText("00:00");
         }
     }//GEN-LAST:event_jFormattedTextField10FocusLost
@@ -2657,7 +2658,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                 int conta_hora = Integer.parseInt(h);
                 int conta_minuto = Integer.parseInt(m);
                 if(conta_hora > 23 || conta_minuto > 59) {
-                    JOptionPane.showMessageDialog(null, "Ingrese correctamente la hora" ,"Registrar Clase",JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Ingrese correctamente la hora" ,"Registrar actividad",JOptionPane.ERROR_MESSAGE);
                     jFormattedTextField11.setText("00:00");
                     return;
                 }
@@ -2668,7 +2669,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                     aux = Controlador.sumarFechasDias(aux, 1);
                 }
                 if (aux.compareTo(fin) > 0) {
-                    JOptionPane.showMessageDialog(null, "Ingrese correctamente el inicio y fin porque no hay ningun sabado entre esas fechas", "Registrar Clase", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Ingrese correctamente el inicio y fin porque no hay ningun sabado entre esas fechas", "Registrar actividad", JOptionPane.ERROR_MESSAGE);
                     jCheckBox6.setSelected(false);
                 } else {
                     SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
@@ -2682,7 +2683,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                 aux.setMonth(inicio.getMonth());
                                 aux.setYear(inicio.getYear());
                                 if (inicio.compareTo(aux) <= 0) {
-                                    JOptionPane.showMessageDialog(null, "El inicio de la clase debe ser mayor que las: " + formateador.format(aux), "Registrar Clase", JOptionPane.ERROR_MESSAGE);
+                                    JOptionPane.showMessageDialog(null, "El inicio de la clase debe ser mayor que las: " + formateador.format(aux), "Registrar actividad", JOptionPane.ERROR_MESSAGE);
                                     jFormattedTextField11.setText("00:00");
                                     jFormattedTextField12.setText("00:00");
                                     return;
@@ -2704,7 +2705,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                 }
             }
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Ingrese correctamente la hora", "Registrar Clase", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Ingrese correctamente la hora", "Registrar actividad", JOptionPane.ERROR_MESSAGE);
             jFormattedTextField11.setText("00:00");
         }
     }//GEN-LAST:event_jFormattedTextField11FocusLost
@@ -2722,7 +2723,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                 int conta_hora = Integer.parseInt(h);
                 int conta_minuto = Integer.parseInt(m);
                 if(conta_hora > 23 || conta_minuto > 59) {
-                    JOptionPane.showMessageDialog(null, "Ingrese correctamente la hora" ,"Registrar Clase",JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Ingrese correctamente la hora" ,"Registrar actividad",JOptionPane.ERROR_MESSAGE);
                     jFormattedTextField12.setText("00:00");
                     return;
                 }
@@ -2731,7 +2732,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
             Date inicio = formateador.parse(jFormattedTextField11.getText());
             Date fin = formateador.parse(jFormattedTextField12.getText());
             if(inicio.compareTo(fin)>=0){
-                JOptionPane.showMessageDialog(null,"El horario de fin debe ser mayor al horario de inicio","Registrar Clase", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null,"El horario de fin debe ser mayor al horario de inicio","Registrar actividad", JOptionPane.ERROR_MESSAGE);
                 jFormattedTextField11.setText("00:00");
                 jFormattedTextField12.setText("00:00");
             }
@@ -2746,7 +2747,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                 }
             }
         }catch(Exception e){
-            JOptionPane.showMessageDialog(null,"Ingrese correctamente la hora","Registrar Clase", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"Ingrese correctamente la hora","Registrar actividad", JOptionPane.ERROR_MESSAGE);
             jFormattedTextField12.setText("00:00");
         }
     }//GEN-LAST:event_jFormattedTextField12FocusLost
@@ -2860,7 +2861,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                 Drive.CargarTablacheck2(jTable1,buscar, es.toUpperCase(),lista);
             }
         }catch(Exception e){
-            JOptionPane.showMessageDialog(null, "ERROR","Registrar Reunión", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "ERROR","Registrar actividad", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jTextField2KeyTyped
 
