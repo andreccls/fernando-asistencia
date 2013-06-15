@@ -365,7 +365,6 @@ public class JFrameConsulta extends javax.swing.JFrame {
             if(m!=0){
                 buffer.deleteCharAt(buffer.length()-1);
             }
-////            buffer.deleteCharAt(buffer.length() - 1);
             String es = buffer.toString();
             String buscar = (String) jComboBox1.getSelectedItem();
             Drive.CargarTablaFiltro(jTable1, buscar, es.toUpperCase());
