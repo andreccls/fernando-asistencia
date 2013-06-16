@@ -47,10 +47,12 @@ public class JFrameConsulta extends javax.swing.JFrame {
     Personal per = new Personal();
     StringBuffer buffer = new StringBuffer();
     HiloProgreso hilo;
-
-    public JFrameConsulta(Controlador unDrive,Personal admin) {
+    boolean bandera=false;
+    
+    public JFrameConsulta(Controlador unDrive,Personal admin, boolean ban) {
         this.adm=admin;
         this.Drive = unDrive;
+        this.bandera=ban;
 //        this.idsesion=id;
         initComponents();
         //Iniciamos el Hilo
@@ -83,6 +85,9 @@ public class JFrameConsulta extends javax.swing.JFrame {
         jButton5.setIcon(icono6);
         if(adm.getPerfil().getPersonaleli()==null){
             jButton2.setEnabled(false);
+        }
+        if(bandera==true){
+            
         }
     }
 
@@ -285,31 +290,53 @@ public class JFrameConsulta extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea volver al menú principal?", "Consultar Personal", JOptionPane.YES_NO_OPTION);
-        if (JOptionPane.OK_OPTION == confirmado) {
-            Frame vp = new JFramePrincipal(Drive,adm);
-            this.dispose();
-            vp.show();
+        if (bandera == false) {
+            int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea volver al menú principal?", "Consultar Personal", JOptionPane.YES_NO_OPTION);
+            if (JOptionPane.OK_OPTION == confirmado) {
+                Frame vp = new JFramePrincipal(Drive, adm);
+                this.dispose();
+                vp.show();
+            }
+        } else {
+            int confirmado = JOptionPane.showConfirmDialog(null, "¿No se ha seleccionado ningun personal. Desea volver a la consulta de inasistencias?", "Consultar Personal", JOptionPane.YES_NO_OPTION);
+            if (JOptionPane.OK_OPTION == confirmado) {
+                Personal p = new Personal();
+                JFrameInasistencia vent2 = new JFrameInasistencia(Drive, adm, p);
+                this.dispose();
+                vent2.show();
+            }
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         jTable1.getModel();
         per = (Personal) jTable1.getValueAt(jTable1.getSelectedRow(), 0);
-        iniciarSplash();
-        hilo = new HiloProgreso(jProgressBar1, this, Drive, per, adm, false);
-        hilo.start();
-        hilo = null;
+        if (bandera == false) {
+            iniciarSplash();
+            hilo = new HiloProgreso(jProgressBar1, this, Drive, per, adm, false);
+            hilo.start();
+            hilo = null;
+        } else {
+            JFrameInasistencia vent2 = new JFrameInasistencia(Drive, adm, per);
+            this.hide();
+            vent2.show();
+        }
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jTable1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseReleased
         if (evt.getClickCount() == 2) {
             jTable1.getModel();
             per = (Personal) jTable1.getValueAt(jTable1.rowAtPoint(evt.getPoint()), 0);
-            iniciarSplash();
-            hilo = new HiloProgreso(jProgressBar1, this, Drive, per, adm, false);
-            hilo.start();
-            hilo = null;
+            if (bandera == false) {
+                iniciarSplash();
+                hilo = new HiloProgreso(jProgressBar1, this, Drive, per, adm, false);
+                hilo.start();
+                hilo = null;
+            } else {
+                JFrameInasistencia vent2 = new JFrameInasistencia(Drive,adm,per);
+                this.hide();
+                vent2.show();
+            }
         }
     }//GEN-LAST:event_jTable1MouseReleased
 
@@ -391,11 +418,21 @@ public class JFrameConsulta extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea volver al menú principal?", "Consultar Personal", JOptionPane.YES_NO_OPTION);
-        if (JOptionPane.OK_OPTION == confirmado) {
-            Frame vp = new JFramePrincipal(Drive,adm);
-            this.dispose();
-            vp.show();
+        if (bandera == false) {
+            int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea volver al menú principal?", "Consultar Personal", JOptionPane.YES_NO_OPTION);
+            if (JOptionPane.OK_OPTION == confirmado) {
+                Frame vp = new JFramePrincipal(Drive, adm);
+                this.dispose();
+                vp.show();
+            }
+        } else {
+            int confirmado = JOptionPane.showConfirmDialog(null, "¿No se ha seleccionado ningun personal. Desea volver a la consulta de inasistencias?", "Consultar Personal", JOptionPane.YES_NO_OPTION);
+            if (JOptionPane.OK_OPTION == confirmado) {
+                Personal p = new Personal();
+                JFrameInasistencia vent2 = new JFrameInasistencia(Drive, adm, p);
+                this.dispose();
+                vent2.show();
+            }
         }
     }//GEN-LAST:event_formWindowClosing
     

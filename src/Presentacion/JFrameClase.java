@@ -510,10 +510,10 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
     jTable1.addAncestorListener(new javax.swing.event.AncestorListener() {
         public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
         }
+        public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+        }
         public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
             jTable1AncestorAdded(evt);
-        }
-        public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
         }
     });
     jScrollPane2.setViewportView(jTable1);
@@ -603,7 +603,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
             .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addContainerGap())
+            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 485, Short.MAX_VALUE)
     );
     jPanel5Layout.setVerticalGroup(
@@ -2330,32 +2330,37 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
     }//GEN-LAST:event_formWindowClosing
 
     private void dateChooserCombo1OnSelectionChange(datechooser.events.SelectionChangedEvent evt) {//GEN-FIRST:event_dateChooserCombo1OnSelectionChange
-        try{
-        Date inicio=dateChooserCombo1.getSelectedDate().getTime();
-        Date fin=dateChooserCombo2.getSelectedDate().getTime();
-        Date fecha=new Date();
-        Anolectivo an=Drive.getPrimerEstablecimiento().getAnoLectivo(fecha.getYear()+1900);
-        if(inicio.compareTo(fin)>0 || an.getInicio().compareTo(inicio)>0 || an.getFin().compareTo(fin)<0){
-            JOptionPane.showMessageDialog(null,"La fecha de inicio debe ser menor que la fecha de fin y estar contemplado dentro del año lectivo","Registrar clase",JOptionPane.ERROR_MESSAGE);
-            Calendar cal = Calendar.getInstance();
-            dateChooserCombo1.setSelectedDate(cal);
-            dateChooserCombo2.setSelectedDate(cal);
-        }
-        if(tar.getIdTarea()!=null){
-            SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
-            formateador.setLenient(false);
-            String i=formateador.format(menor);
-            Date mmenor=formateador.parse(i);
-            String e=formateador.format(inicio);
-            Date iinicio=formateador.parse(e);
-            if(!mmenor.equals(iinicio)){
-                cambio=true;
+        try {
+            Date inicio = dateChooserCombo1.getSelectedDate().getTime();
+            Date fin = dateChooserCombo2.getSelectedDate().getTime();
+            Date fecha = new Date();
+            Anolectivo an = Drive.getPrimerEstablecimiento().getAnoLectivo(fecha.getYear() + 1900);
+            if ((inicio.getDate()>fin.getDate() || inicio.getMonth()>fin.getMonth()|| inicio.getYear()>fin.getYear()) || an.getInicio().compareTo(inicio) > 0 || an.getFin().compareTo(fin) < 0) {
+                JOptionPane.showMessageDialog(null, "La fecha de inicio debe ser menor que la fecha de fin y estar contemplado dentro del año lectivo", "Registrar clase", JOptionPane.ERROR_MESSAGE);
+                Calendar cal = Calendar.getInstance();
+                dateChooserCombo2.setSelectedDate(cal);
+                dateChooserCombo1.setSelectedDate(cal);
             }
+            if (tar.getIdTarea() != null) {
+                if (inicio.compareTo(menor) < 0 && inicio.compareTo(fecha)<0) {
+                    JOptionPane.showMessageDialog(null, "La fecha no puede ser menor a la fecha de inicio de la clase", "Actualizar clase", JOptionPane.ERROR_MESSAGE);
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTime(menor);
+                    dateChooserCombo1.setSelectedDate(cal);
+                } else {
+                    SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+                    formateador.setLenient(false);
+                    String i = formateador.format(menor);
+                    Date mmenor = formateador.parse(i);
+                    String e = formateador.format(inicio);
+                    Date iinicio = formateador.parse(e);
+                    if (!mmenor.equals(iinicio)) {
+                        cambio = true;
+                    }
+                }
+            }
+        } catch (Exception e) {
         }
-        }catch(Exception e){
-            
-        }
-        
     }//GEN-LAST:event_dateChooserCombo1OnSelectionChange
 
     private void dateChooserCombo2OnSelectionChange(datechooser.events.SelectionChangedEvent evt) {//GEN-FIRST:event_dateChooserCombo2OnSelectionChange
@@ -2367,7 +2372,6 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
         if(inicio.compareTo(fin)>0 || an.getInicio().compareTo(inicio)>0 || an.getFin().compareTo(fin)<0){
             JOptionPane.showMessageDialog(null,"La fecha de inicio debe ser menor que la fecha de fin y estar contemplado dentro del año lectivo","Registrar clase",JOptionPane.ERROR_MESSAGE);
             Calendar cal = Calendar.getInstance();
-            //dateChooserCombo1.setSelectedDate(cal);
             dateChooserCombo2.setSelectedDate(cal);
         }
         if(tar.getIdTarea()!=null){
@@ -3146,7 +3150,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
             while (aux.getDay() != 1) {
                 aux = Controlador.sumarFechasDias(aux, 1);
             }
-            if (aux.compareTo(fin)>0){
+            if (aux.getDate()>fin.getDate() || aux.getMonth()>fin.getMonth() || aux.getYear()>fin.getYear()){
                 JOptionPane.showMessageDialog(null,"Ingrese correctamente el inicio y fin porque no hay ningun lunes entre esas fechas","Registrar Clase", JOptionPane.ERROR_MESSAGE);
                 jCheckBox1.setSelected(false);
             }
@@ -3175,7 +3179,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
             while (aux.getDay() != 2) {
                 aux = Controlador.sumarFechasDias(aux, 1);
             }
-            if (aux.compareTo(fin)>0){
+            if (aux.getDate()>fin.getDate() || aux.getMonth()>fin.getMonth() || aux.getYear()>fin.getYear()){
                 JOptionPane.showMessageDialog(null,"Ingrese correctamente el inicio y fin porque no hay ningun martes entre esas fechas","Registrar Clase", JOptionPane.ERROR_MESSAGE);
                 jCheckBox2.setSelected(false);
             }
@@ -3204,7 +3208,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
             while (aux.getDay() != 3) {
                 aux = Controlador.sumarFechasDias(aux, 1);
             }
-            if (aux.compareTo(fin)>0){
+           if (aux.getDate()>fin.getDate() || aux.getMonth()>fin.getMonth() || aux.getYear()>fin.getYear()){
                 JOptionPane.showMessageDialog(null,"Ingrese correctamente el inicio y fin porque no hay ningun miercoles entre esas fechas","Registrar Clase", JOptionPane.ERROR_MESSAGE);
                 jCheckBox3.setSelected(false);
             }
@@ -3233,7 +3237,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
             while (aux.getDay() != 4) {
                 aux = Controlador.sumarFechasDias(aux, 1);
             }
-            if (aux.compareTo(fin)>0){
+            if (aux.getDate()>fin.getDate() || aux.getMonth()>fin.getMonth() || aux.getYear()>fin.getYear()){
                 JOptionPane.showMessageDialog(null,"Ingrese correctamente el inicio y fin porque no hay ningun jueves entre esas fechas","Registrar Clase", JOptionPane.ERROR_MESSAGE);
                 jCheckBox4.setSelected(false);
             }
@@ -3262,7 +3266,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
             while (aux.getDay() != 5) {
                 aux = Controlador.sumarFechasDias(aux, 1);
             }
-            if (aux.compareTo(fin)>0){
+            if (aux.getDate()>fin.getDate() || aux.getMonth()>fin.getMonth() || aux.getYear()>fin.getYear()){
                 JOptionPane.showMessageDialog(null,"Ingrese correctamente el inicio y fin porque no hay ningun viernes entre esas fechas","Registrar Clase", JOptionPane.ERROR_MESSAGE);
                 jCheckBox5.setSelected(false);
             }
@@ -3291,7 +3295,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
             while (aux.getDay() != 6) {
                 aux = Controlador.sumarFechasDias(aux, 1);
             }
-            if (aux.compareTo(fin)>0){
+            if (aux.getDate()>fin.getDate() || aux.getMonth()>fin.getMonth() || aux.getYear()>fin.getYear()){
                 JOptionPane.showMessageDialog(null,"Ingrese correctamente el inicio y fin porque no hay ningun sabado entre esas fechas","Registrar Clase", JOptionPane.ERROR_MESSAGE);
                 jCheckBox6.setSelected(false);
             }

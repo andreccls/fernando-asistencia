@@ -440,9 +440,10 @@ public class JFrameReunion extends javax.swing.JFrame {
                         .addComponent(jLabel3))
                     .addGap(4, 4, 4)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jTextField1)
+                        .addComponent(dateChooserCombo1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jTextField1)
                                 .addGroup(jPanel1Layout.createSequentialGroup()
                                     .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -452,8 +453,7 @@ public class JFrameReunion extends javax.swing.JFrame {
                                     .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addComponent(jLabel14)))
-                            .addGap(0, 0, Short.MAX_VALUE))
-                        .addComponent(dateChooserCombo1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGap(0, 0, Short.MAX_VALUE)))
                     .addGap(43, 43, 43)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jLabel9)
@@ -474,7 +474,7 @@ public class JFrameReunion extends javax.swing.JFrame {
                             .addComponent(jLabel36, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addContainerGap())
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addComponent(jLabel12)
@@ -1164,6 +1164,7 @@ public class JFrameReunion extends javax.swing.JFrame {
                 return;
             }
             if (tar.getIdTarea() != null) {
+//                if (inicio.compareTo(f) >= 0) {
                 inicio = dateChooserCombo1.getSelectedDate().getTime();
                 SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
                 formateador.setLenient(false);
@@ -1174,6 +1175,12 @@ public class JFrameReunion extends javax.swing.JFrame {
                 if (!ffecha.equals(iinicio)) {
                     cambio = true;
                 }
+//                } else {
+//                    JOptionPane.showMessageDialog(null, "La fecha no puede ser menor a la fecha de inicio de la reunión", "Actualizar reunión", JOptionPane.ERROR_MESSAGE);
+//                    Calendar cal = Calendar.getInstance();
+//                    cal.setTime(fecha);
+//                    dateChooserCombo1.setSelectedDate(cal);
+//                }
             }
         } catch (Exception e) {
         }
