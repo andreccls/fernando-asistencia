@@ -2780,7 +2780,7 @@ dateChooserCombo10.addSelectionChangedListener(new datechooser.events.SelectionC
                     if(mensaje==true){
                         JOptionPane.showMessageDialog(null,"La persona se actualizó correctamente","Actualizar Personal",JOptionPane.INFORMATION_MESSAGE);
                     }
-                    Frame vp=new JFrameConsulta(Drive,adm);
+                    Frame vp=new JFrameConsulta(Drive,adm,false);
                     this.dispose();
                     vp.show();
                 }else{
@@ -2809,12 +2809,12 @@ dateChooserCombo10.addSelectionChangedListener(new datechooser.events.SelectionC
                 !jTextField19.getText().equals(pe.getDepto())){
             int confirmado = JOptionPane.showConfirmDialog(null,"¿Desea cancelar la actualización del personal?","Actualizar Personal",JOptionPane.YES_NO_OPTION);
             if (JOptionPane.OK_OPTION == confirmado){
-               Frame vp=new JFrameConsulta(Drive,adm);
+               Frame vp=new JFrameConsulta(Drive,adm,false);
                 this.dispose();
                 vp.show();
             }
         }else{
-            Frame vp=new JFrameConsulta(Drive,adm);
+            Frame vp=new JFrameConsulta(Drive,adm,false);
             this.dispose();
             vp.show();
         }
@@ -3415,12 +3415,12 @@ dateChooserCombo10.addSelectionChangedListener(new datechooser.events.SelectionC
                 !jTextField19.getText().equals(pe.getDepto())){
             int confirmado = JOptionPane.showConfirmDialog(null,"¿Desea cancelar la actualización del personal?","Actualizar Personal",JOptionPane.YES_NO_OPTION);
             if (JOptionPane.OK_OPTION == confirmado){
-               Frame vp=new JFrameConsulta(Drive,adm);
+               Frame vp=new JFrameConsulta(Drive,adm,false);
                 this.dispose();
                 vp.show();
             }
         }else{
-            Frame vp=new JFrameConsulta(Drive,adm);
+            Frame vp=new JFrameConsulta(Drive,adm,false);
             this.dispose();
             vp.show();
         }

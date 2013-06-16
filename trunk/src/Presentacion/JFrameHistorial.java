@@ -51,12 +51,16 @@ public class JFrameHistorial extends javax.swing.JFrame {
         Drive.LimpiarTabla(jTable2);
         Date fecha=dateChooserCombo1.getSelectedDate().getTime();
         String buscar = (String) jComboBox1.getSelectedItem();
-        String filtro = (String) jComboBox2.getSelectedItem();
-        Drive.CargarTablaHistorialPer(jTable1,fecha, buscar,filtro);
-        String filtrotar = (String) jComboBox3.getSelectedItem();
-        Drive.CargarTablaHistorialTar(fecha, buscar,filtrotar,jTable2);
+        if(jTabbedPane1.getSelectedIndex()==0){
+            String filtro = (String) jComboBox2.getSelectedItem();
+            Drive.CargarTablaHistorialPer(jTable1,fecha, buscar,filtro);
+        }else{
+            String filtrotar = (String) jComboBox3.getSelectedItem();
+            Drive.CargarTablaHistorialTar(fecha, buscar,filtrotar,jTable2);
+        }
+//        int u = jTabbedPane1.getTabRunCount();
         if(buscar.equals("DIA")){
-        jLabel4.setText(String.valueOf(fecha.getDate()));
+            jLabel4.setText(String.valueOf(fecha.getDate()));
         }else if(buscar.equals("MES")){
             jLabel4.setText(String.valueOf(fecha.getMonth()+1));
         }else if(buscar.equals("AÑO")){
@@ -151,6 +155,12 @@ public class JFrameHistorial extends javax.swing.JFrame {
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
+            }
+        });
+
+        jTabbedPane1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTabbedPane1MouseClicked(evt);
             }
         });
 
@@ -541,10 +551,13 @@ public class JFrameHistorial extends javax.swing.JFrame {
             Drive.LimpiarTabla(jTable4);
             Date fecha=dateChooserCombo1.getSelectedDate().getTime();
             String buscar = (String) jComboBox1.getSelectedItem();
-            String filtro = (String) jComboBox2.getSelectedItem();
-            Drive.CargarTablaHistorialPer(jTable1,fecha, buscar,filtro);
-            String filtro2 = (String) jComboBox3.getSelectedItem();
-            Drive.CargarTablaHistorialTar(fecha, buscar,filtro2,jTable2);
+            if (jTabbedPane1.getSelectedIndex() == 0) {
+                String filtro = (String) jComboBox2.getSelectedItem();
+                Drive.CargarTablaHistorialPer(jTable1, fecha, buscar, filtro);
+            } else {
+                String filtrotar = (String) jComboBox3.getSelectedItem();
+                Drive.CargarTablaHistorialTar(fecha, buscar, filtrotar, jTable2);
+            }
             if(buscar.equals("DIA")){
             jLabel4.setText(String.valueOf(fecha.getDate()));
             }else if(buscar.equals("MES")){
@@ -565,10 +578,13 @@ public class JFrameHistorial extends javax.swing.JFrame {
             Drive.LimpiarTabla(jTable4);
             Date fecha=dateChooserCombo1.getSelectedDate().getTime();
             String buscar = (String) jComboBox1.getSelectedItem();
-            String filtro = (String) jComboBox2.getSelectedItem();
-            Drive.CargarTablaHistorialPer(jTable1,fecha, buscar,filtro);
-            String filtro2 = (String) jComboBox3.getSelectedItem();
-            Drive.CargarTablaHistorialTar(fecha, buscar,filtro2,jTable2);
+            if (jTabbedPane1.getSelectedIndex() == 0) {
+                String filtro = (String) jComboBox2.getSelectedItem();
+                Drive.CargarTablaHistorialPer(jTable1, fecha, buscar, filtro);
+            } else {
+                String filtrotar = (String) jComboBox3.getSelectedItem();
+                Drive.CargarTablaHistorialTar(fecha, buscar, filtrotar, jTable2);
+            }
         }catch(Exception e){
             JOptionPane.showMessageDialog(null, e);
         }
@@ -576,16 +592,20 @@ public class JFrameHistorial extends javax.swing.JFrame {
 
     private void jComboBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox1ItemStateChanged
         try{
+            
             Drive.LimpiarTabla(jTable1);
             Drive.LimpiarTabla(jTable2);
             Drive.LimpiarTabla(jTable3);
             Drive.LimpiarTabla(jTable4);
             Date fecha=dateChooserCombo1.getSelectedDate().getTime();
             String buscar = (String) jComboBox1.getSelectedItem();
-            String filtro = (String) jComboBox2.getSelectedItem();
-            Drive.CargarTablaHistorialPer(jTable1,fecha, buscar,filtro);
-            String filtro2 = (String) jComboBox3.getSelectedItem();
-            Drive.CargarTablaHistorialTar(fecha, buscar,filtro2,jTable2);
+            if (jTabbedPane1.getSelectedIndex() == 0) {
+                String filtro = (String) jComboBox2.getSelectedItem();
+                Drive.CargarTablaHistorialPer(jTable1, fecha, buscar, filtro);
+            } else {
+                String filtrotar = (String) jComboBox3.getSelectedItem();
+                Drive.CargarTablaHistorialTar(fecha, buscar, filtrotar, jTable2);
+            }
             if(buscar.equals("DIA")){
             jLabel4.setText(String.valueOf(fecha.getDate()));
             }else if(buscar.equals("MES")){
@@ -740,6 +760,26 @@ public class JFrameHistorial extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, e);
         }
     }//GEN-LAST:event_jComboBox3ItemStateChanged
+
+    private void jTabbedPane1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTabbedPane1MouseClicked
+        try{
+            Drive.LimpiarTabla(jTable1);
+            Drive.LimpiarTabla(jTable2);
+            Drive.LimpiarTabla(jTable3);
+            Drive.LimpiarTabla(jTable4);
+            Date fecha=dateChooserCombo1.getSelectedDate().getTime();
+            String buscar = (String) jComboBox1.getSelectedItem();
+            if (jTabbedPane1.getSelectedIndex() == 0) {
+                String filtro = (String) jComboBox2.getSelectedItem();
+                Drive.CargarTablaHistorialPer(jTable1, fecha, buscar, filtro);
+            } else {
+                String filtrotar = (String) jComboBox3.getSelectedItem();
+                Drive.CargarTablaHistorialTar(fecha, buscar, filtrotar, jTable2);
+            }
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }//GEN-LAST:event_jTabbedPane1MouseClicked
 
     /**
      * @param args the command line arguments

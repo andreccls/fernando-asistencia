@@ -177,25 +177,25 @@ public class persistencia {
         tx.commit();
         return items;
     }
-    public List getAuditoriaPerActivos(int idper) throws ArrayStoreException {
-        String hql = "from Auditoria where personalByIdPersonal="+idper+" and operacion='Insertar'";
-        List items = new ArrayList();
-        Transaction tx = session.beginTransaction();
-        Query q = session.createQuery(hql);
-        items = q.list();
-        tx.commit();
-        return items;
-    }
-    
-    public List getAuditoriaPerInactivos(int idper) throws ArrayStoreException {
-        String hql = "from Auditoria where personalByIdPersonal="+idper+" and operacion='Eliminar'";
-        List items = new ArrayList();
-        Transaction tx = session.beginTransaction();
-        Query q = session.createQuery(hql);
-        items = q.list();
-        tx.commit();
-        return items;
-    }
+//    public List getAuditoriaPerActivos(int idper) throws ArrayStoreException {
+//        String hql = "from Auditoria where personalByIdPersonal="+idper+" and operacion='Insertar'";
+//        List items = new ArrayList();
+//        Transaction tx = session.beginTransaction();
+//        Query q = session.createQuery(hql);
+//        items = q.list();
+//        tx.commit();
+//        return items;
+//    }
+//    
+//    public List getAuditoriaPerInactivos(int idper) throws ArrayStoreException {
+//        String hql = "from Auditoria where personalByIdPersonal="+idper+" and operacion='Eliminar'";
+//        List items = new ArrayList();
+//        Transaction tx = session.beginTransaction();
+//        Query q = session.createQuery(hql);
+//        items = q.list();
+//        tx.commit();
+//        return items;
+//    }
     
     public List getAuditoriaPerAno(int ano) throws ArrayStoreException {
         String hql = "from Auditoria where personalByIdPersonal!=null and year(fecha)="+ano;
@@ -1067,6 +1067,36 @@ public class persistencia {
 
     public List getAgendas() throws ArrayStoreException {
         String hql = "from Agenda";
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
+    }
+    
+    public List getDiasA(int ano) throws ArrayStoreException {
+        String hql = "from Dia as di where di.mes.ano.ano="+ano;
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
+    }
+
+    public List getDiasM(int ano, int mes) throws ArrayStoreException {
+        String hql = "from Dia as di where di.mes.ano.ano="+ano+" and di.mes.mes="+mes;
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
+    }
+    
+    public List getDiasD(int ano, int mes, int dia) throws ArrayStoreException {
+        String hql = "from Dia as di where di.mes.ano.ano="+ano+" and di.mes.mes="+mes+" and di.dia="+dia;
         List items = new ArrayList();
         Transaction tx = session.beginTransaction();
         Query q = session.createQuery(hql);
