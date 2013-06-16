@@ -1073,15 +1073,49 @@ public class Controlador {
             }
     }
     
+    public Auditoria getAuditoriaPer(Personal per){
+        Auditoria audi=new Auditoria();
+        Iterator it=PERSISTENCIA.getAuditoriaPerTodos(per.getIdPersonal()).iterator();
+        while(it.hasNext()){
+            Auditoria au=(Auditoria) it.next();
+            if(audi.getFecha()!=null){
+                if(au.getFecha().compareTo(audi.getFecha())>0){
+                    audi=au;
+                }
+            }else{
+                audi=au;
+            }
+        }
+        return audi;
+    }
+    
+     public Auditoria getAuditoriaTar(Tarea tar){
+        Auditoria audi=new Auditoria();
+        Iterator it=PERSISTENCIA.getAuditoriaTareaTodos(tar.getIdTarea()).iterator();
+        while(it.hasNext()){
+            Auditoria au=(Auditoria) it.next();
+            if(audi.getFecha()!=null){
+                if(au.getFecha().compareTo(audi.getFecha())>0){
+                    audi=au;
+                }
+            }else{
+                audi=au;
+            }
+        }
+        return audi;
+    }
+    
+    
     public void CargarTablaHistorialPer(JTable tablapersonal, Date fecha, String valor, String filtro) {
         List listap = new ArrayList();
         DefaultTableModel model = (DefaultTableModel) tablapersonal.getModel();
         if (valor.equals("AÑO")) {
-            Iterator it = PERSISTENCIA.getAuditoriaPerAno(fecha.getYear() + 1900).iterator();
+            Iterator it = PERSISTENCIA.getDiasA(fecha.getYear() + 1900).iterator();
             while (it.hasNext()) {
-                Auditoria audi = (Auditoria) it.next();
-                Personal per=audi.getPersonalByIdPersonal();
+                Dia di = (Dia) it.next();
+                Personal per=di.getMes().getAno().getAgenda().getPersonal();
                 if(!listap.contains(per)){
+                    Auditoria audi=getAuditoriaPer(per);
                     listap.add(per);
                     if(filtro.equals("Todos")){
                         Object[] fila = new Object[6];
@@ -1095,7 +1129,7 @@ public class Controlador {
                         fila[5] = formateador2.format(audi.getFecha());
                         model.addRow(fila);
                     }else if(filtro.equals("Activos")){
-                        if(!PERSISTENCIA.getAuditoriaPerInactivos(per.getIdPersonal()).iterator().hasNext()){
+                        if(audi.getOperacion().equals("Insertar") || audi.getOperacion().equals("Actualizar")){
                             Object[] fila = new Object[6];
                             fila[0] = per;
                             fila[1] = per.getDni();
@@ -1108,29 +1142,28 @@ public class Controlador {
                             model.addRow(fila);
                         }
                     }else if(filtro.equals("Inactivos")){
-                        Iterator i= PERSISTENCIA.getAuditoriaPerInactivos(per.getIdPersonal()).iterator();
-                        if(i.hasNext()){
-                            Auditoria a= (Auditoria) i.next();
+                        if(audi.getOperacion().equals("Eliminar")){
                             Object[] fila = new Object[6];
                             fila[0] = per;
                             fila[1] = per.getDni();
                             SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
                             fila[2] = formateador.format(per.getIngreso());
                             fila[3] = per.getCorreoElectronico();
-                            fila[4] = a.getOperacion();
+                            fila[4] = audi.getOperacion();
                             SimpleDateFormat formateador2 = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-                            fila[5] = formateador2.format(a.getFecha());
+                            fila[5] = formateador2.format(audi.getFecha());
                             model.addRow(fila);
                         }
                     }
                 }
             }
         }else if(valor.equals("MES")){
-            Iterator it = PERSISTENCIA.getAuditoriaPerMes(fecha.getYear() + 1900,fecha.getMonth()+1).iterator();
+            Iterator it = PERSISTENCIA.getDiasM(fecha.getYear() + 1900,fecha.getMonth()).iterator();
             while (it.hasNext()) {
-                Auditoria audi = (Auditoria) it.next();
-                Personal per=audi.getPersonalByIdPersonal();
+                Dia di = (Dia) it.next();
+                Personal per=di.getMes().getAno().getAgenda().getPersonal();
                 if(!listap.contains(per)){
+                    Auditoria audi=getAuditoriaPer(per);
                     listap.add(per);
                     if(filtro.equals("Todos")){
                         Object[] fila = new Object[6];
@@ -1144,7 +1177,7 @@ public class Controlador {
                         fila[5] = formateador2.format(audi.getFecha());
                         model.addRow(fila);
                     }else if(filtro.equals("Activos")){
-                        if(!PERSISTENCIA.getAuditoriaPerInactivos(per.getIdPersonal()).iterator().hasNext()){
+                        if(audi.getOperacion().equals("Insertar") || audi.getOperacion().equals("Actualizar")){
                             Object[] fila = new Object[6];
                             fila[0] = per;
                             fila[1] = per.getDni();
@@ -1156,30 +1189,29 @@ public class Controlador {
                             fila[5] = formateador2.format(audi.getFecha());
                             model.addRow(fila);
                         }
-                    }else if(filtro.equals("Inactivo")){
-                        Iterator i= PERSISTENCIA.getAuditoriaPerInactivos(per.getIdPersonal()).iterator();
-                        if(i.hasNext()){
-                            Auditoria a= (Auditoria) i.next();
+                    }else if(filtro.equals("Inactivos")){
+                        if(audi.getOperacion().equals("Eliminar")){
                             Object[] fila = new Object[6];
                             fila[0] = per;
                             fila[1] = per.getDni();
                             SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
                             fila[2] = formateador.format(per.getIngreso());
                             fila[3] = per.getCorreoElectronico();
-                            fila[4] = a.getOperacion();
+                            fila[4] = audi.getOperacion();
                             SimpleDateFormat formateador2 = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-                            fila[5] = formateador2.format(a.getFecha());
+                            fila[5] = formateador2.format(audi.getFecha());
                             model.addRow(fila);
                         }
                     }
                 }
             }
         }else if(valor.equals("DIA")){
-            Iterator it = PERSISTENCIA.getAuditoriaPerDia(fecha.getYear() + 1900,fecha.getMonth()+1,fecha.getDate()).iterator();
+            Iterator it = PERSISTENCIA.getDiasD(fecha.getYear() + 1900,fecha.getMonth(),fecha.getDate()).iterator();//PERSISTENCIA.getAuditoriaPerDia(fecha.getYear() + 1900,fecha.getMonth()+1,fecha.getDate()).iterator();
             while (it.hasNext()) {
-                Auditoria audi = (Auditoria) it.next();
-                Personal per=audi.getPersonalByIdPersonal();
+                Dia di = (Dia) it.next();
+                Personal per=di.getMes().getAno().getAgenda().getPersonal();
                 if(!listap.contains(per)){
+                    Auditoria audi=getAuditoriaPer(per);
                     listap.add(per);
                     if(filtro.equals("Todos")){
                         Object[] fila = new Object[6];
@@ -1193,7 +1225,7 @@ public class Controlador {
                         fila[5] = formateador2.format(audi.getFecha());
                         model.addRow(fila);
                     }else if(filtro.equals("Activos")){
-                        if(!PERSISTENCIA.getAuditoriaPerInactivos(per.getIdPersonal()).iterator().hasNext()){
+                        if(audi.getOperacion().equals("Insertar") || audi.getOperacion().equals("Actualizar")){
                             Object[] fila = new Object[6];
                             fila[0] = per;
                             fila[1] = per.getDni();
@@ -1205,19 +1237,17 @@ public class Controlador {
                             fila[5] = formateador2.format(audi.getFecha());
                             model.addRow(fila);
                         }
-                    }else if(filtro.equals("Inactivo")){
-                        Iterator i= PERSISTENCIA.getAuditoriaPerInactivos(per.getIdPersonal()).iterator();
-                        if(i.hasNext()){
-                            Auditoria a= (Auditoria) i.next();
+                    }else if(filtro.equals("Inactivos")){
+                        if(audi.getOperacion().equals("Eliminar")){
                             Object[] fila = new Object[6];
                             fila[0] = per;
                             fila[1] = per.getDni();
                             SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
                             fila[2] = formateador.format(per.getIngreso());
                             fila[3] = per.getCorreoElectronico();
-                            fila[4] = a.getOperacion();
+                            fila[4] = audi.getOperacion();
                             SimpleDateFormat formateador2 = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-                            fila[5] = formateador2.format(a.getFecha());
+                            fila[5] = formateador2.format(audi.getFecha());
                             model.addRow(fila);
                         }
                     }
@@ -1231,11 +1261,12 @@ public class Controlador {
         List listat= new ArrayList();
         DefaultTableModel modell = (DefaultTableModel) tablaclases.getModel();
         if (valor.equals("AÑO")) {
-            Iterator it = PERSISTENCIA.getAuditoriaTarAno(fecha.getYear() + 1900).iterator();
+            Iterator it = PERSISTENCIA.getDiasA(fecha.getYear() + 1900).iterator();
             while (it.hasNext()) {
-                Auditoria audi = (Auditoria) it.next();
-                Tarea tar=audi.getTarea();
+                Dia di = (Dia) it.next();
+                Tarea tar=di.getMes().getAno().getAgenda().getTarea();
                 if(!listat.contains(tar)){
+                    Auditoria audi=getAuditoriaTar(tar);
                     listat.add(tar);
                     if(filtro.equals("Todos")){
                         Object[] fila = new Object[6];
@@ -1249,7 +1280,7 @@ public class Controlador {
                         fila[5] = formateador2.format(audi.getFecha());
                         modell.addRow(fila);
                     }else if(filtro.equals("Activos")){
-                        if(!PERSISTENCIA.getAuditoriaTareaInactivos(tar.getIdTarea()).iterator().hasNext()){
+                        if(audi.getOperacion().equals("Insertar") || audi.getOperacion().equals("Actualizar")){
                             Object[] fila = new Object[6];
                             fila[0] = tar;
                             fila[1] = tar.getLugar();
@@ -1262,29 +1293,28 @@ public class Controlador {
                             modell.addRow(fila);
                         }
                     }else if(filtro.equals("Inactivos")){
-                        Iterator i = PERSISTENCIA.getAuditoriaTareaInactivos(tar.getIdTarea()).iterator();
-                        if(i.hasNext()){
-                            Auditoria a = (Auditoria) i.next();
+                        if(audi.getOperacion().equals("Eliminar")){
                             Object[] fila = new Object[6];
                             fila[0] = tar;
                             fila[1] = tar.getLugar();
                             SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
                             fila[2] = formateador.format(tar.getDiaInicio());
                             fila[3] = formateador.format(tar.getDiaFin());
-                            fila[4] = a.getOperacion();
+                            fila[4] = audi.getOperacion();
                             SimpleDateFormat formateador2 = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-                            fila[5] = formateador2.format(a.getFecha());
+                            fila[5] = formateador2.format(audi.getFecha());
                             modell.addRow(fila);
                         }
                     }
                 }
             }
         }else if (valor.equals("MES")) {
-            Iterator it = PERSISTENCIA.getAuditoriaTarMes(fecha.getYear() + 1900,fecha.getMonth()+1).iterator();
+            Iterator it = PERSISTENCIA.getDiasM(fecha.getYear() + 1900,fecha.getMonth()).iterator();
             while (it.hasNext()) {
-                Auditoria audi = (Auditoria) it.next();
-                Tarea tar=audi.getTarea();
+                Dia di = (Dia) it.next();
+                Tarea tar=di.getMes().getAno().getAgenda().getTarea();
                 if(!listat.contains(tar)){
+                    Auditoria audi=getAuditoriaTar(tar);
                     listat.add(tar);
                     if(filtro.equals("Todos")){
                         Object[] fila = new Object[6];
@@ -1298,7 +1328,7 @@ public class Controlador {
                         fila[5] = formateador2.format(audi.getFecha());
                         modell.addRow(fila);
                     }else if(filtro.equals("Activos")){
-                        if(!PERSISTENCIA.getAuditoriaTareaInactivos(tar.getIdTarea()).iterator().hasNext()){
+                        if(audi.getOperacion().equals("Insertar") || audi.getOperacion().equals("Actualizar")){
                             Object[] fila = new Object[6];
                             fila[0] = tar;
                             fila[1] = tar.getLugar();
@@ -1310,30 +1340,29 @@ public class Controlador {
                             fila[5] = formateador2.format(audi.getFecha());
                             modell.addRow(fila);
                         }
-                    }else if(filtro.equals("Inactivo")){
-                        Iterator i = PERSISTENCIA.getAuditoriaTareaInactivos(tar.getIdTarea()).iterator();
-                        if(i.hasNext()){
-                            Auditoria a = (Auditoria) i.next();
+                    }else if(filtro.equals("Inactivos")){
+                        if(audi.getOperacion().equals("Eliminar")){
                             Object[] fila = new Object[6];
                             fila[0] = tar;
                             fila[1] = tar.getLugar();
                             SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
                             fila[2] = formateador.format(tar.getDiaInicio());
                             fila[3] = formateador.format(tar.getDiaFin());
-                            fila[4] = a.getOperacion();
+                            fila[4] = audi.getOperacion();
                             SimpleDateFormat formateador2 = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-                            fila[5] = formateador2.format(a.getFecha());
+                            fila[5] = formateador2.format(audi.getFecha());
                             modell.addRow(fila);
                         }
                     }
                 }
             }
         }else if (valor.equals("DIA")) {
-            Iterator it = PERSISTENCIA.getAuditoriaTarDia(fecha.getYear() + 1900,fecha.getMonth()+1,fecha.getDate()).iterator();
+            Iterator it = PERSISTENCIA.getDiasD(fecha.getYear() + 1900,fecha.getMonth(),fecha.getDate()).iterator();
             while (it.hasNext()) {
-                Auditoria audi = (Auditoria) it.next();
-                Tarea tar=audi.getTarea();
+                Dia di = (Dia) it.next();
+                Tarea tar=di.getMes().getAno().getAgenda().getTarea();
                 if(!listat.contains(tar)){
+                    Auditoria audi=getAuditoriaTar(tar);
                     listat.add(tar);
                     if(filtro.equals("Todos")){
                         Object[] fila = new Object[6];
@@ -1347,7 +1376,7 @@ public class Controlador {
                         fila[5] = formateador2.format(audi.getFecha());
                         modell.addRow(fila);
                     }else if(filtro.equals("Activos")){
-                        if(!PERSISTENCIA.getAuditoriaTareaInactivos(tar.getIdTarea()).iterator().hasNext()){
+                        if(audi.getOperacion().equals("Insertar") || audi.getOperacion().equals("Actualizar")){
                             Object[] fila = new Object[6];
                             fila[0] = tar;
                             fila[1] = tar.getLugar();
@@ -1359,19 +1388,17 @@ public class Controlador {
                             fila[5] = formateador2.format(audi.getFecha());
                             modell.addRow(fila);
                         }
-                    }else if(filtro.equals("Inactivo")){
-                        Iterator i = PERSISTENCIA.getAuditoriaTareaInactivos(tar.getIdTarea()).iterator();
-                        if(i.hasNext()){
-                            Auditoria a = (Auditoria) i.next();
+                    }else if(filtro.equals("Inactivos")){
+                        if(audi.getOperacion().equals("Eliminar")){
                             Object[] fila = new Object[6];
                             fila[0] = tar;
                             fila[1] = tar.getLugar();
                             SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
                             fila[2] = formateador.format(tar.getDiaInicio());
                             fila[3] = formateador.format(tar.getDiaFin());
-                            fila[4] = a.getOperacion();
+                            fila[4] = audi.getOperacion();
                             SimpleDateFormat formateador2 = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-                            fila[5] = formateador2.format(a.getFecha());
+                            fila[5] = formateador2.format(audi.getFecha());
                             modell.addRow(fila);
                         }
                     }
