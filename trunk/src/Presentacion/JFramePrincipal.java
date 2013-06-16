@@ -522,7 +522,7 @@ public class JFramePrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        JFrameConsulta vent2 = new JFrameConsulta(Drive,adm);
+        JFrameConsulta vent2 = new JFrameConsulta(Drive,adm,false);
         this.hide();
         vent2.show();
     }//GEN-LAST:event_jMenuItem3ActionPerformed
@@ -546,7 +546,8 @@ public class JFramePrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem7ActionPerformed
 
     private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
-        JFrameInasistencia vent2 = new JFrameInasistencia(Drive,adm);
+        Personal p=new Personal();
+        JFrameInasistencia vent2 = new JFrameInasistencia(Drive,adm,p);
         this.hide();
         vent2.show();
     }//GEN-LAST:event_jMenuItem8ActionPerformed

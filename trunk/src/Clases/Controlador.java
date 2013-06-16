@@ -2739,90 +2739,63 @@ public class Controlador {
         }
     }
     
-    public void CargarTablaInasistencias(JTable Tabla, String m, int ano, String buscarpor, String valor) {
+    public void CargarTablaInasistencias(JTable Tabla, String m, int ano, Personal per) {
         try {
             LimpiarTabla(Tabla);
             DefaultTableModel modelo = (DefaultTableModel) Tabla.getModel();
-            Controlador cc=new Controlador();
+            Controlador cc = new Controlador();
             int mes = ObtenerMes(m);
             SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
             Iterator ita = cc.PERSISTENCIA.ObtenerListaInasistencia(mes, ano).iterator();
             while (ita.hasNext()) {
-                Asistencia asis =(Asistencia) ita.next();
+                Asistencia asis = (Asistencia) ita.next();
                 if (asis.getIniciofin().getDia().getMes().getAno().getAgenda().getTarea().getEstado() == true && asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().getEstado() == true) {
                     Date fecha = new Date();
                     fecha.setYear(asis.getIniciofin().getDia().getMes().getAno().getAno() - 1900);
                     fecha.setMonth(asis.getIniciofin().getDia().getMes().getMes());
                     fecha.setDate(asis.getIniciofin().getDia().getDia());
                     if (asis.getIniciofin().getDia().getMes().getMes() == mes && asis.getIniciofin().getDia().getMes().getAno().getAno() == ano) {
-                        Personal person=asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal();
-                        if (buscarpor.equals("Apellido") && person.getEstado() == true) {
-                            int i = person.getApellido().indexOf(valor);
-                            if (i == 0) {
-                                Object fila[] = new Object[10];
-                                fila[0] = asis.getIdAsistencia();
-                                fila[1] = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getTarea().getNombre();
-                                fila[2] = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().toString();
-                                fila[3] = formateador.format(fecha);
-                                fila[4] = asis.getIniciofin().getInicio();
-                                fila[5] = asis.getIniciofin().getFin();
-                                fila[6] = new Boolean(false);
-                                if (asis.getTardanza() == true) {
-                                    fila[7] = new Boolean(true);
-                                } else {
-                                    fila[7] = new Boolean(false);
-                                }
-                                if (asis.getJustificacions().iterator().hasNext()) {
-                                    fila[8] = asis.getJustificacions().iterator().next().getArticulo();
-                                    fila[9] = asis.getJustificacions().iterator().next().getMotivo();
-                                }
-                                modelo.addRow(fila);
+                        int person = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().getIdPersonal();
+                        if (person == per.getIdPersonal()) {
+                            Object fila[] = new Object[10];
+                            fila[0] = asis.getIdAsistencia();
+                            fila[1] = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getTarea().getNombre();
+                            fila[2] = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().toString();
+                            fila[3] = formateador.format(fecha);
+                            fila[4] = asis.getIniciofin().getInicio();
+                            fila[5] = asis.getIniciofin().getFin();
+                            fila[6] = new Boolean(false);
+                            if (asis.getTardanza() == true) {
+                                fila[7] = new Boolean(true);
+                            } else {
+                                fila[7] = new Boolean(false);
                             }
-                        }else if (buscarpor.equals("Nombre") && person.getEstado() == true) {
-                            int i = person.getApellido().indexOf(valor);
-                            if (i == 0) {
-                                Object fila[] = new Object[10];
-                                fila[0] = asis.getIdAsistencia();
-                                fila[1] = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getTarea().getNombre();
-                                fila[2] = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().toString();
-                                fila[3] = formateador.format(fecha);
-                                fila[4] = asis.getIniciofin().getInicio();
-                                fila[5] = asis.getIniciofin().getFin();
-                                fila[6] = new Boolean(false);
-                                if (asis.getTardanza() == true) {
-                                    fila[7] = new Boolean(true);
-                                } else {
-                                    fila[7] = new Boolean(false);
-                                }
-                                if (asis.getJustificacions().iterator().hasNext()) {
-                                    fila[8] = asis.getJustificacions().iterator().next().getArticulo();
-                                    fila[9] = asis.getJustificacions().iterator().next().getMotivo();
-                                }
-                                modelo.addRow(fila);
+                            if (asis.getJustificacions().iterator().hasNext()) {
+                                fila[8] = asis.getJustificacions().iterator().next().getArticulo();
+                                fila[9] = asis.getJustificacions().iterator().next().getMotivo();
                             }
-                        }else if (buscarpor.equals("Todos") && person.getEstado() == true) {
-//                            int i = person.getApellido().indexOf(valor);
-//                            if (i == 0) {
-                                Object fila[] = new Object[10];
-                                fila[0] = asis.getIdAsistencia();
-                                fila[1] = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getTarea().getNombre();
-                                fila[2] = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().toString();
-                                fila[3] = formateador.format(fecha);
-                                fila[4] = asis.getIniciofin().getInicio();
-                                fila[5] = asis.getIniciofin().getFin();
-                                fila[6] = new Boolean(false);
-                                if (asis.getTardanza() == true) {
-                                    fila[7] = new Boolean(true);
-                                } else {
-                                    fila[7] = new Boolean(false);
-                                }
-                                if (asis.getJustificacions().iterator().hasNext()) {
-                                    fila[8] = asis.getJustificacions().iterator().next().getArticulo();
-                                    fila[9] = asis.getJustificacions().iterator().next().getMotivo();
-                                }
-                                modelo.addRow(fila);
+                            modelo.addRow(fila);
+                        } 
+//                        else {
+//                            Object fila[] = new Object[10];
+//                            fila[0] = asis.getIdAsistencia();
+//                            fila[1] = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getTarea().getNombre();
+//                            fila[2] = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().toString();
+//                            fila[3] = formateador.format(fecha);
+//                            fila[4] = asis.getIniciofin().getInicio();
+//                            fila[5] = asis.getIniciofin().getFin();
+//                            fila[6] = new Boolean(false);
+//                            if (asis.getTardanza() == true) {
+//                                fila[7] = new Boolean(true);
+//                            } else {
+//                                fila[7] = new Boolean(false);
 //                            }
-                        }
+//                            if (asis.getJustificacions().iterator().hasNext()) {
+//                                fila[8] = asis.getJustificacions().iterator().next().getArticulo();
+//                                fila[9] = asis.getJustificacions().iterator().next().getMotivo();
+//                            }
+//                            modelo.addRow(fila);
+//                        }
                     }
                 }
             }
@@ -2835,28 +2808,55 @@ public class Controlador {
                     fecha.setMonth(asis.getIniciofin().getDia().getMes().getMes());
                     fecha.setDate(asis.getIniciofin().getDia().getDia());
                     if (asis.getIniciofin().getDia().getMes().getMes() == mes && asis.getIniciofin().getDia().getMes().getAno().getAno() == ano) {
-                        Object fila[] = new Object[10];
-                        fila[0] = asis.getIdAsistencia();
-                        fila[1] = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getTarea().getNombre();
-                        fila[2] = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().toString();
-                        fila[3] = formateador.format(fecha);
-                        fila[4] = asis.getIniciofin().getInicio();
-                        fila[5] = asis.getIniciofin().getFin();
-                        if (asis.getEstado() == true) {
-                            fila[6] = new Boolean(true);
-                        } else {
-                            fila[6] = new Boolean(false);
-                        }
-                        if (asis.getTardanza() == true) {
-                            fila[7] = new Boolean(true);
-                        } else {
-                            fila[7] = new Boolean(false);
-                        }
-                        if (asis.getJustificacions().iterator().hasNext()) {
-                            fila[8] = asis.getJustificacions().iterator().next().getArticulo();
-                            fila[9] = asis.getJustificacions().iterator().next().getMotivo();
-                        }
-                        modelo.addRow(fila);
+                        Personal person = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal();
+                        if (person.getIdPersonal() == per.getIdPersonal()) {
+                            Object fila[] = new Object[10];
+                            fila[0] = asis.getIdAsistencia();
+                            fila[1] = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getTarea().getNombre();
+                            fila[2] = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().toString();
+                            fila[3] = formateador.format(fecha);
+                            fila[4] = asis.getIniciofin().getInicio();
+                            fila[5] = asis.getIniciofin().getFin();
+                            if (asis.getEstado() == true) {
+                                fila[6] = new Boolean(true);
+                            } else {
+                                fila[6] = new Boolean(false);
+                            }
+                            if (asis.getTardanza() == true) {
+                                fila[7] = new Boolean(true);
+                            } else {
+                                fila[7] = new Boolean(false);
+                            }
+                            if (asis.getJustificacions().iterator().hasNext()) {
+                                fila[8] = asis.getJustificacions().iterator().next().getArticulo();
+                                fila[9] = asis.getJustificacions().iterator().next().getMotivo();
+                            }
+                            modelo.addRow(fila);
+                        } 
+//                        else {
+//                            Object fila[] = new Object[10];
+//                            fila[0] = asis.getIdAsistencia();
+//                            fila[1] = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getTarea().getNombre();
+//                            fila[2] = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().toString();
+//                            fila[3] = formateador.format(fecha);
+//                            fila[4] = asis.getIniciofin().getInicio();
+//                            fila[5] = asis.getIniciofin().getFin();
+//                            if (asis.getEstado() == true) {
+//                                fila[6] = new Boolean(true);
+//                            } else {
+//                                fila[6] = new Boolean(false);
+//                            }
+//                            if (asis.getTardanza() == true) {
+//                                fila[7] = new Boolean(true);
+//                            } else {
+//                                fila[7] = new Boolean(false);
+//                            }
+//                            if (asis.getJustificacions().iterator().hasNext()) {
+//                                fila[8] = asis.getJustificacions().iterator().next().getArticulo();
+//                                fila[9] = asis.getJustificacions().iterator().next().getMotivo();
+//                            }
+//                            modelo.addRow(fila);
+//                        }
                     }
                 }
             }
