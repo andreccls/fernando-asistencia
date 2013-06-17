@@ -1570,9 +1570,9 @@ public class Controlador {
         List<Personal> pe=new ArrayList();
         DefaultTableModel model = (DefaultTableModel) tabla.getModel();
         Iterator it=PERSISTENCIA.getIniciofin(hoy.getDate(), hoy.getMonth(), hoy.getYear()+1900).iterator();
-        while(it.hasNext()){
-            Iniciofin in=(Iniciofin) it.next();
-            if(in.getInicio().compareTo(hora)<=0 && in.getFin().compareTo(hora)>=0){
+        if(hora.getHours()==0 && hora.getMinutes()==0){
+            while(it.hasNext()){
+                Iniciofin in=(Iniciofin) it.next();
                 Personal per=in.getDia().getMes().getAno().getAgenda().getPersonal();
                 if(!pe.contains(per)&&per.getEstado()){
                     pe.add(per);
@@ -1585,6 +1585,23 @@ public class Controlador {
                     model.addRow(fila);
                 }
             }
+        }else{
+            while(it.hasNext()){
+                Iniciofin in=(Iniciofin) it.next();
+                if(in.getInicio().compareTo(hora)<=0 && in.getFin().compareTo(hora)>=0){
+                    Personal per=in.getDia().getMes().getAno().getAgenda().getPersonal();
+                    if(!pe.contains(per)&&per.getEstado()){
+                        pe.add(per);
+                        Object[] fila = new Object[4];
+                        fila[0] = per;
+                        fila[1] = per.getDni();
+                        SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+                        fila[2] = per.getCorreoElectronico();
+                        fila[3] = formateador.format(per.getIngreso());
+                        model.addRow(fila);
+                    }
+                }
+            }
         }
     }
     
@@ -1593,9 +1610,9 @@ public class Controlador {
         List<Tarea> ta=new ArrayList();
         DefaultTableModel model = (DefaultTableModel) tabla.getModel();
         Iterator it=PERSISTENCIA.getIniciofin(hoy.getDate(), hoy.getMonth(), hoy.getYear()+1900).iterator();
-        while(it.hasNext()){
-            Iniciofin in=(Iniciofin) it.next();
-            if(in.getInicio().compareTo(hora)<=0 && in.getFin().compareTo(hora)>=0){
+        if(hora.getHours()==0 && hora.getMinutes()==0){
+            while(it.hasNext()){
+                Iniciofin in=(Iniciofin) it.next();
                 Tarea tar=in.getDia().getMes().getAno().getAgenda().getTarea();
                 if(!ta.contains(tar)&&tar.getEstado()){
                     ta.add(tar);
@@ -1606,6 +1623,23 @@ public class Controlador {
                     fila[2] = formateador.format(in.getInicio());
                     fila[3] = formateador.format(in.getFin());
                     model.addRow(fila);
+                }
+            }
+        }else{
+            while(it.hasNext()){
+                Iniciofin in=(Iniciofin) it.next();
+                if(in.getInicio().compareTo(hora)<=0 && in.getFin().compareTo(hora)>=0){
+                    Tarea tar=in.getDia().getMes().getAno().getAgenda().getTarea();
+                    if(!ta.contains(tar)&&tar.getEstado()){
+                        ta.add(tar);
+                        Object[] fila = new Object[4];
+                        fila[0] = tar;
+                        fila[1] = tar.getComentario();
+                        SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
+                        fila[2] = formateador.format(in.getInicio());
+                        fila[3] = formateador.format(in.getFin());
+                        model.addRow(fila);
+                    }
                 }
             }
         }

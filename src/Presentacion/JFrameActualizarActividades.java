@@ -525,9 +525,23 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
                 } catch (Exception e) {
                 }
             } else if (tar.getComentario().equals("CLASE")) {
-                JFrameClase vent2 = new JFrameClase(Drive, adm, tar);
-                this.hide();
-                vent2.show();
+                Date mayor=tar.ObtenerFechaMayor(new Date().getYear());
+                Date hoy=new Date();
+                if(mayor!=null){
+                    if(mayor.compareTo(hoy)>=0){
+                        JFrameClase vent2 = new JFrameClase(Drive, adm, tar);
+                        this.hide();
+                        vent2.show();
+                    }else{
+                        int confirm = JOptionPane.showConfirmDialog(null, "La clase ya paso. ¿Desea modificarlo de todas maneras?", "Modificar clase", JOptionPane.YES_NO_OPTION);
+                        if (JOptionPane.OK_OPTION == confirm) {
+                            JFrameClase vent2 = new JFrameClase(Drive, adm, tar);
+                            this.hide();
+                            vent2.show();
+                        }
+                    }
+                }
+                
             } else if (tar.getComentario().equals("REUNION")) {
                 try {
                     DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();

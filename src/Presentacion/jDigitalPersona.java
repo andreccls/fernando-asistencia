@@ -729,12 +729,16 @@ public class jDigitalPersona extends javax.swing.JFrame {
      //Integer tamañoHuella=template.serialize().length;
 
      try {
-         if(per.getIdPersonal()!=null){
-             byte[] bit=read(datosHuella);
-             per.setCodigo(bit);
-             per.actualizarPersonal(per);
-             JOptionPane.showMessageDialog(null,"Huella Guardada Correctamente","Registrar Huella",JOptionPane.INFORMATION_MESSAGE);
-         }else{JOptionPane.showMessageDialog(null,"Debe que seleccionar un personal","Registrar Huella", JOptionPane.ERROR_MESSAGE);}
+         if(!identificarHuella()){
+            if(per.getIdPersonal()!=null){
+                byte[] bit=read(datosHuella);
+                per.setCodigo(bit);
+                per.actualizarPersonal(per);
+                JOptionPane.showMessageDialog(null,"Huella Guardada Correctamente","Registrar Huella",JOptionPane.INFORMATION_MESSAGE);
+            }else{JOptionPane.showMessageDialog(null,"Debe que seleccionar un personal","Registrar Huella", JOptionPane.ERROR_MESSAGE);}
+         }else{
+             JOptionPane.showMessageDialog(null,"No se ha podido guardar la huella","Registrar Huella", JOptionPane.ERROR_MESSAGE);
+         }
      } catch (Exception ex) {
      //Si ocurre un error lo indica en la consola
      System.err.println("Error al guardar los datos de la huella.");
@@ -779,8 +783,9 @@ public class jDigitalPersona extends javax.swing.JFrame {
  /**
   * Identifica a una persona registrada por medio de su huella digital
   */
-  public void identificarHuella() throws IOException{
-     try {
+  public boolean identificarHuella() throws IOException{
+      boolean bandera=false;
+      try {
         Establecimiento est=Drive.getPrimerEstablecimiento();
         Iterator<Personal> it=est.getPersonals().iterator();
         while(it.hasNext()){
@@ -802,8 +807,8 @@ public class jDigitalPersona extends javax.swing.JFrame {
                 if (result.isVerified()){
                 //crea la imagen de los datos guardado de las huellas guardadas en la base de datos
                    JOptionPane.showMessageDialog(null, "Las huella capturada es de "+nombre,"Verificacion de Huella", JOptionPane.INFORMATION_MESSAGE);
-                   return;
-
+                   bandera=true;
+                   return bandera;
                 }
             }
         }
@@ -813,6 +818,7 @@ public class jDigitalPersona extends javax.swing.JFrame {
        } catch (Exception e) {
            System.err.println("Error al identificar huella dactilar."+e.getMessage());
        }
+       return bandera;
    }
   
   
