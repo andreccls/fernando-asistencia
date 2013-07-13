@@ -1,5 +1,5 @@
 package Clases;
-// Generated 14-may-2013 5:19:10 by Hibernate Tools 3.2.1.GA
+// Generated 18-jun-2013 14:10:38 by Hibernate Tools 3.2.1.GA
 
 
 import java.text.SimpleDateFormat;
@@ -18,6 +18,7 @@ public class Tarea  implements java.io.Serializable {
 
 
      private Integer idTarea;
+     private Division division;
      private Lugar lugar;
      private Establecimiento establecimiento;
      private String nombre;
@@ -40,7 +41,8 @@ public class Tarea  implements java.io.Serializable {
         this.establecimiento = establecimiento;
         this.nombre = nombre;
     }
-    public Tarea(Lugar lugar, Establecimiento establecimiento, String nombre, String comentario, Boolean estado, Date diaInicio, Date diaFin, Set<Tareareunion> tareareunions, Set<Auditoria> auditorias, Set<Agenda> agendas, Set<Tareaotro> tareaotros, Set<Tareaextracurricular> tareaextracurriculars, Set<Tareaclase> tareaclases) {
+    public Tarea(Division division, Lugar lugar, Establecimiento establecimiento, String nombre, String comentario, Boolean estado, Date diaInicio, Date diaFin, Set<Tareareunion> tareareunions, Set<Auditoria> auditorias, Set<Agenda> agendas, Set<Tareaotro> tareaotros, Set<Tareaextracurricular> tareaextracurriculars, Set<Tareaclase> tareaclases) {
+       this.division = division;
        this.lugar = lugar;
        this.establecimiento = establecimiento;
        this.nombre = nombre;
@@ -67,6 +69,13 @@ public class Tarea  implements java.io.Serializable {
     
     public void setIdTarea(Integer idTarea) {
         this.idTarea = idTarea;
+    }
+    public Division getDivision() {
+        return this.division;
+    }
+    
+    public void setDivision(Division division) {
+        this.division = division;
     }
     public Lugar getLugar() {
         return this.lugar;
@@ -173,6 +182,10 @@ public class Tarea  implements java.io.Serializable {
     Controlador.getPERSISTENCIA().update(this);
     
     }
+    
+//    public void EliminarTarea(Tarea unaTarea){
+//        Controlador.getPERSISTENCIA().delete(this);
+//    }
     
     public void crearTareaclase(TareaclaseId id, Aula aula, Tarea tarea){
         Tareaclase unaTareaclase=new Tareaclase(id,aula,tarea);
@@ -410,7 +423,8 @@ public class Tarea  implements java.io.Serializable {
         Iterator it=agendas.iterator();
         while(it.hasNext()){
             Agenda ag=(Agenda) it.next();
-            if(ag.getId().getIdPersonal()==idper && ag.getRevista().getIdRevista()==idrev){
+            Personal pr=ag.getPersonal();
+            if(pr.getIdPersonal()==idper /*&& ag.getRevista().getIdRevista()==idrev*/){
                 age=ag;
                 break;
             }
@@ -629,7 +643,6 @@ public class Tarea  implements java.io.Serializable {
             JOptionPane.showMessageDialog(null,"Error al recuperar las asistencias","Eliminar tarea",JOptionPane.ERROR_MESSAGE);
         }
     }
-
 
 
 }

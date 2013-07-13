@@ -50,7 +50,7 @@ public class JFrameAdministrativo extends javax.swing.JFrame {
      * Creates new form JFrameAdministrativo
      */
     
-    Controlador Drive;
+    Controlador Drive=new Controlador();
      Personal adm;
 //     int idsesion;
     StringBuffer buffer= new StringBuffer();
@@ -728,6 +728,11 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
             jComboBox2ItemStateChanged(evt);
         }
     });
+    jComboBox2.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+        public void propertyChange(java.beans.PropertyChangeEvent evt) {
+            jComboBox2PropertyChange(evt);
+        }
+    });
 
     javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
     jPanel1.setLayout(jPanel1Layout);
@@ -846,7 +851,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
             .addComponent(jLabel6)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
             .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addContainerGap())
+            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
     );
 
     jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jButton1, jButton2});
@@ -1055,7 +1060,6 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                 Agenda age = new Agenda();
                                 age.setId(idage);
                                 age.setComentario(null);
-                                age.setAnolectivo(Drive.getAnoLectivo());
                                 age.guardarAgenda(age);
 
                                 Ano anio = new Ano();
@@ -1545,7 +1549,6 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                         age = new Agenda();
                                         age.setId(idage);
                                         age.setComentario(null);
-                                        age.setAnolectivo(Drive.getAnoLectivo());
                                         age.guardarAgenda(age);
                                     }
                                     Ano anio = new Ano();
@@ -2867,7 +2870,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
 
     private void jCheckBox7ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCheckBox7ItemStateChanged
         try{
-            if(jCheckBox1.isSelected()){
+            if(jCheckBox7.isSelected()){
                 DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
                 int cc=0;
                 while (jTable1.getRowCount() != cc) {
@@ -2982,11 +2985,20 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void jComboBox2ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox2ItemStateChanged
-        String com=(String) jComboBox2.getSelectedItem();
-        if(!tar.getComentario().equals(com)){
-            cambio=true;
+        try{
+            if(tar.getIdTarea()!=null){
+                String com=(String) jComboBox2.getSelectedItem();
+                if(!tar.getComentario().equals(com)){
+                    cambio=true;
+                }
+            }
+        }catch(Exception e){
         }
     }//GEN-LAST:event_jComboBox2ItemStateChanged
+
+    private void jComboBox2PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jComboBox2PropertyChange
+        
+    }//GEN-LAST:event_jComboBox2PropertyChange
 
     /**
      * @param args the command line arguments

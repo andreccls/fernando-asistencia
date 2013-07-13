@@ -56,7 +56,6 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
         this.Drive=unDrive;
         this.adm=admin;
         this.tar=tarr;
-//        this.idsesion=id;
         this.band=bandera;
         Drive.LimpiarTabla(jTable1);
         Drive.CargarComboLugar(jComboBox1);
@@ -124,6 +123,7 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
             tc1.setHeaderValue("Numero");
             th.repaint();
             jTable1.setEnabled(false);
+            jButton4.setVisible(false);
         }else if(tar.getComentario().equals("REUNION")){
             JTableHeader th = jTable1.getTableHeader();
             TableColumnModel tcm = th.getColumnModel();
@@ -177,6 +177,7 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
         if(adm.getPerfil().getActividadesins()==null){
             jButton1.setEnabled(false);
         }
+        
         
     }
 
@@ -274,9 +275,9 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 731, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton1)
-                        .addGap(18, 18, 18)
                         .addComponent(jButton4)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton1)
                         .addGap(18, 18, 18)
                         .addComponent(jButton3)
                         .addGap(18, 18, 18)

@@ -19,7 +19,9 @@ import Clases.Articulo;
 import Clases.Auditoria;
 import Clases.Aula;
 import Clases.Controlador;
+import Clases.Curso;
 import Clases.Dia;
+import Clases.Division;
 import Clases.Establecimiento;
 import Clases.Franco;
 import Clases.Iniciofin;
@@ -74,25 +76,31 @@ public class JFrameClase extends javax.swing.JFrame {
     
     HashMap items= new HashMap();
     HashMap listini = new HashMap();
+    Anolectivo lectivo;
+    boolean ba=false;
     /** Creates new form JFrameClase */
     public JFrameClase(Controlador unDrive, Personal admin,Tarea tarr) {
         this.adm=admin;
         this.Drive=unDrive;
 //        this.idsesion=id;
+        if(!tarr.getAgendas().iterator().hasNext()){
+            ba=true;
+        }
         this.tar=tarr;
         initComponents();
-
+        lectivo=Drive.getAnoLectivo();
         Drive.CargarComboSituacionRevista(jComboBox2);
         Drive.CargarComboAulas(jComboBox1);
         Drive.CargarComboLugar(jComboBox3);
+        Drive.CargarComboCursos(jComboBox5, lectivo.getAno());
         int[] anchos1 = {200,85,65 ,65};
-        for(int i = 0; i < jTable1.getColumnCount(); i++) {
-            jTable1.getColumnModel().getColumn(i).setPreferredWidth(anchos1[i]);
+        for(int i = 0; i < jTable2.getColumnCount(); i++) {
+            jTable2.getColumnModel().getColumn(i).setPreferredWidth(anchos1[i]);
         }
         DefaultTableCellRenderer modelocentrar = new DefaultTableCellRenderer();
         modelocentrar.setHorizontalAlignment(SwingConstants.CENTER);
-        jTable1.getColumnModel().getColumn(1).setCellRenderer(modelocentrar); 
-        jTable1.getTableHeader().setDefaultRenderer(new HeaderRenderer(jTable1));
+        jTable2.getColumnModel().getColumn(1).setCellRenderer(modelocentrar); 
+        jTable2.getTableHeader().setDefaultRenderer(new HeaderRenderer(jTable2));
         ///ICONO EDITAR
         ImageIcon fot = new ImageIcon(getClass().getResource("/imagenes/image.jpg"));
         Icon icono1 = new ImageIcon(fot.getImage().getScaledInstance(jLabel18.getWidth(), jLabel18.getHeight(), Image.SCALE_DEFAULT));
@@ -111,93 +119,7 @@ public class JFrameClase extends javax.swing.JFrame {
         jLabel32.repaint();
         jLabel21.setIcon(icono2);
         jLabel21.repaint();
-        ///Verificar si vengo desde principal o desde consultar tarea
-        if(tar.getIdTarea()!=null){
-            try{
-            jTextField1.setText(tar.getNombre());
-            jTextField1.setEnabled(false);
-            
-//            jTextField3.setText(tar.getLugar());
-            Tareaclase tarcla=tar.getTareaclases().iterator().next();
-            jComboBox1.setSelectedItem(tarcla.getAula());
-            jComboBox3.setSelectedItem(tar.getLugar());
-            this.mayor=tar.ObtenerFechaMayor(new Date().getYear());
-            if(mayor!=null){
-                Calendar mmayor = Calendar.getInstance();
-                mmayor.setTime(mayor);
-                dateChooserCombo2.setSelectedDate(mmayor);
-            }
-            this.menor=tar.ObtenerFechaMenor(new Date().getYear());
-            if(menor!=null){
-                Calendar mmenor = Calendar.getInstance();
-                mmenor.setTime(menor);                
-                dateChooserCombo1.setSelectedDate(mmenor);
-            }
-            SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
-            diass=tar.ObtenerListaDias();
-            Iterator itt=diass.iterator();
-            while(itt.hasNext()){
-                Dia dd=(Dia) itt.next();
-                Date aux=new Date();
-                aux.setDate(dd.getDia());
-                aux.setMonth(dd.getMes().getMes());
-                aux.setYear(dd.getMes().getAno().getAno()-1900);
-                int ii=aux.getDay();
-                if(ii==1){
-                    jCheckBox1.setSelected(true);
-                    jFormattedTextField1.setValue(formateador.format(dd.getIniciofins().iterator().next().getInicio()));
-                    jFormattedTextField2.setValue(formateador.format(dd.getIniciofins().iterator().next().getFin()));
-                }else if(ii==2){
-                    jCheckBox2.setSelected(true);
-                    jFormattedTextField3.setValue(formateador.format(dd.getIniciofins().iterator().next().getInicio()));
-                    jFormattedTextField4.setValue(formateador.format(dd.getIniciofins().iterator().next().getFin()));
-                }else if(ii==3){
-                    jCheckBox3.setSelected(true);
-                    jFormattedTextField5.setValue(formateador.format(dd.getIniciofins().iterator().next().getInicio()));
-                    jFormattedTextField6.setValue(formateador.format(dd.getIniciofins().iterator().next().getFin()));
-                }else if(ii==4){
-                    jCheckBox4.setSelected(true);
-                    jFormattedTextField8.setValue(formateador.format(dd.getIniciofins().iterator().next().getInicio()));
-                    jFormattedTextField7.setValue(formateador.format(dd.getIniciofins().iterator().next().getFin()));
-                }else if(ii==5){
-                    jCheckBox5.setSelected(true);
-                    jFormattedTextField9.setValue(formateador.format(dd.getIniciofins().iterator().next().getInicio()));
-                    jFormattedTextField10.setValue(formateador.format(dd.getIniciofins().iterator().next().getFin()));
-                }else if(ii==6){
-                    jCheckBox6.setSelected(true);
-                    jFormattedTextField11.setValue(formateador.format(dd.getIniciofins().iterator().next().getInicio()));
-                    jFormattedTextField12.setValue(formateador.format(dd.getIniciofins().iterator().next().getFin()));
-                }
-            }
-            Drive.LimpiarTabla(jTable2);
-            
-            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-            Iterator it=Drive.PERSISTENCIA.getIniciofinTar(mayor.getDate(), mayor.getMonth(), mayor.getYear()+1900,tar.getIdTarea()).iterator();
-//            Iterator it=tar.getAgendas().iterator();
-            List<Agenda> lista=new ArrayList();
-            while(it.hasNext()){
-                Iniciofin in=(Iniciofin) it.next();
-                Agenda age=in.getDia().getMes().getAno().getAgenda();
-                if(!lista.contains(age)){
-                    lista.add(age);
-                }
-            }
-            Iterator ii=lista.iterator();
-            while(ii.hasNext()){
-                Agenda agg=(Agenda) ii.next();
-                Personal pp=agg.getPersonal();
-                Revista rev=agg.getRevista();
-                Object[] fila = new Object[4];
-                fila[0] = pp;
-                fila[1] = rev;
-                model.addRow(fila);
-            }
-            jTable1.setModel(model);
-            
-            }catch(Exception e){
-                JOptionPane.showMessageDialog(null,"Error al cargar el formulario","Registrar Clase", JOptionPane.ERROR_MESSAGE);
-            }
-        }
+        
         ImageIcon fott1 = new ImageIcon(getClass().getResource("/imagenes/no.png"));
         Icon icono3 = new ImageIcon(fott1.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
         jButton2.setIcon(icono3);
@@ -213,6 +135,8 @@ public class JFrameClase extends javax.swing.JFrame {
         if(adm.getPerfil().getActividadesins()==null&&tar.getIdTarea()==null){
             jButton1.setEnabled(false);
         }
+        Cargar(tar);
+        
     }
 
     /** This method is called from within the constructor to
@@ -225,13 +149,11 @@ public class JFrameClase extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
         jFormattedTextField1 = new javax.swing.JFormattedTextField();
         jFormattedTextField2 = new javax.swing.JFormattedTextField();
         jLabel7 = new javax.swing.JLabel();
@@ -246,7 +168,6 @@ public class JFrameClase extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jLabel12 = new javax.swing.JLabel();
-        jLabel14 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         jLabel15 = new javax.swing.JLabel();
         jComboBox4 = new javax.swing.JComboBox();
@@ -277,8 +198,6 @@ public class JFrameClase extends javax.swing.JFrame {
         jLabel16 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
-        jLabel25 = new javax.swing.JLabel();
-        jLabel26 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox();
         jSeparator1 = new javax.swing.JSeparator();
         jLabel35 = new javax.swing.JLabel();
@@ -286,6 +205,12 @@ public class JFrameClase extends javax.swing.JFrame {
         jComboBox3 = new javax.swing.JComboBox();
         jLabel36 = new javax.swing.JLabel();
         jLabel21 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        jComboBox5 = new javax.swing.JComboBox();
+        jLabel22 = new javax.swing.JLabel();
+        jComboBox6 = new javax.swing.JComboBox();
+        jLabel14 = new javax.swing.JLabel();
+        jComboBox7 = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("SISTEMA DE ASISTENCIA DE PERSONAL EDUCATIVO");
@@ -296,8 +221,6 @@ public class JFrameClase extends javax.swing.JFrame {
         });
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos de la clase"));
-
-        jLabel1.setText("Nombre:");
 
         jLabel3.setText("Hora inicio:");
 
@@ -316,12 +239,6 @@ public class JFrameClase extends javax.swing.JFrame {
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
-            }
-        });
-
-        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                jTextField1KeyTyped(evt);
             }
         });
 
@@ -519,8 +436,6 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
     jScrollPane2.setViewportView(jTable1);
 
     jLabel12.setText("Aula:");
-
-    jLabel14.setText("*");
 
     jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Seleccione el personal"));
 
@@ -856,10 +771,6 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
 
     jLabel20.setText("Hora fin:");
 
-    jLabel25.setText("Son campos obligatorios");
-
-    jLabel26.setText("*");
-
     jComboBox1.addItemListener(new java.awt.event.ItemListener() {
         public void itemStateChanged(java.awt.event.ItemEvent evt) {
             jComboBox1ItemStateChanged(evt);
@@ -904,18 +815,43 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
         }
     });
 
+    jLabel13.setText("Año:");
+
+    jComboBox5.addItemListener(new java.awt.event.ItemListener() {
+        public void itemStateChanged(java.awt.event.ItemEvent evt) {
+            jComboBox5ItemStateChanged(evt);
+        }
+    });
+
+    jLabel22.setText("División:");
+
+    jComboBox6.addItemListener(new java.awt.event.ItemListener() {
+        public void itemStateChanged(java.awt.event.ItemEvent evt) {
+            jComboBox6ItemStateChanged(evt);
+        }
+    });
+
+    jLabel14.setText("Materia:");
+
+    jComboBox7.addItemListener(new java.awt.event.ItemListener() {
+        public void itemStateChanged(java.awt.event.ItemEvent evt) {
+            jComboBox7ItemStateChanged(evt);
+        }
+    });
+
     javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
     jPanel1.setLayout(jPanel1Layout);
     jPanel1Layout.setHorizontalGroup(
         jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
+        .addGroup(jPanel1Layout.createSequentialGroup()
+            .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGap(0, 0, Short.MAX_VALUE))
         .addGroup(jPanel1Layout.createSequentialGroup()
             .addContainerGap()
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addComponent(jLabel26)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(jLabel25)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGap(0, 0, Short.MAX_VALUE)
                     .addComponent(jButton1)
                     .addGap(18, 18, 18)
                     .addComponent(jButton2))
@@ -923,136 +859,121 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel10)
+                                .addComponent(jLabel12))
+                            .addGap(17, 17, 17)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jComboBox5, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jComboBox7, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jLabel35, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jLabel32, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(26, 26, 26)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel22)
+                                .addComponent(jLabel2)
+                                .addComponent(jLabel11))
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel1)
-                                        .addComponent(jLabel10)
-                                        .addComponent(jLabel12))
+                                    .addGap(10, 10, 10)
+                                    .addComponent(dateChooserCombo2, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(jPanel1Layout.createSequentialGroup()
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(jLabel14)
-                                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                                    .addComponent(jLabel35, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                    .addComponent(jLabel32, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                            .addComponent(dateChooserCombo1, javax.swing.GroupLayout.DEFAULT_SIZE, 143, Short.MAX_VALUE)
-                                            .addGap(36, 36, 36))))
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel5)
-                                        .addComponent(jCheckBox1)
-                                        .addComponent(jCheckBox2)
-                                        .addComponent(jCheckBox3))
-                                    .addGap(6, 6, 6)
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel3)
-                                        .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jFormattedTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jFormattedTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabel9))
+                                        .addComponent(jComboBox6, 0, 115, Short.MAX_VALUE)
+                                        .addComponent(jComboBox3, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel16)
-                                        .addComponent(jLabel4)
-                                        .addComponent(jFormattedTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jFormattedTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jFormattedTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                            .addGap(23, 23, 23)
+                                    .addComponent(jLabel36, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGap(253, 253, 253)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jCheckBox4)
+                                .addComponent(jCheckBox5)
+                                .addComponent(jCheckBox6))
+                            .addGap(22, 22, 22)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(jPanel1Layout.createSequentialGroup()
                                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel2)
-                                        .addComponent(jLabel11))
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(jLabel36, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                            .addGap(18, 18, 18)
-                                            .addComponent(dateChooserCombo2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                                            .addGap(11, 11, 11))))
+                                        .addComponent(jFormattedTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jFormattedTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jFormattedTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel7))
+                                    .addGap(11, 11, 11)
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jFormattedTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jFormattedTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jFormattedTextField12, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel8)))
                                 .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jCheckBox4)
-                                        .addComponent(jCheckBox5)
-                                        .addComponent(jCheckBox6))
-                                    .addGap(22, 22, 22)
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(jFormattedTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(jFormattedTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(jFormattedTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(jLabel7))
-                                            .addGap(11, 11, 11)
-                                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(jFormattedTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(jFormattedTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(jFormattedTextField12, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(jLabel8)))
-                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                            .addComponent(jLabel17)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(jLabel20))))))
+                                    .addComponent(jLabel17)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jLabel20))))
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jButton3)
-                                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGap(51, 51, 51)
+                            .addComponent(dateChooserCombo1, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jLabel13)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel5)
+                                .addComponent(jCheckBox1)
+                                .addComponent(jCheckBox2)
+                                .addComponent(jCheckBox3))
+                            .addGap(6, 6, 6)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel3)
+                                .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jFormattedTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jFormattedTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel9))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel16)
+                                .addComponent(jLabel4)
+                                .addComponent(jFormattedTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jFormattedTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jFormattedTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jLabel14))
                     .addGap(0, 0, Short.MAX_VALUE)))
             .addContainerGap())
-        .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
-        .addGroup(jPanel1Layout.createSequentialGroup()
-            .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addGap(0, 0, Short.MAX_VALUE))
     );
 
     jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jButton3, jButton4});
 
     jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jButton1, jButton2});
 
-    jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jComboBox1, jTextField1});
-
     jPanel1Layout.setVerticalGroup(
         jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
         .addGroup(jPanel1Layout.createSequentialGroup()
+            .addGap(10, 10, 10)
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                .addComponent(jLabel13)
+                .addComponent(jComboBox5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel22)
+                .addComponent(jComboBox6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                .addComponent(jLabel14)
+                .addComponent(jComboBox7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addGap(14, 14, 14)
-                    .addComponent(jLabel1))
-                .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addContainerGap()
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                                .addComponent(jLabel14)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addGap(11, 11, 11)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                                .addComponent(jLabel2)
-                                .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel36, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel21))))
-                    .addGap(17, 17, 17)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel12)
                         .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel35, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel32, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel32, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel2))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                     .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(5, 5, 5)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
@@ -1060,18 +981,13 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                         .addComponent(dateChooserCombo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel11)
                         .addComponent(dateChooserCombo2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addGap(18, 18, 18)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel5)
-                                .addComponent(jLabel4)
-                                .addComponent(jLabel3)))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel20)
-                                .addComponent(jLabel17))))
+                    .addGap(18, 18, 18)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                        .addComponent(jLabel5)
+                        .addComponent(jLabel3)
+                        .addComponent(jLabel4)
+                        .addComponent(jLabel17)
+                        .addComponent(jLabel20))
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel1Layout.createSequentialGroup()
@@ -1116,7 +1032,11 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                         .addComponent(jLabel9)
                         .addComponent(jLabel8)
                         .addComponent(jLabel7)
-                        .addComponent(jLabel16))))
+                        .addComponent(jLabel16)))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel36, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel21)))
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
             .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
@@ -1126,10 +1046,8 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                     .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                .addComponent(jLabel25)
-                .addComponent(jLabel26)
                 .addComponent(jButton1)
                 .addComponent(jButton2))
             .addContainerGap())
@@ -1146,7 +1064,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
         .addGroup(layout.createSequentialGroup()
             .addContainerGap()
             .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addContainerGap(35, Short.MAX_VALUE))
+            .addContainerGap(30, Short.MAX_VALUE))
     );
     layout.setVerticalGroup(
         layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1159,7 +1077,140 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
     pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    
+    public void Cargar(Tarea ta) {
+        if (ta.getAgendas().iterator().hasNext()) {
+            try {
+                jCheckBox1.setSelected(false);
+                jCheckBox2.setSelected(false);
+                jCheckBox3.setSelected(false);
+                jCheckBox4.setSelected(false);
+                jCheckBox5.setSelected(false);
+                jCheckBox6.setSelected(false);
+                Tareaclase tarcla = tar.getTareaclases().iterator().next();
+                jComboBox1.setSelectedItem(tarcla.getAula());
+                jComboBox3.setSelectedItem(tar.getLugar());
+                this.mayor = tar.ObtenerFechaMayor(new Date().getYear());
+                if (mayor != null) {
+                    Calendar mmayor = Calendar.getInstance();
+                    mmayor.setTime(mayor);
+                    dateChooserCombo2.setSelectedDate(mmayor);
+                }
+                this.menor = tar.ObtenerFechaMenor(new Date().getYear());
+                if (menor != null) {
+                    Calendar mmenor = Calendar.getInstance();
+                    mmenor.setTime(menor);
+                    dateChooserCombo1.setSelectedDate(mmenor);
+                }
+                SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
+                diass = new ArrayList();
+                diass = tar.ObtenerListaDias();
+                Iterator itt = diass.iterator();
+                while (itt.hasNext()) {
+                    Dia dd = (Dia) itt.next();
+                    Date aux = new Date();
+                    aux.setDate(dd.getDia());
+                    aux.setMonth(dd.getMes().getMes());
+                    aux.setYear(dd.getMes().getAno().getAno() - 1900);
+                    int ii = aux.getDay();
+                    if (ii == 1) {
+                        jCheckBox1.setSelected(true);
+                        jFormattedTextField1.setValue(formateador.format(dd.getIniciofins().iterator().next().getInicio()));
+                        jFormattedTextField2.setValue(formateador.format(dd.getIniciofins().iterator().next().getFin()));
+                        jFormattedTextField1.setEnabled(false);
+                        jFormattedTextField1.setEditable(false);
+                        jFormattedTextField2.setEnabled(false);
+                        jFormattedTextField2.setEditable(false);
+                    } else if (ii == 2) {
+                        jCheckBox2.setSelected(true);
+                        jFormattedTextField3.setValue(formateador.format(dd.getIniciofins().iterator().next().getInicio()));
+                        jFormattedTextField4.setValue(formateador.format(dd.getIniciofins().iterator().next().getFin()));
+                        jFormattedTextField3.setEnabled(false);
+                        jFormattedTextField3.setEditable(false);
+                        jFormattedTextField4.setEnabled(false);
+                        jFormattedTextField4.setEditable(false);
+                    } else if (ii == 3) {
+                        jCheckBox3.setSelected(true);
+                        jFormattedTextField5.setValue(formateador.format(dd.getIniciofins().iterator().next().getInicio()));
+                        jFormattedTextField6.setValue(formateador.format(dd.getIniciofins().iterator().next().getFin()));
+                        jFormattedTextField5.setEnabled(false);
+                        jFormattedTextField5.setEditable(false);
+                        jFormattedTextField6.setEnabled(false);
+                        jFormattedTextField6.setEditable(false);
+                    } else if (ii == 4) {
+                        jCheckBox4.setSelected(true);
+                        jFormattedTextField8.setValue(formateador.format(dd.getIniciofins().iterator().next().getInicio()));
+                        jFormattedTextField7.setValue(formateador.format(dd.getIniciofins().iterator().next().getFin()));
+                        jFormattedTextField7.setEnabled(false);
+                        jFormattedTextField7.setEditable(false);
+                        jFormattedTextField8.setEnabled(false);
+                        jFormattedTextField8.setEditable(false);
+                    } else if (ii == 5) {
+                        jCheckBox5.setSelected(true);
+                        jFormattedTextField9.setValue(formateador.format(dd.getIniciofins().iterator().next().getInicio()));
+                        jFormattedTextField10.setValue(formateador.format(dd.getIniciofins().iterator().next().getFin()));
+                        jFormattedTextField10.setEnabled(false);
+                        jFormattedTextField10.setEditable(false);
+                        jFormattedTextField9.setEnabled(false);
+                        jFormattedTextField9.setEditable(false);
+                    } else if (ii == 6) {
+                        jCheckBox6.setSelected(true);
+                        jFormattedTextField11.setValue(formateador.format(dd.getIniciofins().iterator().next().getInicio()));
+                        jFormattedTextField12.setValue(formateador.format(dd.getIniciofins().iterator().next().getFin()));
+                        jFormattedTextField11.setEnabled(false);
+                        jFormattedTextField11.setEditable(false);
+                        jFormattedTextField12.setEnabled(false);
+                        jFormattedTextField12.setEditable(false);
+                    }
+                }
+                Drive.LimpiarTabla(jTable2);
+                Drive.LimpiarTabla(jTable1);
+                DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+                Iterator it = Drive.PERSISTENCIA.getIniciofinTar(mayor.getDate(), mayor.getMonth(), mayor.getYear() + 1900, tar.getIdTarea()).iterator();
+//            Iterator it=tar.getAgendas().iterator();
+                List<Agenda> lista = new ArrayList();
+                while (it.hasNext()) {
+                    Iniciofin in = (Iniciofin) it.next();
+                    Agenda age = in.getDia().getMes().getAno().getAgenda();
+                    if (!lista.contains(age)) {
+                        lista.add(age);
+                    }
+                }
+                Iterator ii = lista.iterator();
+                while (ii.hasNext()) {
+                    Agenda agg = (Agenda) ii.next();
+                    Personal pp = agg.getPersonal();
+                    Revista rev = agg.getRevista();
+                    Object[] fila = new Object[4];
+                    fila[0] = pp;
+                    fila[1] = rev;
+                    model.addRow(fila);
+                }
+                jTable1.setModel(model);
+                
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Error al cargar el formulario", "Registrar Clase", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            Calendar cal = Calendar.getInstance();
+            dateChooserCombo1.setSelectedDate(cal);
+            dateChooserCombo2.setSelectedDate(cal);
+            jCheckBox1.setSelected(false);
+            jCheckBox2.setSelected(false);
+            jCheckBox3.setSelected(false);
+            jCheckBox4.setSelected(false);
+            jCheckBox5.setSelected(false);
+            jCheckBox6.setSelected(false);
+            Drive.LimpiarTabla(jTable1);
+        }
+        DefaultTableModel modelo = (DefaultTableModel)jTable1.getModel();
+        if(modelo.getRowCount()>0){
+            jComboBox1.setEnabled(false);
+            jComboBox3.setEnabled(false);
+        }else{
+            jComboBox1.setEnabled(true);
+            jComboBox3.setEnabled(true);
+        }
+    }
     private static class HeaderRenderer implements TableCellRenderer {
         DefaultTableCellRenderer renderer;
         public HeaderRenderer(JTable table) {
@@ -1177,21 +1228,8 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
     }
     
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        if (tar.getIdTarea() == null) {
-            if (!jTextField1.getText().isEmpty()) {
-                int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea cancelar la registración de la clase?", "Registrar clase", JOptionPane.YES_NO_OPTION);
-                if (JOptionPane.OK_OPTION == confirmado) {
-                    Frame vp = new JFramePrincipal(Drive, adm);
-                    this.dispose();
-                    vp.show();
-                }
-            } else {
-                Frame vp = new JFramePrincipal(Drive, adm);
-                this.dispose();
-                vp.show();
-            }
-        } else {
-            if (!cambio == true) {
+        if (ba == false) {
+            if (cambio == true) {
                 int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea cancelar la actualización de la clase?", "Actualizar clase", JOptionPane.YES_NO_OPTION);
                 if (JOptionPane.OK_OPTION == confirmado) {
                     Frame vp = new JFrameConsultaActividades(Drive, adm);
@@ -1203,6 +1241,20 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                 this.dispose();
                 vp.show();
             }
+        } else {
+            if (cambio == true) {
+                int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea cancelar la actualización de la clase?", "Actualizar clase", JOptionPane.YES_NO_OPTION);
+                if (JOptionPane.OK_OPTION == confirmado) {
+                    Frame vp = new JFramePrincipal(Drive, adm);
+                    this.dispose();
+                    vp.show();
+                }
+            } else {
+                Frame vp = new JFramePrincipal(Drive, adm);
+                this.dispose();
+                vp.show();
+            }
+            
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -1218,12 +1270,12 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
         try {
             if (jTable1.getRowCount() != 0) {
                     Lugar lu=(Lugar)jComboBox3.getSelectedItem();
-                if (!jTextField1.getText().isEmpty()) {
+//                if (!jTextField1.getText().isEmpty()) {
                     jButton1.setEnabled(false);
                     jButton2.setEnabled(false);
                     jButton3.setEnabled(false);
                     jButton4.setEnabled(false);                   
-                    if (tar.getIdTarea() == null) {
+                    if (!tar.getAgendas().iterator().hasNext()) {
                         // <editor-fold defaultstate="collapsed" desc="Guardar tarea nueva"> 
                         boolean band=true;
                         DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
@@ -1245,44 +1297,40 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                             c++;
                         }
                         if(band==true){
-                            Tarea tarr=new Tarea();
-                            tarr.setEstablecimiento(Drive.getPrimerEstablecimiento());
-                            tarr.setNombre(jTextField1.getText().toUpperCase());
-                            tarr.setLugar(lu);
-                            tarr.setComentario("CLASE");
-                            tarr.setEstado(true);
-                            tarr.setDiaInicio(inicio);
-                            tarr.setDiaFin(fin);
-                            int idtar=tarr.guardarTarea(tarr);                            
+                            tar.setLugar(lu);
+                            tar.setComentario("CLASE");
+                            tar.setEstado(true);
+                            tar.setDiaInicio(inicio);
+                            tar.setDiaFin(fin);
+                            tar.ActualizarTarea(tar);                          
                             TareaclaseId id = new TareaclaseId();
-                            id.setIdTarea(idtar);
+                            id.setIdTarea(tar.getIdTarea());
                             Tareaclase tarcl=null;
                             Object o=jComboBox1.getSelectedItem();
                             if(o!=null){
                                 Aula au=(Aula) o;
-                                tarcl=new Tareaclase(id,au,tarr);
+                                tarcl=new Tareaclase(id,au,tar);
                             }else{
-                                tarcl=new Tareaclase(id,tarr);
+                                tarcl=new Tareaclase(id,tar);
                             }
                             tarcl.guardarTareaclase(tarcl);
                             // <editor-fold defaultstate="collapsed" desc="Auditoria"> 
                             Auditoria audi= new Auditoria();
                             audi.setPersonalByIdAuditor(adm);
-                            audi.setOperacion("Insertar");
+                            audi.setOperacion("Actualizar");
                             audi.setFecha(new Date());
-                            audi.setTarea(tarr);
+                            audi.setTarea(tar);
                             audi.guardarAuditoria(audi);
                             // </editor-fold>
                             c = 0;
                             while (jTable1.getRowCount() != c) {
                                 Personal person = (Personal) modelo.getValueAt(c, 0);
-                                AgendaId idage = new AgendaId(person.getIdPersonal(), tarr.getIdTarea());
+                                AgendaId idage = new AgendaId(person.getIdPersonal(), tar.getIdTarea());
                                 Revista rev = (Revista) modelo.getValueAt(c, 1);
                                 Agenda age = new Agenda();
                                 age.setId(idage);
                                 age.setRevista(rev);
                                 age.setComentario(null);
-                                age.setAnolectivo(Drive.getAnoLectivo());
                                 age.guardarAgenda(age);
 
                                 Ano anio = new Ano();
@@ -1549,40 +1597,43 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                 }
                                 c++;
                             }
-                            jTextField1.setText("");
-                            jFormattedTextField1.setText("");
-                            jFormattedTextField2.setText("");
-                            jFormattedTextField3.setText("");
-                            jFormattedTextField4.setText("");
-                            jFormattedTextField5.setText("");
-                            jFormattedTextField6.setText("");
-                            jFormattedTextField7.setText("");
-                            jFormattedTextField8.setText("");
-                            jFormattedTextField9.setText("");
-                            jFormattedTextField10.setText("");
-                            jFormattedTextField11.setText("");
-                            jFormattedTextField12.setText("");
-                            Drive.LimpiarTabla(jTable1);
-                            lista.removeAll(lista);
-                            String buscar=(String) jComboBox4.getSelectedItem();
-                            Drive.CargarpersonalSimple(jTable2,buscar, buffer.toString().toUpperCase(),lista);
+//                            jFormattedTextField1.setText("");
+//                            jFormattedTextField2.setText("");
+//                            jFormattedTextField3.setText("");
+//                            jFormattedTextField4.setText("");
+//                            jFormattedTextField5.setText("");
+//                            jFormattedTextField6.setText("");
+//                            jFormattedTextField7.setText("");
+//                            jFormattedTextField8.setText("");
+//                            jFormattedTextField9.setText("");
+//                            jFormattedTextField10.setText("");
+//                            jFormattedTextField11.setText("");
+//                            jFormattedTextField12.setText("");
+//                            Drive.LimpiarTabla(jTable1);
+//                            lista.removeAll(lista);
+//                            String buscar=(String) jComboBox4.getSelectedItem();
+//                            Drive.CargarpersonalSimple(jTable2,buscar, buffer.toString().toUpperCase(),lista);
                             Drive=new Controlador();
-                            jCheckBox1.setSelected(false);
-                            jCheckBox2.setSelected(false);
-                            jCheckBox3.setSelected(false);
-                            jCheckBox4.setSelected(false);
-                            jCheckBox5.setSelected(false);
-                            jCheckBox6.setSelected(false);
+//                            jCheckBox1.setSelected(false);
+//                            jCheckBox2.setSelected(false);
+//                            jCheckBox3.setSelected(false);
+//                            jCheckBox4.setSelected(false);
+//                            jCheckBox5.setSelected(false);
+//                            jCheckBox6.setSelected(false);
+                            Object u=jComboBox6.getSelectedItem();
+                            if(u!=null){
+                                Division div=(Division) u;
+                                Drive.LimpiarCombo(jComboBox7);
+                                Drive.CargarComboMaterias(jComboBox7, div);
+                            }
                         }
-                        // </editor-fold>
+//                        // </editor-fold>
                     }else{
-                        jButton1.setEnabled(false);
-                        jButton2.setEnabled(false);
-                        jButton3.setEnabled(false);
-                        jButton4.setEnabled(false);   
                         boolean mensaje=false;
                         // <editor-fold defaultstate="collapsed" desc="Actualizar tarea"> 
-                        if (tar.getLugar().getIdLugar()!=lu.getIdLugar()) {
+                        int y=tar.getLugar().getIdLugar();
+                        int yy=lu.getIdLugar();
+                        if (y!=yy) {
                             // <editor-fold defaultstate="collapsed" desc="Auditoria"> 
                             Auditoria audi=new Auditoria();
                             audi.setPersonalByIdAuditor(adm);
@@ -1601,7 +1652,9 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                         }
                         Tareaclase clase = tar.getTareaclases().iterator().next();
                         Aula au=(Aula)jComboBox1.getSelectedItem();
-                        if(au.getIdAula()!= clase.getAula().getIdAula()){
+                        int x=au.getIdAula();
+                        int xx=clase.getAula().getIdAula();
+                        if(x!= xx){
                             // <editor-fold defaultstate="collapsed" desc="Auditoria"> 
                             Auditoria audi=new Auditoria();
                             audi.setPersonalByIdAuditor(adm);
@@ -1736,7 +1789,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                 Date inicio = dateChooserCombo1.getSelectedDate().getTime();
                                 Date fin = dateChooserCombo2.getSelectedDate().getTime();
                                 Date aux1=tar.getDiaInicio();
-                                Date aux2=tar.getDiaInicio();
+                                Date aux2=tar.getDiaFin();
                                 if(aux1.getDate()!=inicio.getDate()||aux1.getMonth()!=inicio.getMonth()||aux1.getYear()!=inicio.getYear()){
                                     // <editor-fold defaultstate="collapsed" desc="Auditoria"> 
                                     Auditoria audi=new Auditoria();
@@ -1780,13 +1833,20 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                     Revista rev = (Revista) modelo.getValueAt(c, 1);
                                     Agenda age=tar.ObtenerAgenda(person.getIdPersonal(),rev.getIdRevista());
                                     if(age.getId()==null){
-                                        AgendaId idage = new AgendaId(person.getIdPersonal(), tar.getIdTarea());
-                                        age = new Agenda();
+//                                        Drive= new Controlador();
+                                        AgendaId idage = new AgendaId();
+//                                        age = new Agenda();
+                                        idage.setIdPersonal(person.getIdPersonal());
+                                        idage.setIdTarea(tar.getIdTarea());
                                         age.setId(idage);
+                                        age.setPersonal(person);
+                                        age.setTarea(tar);
                                         age.setRevista(rev);
                                         age.setComentario(null);
-                                        age.setAnolectivo(Drive.getAnoLectivo());
                                         age.guardarAgenda(age);
+                                    }else{
+                                        age.setRevista(rev);
+                                        age.actualizarAgenda(age);
                                     }
                                     Ano anio = new Ano();
                                     anio.setAgenda(age);
@@ -2062,6 +2122,13 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                     c++;
                                 }
                             }
+                            Drive=new Controlador();
+                            Object u=jComboBox6.getSelectedItem();
+                            if(u!=null){
+                                Division div=(Division) u;
+                                Drive.LimpiarCombo(jComboBox7);
+                                Drive.CargarComboMaterias(jComboBox7, div);
+                            }
 //                            }else{
 //                                Frame vp = new JFrameConsultaActividades(Drive, adm);
 //                                this.dispose();
@@ -2071,23 +2138,24 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                         if(mensaje==true){
                             JOptionPane.showMessageDialog(null,"La tarea se actualizó correctamente","Actualizar tarea",JOptionPane.INFORMATION_MESSAGE);
                         }
-                        Frame vp = new JFrameConsultaActividades(Drive, adm);
-                        this.dispose();
-                        vp.show();
+//                        Frame vp = new JFrameConsultaActividades(Drive, adm);
+//                        this.dispose();
+//                        vp.show();
                         // </editor-fold>
                     }
                     jButton1.setEnabled(true);
                     jButton2.setEnabled(true);
                     jButton3.setEnabled(true);
                     jButton4.setEnabled(true);
-                } else {
-                    JOptionPane.showMessageDialog(null, "Los campos con '*' son obligatorios", "Registrar Clase", JOptionPane.ERROR_MESSAGE);
-                }
+//                } else {
+//                    JOptionPane.showMessageDialog(null, "Los campos con '*' son obligatorios", "Registrar Clase", JOptionPane.ERROR_MESSAGE);
+//                }
 
             } else {
                 JOptionPane.showMessageDialog(null, "Debe ingresar un personal", "Registrar Clase", JOptionPane.ERROR_MESSAGE);
             }
         } catch (Exception ex) {
+            //"No se pudo actualizar correctamente la Clase"
             JOptionPane.showMessageDialog(null, ex.toString(), "Registrar Clase", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -2169,11 +2237,13 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
 //                            Date finn = dateChooserCombo2.getSelectedDate().getTime();
                 // </editor-fold>
                 Aula au=(Aula) o;
-                if(tar.getIdTarea()!=null){
+                if (tar.getAgendas().iterator().hasNext()) {
                     ba=Drive.DisponibilidadAula(inicio, fin, listini, items,tar.getIdTarea(), au);
                 }else{
                     ba=Drive.DisponibilidadAula(inicio, fin, listini, items,0, au);
                 }
+                listini= new HashMap();
+                items= new HashMap();
             }else{
                 JOptionPane.showMessageDialog(null, "Debe seleccionar un aula", "Verificar Aula", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -2190,7 +2260,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                 }
             }
                 if (ba == true) {
-                    if (!jTextField1.getText().isEmpty()) {
+//                    if (!jTextField1.getText().isEmpty()) {
                         if (per.getIdPersonal() != null) {
                             DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
                             Revista rev = (Revista) jComboBox2.getSelectedItem();
@@ -2225,9 +2295,9 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                         } else {
                             JOptionPane.showMessageDialog(null, "Debe seleccionar un personal", "Registrar Clase", JOptionPane.ERROR_MESSAGE);
                         }
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Los campos con '*' son obligatorios y no puede contener espacios en blanco en los horarios", "Registrar Clase", JOptionPane.ERROR_MESSAGE);
-                    }
+//                    } else {
+//                        JOptionPane.showMessageDialog(null, "Los campos con '*' son obligatorios y no puede contener espacios en blanco en los horarios", "Registrar Clase", JOptionPane.ERROR_MESSAGE);
+//                    }
                 } else {
                     JOptionPane.showMessageDialog(null, "El aula esta ocupada en ese horario", "Registrar Clase", JOptionPane.ERROR_MESSAGE);
                 }
@@ -2249,7 +2319,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
             int c=0;
             modelo.removeRow(jTable1.getSelectedRow());
             while(jTable1.getRowCount()!=c){
-                Personal per=(Personal) modelo.getValueAt(c, 0);
+               Personal per=(Personal) modelo.getValueAt(c, 0);
                lista.add(per); 
                c++;
             }
@@ -2312,21 +2382,8 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
     }//GEN-LAST:event_jLabel19MouseClicked
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        if (tar.getIdTarea() == null) {
-            if (!jTextField1.getText().isEmpty()) {
-                int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea cancelar la registración de la clase?", "Registrar clase", JOptionPane.YES_NO_OPTION);
-                if (JOptionPane.OK_OPTION == confirmado) {
-                    Frame vp = new JFramePrincipal(Drive, adm);
-                    this.dispose();
-                    vp.show();
-                }
-            } else {
-                Frame vp = new JFramePrincipal(Drive, adm);
-                this.dispose();
-                vp.show();
-            }
-        } else {
-            if (!cambio == true) {
+        if (ba == false) {
+            if (cambio == true) {
                 int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea cancelar la actualización de la clase?", "Actualizar clase", JOptionPane.YES_NO_OPTION);
                 if (JOptionPane.OK_OPTION == confirmado) {
                     Frame vp = new JFrameConsultaActividades(Drive, adm);
@@ -2338,6 +2395,20 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                 this.dispose();
                 vp.show();
             }
+        } else {
+            if (cambio == true) {
+                int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea cancelar la actualización de la clase?", "Actualizar clase", JOptionPane.YES_NO_OPTION);
+                if (JOptionPane.OK_OPTION == confirmado) {
+                    Frame vp = new JFramePrincipal(Drive, adm);
+                    this.dispose();
+                    vp.show();
+                }
+            } else {
+                Frame vp = new JFramePrincipal(Drive, adm);
+                this.dispose();
+                vp.show();
+            }
+            
         }
     }//GEN-LAST:event_formWindowClosing
 
@@ -2353,7 +2424,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                 dateChooserCombo2.setSelectedDate(cal);
                 dateChooserCombo1.setSelectedDate(cal);
             }
-            if (tar.getIdTarea() != null) {
+            if (tar.getAgendas().iterator().hasNext()) {
                 SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
                 Date aux1=formateador.parse(formateador.format(inicio));
                 Date aux2=formateador.parse(formateador.format(menor));
@@ -2389,7 +2460,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
             Calendar cal = Calendar.getInstance();
             dateChooserCombo2.setSelectedDate(cal);
         }
-        if(tar.getIdTarea()!=null){
+        if (tar.getAgendas().iterator().hasNext()) {
             SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
             formateador.setLenient(false);
             String i=formateador.format(mayor);
@@ -2468,6 +2539,8 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
         String buscar=(String) jComboBox4.getSelectedItem();
         Drive.CargarpersonalSimple(jTable2,buscar, es.toUpperCase(),lista);
         if(modelo.getRowCount()>0){
+//            jComboBox1.setEnabled(false);
+//            jComboBox3.setEnabled(false);
             jCheckBox1.setEnabled(false);
             jCheckBox2.setEnabled(false);
             jCheckBox3.setEnabled(false);
@@ -2487,6 +2560,8 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
             jFormattedTextField11.setEnabled(false);
             jFormattedTextField12.setEnabled(false);
         }else{
+            jComboBox1.setEnabled(true);
+            jComboBox3.setEnabled(true);
             jCheckBox1.setEnabled(true);
             jCheckBox2.setEnabled(true);
             jCheckBox3.setEnabled(true);
@@ -2533,7 +2608,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                 jFormattedTextField1.setText("00:00");
                 jFormattedTextField2.setText("00:00"); 
             }
-            if(tar.getIdTarea()!=null){
+            if (tar.getAgendas().iterator().hasNext()) {
                 Agenda age=tar.getAgendas().iterator().next();
                 Dia d=age.getDia2(mayor);
                 Iniciofin ini = d.getIniciofins().iterator().next();
@@ -2594,7 +2669,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                     }
                 }
             }
-            if (tar.getIdTarea() != null) {
+            if (tar.getAgendas().iterator().hasNext()) {
                 Agenda age = tar.getAgendas().iterator().next();
                 Dia d = age.getDia2(mayor);
                 Iniciofin ini = d.getIniciofins().iterator().next();
@@ -2610,10 +2685,6 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
             jFormattedTextField1.setText("00:00");
         }
     }//GEN-LAST:event_jFormattedTextField1FocusLost
-
-    private void jTextField1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyTyped
-        if(jTextField1.getText().length()==20) evt.consume();
-    }//GEN-LAST:event_jTextField1KeyTyped
 
     private void jFormattedTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFormattedTextField3ActionPerformed
         // TODO add your handling code here:
@@ -2663,7 +2734,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                     }
                 }
             }
-            if (tar.getIdTarea() != null) {
+            if (tar.getAgendas().iterator().hasNext()) {
                 Agenda age = tar.getAgendas().iterator().next();
                 Dia d = age.getDia2(mayor);
                 Iniciofin ini = d.getIniciofins().iterator().next();
@@ -2706,7 +2777,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                 jFormattedTextField3.setText("00:00");
                 jFormattedTextField4.setText("00:00"); 
             }
-            if(tar.getIdTarea()!=null){
+            if (tar.getAgendas().iterator().hasNext()) {
                 Agenda age=tar.getAgendas().iterator().next();
                 Dia d=age.getDia2(mayor);
                 Iniciofin ini = d.getIniciofins().iterator().next();
@@ -2770,7 +2841,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                     }
                 }
             }
-            if (tar.getIdTarea() != null) {
+            if (tar.getAgendas().iterator().hasNext()) {
                 Agenda age = tar.getAgendas().iterator().next();
                 Dia d = age.getDia2(mayor);
                 Iniciofin ini = d.getIniciofins().iterator().next();
@@ -2813,7 +2884,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                 jFormattedTextField5.setText("00:00");
                 jFormattedTextField6.setText("00:00"); 
             }
-            if(tar.getIdTarea()!=null){
+            if (tar.getAgendas().iterator().hasNext()) {
                 Agenda age=tar.getAgendas().iterator().next();
                 Dia d=age.getDia2(mayor);
                 Iniciofin ini = d.getIniciofins().iterator().next();
@@ -2855,7 +2926,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                 jFormattedTextField8.setText("00:00");
                 jFormattedTextField7.setText("00:00"); 
             }
-            if(tar.getIdTarea()!=null){
+            if (tar.getAgendas().iterator().hasNext()) {
                 Agenda age=tar.getAgendas().iterator().next();
                 Dia d=age.getDia2(mayor);
                 Iniciofin ini = d.getIniciofins().iterator().next();
@@ -2919,7 +2990,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                     }
                 }
             }
-            if (tar.getIdTarea() != null) {
+            if (tar.getAgendas().iterator().hasNext()) {
                 Agenda age = tar.getAgendas().iterator().next();
                 Dia d = age.getDia2(mayor);
                 Iniciofin ini = d.getIniciofins().iterator().next();
@@ -2984,7 +3055,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                     }
                 }
             }
-            if (tar.getIdTarea() != null) {
+            if (tar.getAgendas().iterator().hasNext()) {
                 Agenda age = tar.getAgendas().iterator().next();
                 Dia d = age.getDia2(mayor);
                 Iniciofin ini = d.getIniciofins().iterator().next();
@@ -3027,7 +3098,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                 jFormattedTextField9.setText("00:00");
                 jFormattedTextField10.setText("00:00"); 
             }
-            if(tar.getIdTarea()!=null){
+            if (tar.getAgendas().iterator().hasNext()) {
                 Agenda age=tar.getAgendas().iterator().next();
                 Dia d=age.getDia2(mayor);
                 Iniciofin ini = d.getIniciofins().iterator().next();
@@ -3091,7 +3162,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                     }
                 }
             }
-            if (tar.getIdTarea() != null) {
+            if (tar.getAgendas().iterator().hasNext()) {
                 Agenda age = tar.getAgendas().iterator().next();
                 Dia d = age.getDia2(mayor);
                 Iniciofin ini = d.getIniciofins().iterator().next();
@@ -3134,7 +3205,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                 jFormattedTextField11.setText("00:00");
                 jFormattedTextField12.setText("00:00"); 
             }
-            if(tar.getIdTarea()!=null){
+            if (tar.getAgendas().iterator().hasNext()) {
                 Agenda age=tar.getAgendas().iterator().next();
                 Dia d=age.getDia2(mayor);
                 Iniciofin ini = d.getIniciofins().iterator().next();
@@ -3465,91 +3536,130 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                 JOptionPane.showMessageDialog(null, "El la fecha de inicio y fin debe estar contemplado dentro del año lectivo", "Verificar Año lectivo", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            if(o!=null){
-                SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
-                Date inicio = dateChooserCombo1.getSelectedDate().getTime();
-                Date fin = dateChooserCombo2.getSelectedDate().getTime();
-                // <editor-fold defaultstate="collapsed" desc="verificar">
-                            Date inn = new Date();
-                            Date fii = new Date();
-                            if (jCheckBox1.isSelected()) {
-                                items.put(1,"LUNES");
-                                inn = formateador.parse(jFormattedTextField1.getText());
-                                fii = formateador.parse(jFormattedTextField2.getText());
-                                Iniciofin aux = new Iniciofin();
-                                aux.setInicio(inn);
-                                aux.setFin(fii);
-                                listini.put(1,aux);
-                            }
-                            if (jCheckBox2.isSelected()) {
-                                items.put(2,"MARTES");
-                                inn = formateador.parse(jFormattedTextField3.getText());
-                                fii = formateador.parse(jFormattedTextField4.getText());
-                                Iniciofin aux = new Iniciofin();
-                                aux.setInicio(inn);
-                                aux.setFin(fii);
-                                listini.put(2,aux);
-                            }
-                            if (jCheckBox3.isSelected()) {
-                                items.put(3,"MIERCOLES");
-                                inn = formateador.parse(jFormattedTextField5.getText());
-                                fii = formateador.parse(jFormattedTextField6.getText());
-                                Iniciofin aux = new Iniciofin();
-                                aux.setInicio(inn);
-                                aux.setFin(fii);
-                                listini.put(3,aux);
-                            }
-                            if (jCheckBox4.isSelected()) {
-                                items.put(4,"JUEVES");
-                                inn = formateador.parse(jFormattedTextField8.getText());
-                                fii = formateador.parse(jFormattedTextField7.getText());
-                                Iniciofin aux = new Iniciofin();
-                                aux.setInicio(inn);
-                                aux.setFin(fii);
-                                listini.put(4,aux);
-                            }
-                            if (jCheckBox5.isSelected()) {
-                                items.put(5,"VIERNES");
-                                inn = formateador.parse(jFormattedTextField9.getText());
-                                fii = formateador.parse(jFormattedTextField10.getText());
-                                Iniciofin aux = new Iniciofin();
-                                aux.setInicio(inn);
-                                aux.setFin(fii);
-                                listini.put(5,aux);
-                            }
-                            if (jCheckBox6.isSelected()) {
-                                items.put(6,"SABADO");
-                                inn = formateador.parse(jFormattedTextField11.getText());
-                                fii = formateador.parse(jFormattedTextField12.getText());
-                                Iniciofin aux = new Iniciofin();
-                                aux.setInicio(inn);
-                                aux.setFin(fii);
-                                listini.put(6,aux);
-                            }
-//                            Date inicioo = dateChooserCombo1.getSelectedDate().getTime();
-//                            Date finn = dateChooserCombo2.getSelectedDate().getTime();
-                            // </editor-fold>
-                Aula au=(Aula) o;
-                if(tar.getIdTarea()!=null){
-                    ba=Drive.DisponibilidadAula(inicio, fin, listini, items,tar.getIdTarea(), au);
-                }else{
-                    ba=Drive.DisponibilidadAula(inicio, fin, listini, items,0, au);
-                }
-                
-            }else{
-                JOptionPane.showMessageDialog(null, "Debe seleccionar un aula", "Verificar Aula", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            if (ba==false) {
-                JOptionPane.showMessageDialog(null, "El aula esta ocupada en ese horario", "Registrar Clase", JOptionPane.ERROR_MESSAGE);
-                Tareaclase tarcla=tar.getTareaclases().iterator().next();
-                jComboBox1.setSelectedItem(tarcla.getAula());
-            }
+//            if(o!=null){
+//                SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
+//                Date inicio = dateChooserCombo1.getSelectedDate().getTime();
+//                Date fin = dateChooserCombo2.getSelectedDate().getTime();
+//                // <editor-fold defaultstate="collapsed" desc="verificar">
+//                            Date inn = new Date();
+//                            Date fii = new Date();
+//                            if (jCheckBox1.isSelected()) {
+//                                items.put(1,"LUNES");
+//                                inn = formateador.parse(jFormattedTextField1.getText());
+//                                fii = formateador.parse(jFormattedTextField2.getText());
+//                                Iniciofin aux = new Iniciofin();
+//                                aux.setInicio(inn);
+//                                aux.setFin(fii);
+//                                listini.put(1,aux);
+//                            }
+//                            if (jCheckBox2.isSelected()) {
+//                                items.put(2,"MARTES");
+//                                inn = formateador.parse(jFormattedTextField3.getText());
+//                                fii = formateador.parse(jFormattedTextField4.getText());
+//                                Iniciofin aux = new Iniciofin();
+//                                aux.setInicio(inn);
+//                                aux.setFin(fii);
+//                                listini.put(2,aux);
+//                            }
+//                            if (jCheckBox3.isSelected()) {
+//                                items.put(3,"MIERCOLES");
+//                                inn = formateador.parse(jFormattedTextField5.getText());
+//                                fii = formateador.parse(jFormattedTextField6.getText());
+//                                Iniciofin aux = new Iniciofin();
+//                                aux.setInicio(inn);
+//                                aux.setFin(fii);
+//                                listini.put(3,aux);
+//                            }
+//                            if (jCheckBox4.isSelected()) {
+//                                items.put(4,"JUEVES");
+//                                inn = formateador.parse(jFormattedTextField8.getText());
+//                                fii = formateador.parse(jFormattedTextField7.getText());
+//                                Iniciofin aux = new Iniciofin();
+//                                aux.setInicio(inn);
+//                                aux.setFin(fii);
+//                                listini.put(4,aux);
+//                            }
+//                            if (jCheckBox5.isSelected()) {
+//                                items.put(5,"VIERNES");
+//                                inn = formateador.parse(jFormattedTextField9.getText());
+//                                fii = formateador.parse(jFormattedTextField10.getText());
+//                                Iniciofin aux = new Iniciofin();
+//                                aux.setInicio(inn);
+//                                aux.setFin(fii);
+//                                listini.put(5,aux);
+//                            }
+//                            if (jCheckBox6.isSelected()) {
+//                                items.put(6,"SABADO");
+//                                inn = formateador.parse(jFormattedTextField11.getText());
+//                                fii = formateador.parse(jFormattedTextField12.getText());
+//                                Iniciofin aux = new Iniciofin();
+//                                aux.setInicio(inn);
+//                                aux.setFin(fii);
+//                                listini.put(6,aux);
+//                            }
+////                            Date inicioo = dateChooserCombo1.getSelectedDate().getTime();
+////                            Date finn = dateChooserCombo2.getSelectedDate().getTime();
+//                            // </editor-fold>
+//                Aula au=(Aula) o;
+//                if(tar.getIdTarea()!=null){
+//                    ba=Drive.DisponibilidadAula(inicio, fin, listini, items,tar.getIdTarea(), au);
+//                }else{
+//                    ba=Drive.DisponibilidadAula(inicio, fin, listini, items,0, au);
+//                }
+//                
+//            }else{
+////                JOptionPane.showMessageDialog(null, "Debe seleccionar un aula", "Verificar Aula", JOptionPane.ERROR_MESSAGE);
+//                return;
+//            }
+//            if (ba==false) {
+//                JOptionPane.showMessageDialog(null, "El aula esta ocupada en ese horario", "Registrar Clase", JOptionPane.ERROR_MESSAGE);
+//                Tareaclase tarcla=tar.getTareaclases().iterator().next();
+//                jComboBox1.setSelectedItem(tarcla.getAula());
+//            }
         }
         }catch(Exception e){
             JOptionPane.showMessageDialog(null, e.toString(), "Registrar Clase", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jComboBox1ItemStateChanged
+
+    private void jComboBox5ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox5ItemStateChanged
+        Object o = jComboBox5.getSelectedItem();
+        if(o!=null){
+            Curso cu=(Curso) o;
+            Drive.LimpiarCombo(jComboBox6);
+            Drive.CargarComboDivision(jComboBox6, cu);
+        }
+    }//GEN-LAST:event_jComboBox5ItemStateChanged
+
+    private void jComboBox6ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox6ItemStateChanged
+        Object o=jComboBox6.getSelectedItem();
+        if(o!=null){
+            Division div=(Division) o;
+            Drive.LimpiarCombo(jComboBox7);
+            Drive.CargarComboMaterias(jComboBox7, div);
+        }
+    }//GEN-LAST:event_jComboBox6ItemStateChanged
+
+    private void jComboBox7ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox7ItemStateChanged
+        Object o=jComboBox7.getSelectedItem();
+        if(o!=null){
+            tar=(Tarea) o;
+//            Tarea ta=Drive.get
+            Cargar(tar);
+            lista.removeAll(lista);
+            DefaultTableModel modelo = (DefaultTableModel)jTable1.getModel();
+            int c=0;
+            while(jTable1.getRowCount()!=c){
+                Personal per=(Personal) modelo.getValueAt(c, 0);
+                lista.add(per);
+                c++;
+            }
+            Drive.LimpiarTabla(jTable2);
+            String es=buffer.toString();
+            String buscar=(String) jComboBox4.getSelectedItem();
+            Drive.CargarpersonalSimple(jTable2,buscar, es.toUpperCase(),lista);
+        }
+    }//GEN-LAST:event_jComboBox7ItemStateChanged
 
     /**
     * @param args the command line arguments
@@ -3573,6 +3683,9 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
     private javax.swing.JComboBox jComboBox2;
     private javax.swing.JComboBox jComboBox3;
     private javax.swing.JComboBox jComboBox4;
+    private javax.swing.JComboBox jComboBox5;
+    private javax.swing.JComboBox jComboBox6;
+    private javax.swing.JComboBox jComboBox7;
     private javax.swing.JFormattedTextField jFormattedTextField1;
     private javax.swing.JFormattedTextField jFormattedTextField10;
     private javax.swing.JFormattedTextField jFormattedTextField11;
@@ -3585,10 +3698,10 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
     private javax.swing.JFormattedTextField jFormattedTextField7;
     private javax.swing.JFormattedTextField jFormattedTextField8;
     private javax.swing.JFormattedTextField jFormattedTextField9;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
@@ -3598,8 +3711,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
-    private javax.swing.JLabel jLabel25;
-    private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel35;
@@ -3617,7 +3729,6 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField5;
     // End of variables declaration//GEN-END:variables
 

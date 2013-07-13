@@ -6,6 +6,7 @@ package Presentacion;
 
 import Clases.Activo;
 import Clases.ActivoIniciofin;
+import Clases.Anolectivo;
 import Clases.Articulo;
 import Clases.Asistencia;
 import Clases.Controlador;
@@ -74,6 +75,7 @@ public class JFrameInasistencia extends javax.swing.JFrame {
     JComboBox comboBoxart = new JComboBox();
     JasperReport reporte;
     StringBuffer buffer = new StringBuffer();
+    Date fecha=new Date();
     
     public JFrameInasistencia(Controlador unDrive, Personal admin, Personal persona) {
         this.Drive = unDrive;
@@ -82,23 +84,25 @@ public class JFrameInasistencia extends javax.swing.JFrame {
 //        this.idsesion = id;
         initComponents();
 
-        jTextField1.setText(String.valueOf(Calendar.getInstance().getTime().getYear() + 1900));
         Date hoy=new Date();
         String m=Drive.ObtenerMes(hoy.getMonth());
         jComboBox1.setSelectedItem(m);
+        fecha=dateChooserCombo1.getSelectedDate().getTime();
         if (person.getIdPersonal() == null) {
-            String mes = String.valueOf(jComboBox1.getSelectedItem());
-            Drive.CargarTablaInasistencias(jTable1, mes, Integer.parseInt(jTextField1.getText()));
+            String filtro = String.valueOf(jComboBox1.getSelectedItem());
+            String ver = String.valueOf(jComboBox2.getSelectedItem());
+            Drive.CargarTablaInasistencias(jTable1,fecha.getDate(), fecha.getMonth(), fecha.getYear(),filtro,ver);
         } else {
-            String mes = String.valueOf(jComboBox1.getSelectedItem());
-            Drive.CargarTablaInasistencias(jTable1, mes, Integer.parseInt(jTextField1.getText()), person);
+            String filtro = String.valueOf(jComboBox1.getSelectedItem());
+            String ver = String.valueOf(jComboBox2.getSelectedItem());
+            Drive.CargarTablaInasistencias(jTable1, fecha.getDate(), fecha.getMonth(), fecha.getYear(), person,filtro,ver);
         }
 
-        TableColumn Column8 = jTable1.getColumnModel().getColumn(8);
+        TableColumn Column8 = jTable1.getColumnModel().getColumn(7);
         Drive.CargarComboArticulo(comboBoxart);
         Column8.setCellEditor(new DefaultCellEditor(comboBoxart));
 
-        int[] anchos = {30, 130, 150, 75, 60, 60, 40, 40, 120, 300};
+        int[] anchos = {130, 150, 75, 60, 60, 40, 40, 120, 300};
         for (int i = 0; i < jTable1.getColumnCount(); i++) {
             jTable1.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
         }
@@ -139,13 +143,15 @@ public class JFrameInasistencia extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
+        dateChooserCombo1 = new datechooser.beans.DateChooserCombo();
+        jLabel4 = new javax.swing.JLabel();
+        jComboBox2 = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("SISTEMA DE ASISTENCIA DE PERSONAL EDUCATIVO");
@@ -163,14 +169,14 @@ public class JFrameInasistencia extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Nº", "Actividad", "Personal", "Fecha", "Inicio", "Fin", "Asist.", "Tard.", "Articulo", "Motivo"
+                "Actividad", "Personal", "Fecha", "Inicio", "Fin", "Asist.", "Tard.", "Articulo", "Motivo"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, true, true, true, true
+                false, false, false, false, false, true, true, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -189,9 +195,10 @@ public class JFrameInasistencia extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(jTable1);
 
-        jLabel1.setText("Mes:");
+        jLabel1.setText("Filtro:");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "DIA", "MES", "AÑO" }));
+        jComboBox1.setSelectedIndex(1);
         jComboBox1.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jComboBox1ItemStateChanged(evt);
@@ -199,9 +206,6 @@ public class JFrameInasistencia extends javax.swing.JFrame {
         });
 
         jLabel2.setText("Año:");
-
-        jTextField1.setEditable(false);
-        jTextField1.setEnabled(false);
 
         jButton1.setText("Salir");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -245,88 +249,155 @@ public class JFrameInasistencia extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jButton2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jButton3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jButton1))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 822, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton5)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton4))))
-        );
+        dateChooserCombo1.setCurrentView(new datechooser.view.appearance.AppearancesList("Grey",
+            new datechooser.view.appearance.ViewAppearance("custom",
+                new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 11),
+                    new java.awt.Color(0, 0, 0),
+                    new java.awt.Color(0, 0, 255),
+                    false,
+                    true,
+                    new datechooser.view.appearance.swing.ButtonPainter()),
+                new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 11),
+                    new java.awt.Color(0, 0, 0),
+                    new java.awt.Color(0, 0, 255),
+                    true,
+                    true,
+                    new datechooser.view.appearance.swing.ButtonPainter()),
+                new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 11),
+                    new java.awt.Color(0, 0, 255),
+                    new java.awt.Color(0, 0, 255),
+                    false,
+                    true,
+                    new datechooser.view.appearance.swing.ButtonPainter()),
+                new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 11),
+                    new java.awt.Color(128, 128, 128),
+                    new java.awt.Color(0, 0, 255),
+                    false,
+                    true,
+                    new datechooser.view.appearance.swing.LabelPainter()),
+                new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 11),
+                    new java.awt.Color(0, 0, 0),
+                    new java.awt.Color(0, 0, 255),
+                    false,
+                    true,
+                    new datechooser.view.appearance.swing.LabelPainter()),
+                new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 11),
+                    new java.awt.Color(0, 0, 0),
+                    new java.awt.Color(255, 0, 0),
+                    false,
+                    false,
+                    new datechooser.view.appearance.swing.ButtonPainter()),
+                (datechooser.view.BackRenderer)null,
+                false,
+                true)));
+    dateChooserCombo1.setBehavior(datechooser.model.multiple.MultyModelBehavior.SELECT_SINGLE);
+    dateChooserCombo1.addSelectionChangedListener(new datechooser.events.SelectionChangedListener() {
+        public void onSelectionChange(datechooser.events.SelectionChangedEvent evt) {
+            dateChooserCombo1OnSelectionChange(evt);
+        }
+    });
 
-        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jButton1, jButton2, jButton3});
+    jLabel4.setText("Ver:");
 
-        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jButton4, jButton5});
+    jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "TODOS", "INASISTENCIAS", "TARDANZAS", "ASISTENCIAS" }));
+    jComboBox2.addItemListener(new java.awt.event.ItemListener() {
+        public void itemStateChanged(java.awt.event.ItemEvent evt) {
+            jComboBox2ItemStateChanged(evt);
+        }
+    });
 
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(jLabel2)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jButton4)
-                        .addComponent(jButton5)))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(18, 18, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton1)
+    javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+    jPanel1.setLayout(jPanel1Layout);
+    jPanel1Layout.setHorizontalGroup(
+        jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGroup(jPanel1Layout.createSequentialGroup()
+            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
                             .addComponent(jButton2)
-                            .addComponent(jButton3)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(86, 86, 86)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
-        );
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(jButton3)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(jButton1))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 822, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel4)
+                        .addComponent(jLabel2))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(dateChooserCombo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGap(18, 18, 18)
+                    .addComponent(jLabel1)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(18, 18, 18)
+                    .addComponent(jButton5)
+                    .addGap(18, 18, 18)
+                    .addComponent(jButton4))))
+    );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+    jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jButton1, jButton2, jButton3});
 
-        pack();
+    jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jButton4, jButton5});
+
+    jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {dateChooserCombo1, jComboBox2});
+
+    jPanel1Layout.setVerticalGroup(
+        jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGroup(jPanel1Layout.createSequentialGroup()
+            .addContainerGap()
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                .addComponent(jLabel2)
+                .addComponent(jLabel1)
+                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton4)
+                    .addComponent(jButton5))
+                .addComponent(dateChooserCombo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel4)
+                        .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGap(18, 18, 18)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(18, 18, 18)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jButton1)
+                        .addComponent(jButton2)
+                        .addComponent(jButton3)))
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGap(86, 86, 86)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
+            .addContainerGap())
+    );
+
+    javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+    getContentPane().setLayout(layout);
+    layout.setHorizontalGroup(
+        layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGroup(layout.createSequentialGroup()
+            .addContainerGap()
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+    );
+    layout.setVerticalGroup(
+        layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGroup(layout.createSequentialGroup()
+            .addContainerGap()
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+    );
+
+    pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private static class HeaderRenderer implements TableCellRenderer {
@@ -348,9 +419,15 @@ public class JFrameInasistencia extends javax.swing.JFrame {
     }
 
     private void jComboBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox1ItemStateChanged
-//        Drive.LimpiarTabla(jTable1);
-        String mes = String.valueOf(jComboBox1.getSelectedItem());
-        Drive.CargarTablaInasistencias(jTable1, mes, Integer.parseInt(jTextField1.getText()));
+        if (person.getIdPersonal() == null) {
+            String filtro = String.valueOf(jComboBox1.getSelectedItem());
+            String ver = String.valueOf(jComboBox2.getSelectedItem());
+            Drive.CargarTablaInasistencias(jTable1,fecha.getDate(), fecha.getMonth(), fecha.getYear(),filtro,ver);
+        } else {
+            String filtro = String.valueOf(jComboBox1.getSelectedItem());
+            String ver = String.valueOf(jComboBox2.getSelectedItem());
+            Drive.CargarTablaInasistencias(jTable1, fecha.getDate(), fecha.getMonth(), fecha.getYear(), person,filtro,ver);
+        }
     }//GEN-LAST:event_jComboBox1ItemStateChanged
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -512,9 +589,15 @@ public class JFrameInasistencia extends javax.swing.JFrame {
                 }
                 e++;
             }
-//            Drive.LimpiarTabla(jTable1);
-            String mes = String.valueOf(jComboBox1.getSelectedItem());
-            Drive.CargarTablaInasistencias(jTable1, mes, Integer.parseInt(jTextField1.getText()));
+            if (person.getIdPersonal() == null) {
+                String filtro = String.valueOf(jComboBox1.getSelectedItem());
+                String ver = String.valueOf(jComboBox2.getSelectedItem());
+                Drive.CargarTablaInasistencias(jTable1,fecha.getDate(), fecha.getMonth(), fecha.getYear(),filtro,ver);
+            } else {
+                String filtro = String.valueOf(jComboBox1.getSelectedItem());
+                String ver = String.valueOf(jComboBox2.getSelectedItem());
+                Drive.CargarTablaInasistencias(jTable1, fecha.getDate(), fecha.getMonth(), fecha.getYear(), person,filtro,ver);
+            }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error al registrar la inasistencia", "Registrar Inasistencia", JOptionPane.ERROR_MESSAGE);
         }
@@ -567,172 +650,126 @@ public class JFrameInasistencia extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         try {
-            int me=Drive.ObtenerMes(jComboBox1.getSelectedItem().toString());
-            String mes=(String) jComboBox1.getSelectedItem();
-            JComboBox salida = new JComboBox();
-            String cadSalida;
-            salida.addItem("Asistencias");
-            salida.addItem("Asistencias justificadas");
-            salida.addItem("Tardanzas");
-            salida.addItem("Tardanzas justificadas");
-            salida.addItem("Inasistencias");
-            salida.addItem("Inasistencias justificadas");
-            salida.setSize(25, 25);
-            JOptionPane.showMessageDialog(null, salida, "¿Que desea imprimir?", JOptionPane.INFORMATION_MESSAGE);
-            cadSalida = salida.getSelectedItem().toString();
-            Iterator it=Drive.PERSISTENCIA.getMes(me).iterator();
-            if (cadSalida.equals("Asistencias")) {
-                List inicio= new ArrayList();
-                while(it.hasNext()){
-                    Mes m=(Mes) it.next();
-                    if(m.getAno().getAgenda().getTarea().getEstado()==true && m.getAno().getAgenda().getPersonal().getEstado()==true){
-                        Iterator itt=m.getDias().iterator();
-                        while(itt.hasNext()){
-                            Dia di=(Dia) itt.next();
-                            Iterator ittt=di.getIniciofins().iterator();
-                            while(ittt.hasNext()){
-                                Iniciofin ini=(Iniciofin) ittt.next();
-                                if(ini.getAsistencias().iterator().hasNext()){
-                                    Asistencia as=ini.getAsistencias().iterator().next();
-                                    if(!as.getJustificacions().iterator().hasNext()){
-                                        if(ini.getAsistencias().iterator().next().getEstado()==true&&ini.getAsistencias().iterator().next().getTardanza()==false){
-                                            inicio.add(ini);
-                                        }
-                                    }
-                                }
-                            }
+            String ver=jComboBox2.getSelectedItem().toString();
+            if(ver.equals("ASISTENCIAS")){
+                JComboBox salida = new JComboBox();
+                String cadSalida;
+                salida.addItem("Asistencias");
+                salida.addItem("Asistencias justificadas");
+                salida.setSize(25, 25);
+                JOptionPane.showMessageDialog(null, salida, "¿Que desea imprimir?", JOptionPane.INFORMATION_MESSAGE);
+                cadSalida = salida.getSelectedItem().toString();
+                if (cadSalida.equals("Asistencias")) {
+                    List lista = new ArrayList();
+                    DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+                    int c = 0;
+                    while (modelo.getRowCount() != c) {
+                        Object o=jTable1.getValueAt(c, 0);
+                        Object oo=jTable1.getValueAt(c, 7);
+                        if (o != null && oo==null) {
+                            Asistencia asis = (Asistencia) o;
+                            lista.add(asis);
                         }
+                        c++;
                     }
-                }
-                Drive.mostrarReporte("Injustificadas",inicio,"Lista de Asistencias","Asistencias",mes,inicio.size());
-            }
-            else if (cadSalida.equals("Asistencias justificadas")) {
-                List just= new ArrayList();
-                while(it.hasNext()){
-                    Mes m=(Mes) it.next();
-                    if(m.getAno().getAgenda().getTarea().getEstado()==true && m.getAno().getAgenda().getPersonal().getEstado()==true){
-                        Iterator itt=m.getDias().iterator();
-                        while(itt.hasNext()){
-                            Dia di=(Dia) itt.next();
-                            Iterator ittt=di.getIniciofins().iterator();
-                            while(ittt.hasNext()){
-                                Iniciofin ini=(Iniciofin) ittt.next();
-                                if(ini.getAsistencias().iterator().hasNext()){
-                                    Asistencia as=ini.getAsistencias().iterator().next();
-                                    if(as.getJustificacions().iterator().hasNext()){
-                                        if(ini.getAsistencias().iterator().next().getEstado()==true&&ini.getAsistencias().iterator().next().getTardanza()==false){
-                                            Justificacion ju=as.getJustificacions().iterator().next();
-                                            just.add(ju);
-                                        }
-                                    }
-                                }
-                            }
+                    String mes=Drive.ObtenerMes(fecha.getMonth());
+                    Drive.mostrarReporte("Injustificadas",lista,"Lista de Asistencias","Asistencias",mes,lista.size());
+                } else if (cadSalida.equals("Asistencias justificadas")) {
+                    List lista = new ArrayList();
+                    DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+                    int c = 0;
+                    while (modelo.getRowCount() != c) {
+                        Object o=jTable1.getValueAt(c, 8);
+                        Object oo=jTable1.getValueAt(c, 7);
+                        if (o != null && oo!=null) {
+                            Justificacion asis = (Justificacion) o;
+                            lista.add(asis);
                         }
+                        c++;
                     }
-                }
-                Drive.mostrarReporte("Justificadas",just,"Lista de Asistencias Justificadas","Asistencias Justificadas",mes,just.size());
-            }
-            else if (cadSalida.equals("Tardanzas")) {
-                List inicio= new ArrayList();
-                while(it.hasNext()){
-                    Mes m=(Mes) it.next();
-                    if(m.getAno().getAgenda().getTarea().getEstado()==true && m.getAno().getAgenda().getPersonal().getEstado()==true){
-                        Iterator itt=m.getDias().iterator();
-                        while(itt.hasNext()){
-                            Dia di=(Dia) itt.next();
-                            Iterator ittt=di.getIniciofins().iterator();
-                            while(ittt.hasNext()){
-                                Iniciofin ini=(Iniciofin) ittt.next();
-                                if(ini.getAsistencias().iterator().hasNext()){
-                                    Asistencia as=ini.getAsistencias().iterator().next();
-                                    if(!as.getJustificacions().iterator().hasNext()){
-                                        if(ini.getAsistencias().iterator().next().getEstado()==true&&ini.getAsistencias().iterator().next().getTardanza()==true){
-                                            inicio.add(ini);
-                                        }
-                                    }
-                                }
-                            }
+                    String mes=Drive.ObtenerMes(fecha.getMonth());
+                    Drive.mostrarReporte("Justificadas",lista,"Lista de Asistencias Justificadas","Asistencias Justificadas",mes,lista.size());
+                } 
+            } else if(ver.equals("INASISTENCIAS")){
+                JComboBox salida = new JComboBox();
+                String cadSalida;
+                salida.addItem("Inasistencias");
+                salida.addItem("Inasistencias justificadas");
+                salida.setSize(25, 25);
+                JOptionPane.showMessageDialog(null, salida, "¿Que desea imprimir?", JOptionPane.INFORMATION_MESSAGE);
+                cadSalida = salida.getSelectedItem().toString();
+                if (cadSalida.equals("Inasistencias")) {
+                    List lista = new ArrayList();
+                    DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+                    int c = 0;
+                    while (modelo.getRowCount() != c) {
+                        Object o=jTable1.getValueAt(c, 0);
+                        Object oo=jTable1.getValueAt(c, 7);
+                        if (o != null && oo==null) {
+                            Asistencia asis = (Asistencia) o;
+                            lista.add(asis);
                         }
+                        c++;
                     }
-                }
-                Drive.mostrarReporte("Injustificadas",inicio,"Lista de Tardanzas","Tardanzas",mes,inicio.size());
-            }
-            else if (cadSalida.equals("Tardanzas justificadas")) {
-                List just= new ArrayList();
-                while(it.hasNext()){
-                    Mes m=(Mes) it.next();
-                    if(m.getAno().getAgenda().getTarea().getEstado()==true && m.getAno().getAgenda().getPersonal().getEstado()==true){
-                        Iterator itt=m.getDias().iterator();
-                        while(itt.hasNext()){
-                            Dia di=(Dia) itt.next();
-                            Iterator ittt=di.getIniciofins().iterator();
-                            while(ittt.hasNext()){
-                                Iniciofin ini=(Iniciofin) ittt.next();
-                                if(ini.getAsistencias().iterator().hasNext()){
-                                    Asistencia as=ini.getAsistencias().iterator().next();
-                                    if(as.getJustificacions().iterator().hasNext()){
-                                        if(ini.getAsistencias().iterator().next().getEstado()==true&&ini.getAsistencias().iterator().next().getTardanza()==true){
-                                            Justificacion ju=as.getJustificacions().iterator().next();
-                                            just.add(ju);
-                                        }
-                                    }
-                                }
-                            }
+                    String mes=Drive.ObtenerMes(fecha.getMonth());
+                    Drive.mostrarReporte("Injustificadas",lista,"Lista de Inasistencias injustificadas","Inasistencias injustificadas",mes,lista.size());
+                } else if (cadSalida.equals("Inasistencias justificadas")) {
+                    List lista = new ArrayList();
+                    DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+                    int c = 0;
+                    while (modelo.getRowCount() != c) {
+                        Object o=jTable1.getValueAt(c, 8);
+                        Object oo=jTable1.getValueAt(c, 7);
+                        if (o != null && oo!=null) {
+                            Justificacion asis = (Justificacion) o;
+                            lista.add(asis);
                         }
+                        c++;
                     }
-                }
-                Drive.mostrarReporte("Justificadas",just,"Lista de Tardanzas justificadas","Tardanzas justificadas",mes,just.size());
-            }
-            else if (cadSalida.equals("Inasistencias")) {
-                List inicio= new ArrayList();
-                while(it.hasNext()){
-                    Mes m=(Mes) it.next();
-                    if(m.getAno().getAgenda().getTarea().getEstado()==true && m.getAno().getAgenda().getPersonal().getEstado()==true){
-                        Iterator itt=m.getDias().iterator();
-                        while(itt.hasNext()){
-                            Dia di=(Dia) itt.next();
-                            Iterator ittt=di.getIniciofins().iterator();
-                            while(ittt.hasNext()){
-                                Iniciofin ini=(Iniciofin) ittt.next();
-                                if(ini.getAsistencias().iterator().hasNext()){
-                                    Asistencia as=ini.getAsistencias().iterator().next();
-                                    if(!as.getJustificacions().iterator().hasNext()){
-                                        if(ini.getAsistencias().iterator().next().getEstado()==false&&ini.getAsistencias().iterator().next().getTardanza()==false){
-                                            inicio.add(ini);
-                                        }
-                                    }
-                                }
-                            }
+                    String mes=Drive.ObtenerMes(fecha.getMonth());
+                    Drive.mostrarReporte("Justificadas",lista,"Lista de Inasistencias justificadas","Inasistencias justificadas",mes,lista.size());
+                } 
+            } else if(ver.equals("TARDANZAS")){
+                JComboBox salida = new JComboBox();
+                String cadSalida;
+                salida.addItem("Tardanzas");
+                salida.addItem("Tardanzas justificadas");
+                salida.setSize(25, 25);
+                JOptionPane.showMessageDialog(null, salida, "¿Que desea imprimir?", JOptionPane.INFORMATION_MESSAGE);
+                cadSalida = salida.getSelectedItem().toString();
+                if (cadSalida.equals("Tardanzas")) {
+                    List lista = new ArrayList();
+                    DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+                    int c = 0;
+                    while (modelo.getRowCount() != c) {
+                        Object o=jTable1.getValueAt(c, 0);
+                        Object oo=jTable1.getValueAt(c, 7);
+                        if (o != null && oo==null) {
+                            Asistencia asis = (Asistencia) o;
+                            lista.add(asis);
                         }
+                        c++;
                     }
-                }
-                Drive.mostrarReporte("Injustificadas",inicio,"Lista de Inasistencias injustificadas","Inasistencias injustificadas",mes,inicio.size());
-            }
-            else if (cadSalida.equals("Inasistencias justificadas")) {
-                List just= new ArrayList();
-                while(it.hasNext()){
-                    Mes m=(Mes) it.next();
-                    if(m.getAno().getAgenda().getTarea().getEstado()==true && m.getAno().getAgenda().getPersonal().getEstado()==true){
-                        Iterator itt=m.getDias().iterator();
-                        while(itt.hasNext()){
-                            Dia di=(Dia) itt.next();
-                            Iterator ittt=di.getIniciofins().iterator();
-                            while(ittt.hasNext()){
-                                Iniciofin ini=(Iniciofin) ittt.next();
-                                if(ini.getAsistencias().iterator().hasNext()){
-                                    Asistencia as=ini.getAsistencias().iterator().next();
-                                    if(as.getJustificacions().iterator().hasNext()){
-                                        if(ini.getAsistencias().iterator().next().getEstado()==false&&ini.getAsistencias().iterator().next().getTardanza()==false){
-                                            Justificacion ju=as.getJustificacions().iterator().next();
-                                            just.add(ju);
-                                        }
-                                    }
-                                }
-                            }
+                    String mes=Drive.ObtenerMes(fecha.getMonth());
+                    Drive.mostrarReporte("Injustificadas",lista,"Lista de Tardanzas","Tardanzas",mes,lista.size());
+                } else if (cadSalida.equals("Tardanzas justificadas")) {
+                    List lista = new ArrayList();
+                    DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+                    int c = 0;
+                    while (modelo.getRowCount() != c) {
+                        Object o=modelo.getValueAt(c, 8);
+                        Object oo=modelo.getValueAt(c, 7);
+                        if (o != null && oo!=null) {
+                            Justificacion asis = (Justificacion) o;
+                            lista.add(asis);
                         }
+                        c++;
                     }
-                }
-                Drive.mostrarReporte("Justificadas",just,"Lista de Inasistencias justificadas","Inasistencias justificadas",mes,just.size());
+                    String mes=Drive.ObtenerMes(fecha.getMonth());
+                    Drive.mostrarReporte("Justificadas",lista,"Lista de Tardanzas justificadas","Tardanzas justificadas",mes,lista.size());
+                } 
+            }else if(ver.equals("TODOS")){
+                JOptionPane.showMessageDialog(null, "Debe seleccionar algún tipo de vista (ASISTENCIAS, INASISTENCIAS, TARDANZAS)","Imprimir Inasistencias", JOptionPane.ERROR_MESSAGE);
             }
         }catch (Exception Ex) {
             JOptionPane.showMessageDialog(null, "Ingrese correctamente los datos", "Error de impresion", JOptionPane.ERROR_MESSAGE);
@@ -759,9 +796,49 @@ public class JFrameInasistencia extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        String mes = String.valueOf(jComboBox1.getSelectedItem());
-        Drive.CargarTablaInasistencias(jTable1, mes, Integer.parseInt(jTextField1.getText()));
+        person=new Personal();
+        if (person.getIdPersonal() == null) {
+            String filtro = String.valueOf(jComboBox1.getSelectedItem());
+            String ver = String.valueOf(jComboBox2.getSelectedItem());
+            Drive.CargarTablaInasistencias(jTable1,fecha.getDate(), fecha.getMonth(), fecha.getYear(),filtro,ver);
+        } else {
+            String filtro = String.valueOf(jComboBox1.getSelectedItem());
+            String ver = String.valueOf(jComboBox2.getSelectedItem());
+            Drive.CargarTablaInasistencias(jTable1, fecha.getDate(), fecha.getMonth(), fecha.getYear(), person,filtro,ver);
+        }
     }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void dateChooserCombo1OnSelectionChange(datechooser.events.SelectionChangedEvent evt) {//GEN-FIRST:event_dateChooserCombo1OnSelectionChange
+        Date fe=dateChooserCombo1.getSelectedDate().getTime();
+        Anolectivo lectivo=Drive.getAnoLectivo();
+        if(lectivo.getInicio().compareTo(fe)<=0 && lectivo.getFin().compareTo(fe)>=0){
+            fecha=fe;
+            if (person.getIdPersonal() == null) {
+                String filtro = String.valueOf(jComboBox1.getSelectedItem());
+                String ver = String.valueOf(jComboBox2.getSelectedItem());
+                Drive.CargarTablaInasistencias(jTable1,fecha.getDate(), fecha.getMonth(), fecha.getYear(),filtro,ver);
+            } else {
+                String filtro = String.valueOf(jComboBox1.getSelectedItem());
+                String ver = String.valueOf(jComboBox2.getSelectedItem());
+                Drive.CargarTablaInasistencias(jTable1, fecha.getDate(), fecha.getMonth(), fecha.getYear(), person,filtro,ver);
+            }
+        }else{
+            JOptionPane.showMessageDialog(null, "La fecha seleccionada debe ser dentro del año lectivo","INASISTENCIAS",JOptionPane.ERROR_MESSAGE);
+            dateChooserCombo1.setSelectedDate(Calendar.getInstance());
+        }
+    }//GEN-LAST:event_dateChooserCombo1OnSelectionChange
+
+    private void jComboBox2ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox2ItemStateChanged
+        if (person.getIdPersonal() == null) {
+            String filtro = String.valueOf(jComboBox1.getSelectedItem());
+            String ver = String.valueOf(jComboBox2.getSelectedItem());
+            Drive.CargarTablaInasistencias(jTable1,fecha.getDate(), fecha.getMonth(), fecha.getYear(),filtro,ver);
+        } else {
+            String filtro = String.valueOf(jComboBox1.getSelectedItem());
+            String ver = String.valueOf(jComboBox2.getSelectedItem());
+            Drive.CargarTablaInasistencias(jTable1, fecha.getDate(), fecha.getMonth(), fecha.getYear(), person,filtro,ver);
+        }
+    }//GEN-LAST:event_jComboBox2ItemStateChanged
     /**
      * @param args the command line arguments
      */
@@ -797,18 +874,20 @@ public class JFrameInasistencia extends javax.swing.JFrame {
 //        });
 //    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private datechooser.beans.DateChooserCombo dateChooserCombo1;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JComboBox jComboBox1;
+    private javax.swing.JComboBox jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 }

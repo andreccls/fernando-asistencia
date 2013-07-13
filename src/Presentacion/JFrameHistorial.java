@@ -71,8 +71,8 @@ public class JFrameHistorial extends javax.swing.JFrame {
         jButton4.setIcon(icono5);
         ImageIcon fott6 = new ImageIcon(getClass().getResource("/imagenes/Imprimir2.png"));
         Icon icono6 = new ImageIcon(fott6.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
-        jButton2.setIcon(icono6);
-        jButton3.setIcon(icono6);
+//        jButton2.setIcon(icono6);
+//        jButton3.setIcon(icono6);
         ImageIcon fott2 = new ImageIcon(getClass().getResource("/imagenes/no.png"));
         Icon icono2 = new ImageIcon(fott2.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
         jButton1.setIcon(icono2);
@@ -116,7 +116,6 @@ public class JFrameHistorial extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        jButton2 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jComboBox2 = new javax.swing.JComboBox();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -124,7 +123,6 @@ public class JFrameHistorial extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
-        jButton3 = new javax.swing.JButton();
         jScrollPane4 = new javax.swing.JScrollPane();
         jTable4 = new javax.swing.JTable();
         jButton5 = new javax.swing.JButton();
@@ -193,13 +191,6 @@ public class JFrameHistorial extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(jTable1);
 
-        jButton2.setText("Imprimir");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-
         jLabel3.setText("Ver:");
 
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Todos", "Activos", "Inactivos" }));
@@ -241,9 +232,6 @@ public class JFrameHistorial extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 655, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton2))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -262,9 +250,7 @@ public class JFrameHistorial extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton2)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -298,13 +284,6 @@ public class JFrameHistorial extends javax.swing.JFrame {
             }
         });
         jScrollPane2.setViewportView(jTable2);
-
-        jButton3.setText("Imprimir");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
 
         jTable4.setAutoCreateRowSorter(true);
         jTable4.setModel(new javax.swing.table.DefaultTableModel(
@@ -362,9 +341,7 @@ public class JFrameHistorial extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton3, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jButton5, javax.swing.GroupLayout.Alignment.TRAILING))))
+                        .addComponent(jButton5)))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -379,9 +356,7 @@ public class JFrameHistorial extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton5)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton3)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 162, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -707,32 +682,6 @@ public class JFrameHistorial extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jTable3MouseReleased
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        try {
-            String combo=jComboBox1.getSelectedItem().toString();
-            Date fecha= dateChooserCombo1.getSelectedDate().getTime();
-            List lista = new ArrayList();
-            List listac= new ArrayList();
-            Drive.CargarHistorial(combo, fecha, lista, listac);
-            Drive.mostrarReporte("ListaPersonal",lista,"Lista Personal",lista.size());
-        } catch (Exception Ex) {
-            JOptionPane.showMessageDialog(null, "Ingrese correctamente los datos", "Error de impresion", JOptionPane.ERROR_MESSAGE);
-        }
-    }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        try {
-//            String combo=jComboBox1.getSelectedItem().toString();
-//            Date fecha= dateChooserCombo1.getSelectedDate().getTime();
-//            List lista = new ArrayList();
-//            List listac= new ArrayList();
-//            Drive.CargarHistorial(combo, fecha, lista, listac);
-//            Drive.mostrarReporte("Actividades",inifin,"Registro de Actividades","Actividades",inifin.size());
-        } catch (Exception Ex) {
-            JOptionPane.showMessageDialog(null, "Ingrese correctamente los datos", "Error de impresion", JOptionPane.ERROR_MESSAGE);
-        }
-    }//GEN-LAST:event_jButton3ActionPerformed
-
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         if(tar.getIdTarea()!=null){
 //            if(!tar.getComentario().equals("CLASE")){
@@ -818,8 +767,6 @@ public class JFrameHistorial extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private datechooser.beans.DateChooserCombo dateChooserCombo1;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JComboBox jComboBox1;

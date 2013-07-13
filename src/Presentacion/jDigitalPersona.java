@@ -813,7 +813,7 @@ public class jDigitalPersona extends javax.swing.JFrame {
             }
         }
          //Si no encuentra alguna huella correspondiente al nombre lo indica con un mensaje
-       JOptionPane.showMessageDialog(null, "No existe ningún registro que coincida con la huella", "Verificacion de Huella", JOptionPane.ERROR_MESSAGE);
+       JOptionPane.showMessageDialog(null, "No existe ningún registro que coincida con la huella", "Verificacion de Huella", JOptionPane.INFORMATION_MESSAGE);
        setTemplate(null);
        } catch (Exception e) {
            System.err.println("Error al identificar huella dactilar."+e.getMessage());

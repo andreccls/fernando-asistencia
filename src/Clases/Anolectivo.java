@@ -1,5 +1,5 @@
 package Clases;
-// Generated 11-may-2013 1:16:55 by Hibernate Tools 3.2.1.GA
+// Generated 05-jul-2013 2:52:42 by Hibernate Tools 3.2.1.GA
 
 
 import java.util.Date;
@@ -18,9 +18,9 @@ public class Anolectivo  implements java.io.Serializable {
      private Integer ano;
      private Date inicio;
      private Date fin;
-     private Set<Feriado> feriados = new HashSet<Feriado>(0);
      private Set<Declaracionjurada> declaracionjuradas = new HashSet<Declaracionjurada>(0);
-     private Set<Agenda> agendas = new HashSet<Agenda>(0);
+     private Set<Feriado> feriados = new HashSet<Feriado>(0);
+     private Set<Curso> cursos = new HashSet<Curso>(0);
 
     public Anolectivo() {
     }
@@ -29,14 +29,14 @@ public class Anolectivo  implements java.io.Serializable {
     public Anolectivo(Establecimiento establecimiento) {
         this.establecimiento = establecimiento;
     }
-    public Anolectivo(Establecimiento establecimiento, Integer ano, Date inicio, Date fin, Set<Feriado> feriados, Set<Declaracionjurada> declaracionjuradas, Set<Agenda> agendas) {
+    public Anolectivo(Establecimiento establecimiento, Integer ano, Date inicio, Date fin, Set<Declaracionjurada> declaracionjuradas, Set<Feriado> feriados, Set<Curso> cursos) {
        this.establecimiento = establecimiento;
        this.ano = ano;
        this.inicio = inicio;
        this.fin = fin;
-       this.feriados = feriados;
        this.declaracionjuradas = declaracionjuradas;
-       this.agendas = agendas;
+       this.feriados = feriados;
+       this.cursos = cursos;
     }
     
     @Override
@@ -79,13 +79,6 @@ public class Anolectivo  implements java.io.Serializable {
     public void setFin(Date fin) {
         this.fin = fin;
     }
-    public Set<Feriado> getFeriados() {
-        return this.feriados;
-    }
-    
-    public void setFeriados(Set<Feriado> feriados) {
-        this.feriados = feriados;
-    }
     public Set<Declaracionjurada> getDeclaracionjuradas() {
         return this.declaracionjuradas;
     }
@@ -93,16 +86,22 @@ public class Anolectivo  implements java.io.Serializable {
     public void setDeclaracionjuradas(Set<Declaracionjurada> declaracionjuradas) {
         this.declaracionjuradas = declaracionjuradas;
     }
-    public Set<Agenda> getAgendas() {
-        return this.agendas;
+    public Set<Feriado> getFeriados() {
+        return this.feriados;
     }
     
-    public void setAgendas(Set<Agenda> agendas) {
-        this.agendas = agendas;
+    public void setFeriados(Set<Feriado> feriados) {
+        this.feriados = feriados;
+    }
+    public Set<Curso> getCursos() {
+        return this.cursos;
+    }
+    
+    public void setCursos(Set<Curso> cursos) {
+        this.cursos = cursos;
     }
 
-
-    //// GENERADO POR GONZALEZ FERNANDO
+/// GENERADO POR GONZALEZ FERNANDO
     public void guardarAnolectivo(Anolectivo unAnolectivo){
         Controlador.getPERSISTENCIA().insert(this);
 
@@ -141,22 +140,31 @@ public class Anolectivo  implements java.io.Serializable {
 
     public boolean ControlarAnolectivo(Date ini, Date fi){
         boolean bandera=true;
-        Iterator it=agendas.iterator();
+        Iterator it=cursos.iterator();
         while(it.hasNext()){
-            Agenda age=(Agenda) it.next();
-            Tarea t=age.getTarea();
-            if(t.getEstado()){
-                Date inicio=age.getTarea().getDiaInicio();
-                Date fin=age.getTarea().getDiaFin();
-                if(inicio.compareTo(ini)<=0||fin.compareTo(fi)>=0){
-                    bandera=false;
-                    break;
+            Curso cu=(Curso) it.next();
+            Iterator itt=cu.getDivisions().iterator();
+            while(itt.hasNext()){
+                Division div=(Division) itt.next();
+                Iterator ittt=div.getTareas().iterator();
+                while(ittt.hasNext()){
+                    Tarea t=(Tarea) ittt.next();
+                    if(t.getEstado()){
+                        Date inicio=t.getDiaInicio();
+                        Date fin=t.getDiaFin();
+                        if(inicio.compareTo(ini)<=0||fin.compareTo(fi)>=0){
+                            bandera=false;
+                            break;
+                        }
+                    }
                 }
             }
         }
 
     return bandera;
     }
+
+
 }
 
 

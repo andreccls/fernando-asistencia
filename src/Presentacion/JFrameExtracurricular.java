@@ -555,7 +555,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                                     .addComponent(dateChooserCombo2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
-                    .addContainerGap())))
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
     );
 
     jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jButton1, jButton2});
@@ -787,7 +787,6 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                         if (Drive.ExtracurricularVerificarDisponibilidad(per,fecha_inicio, ini, fi, fecha_fin,control,idd,bandera)==1) {
                                             AgendaId ida = new AgendaId(per.getIdPersonal(), tarr.getIdTarea());
                                             Agenda age = new Agenda();
-                                            age.setAnolectivo(Drive.getAnoLectivo());
                                             age.setId(ida);
                                             age.setPersonal(per);
                                             age.setTarea(tarr);
@@ -1091,7 +1090,6 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                         if (Drive.ExtracurricularVerificarDisponibilidad(per,fecha_inicio, ini, fi, fecha_fin,control,tar.getIdTarea(),bandera)==1) {
                                             AgendaId ida = new AgendaId(per.getIdPersonal(), tar.getIdTarea());
                                             Agenda age = new Agenda();
-                                            age.setAnolectivo(Drive.getAnoLectivo());
                                             age.setId(ida);
                                             age.setPersonal(per);
                                             age.setTarea(tar);
@@ -1436,10 +1434,10 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                 jFormattedTextField2.setText("00:00");
                 return;
             }
-            inicio.setHours(fech.getDate());
+            inicio.setHours(fech.getHours());
             inicio.setMinutes(fech.getMinutes());
-            inicio.setSeconds(fech.getSeconds());
-            if(inicio.compareTo(fech)<=0){
+            inicio.setSeconds(fech.getSeconds()+1);
+            if(inicio.compareTo(fech)<0){
                 JOptionPane.showMessageDialog(null,"La fecha no puede ser menor a hoy","Registrar Tarea extracurricular",JOptionPane.ERROR_MESSAGE);
                 Calendar cal = Calendar.getInstance();
                 dateChooserCombo1.setSelectedDate(cal);

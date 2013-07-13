@@ -96,7 +96,7 @@
 	<columnHeader>
 		<band height="20" splitType="Stretch">
 			<staticText>
-				<reportElement x="1" y="0" width="161" height="20"/>
+				<reportElement x="1" y="0" width="102" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="14" isBold="true" isItalic="true"/>
 				</textElement>
@@ -126,7 +126,7 @@
 				</graphicElement>
 			</line>
 			<line>
-				<reportElement x="162" y="1" width="1" height="19"/>
+				<reportElement x="198" y="1" width="1" height="19"/>
 			</line>
 			<line>
 				<reportElement x="465" y="1" width="1" height="19"/>
@@ -151,11 +151,21 @@
 				<reportElement x="392" y="1" width="1" height="19"/>
 			</line>
 			<staticText>
-				<reportElement x="163" y="0" width="146" height="20"/>
+				<reportElement x="199" y="0" width="110" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="14" isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[Lugar]]></text>
+			</staticText>
+			<line>
+				<reportElement x="103" y="0" width="1" height="19"/>
+			</line>
+			<staticText>
+				<reportElement x="104" y="0" width="94" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Tipo]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
@@ -171,7 +181,7 @@
 				<reportElement x="0" y="0" width="1" height="35"/>
 			</line>
 			<line>
-				<reportElement x="162" y="0" width="1" height="35"/>
+				<reportElement x="198" y="0" width="1" height="35"/>
 			</line>
 			<line>
 				<reportElement x="465" y="0" width="1" height="35"/>
@@ -195,7 +205,7 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[($F{dia}.getDia()<=9 ? "0"+$F{dia}.getDia():$F{dia}.getDia())+"/"+($F{dia}.getMes().getMes()<=8 ? "0"+(1+$F{dia}.getMes().getMes()):1+$F{dia}.getMes().getMes())+"/"+$F{dia}.getMes().getAno().getAno()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="1" y="0" width="161" height="35"/>
+				<reportElement x="1" y="0" width="102" height="35"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{dia}.getMes().getAno().getAgenda().getTarea().getNombre()]]></textFieldExpression>
 			</textField>
@@ -206,9 +216,17 @@
 				<reportElement x="392" y="0" width="1" height="35"/>
 			</line>
 			<textField>
-				<reportElement x="163" y="0" width="146" height="35"/>
+				<reportElement x="199" y="0" width="110" height="35"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{dia}.getMes().getAno().getAgenda().getTarea().getLugar()]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="103" y="0" width="1" height="35"/>
+			</line>
+			<textField>
+				<reportElement x="104" y="0" width="94" height="35"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{dia}.getMes().getAno().getAgenda().getTarea().getComentario()]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

@@ -83,27 +83,26 @@ public class JFrameInicio extends javax.swing.JFrame {
             e.printStackTrace();
         }
         Controlador auxDrive = new Controlador();
-        
-            es=auxDrive.getPrimerEstablecimiento();
-            Drive = auxDrive;
-            initComponents();
-            if(es.getIdEstablecimiento()!=null){
-                if(es.getImagen()!=null){
-                    ImageIcon fott = new ImageIcon(es.getImagen());
-                    Icon icono4 = new ImageIcon(fott.getImage().getScaledInstance(jLabel1.getWidth(), jLabel1.getHeight(), Image.SCALE_DEFAULT));
-                    jLabel1.setIcon(icono4);
-                    jLabel1.repaint();
-                }
-                jLabel4.setText(es.getLeyenda());
-                jLabel2.setText("INSTITUTO "+es.getNombre());
+        es=auxDrive.getPrimerEstablecimiento();
+        Drive = auxDrive;
+        initComponents();
+        if(es.getIdEstablecimiento()!=null){
+            if(es.getImagen()!=null){
+                ImageIcon fott = new ImageIcon(es.getImagen());
+                Icon icono4 = new ImageIcon(fott.getImage().getScaledInstance(jLabel1.getWidth(), jLabel1.getHeight(), Image.SCALE_DEFAULT));
+                jLabel1.setIcon(icono4);
+                jLabel1.repaint();
             }
-            ImageIcon fot = new ImageIcon(getClass().getResource("/imagenes/Lector1.gif"));
-            Icon icono5 = new ImageIcon(fot.getImage().getScaledInstance(jLabel5.getWidth(), jLabel5.getHeight(), Image.SCALE_DEFAULT));
-            jLabel5.setIcon(icono5);
-            jLabel5.repaint();
-            new Programacion().iniciarTarea();
-            Iniciar();
-            start();
+            jLabel4.setText(es.getLeyenda());
+            jLabel2.setText("INSTITUTO "+es.getNombre());
+        }
+        ImageIcon fot = new ImageIcon(getClass().getResource("/imagenes/Lector1.gif"));
+        Icon icono5 = new ImageIcon(fot.getImage().getScaledInstance(jLabel5.getWidth(), jLabel5.getHeight(), Image.SCALE_DEFAULT));
+        jLabel5.setIcon(icono5);
+        jLabel5.repaint();
+        new Programacion().iniciarTarea();
+        Iniciar();
+        start();
     }
 
     /**
@@ -208,12 +207,10 @@ public class JFrameInicio extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
   
     private void formWindowDeactivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowDeactivated
-        stop();
+//        stop();
     }//GEN-LAST:event_formWindowDeactivated
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-
-        
     }//GEN-LAST:event_formWindowClosing
 
     public boolean runn() {
@@ -346,6 +343,15 @@ public class JFrameInicio extends javax.swing.JFrame {
      // </editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc="Identidicadores"> 
+    Timer t = new Timer(3000, new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+            setTemplate(null);
+            stop();
+            start();
+            t.stop();
+        }
+    });
+    
     public void identificarHuella() throws IOException {
         try {
             boolean ba=runn();
@@ -360,23 +366,14 @@ public class JFrameInicio extends javax.swing.JFrame {
                 if (result.isVerified()) {
                     adm=pp;
                     Date hoy=new Date();
-//                    String s = new SimpleDateFormat("HH:mm").format(hoy.getTime());
-//                    SimpleDateFormat fo = new SimpleDateFormat("HH:mm");
-//                    Date inicio = fo.parse(s);
-//                    Registroacceso reg=new Registroacceso();
-//                    reg.setPersonal(pp);
-//                    reg.setFecha(hoy);
-//                    reg.setInicio(inicio);
-//                    idsesion=reg.guardarRegistroAcceso(reg);
                     String ss = new SimpleDateFormat("dd/MM/yyyy HH:mm").format(hoy.getTime());
                     String tex="BIENVENIDO " + pp.toString()+ "\nHora: "+ ss;
                     JOptionPane.showMessageDialog(null, tex, "Verificacion de Huella", JOptionPane.INFORMATION_MESSAGE);
                     JFramePrincipal vp= new JFramePrincipal(Drive, adm);
                     this.dispose();
                     vp.show();
-//                    setTemplate(null);
-//                    stop();
-//                    t.start();
+                    setTemplate(null);
+                    stop();
                     return;
                 }
             }

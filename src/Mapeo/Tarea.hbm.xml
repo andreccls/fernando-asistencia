@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 23-may-2013 2:20:56 by Hibernate Tools 3.2.1.GA -->
+<!-- Generated 05-jul-2013 2:52:43 by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
   <class catalog="asistencia" name="Clases.Tarea" table="tarea">
     <id name="idTarea" type="java.lang.Integer">
       <column name="Id_tarea"/>
       <generator class="identity"/>
     </id>
+    <many-to-one class="Clases.Division" fetch="select" name="division">
+      <column name="Id_division"/>
+    </many-to-one>
     <many-to-one class="Clases.Lugar" fetch="select" name="lugar">
       <column name="Id_lugar"/>
     </many-to-one>
@@ -34,17 +37,23 @@
       </key>
       <one-to-many class="Clases.Tareareunion"/>
     </set>
+    <set inverse="true" name="agendas">
+      <key>
+        <column name="Id_tarea" not-null="true"/>
+      </key>
+      <one-to-many class="Clases.Agenda"/>
+    </set>
     <set inverse="true" name="auditorias">
       <key>
         <column name="Id_tarea"/>
       </key>
       <one-to-many class="Clases.Auditoria"/>
     </set>
-    <set inverse="true" name="agendas">
+    <set inverse="true" name="tareaclases">
       <key>
         <column name="Id_tarea" not-null="true"/>
       </key>
-      <one-to-many class="Clases.Agenda"/>
+      <one-to-many class="Clases.Tareaclase"/>
     </set>
     <set inverse="true" name="tareaotros">
       <key>
@@ -57,12 +66,6 @@
         <column name="Id_tarea" not-null="true"/>
       </key>
       <one-to-many class="Clases.Tareaextracurricular"/>
-    </set>
-    <set inverse="true" name="tareaclases">
-      <key>
-        <column name="Id_tarea" not-null="true"/>
-      </key>
-      <one-to-many class="Clases.Tareaclase"/>
     </set>
   </class>
 </hibernate-mapping>
