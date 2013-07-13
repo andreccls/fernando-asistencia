@@ -704,10 +704,10 @@ public class JFrameReunion extends javax.swing.JFrame {
                                         control=false;
                                         int idd=0;
                                         if(tar.getIdTarea()!=null){idd=tar.getIdTarea();}
-                                        if (Drive.ReunionVerificarDisponibilidad(per,fecha, inicio, fin, control,idd)==1) {
+                                        int y=Drive.ReunionVerificarDisponibilidad(per,fecha, inicio, fin, control,idd);
+                                        if (y==1) {
                                             AgendaId ida = new AgendaId(per.getIdPersonal(), tarr.getIdTarea());
                                             Agenda age = new Agenda();
-                                            age.setAnolectivo(Drive.getAnoLectivo());
                                             age.setId(ida);
                                             age.setPersonal(per);
                                             age.setTarea(tarr);
@@ -733,7 +733,7 @@ public class JFrameReunion extends javax.swing.JFrame {
                                             in.setEstadoInicio(false);
                                             in.setFin(fin);
                                             in.guardarIniciofin(in);
-                                        }else if(Drive.ReunionVerificarDisponibilidad(per,fecha, inicio, fin, control,tar.getIdTarea())==2){
+                                        }else if(y==2){
                                             AgendaId ida = new AgendaId(per.getIdPersonal(), tarr.getIdTarea());
                                             Agenda age = new Agenda();
                                             age.setId(ida);
@@ -925,7 +925,6 @@ public class JFrameReunion extends javax.swing.JFrame {
                                             Agenda age = tar.ObtenerAgenda(per.getIdPersonal());
                                             if (age.getId() == null) {
                                                 AgendaId ida = new AgendaId(per.getIdPersonal(), tar.getIdTarea());
-                                                age.setAnolectivo(Drive.getAnoLectivo());
                                                 age.setId(ida);
                                                 age.setPersonal(per);
                                                 age.setTarea(tar);
@@ -1005,8 +1004,9 @@ public class JFrameReunion extends javax.swing.JFrame {
                     }
                     jButton1.setEnabled(true);
                     jButton2.setEnabled(true);
-//                    jFormattedTextField1.setText("00:00");
-//                    jFormattedTextField2.setText("00:00");
+                    jCheckBox1.setSelected(false);
+                    jFormattedTextField1.setText("00:00");
+                    jFormattedTextField2.setText("00:00");
 //                    dateChooserCombo1.setSelectedDate(Calendar.getInstance());
                 } else {
                     JOptionPane.showMessageDialog(null, "Todos los campos con '*' son obligatorios y los horarios no pueden contener espacios en blanco", "Registrar Reunión", JOptionPane.ERROR_MESSAGE);
@@ -1146,9 +1146,9 @@ public class JFrameReunion extends javax.swing.JFrame {
         try {
             Date inicio=dateChooserCombo1.getSelectedDate().getTime();
             Date fech=new Date();
-            inicio.setHours(fech.getDate());
+            inicio.setHours(fech.getHours());
             inicio.setMinutes(fech.getMinutes());
-            inicio.setSeconds(fech.getSeconds());
+            inicio.setSeconds(fech.getSeconds()+1);
             
             Anolectivo an=Drive.getPrimerEstablecimiento().getAnoLectivo(fech.getYear()+1900);
             if(an.getInicio().compareTo(inicio)>0 || an.getFin().compareTo(inicio)<0){
@@ -1157,7 +1157,7 @@ public class JFrameReunion extends javax.swing.JFrame {
                 dateChooserCombo1.setSelectedDate(cal);
                 return;
             }
-            if(inicio.compareTo(fech)<=0){
+            if(inicio.compareTo(fech)<0){
                 JOptionPane.showMessageDialog(null,"La fecha no puede ser menor a hoy","Registrar Reunión",JOptionPane.ERROR_MESSAGE);
                 Calendar cal = Calendar.getInstance();
                 dateChooserCombo1.setSelectedDate(cal);

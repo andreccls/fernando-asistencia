@@ -31,6 +31,11 @@ public class Asistencia  implements java.io.Serializable {
        this.tardanza = tardanza;
        this.justificacions = justificacions;
     }
+    
+    @Override
+    public String toString() {
+        return iniciofin.getDia().getMes().getAno().getAgenda().getTarea().getNombre();
+    }
    
     public Integer getIdAsistencia() {
         return this.idAsistencia;

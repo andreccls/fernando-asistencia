@@ -490,7 +490,7 @@ public class JFrameRegistro extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField1KeyTyped
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        Drive.LimpiarTabla(jTable1);
+        Drive.LimpiarTabla(jTable2);
         String buscar=(String) jComboBox1.getSelectedItem();
         Drive.Cargarpersonal(jTable2, buscar, jTextField1.getText().toUpperCase());
     }//GEN-LAST:event_jButton1ActionPerformed

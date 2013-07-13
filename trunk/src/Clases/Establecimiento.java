@@ -1,5 +1,5 @@
 package Clases;
-// Generated 11-may-2013 4:51:44 by Hibernate Tools 3.2.1.GA
+// Generated 18-jun-2013 14:10:38 by Hibernate Tools 3.2.1.GA
 
 
 import java.util.Date;
@@ -23,9 +23,10 @@ public class Establecimiento  implements java.io.Serializable {
      private byte[] imagen;
      private String leyenda;
      private Set<Auditoria> auditorias = new HashSet<Auditoria>(0);
-     private Set<Tarea> tareas = new HashSet<Tarea>(0);
      private Set<Departamento> departamentos = new HashSet<Departamento>(0);
+     private Set<Tarea> tareas = new HashSet<Tarea>(0);
      private Set<Circular> circulars = new HashSet<Circular>(0);
+     private Set<Curso> cursos = new HashSet<Curso>(0);
      private Set<Personal> personals = new HashSet<Personal>(0);
      private Set<Anolectivo> anolectivos = new HashSet<Anolectivo>(0);
      private Set<DetalleEstablecimiento> detalleEstablecimientos = new HashSet<DetalleEstablecimiento>(0);
@@ -33,7 +34,7 @@ public class Establecimiento  implements java.io.Serializable {
     public Establecimiento() {
     }
 
-    public Establecimiento(String nombre, String calle, Integer altura, String piso, String depto, byte[] imagen, String leyenda, Set<Auditoria> auditorias, Set<Tarea> tareas, Set<Departamento> departamentos, Set<Circular> circulars, Set<Personal> personals, Set<Anolectivo> anolectivos, Set<DetalleEstablecimiento> detalleEstablecimientos) {
+    public Establecimiento(String nombre, String calle, Integer altura, String piso, String depto, byte[] imagen, String leyenda, Set<Auditoria> auditorias, Set<Departamento> departamentos, Set<Tarea> tareas, Set<Circular> circulars, Set<Curso> cursos, Set<Personal> personals, Set<Anolectivo> anolectivos, Set<DetalleEstablecimiento> detalleEstablecimientos) {
        this.nombre = nombre;
        this.calle = calle;
        this.altura = altura;
@@ -42,19 +43,20 @@ public class Establecimiento  implements java.io.Serializable {
        this.imagen = imagen;
        this.leyenda = leyenda;
        this.auditorias = auditorias;
-       this.tareas = tareas;
        this.departamentos = departamentos;
+       this.tareas = tareas;
        this.circulars = circulars;
+       this.cursos = cursos;
        this.personals = personals;
        this.anolectivos = anolectivos;
        this.detalleEstablecimientos = detalleEstablecimientos;
     }
-    
+   
     @Override
     public String toString() {
         return nombre;
     }
-   
+    
     public Integer getIdEstablecimiento() {
         return this.idEstablecimiento;
     }
@@ -118,13 +120,6 @@ public class Establecimiento  implements java.io.Serializable {
     public void setAuditorias(Set<Auditoria> auditorias) {
         this.auditorias = auditorias;
     }
-    public Set<Tarea> getTareas() {
-        return this.tareas;
-    }
-    
-    public void setTareas(Set<Tarea> tareas) {
-        this.tareas = tareas;
-    }
     public Set<Departamento> getDepartamentos() {
         return this.departamentos;
     }
@@ -132,12 +127,26 @@ public class Establecimiento  implements java.io.Serializable {
     public void setDepartamentos(Set<Departamento> departamentos) {
         this.departamentos = departamentos;
     }
+    public Set<Tarea> getTareas() {
+        return this.tareas;
+    }
+    
+    public void setTareas(Set<Tarea> tareas) {
+        this.tareas = tareas;
+    }
     public Set<Circular> getCirculars() {
         return this.circulars;
     }
     
     public void setCirculars(Set<Circular> circulars) {
         this.circulars = circulars;
+    }
+    public Set<Curso> getCursos() {
+        return this.cursos;
+    }
+    
+    public void setCursos(Set<Curso> cursos) {
+        this.cursos = cursos;
     }
     public Set<Personal> getPersonals() {
         return this.personals;
@@ -200,22 +209,6 @@ public class Establecimiento  implements java.io.Serializable {
          }
         return per;
     }
-    //Controlador Drive=new Controlador();
-//    public Personal getPersonal(Tipodoc tipo,String dni) {
-//        Personal per=new Personal();
-//        Iterator it=personals.iterator();
-//           while(it.hasNext()){
-//           Personal p=(Personal) it.next();
-//           if(p.getDni().equals(dni)){
-//               Tipodoc tip=p.getTipodoc();
-//               if(tip.getTipodoc().equals(tipo.getTipodoc())){
-//                   per=p;
-//                   break;
-//               }
-//           }
-//         }
-//        return per;
-//    }
       
      public boolean existePersonal(Personal unPersonal){
           boolean tmpres=false;
@@ -241,58 +234,57 @@ public class Establecimiento  implements java.io.Serializable {
         return per;
      }
     
-     public Tarea getTarea(String nombre) {
-        Tarea tar=null;
-        Iterator it=tareas.iterator();
-           while(it.hasNext()){
-           Tarea t=(Tarea) it.next();
-           if(nombre.equals(t.getNombre())){
-               tar=t;
-               break;
-           }
-         }
-        return tar;
-    }
-    
-     public Tarea getTarea(int id) {
-        Tarea tar=null;
-        Iterator it=tareas.iterator();
-           while(it.hasNext()){
-           Tarea t=(Tarea) it.next();
-           if(t.getIdTarea()==id){
-               tar=t;
-               break;
-           }
-         }
-        return tar;
-    }
-     
-    public Tarea existeTarea(Tarea unaTarea){
-          Tarea tmpres=null;
-          Iterator it=tareas.iterator();
-           while(it.hasNext()){
-           Tarea tar=(Tarea) it.next();
-           if(tar.getNombre().equals(unaTarea.getNombre())){
-               tmpres=tar;
-               break;
-           }
-         }
-         return tmpres;
-     }
+//     public Tarea getTarea(String nombre) {
+//        Tarea tar=null;
+//        Iterator it=tareas.iterator();
+//           while(it.hasNext()){
+//           Tarea t=(Tarea) it.next();
+//           if(nombre.equals(t.getNombre())){
+//               tar=t;
+//               break;
+//           }
+//         }
+//        return tar;
+//    }
+//    
+//     public Tarea getTarea(int id) {
+//        Tarea tar=null;
+//        Iterator it=tareas.iterator();
+//           while(it.hasNext()){
+//           Tarea t=(Tarea) it.next();
+//           if(t.getIdTarea()==id){
+//               tar=t;
+//               break;
+//           }
+//         }
+//        return tar;
+//    }
+//     
+//    public Tarea existeTarea(Tarea unaTarea){
+//          Tarea tmpres=null;
+//          Iterator it=tareas.iterator();
+//           while(it.hasNext()){
+//           Tarea tar=(Tarea) it.next();
+//           if(tar.getNombre().equals(unaTarea.getNombre())){
+//               tmpres=tar;
+//               break;
+//           }
+//         }
+//         return tmpres;
+//     }
          
-    public Tarea crearTarea(Lugar lugar, Establecimiento establecimiento, String nombre, String comentario, Boolean estado, Date diaInicio, Date diaFin, Set<Tareareunion> tareareunions, Set<Auditoria> auditorias, Set<Agenda> agendas, Set<Tareaotro> tareaotros, Set<Tareaextracurricular> tareaextracurriculars, Set<Tareaclase> tareaclases){
-        Tarea unaTarea=new Tarea(lugar,establecimiento, nombre,comentario, estado,diaInicio,diaFin, tareareunions,auditorias, agendas,tareaotros, tareaextracurriculars, tareaclases);
-        Tarea aux=existeTarea(unaTarea);
-        if(aux==null){
-            unaTarea.guardarTarea(unaTarea);
-            //agregarReserva(unaReserva);
-            return unaTarea;
-        }else{
-            JOptionPane.showMessageDialog(null, "La tarea ya existe");
-            return aux;
-        }
-        
-     }   
+//    public Tarea crearTarea(Lugar lugar, Establecimiento establecimiento, String nombre, String comentario, Boolean estado, Date diaInicio, Date diaFin, Set<Tareareunion> tareareunions, Set<Auditoria> auditorias, Set<Agenda> agendas, Set<Tareaotro> tareaotros, Set<Tareaextracurricular> tareaextracurriculars, Set<Tareaclase> tareaclases){
+//        Tarea unaTarea=new Tarea(lugar,establecimiento, nombre,comentario, estado,diaInicio,diaFin, tareareunions,auditorias, agendas,tareaotros, tareaextracurriculars, tareaclases);
+//        Tarea aux=existeTarea(unaTarea);
+//        if(aux==null){
+//            unaTarea.guardarTarea(unaTarea);
+//            //agregarReserva(unaReserva);
+//            return unaTarea;
+//        }else{
+//            JOptionPane.showMessageDialog(null, "La tarea ya existe");
+//            return aux;
+//        }
+//     }   
     
     public void crearDepartamento(Establecimiento establecimiento, String nombre,Set<Auditoria> auditorias, Set<PersonalDepartamento> personalDepartamentos){
         Departamento unDepartamento =new Departamento (establecimiento, nombre,auditorias, personalDepartamentos);

@@ -73,6 +73,7 @@ public class JFramePrincipal extends javax.swing.JFrame {
                 jMenuItem5.setEnabled(false);//registrar clase
                 jMenuItem6.setEnabled(false);//registrar reunion
                 jMenuItem7.setEnabled(false);//registrar otro
+                jMenuItem18.setEnabled(false);//registrar adm
             }
             if(adm.getPerfil().getCircularesins()==null){
                 jMenuItem11.setEnabled(false);//registrar Circular
@@ -107,7 +108,12 @@ public class JFramePrincipal extends javax.swing.JFrame {
             if(adm.getPerfil().getConfiguracioncon()==null){
                 jMenuItem14.setEnabled(false);//Configurar feriado
                 jMenuItem15.setEnabled(false);//Configurar inicio
+                jMenuItem19.setEnabled(false);//Configurar clases
             }
+            if(adm.getPerfil().getPersonalcon()==null || adm.getPerfil().getActividadescon()==null){
+                jMenuItem17.setEnabled(false);//ver
+            }
+            
         }else{
             jMenuItem1.setEnabled(true);//registrar personal
             jMenuItem2.setEnabled(true);//registrar huella
@@ -186,6 +192,9 @@ public class JFramePrincipal extends javax.swing.JFrame {
         ImageIcon fott19 = new ImageIcon(getClass().getResource("/imagenes/adm.png"));
         Icon icono19 = new ImageIcon(fott19.getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
         jMenuItem18.setIcon(icono19);
+        ImageIcon fott20 = new ImageIcon(getClass().getResource("/imagenes/altaclases.png"));
+        Icon icono20 = new ImageIcon(fott20.getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
+        jMenuItem19.setIcon(icono20);
 //        
 //        ImageIcon fondo = new ImageIcon("src\\imagenes\\fondo.png");
 //        Icon icon = new ImageIcon(fondo.getImage().getScaledInstance(jPanel1.getWidth(), jPanel1.getHeight(), Image.SCALE_DEFAULT));
@@ -238,6 +247,7 @@ public class JFramePrincipal extends javax.swing.JFrame {
         jMenu4 = new javax.swing.JMenu();
         jMenuItem15 = new javax.swing.JMenuItem();
         jMenuItem14 = new javax.swing.JMenuItem();
+        jMenuItem19 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("SISTEMA DE ASISTENCIA DE PERSONAL EDUCATIVO");
@@ -481,6 +491,14 @@ public class JFramePrincipal extends javax.swing.JFrame {
         });
         jMenu4.add(jMenuItem14);
 
+        jMenuItem19.setText("Clases");
+        jMenuItem19.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem19ActionPerformed(evt);
+            }
+        });
+        jMenu4.add(jMenuItem19);
+
         jMenuBar1.add(jMenu4);
 
         setJMenuBar(jMenuBar1);
@@ -656,6 +674,12 @@ public class JFramePrincipal extends javax.swing.JFrame {
         vent2.show();
     }//GEN-LAST:event_jMenuItem18ActionPerformed
 
+    private void jMenuItem19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem19ActionPerformed
+        JFrameAltaClases vent2 = new JFrameAltaClases(Drive,adm);
+        this.hide();
+        vent2.show();
+    }//GEN-LAST:event_jMenuItem19ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -688,6 +712,7 @@ public class JFramePrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem16;
     private javax.swing.JMenuItem jMenuItem17;
     private javax.swing.JMenuItem jMenuItem18;
+    private javax.swing.JMenuItem jMenuItem19;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;

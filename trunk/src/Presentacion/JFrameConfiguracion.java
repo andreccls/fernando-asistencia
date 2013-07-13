@@ -120,6 +120,8 @@ public class JFrameConfiguracion extends javax.swing.JFrame {
         if(adm.getIdPersonal()!=null && adm.getPerfil().getConfiguracionact()==null){
             jButton2.setEnabled(false);
             jButton3.setEnabled(false);
+            jButton5.setEnabled(false);
+            jButton6.setEnabled(false);
         }
         if(adm.getIdPersonal()!=null && adm.getPerfil().getConfiguracionins()==null){
             jLabel16.setVisible(false);
@@ -1094,8 +1096,65 @@ jPanel4Layout.setHorizontalGroup(
         jTextField1.setEnabled(true);
     }//GEN-LAST:event_jLabel22MouseClicked
 
+//    public static boolean backupDB(String dbName, String dbUserName, String dbPassword, String path) {
+//        String executeCmd = Sistema.configuraciones.rutaDBMS+"mysqldump -u " + dbUserName + " -p" + dbPassword + " --add-drop-database -B " + dbName + " -r " + path;
+//        Process runtimeProcess;
+//        try {
+//
+//            runtimeProcess = Runtime.getRuntime().exec(executeCmd);
+//            int processComplete = runtimeProcess.waitFor();
+//
+//            if (processComplete == 0) {
+//                System.out.println("Backup created successfully");
+//                return true;
+//            } else {
+//                System.out.println("Could not create the backup");
+//            }
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//        }
+//
+//        return false;
+//    }
+    
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-            FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivos de imagen...(*.png, *.jpg, *.gif)", "png", "jpg", "gif");
+        
+        try {
+        
+//            FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivos de imagen...(*.png, *.jpg, *.gif)", "png", "jpg", "gif");
+//            JFileChooser RealizarBackupMySQL = new JFileChooser();
+//            RealizarBackupMySQL.setFileFilter(filtro);
+//            RealizarBackupMySQL.setDialogTitle("Guardar archivo...");
+//            String rut = System.getProperty("user.home") + System.getProperty("file.separator") + "Desktop";
+//            File ruta = new File(rut);
+//            RealizarBackupMySQL.setCurrentDirectory(ruta);
+//            int resp;
+//            Date hoy=new Date();
+//            resp = RealizarBackupMySQL.showSaveDialog(this);//JFileChooser de nombre RealizarBackupMySQL
+//            if (resp == JFileChooser.APPROVE_OPTION) {//Si el usuario presiona aceptar; se genera el Backup
+//                try {
+//                    Runtime runtime = Runtime.getRuntime();
+//                    File backupFile;
+//                    backupFile = new File(String.valueOf(RealizarBackupMySQL.getSelectedFile().toString()) + " "+hoy.getDate()+"-"+(hoy.getMonth()+1)+"-"+(hoy.getYear()+1900)+".sql");
+//                    FileWriter fw = new FileWriter(backupFile);
+//                    Process child = runtime.exec("C:\\Program Files (x86)\\MySQL\\MySQL Server 5.1\\bin\\mysqldump --opt --password=root --user=root --databases asistencia");
+//                    InputStreamReader irs = new InputStreamReader(child.getInputStream());
+//                    BufferedReader br = new BufferedReader(irs);
+//                    String line;
+//                    while ((line = br.readLine()) != null) {
+//                        fw.write(line + "\n");
+//                    }
+//                    fw.close();
+//                    irs.close();
+//                    br.close();
+//                    JOptionPane.showMessageDialog(null, "El Backup ha sido generado", "Generar Backup", JOptionPane.INFORMATION_MESSAGE);
+//                } catch (Exception e) {
+//                    JOptionPane.showMessageDialog(null, "Error no se genero el archivo por el siguiente motivo:" + e.getMessage(), "Verificar", JOptionPane.ERROR_MESSAGE);
+//                }
+//            } else if (resp == JFileChooser.CANCEL_OPTION) {
+//            }
+            
+            FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivos de texto....(*.sql, *.txt)", "sql", "txt");
             JFileChooser RealizarBackupMySQL = new JFileChooser();
             RealizarBackupMySQL.setFileFilter(filtro);
             RealizarBackupMySQL.setDialogTitle("Guardar archivo...");
@@ -1106,34 +1165,17 @@ jPanel4Layout.setHorizontalGroup(
             Date hoy=new Date();
             resp = RealizarBackupMySQL.showSaveDialog(this);//JFileChooser de nombre RealizarBackupMySQL
             if (resp == JFileChooser.APPROVE_OPTION) {//Si el usuario presiona aceptar; se genera el Backup
-                try {
-                    Runtime runtime = Runtime.getRuntime();
-                    File backupFile;
-                    backupFile = new File(String.valueOf(RealizarBackupMySQL.getSelectedFile().toString()) + " "+hoy.getDate()+"-"+(hoy.getMonth()+1)+"-"+(hoy.getYear()+1900)+".sql");
-                    FileWriter fw = new FileWriter(backupFile);
-                    Process child = runtime.exec("C:\\Program Files (x86)\\MySQL\\MySQL Server 5.1\\bin\\mysqldump --opt --password=root --user=root --databases asistencia");
-                    InputStreamReader irs = new InputStreamReader(child.getInputStream());
-                    BufferedReader br = new BufferedReader(irs);
-                    String line;
-                    while ((line = br.readLine()) != null) {
-                        fw.write(line + "\n");
-                    }
-                    fw.close();
-                    irs.close();
-                    br.close();
-                    JOptionPane.showMessageDialog(null, "El Backup ha sido generado", "Generar Backup", JOptionPane.INFORMATION_MESSAGE);
-                } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, "Error no se genero el archivo por el siguiente motivo:" + e.getMessage(), "Verificar", JOptionPane.ERROR_MESSAGE);
+                String g=String.valueOf(RealizarBackupMySQL.getSelectedFile().toString()) + " "+hoy.getDate()+"-"+(hoy.getMonth()+1)+"-"+(hoy.getYear()+1900)+".sql";
+                if(Drive.BackupDB("asistencia","root","root",g)){
+                    JOptionPane.showMessageDialog(null, "Se genero correctamente");
                 }
-            } else if (resp == JFileChooser.CANCEL_OPTION) {
+                
             }
             
-    
-//        try {
-//            Drive.CrearBackup();
-//        } catch (Exception ex) {
-//            Logger.getLogger(JFrameConfiguracion.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+//            backupDB("asistencia","root","root",rut);
+        } catch (Exception ex) {
+            Logger.getLogger(JFrameConfiguracion.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed

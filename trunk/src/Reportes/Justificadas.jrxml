@@ -6,15 +6,10 @@
 	<queryString language="hql">
 		<![CDATA[from Justificacion]]>
 	</queryString>
-	<field name="asistencia" class="Clases.Asistencia">
-		<fieldDescription><![CDATA[asistencia]]></fieldDescription>
-	</field>
-	<field name="articulo" class="Clases.Articulo">
-		<fieldDescription><![CDATA[articulo]]></fieldDescription>
-	</field>
-	<field name="motivo" class="java.lang.String">
-		<fieldDescription><![CDATA[motivo]]></fieldDescription>
-	</field>
+	<field name="articulo" class="Clases.Articulo"/>
+	<field name="asistencia" class="Clases.Asistencia"/>
+	<field name="idJustificacion" class="java.lang.Integer"/>
+	<field name="motivo" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>

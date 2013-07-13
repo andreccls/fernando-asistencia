@@ -662,18 +662,38 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
 
     private void dateChooserCombo1OnSelectionChange(datechooser.events.SelectionChangedEvent evt) {//GEN-FIRST:event_dateChooserCombo1OnSelectionChange
         try {
-            Date fecha=new Date();
-            Date inicio = dateChooserCombo1.getSelectedDate().getTime();
-            SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
-            formateador.setLenient(false);
-            String i = formateador.format(fecha);
-            Date ffecha = formateador.parse(i);
-            String e = formateador.format(inicio);
-            Date iinicio = formateador.parse(e);
-            if (iinicio.compareTo(ffecha)<0) {
-                JOptionPane.showMessageDialog(null,"La fecha no puede ser anterior al dia de hoy","Registrar Circular", JOptionPane.ERROR_MESSAGE);
-                dateChooserCombo1.setSelectedDate(Calendar.getInstance());
+            Date inicio=dateChooserCombo1.getSelectedDate().getTime();
+            Date fin=dateChooserCombo2.getSelectedDate().getTime();
+            Date fech=new Date();
+            Anolectivo an=Drive.getPrimerEstablecimiento().getAnoLectivo(fech.getYear()+1900);
+            if(inicio.compareTo(fin)>0 || an.getInicio().compareTo(inicio)>0 || an.getFin().compareTo(fin)<0){
+                JOptionPane.showMessageDialog(null,"La fecha de inicio debe ser menor que la fecha de fin y estar contemplado dentro del año lectivo","Registrar Tarea",JOptionPane.ERROR_MESSAGE);
+                Calendar cal = Calendar.getInstance();
+                dateChooserCombo1.setSelectedDate(cal);
+                dateChooserCombo2.setSelectedDate(cal);
             }
+            inicio.setHours(fech.getHours());
+            inicio.setMinutes(fech.getMinutes());
+            inicio.setSeconds(fech.getSeconds()+1);
+            if(inicio.compareTo(fech)<0){
+                JOptionPane.showMessageDialog(null,"La fecha no puede ser menor a hoy","Registrar Tarea",JOptionPane.ERROR_MESSAGE);
+                Calendar cal = Calendar.getInstance();
+                dateChooserCombo1.setSelectedDate(cal);
+                return;
+            }
+            
+//            Date fecha=new Date();
+//            Date inicio = dateChooserCombo1.getSelectedDate().getTime();
+//            SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+//            formateador.setLenient(false);
+//            String i = formateador.format(fecha);
+//            Date ffecha = formateador.parse(i);
+//            String e = formateador.format(inicio);
+//            Date iinicio = formateador.parse(e);
+//            if (iinicio.compareTo(ffecha)<0) {
+//                JOptionPane.showMessageDialog(null,"La fecha no puede ser anterior al dia de hoy","Registrar Circular", JOptionPane.ERROR_MESSAGE);
+//                dateChooserCombo1.setSelectedDate(Calendar.getInstance());
+//            }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null,e.toString(),"Registrar Circular", JOptionPane.ERROR_MESSAGE);
         }
@@ -717,7 +737,16 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
     }//GEN-LAST:event_jCheckBox1ItemStateChanged
 
     private void dateChooserCombo2OnSelectionChange(datechooser.events.SelectionChangedEvent evt) {//GEN-FIRST:event_dateChooserCombo2OnSelectionChange
-        // TODO add your handling code here:
+        Date inicio=dateChooserCombo1.getSelectedDate().getTime();
+            Date fin=dateChooserCombo2.getSelectedDate().getTime();
+            Date fecha=new Date();
+            Anolectivo an=Drive.getPrimerEstablecimiento().getAnoLectivo(fecha.getYear()+1900);
+            if(inicio.compareTo(fin)>0 || an.getInicio().compareTo(inicio)>0 || an.getFin().compareTo(fin)<0){
+                JOptionPane.showMessageDialog(null,"La fecha de inicio debe ser menor que la fecha de fin y estar contemplado dentro del año lectivo","Registrar Tarea",JOptionPane.ERROR_MESSAGE);
+                Calendar cal = Calendar.getInstance();
+                dateChooserCombo1.setSelectedDate(cal);
+                dateChooserCombo2.setSelectedDate(cal);
+            }
     }//GEN-LAST:event_dateChooserCombo2OnSelectionChange
 
     /**

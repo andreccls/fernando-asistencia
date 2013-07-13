@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 23-may-2013 2:20:56 by Hibernate Tools 3.2.1.GA -->
+<!-- Generated 05-jul-2013 2:52:43 by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
   <class catalog="asistencia" name="Clases.Personal" table="personal">
     <id name="idPersonal" type="java.lang.Integer">
@@ -64,65 +64,17 @@
     <property name="fechaNac" type="date">
       <column length="10" name="Fecha_nac"/>
     </property>
-    <set inverse="true" name="registroaccesos">
-      <key>
-        <column name="Id_personal" not-null="true"/>
-      </key>
-      <one-to-many class="Clases.Registroacceso"/>
-    </set>
-    <set inverse="true" name="circularpersonals">
-      <key>
-        <column name="Id_personal" not-null="true"/>
-      </key>
-      <one-to-many class="Clases.Circularpersonal"/>
-    </set>
-    <set inverse="true" name="declaracionjuradas">
-      <key>
-        <column name="Id_personal" not-null="true"/>
-      </key>
-      <one-to-many class="Clases.Declaracionjurada"/>
-    </set>
-    <set inverse="true" name="personalnodocentes">
-      <key>
-        <column name="Id_personal" not-null="true"/>
-      </key>
-      <one-to-many class="Clases.Personalnodocente"/>
-    </set>
     <set inverse="true" name="personaldocentes">
       <key>
         <column name="Id_personal" not-null="true"/>
       </key>
       <one-to-many class="Clases.Personaldocente"/>
     </set>
-    <set inverse="true" name="telefonos">
+    <set inverse="true" name="auditoriasForIdPersonal">
       <key>
-        <column name="Id_personal" not-null="true"/>
+        <column name="Id_personal"/>
       </key>
-      <one-to-many class="Clases.Telefono"/>
-    </set>
-    <set inverse="true" name="personalDepartamentos">
-      <key>
-        <column name="Id_personal" not-null="true"/>
-      </key>
-      <one-to-many class="Clases.PersonalDepartamento"/>
-    </set>
-    <set inverse="true" name="personalFamiliarsForIdPersonal">
-      <key>
-        <column name="Id_personal" not-null="true"/>
-      </key>
-      <one-to-many class="Clases.PersonalFamiliar"/>
-    </set>
-    <set inverse="true" name="personalFamiliarsForIdFamiliar">
-      <key>
-        <column name="Id_familiar" not-null="true"/>
-      </key>
-      <one-to-many class="Clases.PersonalFamiliar"/>
-    </set>
-    <set inverse="true" name="agendas">
-      <key>
-        <column name="Id_personal" not-null="true"/>
-      </key>
-      <one-to-many class="Clases.Agenda"/>
+      <one-to-many class="Clases.Auditoria"/>
     </set>
     <set inverse="true" name="auditoriasForIdAuditor">
       <key>
@@ -130,17 +82,65 @@
       </key>
       <one-to-many class="Clases.Auditoria"/>
     </set>
+    <set inverse="true" name="personalFamiliarsForIdFamiliar">
+      <key>
+        <column name="Id_familiar" not-null="true"/>
+      </key>
+      <one-to-many class="Clases.PersonalFamiliar"/>
+    </set>
+    <set inverse="true" name="registroaccesos">
+      <key>
+        <column name="Id_personal" not-null="true"/>
+      </key>
+      <one-to-many class="Clases.Registroacceso"/>
+    </set>
     <set inverse="true" name="licencias">
       <key>
         <column name="Id_personal" not-null="true"/>
       </key>
       <one-to-many class="Clases.Licencia"/>
     </set>
-    <set inverse="true" name="auditoriasForIdPersonal">
+    <set inverse="true" name="personalnodocentes">
       <key>
-        <column name="Id_personal"/>
+        <column name="Id_personal" not-null="true"/>
       </key>
-      <one-to-many class="Clases.Auditoria"/>
+      <one-to-many class="Clases.Personalnodocente"/>
+    </set>
+    <set inverse="true" name="declaracionjuradas">
+      <key>
+        <column name="Id_personal" not-null="true"/>
+      </key>
+      <one-to-many class="Clases.Declaracionjurada"/>
+    </set>
+    <set inverse="true" name="personalDepartamentos">
+      <key>
+        <column name="Id_personal" not-null="true"/>
+      </key>
+      <one-to-many class="Clases.PersonalDepartamento"/>
+    </set>
+    <set inverse="true" name="agendas">
+      <key>
+        <column name="Id_personal" not-null="true"/>
+      </key>
+      <one-to-many class="Clases.Agenda"/>
+    </set>
+    <set inverse="true" name="personalFamiliarsForIdPersonal">
+      <key>
+        <column name="Id_personal" not-null="true"/>
+      </key>
+      <one-to-many class="Clases.PersonalFamiliar"/>
+    </set>
+    <set inverse="true" name="telefonos">
+      <key>
+        <column name="Id_personal" not-null="true"/>
+      </key>
+      <one-to-many class="Clases.Telefono"/>
+    </set>
+    <set inverse="true" name="circularpersonals">
+      <key>
+        <column name="Id_personal" not-null="true"/>
+      </key>
+      <one-to-many class="Clases.Circularpersonal"/>
     </set>
   </class>
 </hibernate-mapping>

@@ -2,19 +2,22 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 05-jul-2013 2:52:43 by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
-  <class catalog="asistencia" name="Clases.Tipocargo" table="tipocargo">
-    <id name="idTipocargo" type="java.lang.Integer">
-      <column name="id_tipocargo"/>
+  <class catalog="asistencia" name="Clases.Division" table="division">
+    <id name="idDivision" type="java.lang.Integer">
+      <column name="Id_division"/>
       <generator class="identity"/>
     </id>
+    <many-to-one class="Clases.Curso" fetch="select" name="curso">
+      <column name="Id_curso" not-null="true"/>
+    </many-to-one>
     <property name="nombre" type="string">
       <column length="45" name="Nombre"/>
     </property>
-    <set inverse="true" name="cargos">
+    <set inverse="true" name="tareas">
       <key>
-        <column name="id_tipocargo" not-null="true"/>
+        <column name="Id_division"/>
       </key>
-      <one-to-many class="Clases.Cargo"/>
+      <one-to-many class="Clases.Tarea"/>
     </set>
   </class>
 </hibernate-mapping>

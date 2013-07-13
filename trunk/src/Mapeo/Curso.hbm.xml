@@ -2,28 +2,25 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 05-jul-2013 2:52:43 by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
-  <class catalog="asistencia" name="Clases.Departamento" table="departamento">
-    <id name="idDepartamento" type="java.lang.Integer">
-      <column name="Id_departamento"/>
+  <class catalog="asistencia" name="Clases.Curso" table="curso">
+    <id name="idCurso" type="java.lang.Integer">
+      <column name="Id_curso"/>
       <generator class="identity"/>
     </id>
+    <many-to-one class="Clases.Anolectivo" fetch="select" name="anolectivo">
+      <column name="Id_anolectivo" not-null="true"/>
+    </many-to-one>
     <many-to-one class="Clases.Establecimiento" fetch="select" name="establecimiento">
       <column name="Id_establecimiento" not-null="true"/>
     </many-to-one>
     <property name="nombre" type="string">
       <column length="45" name="Nombre"/>
     </property>
-    <set inverse="true" name="personalDepartamentos">
+    <set inverse="true" name="divisions">
       <key>
-        <column name="Id_departamento" not-null="true"/>
+        <column name="Id_curso" not-null="true"/>
       </key>
-      <one-to-many class="Clases.PersonalDepartamento"/>
-    </set>
-    <set inverse="true" name="auditorias">
-      <key>
-        <column name="Id_departamento"/>
-      </key>
-      <one-to-many class="Clases.Auditoria"/>
+      <one-to-many class="Clases.Division"/>
     </set>
   </class>
 </hibernate-mapping>

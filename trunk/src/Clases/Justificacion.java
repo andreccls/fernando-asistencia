@@ -30,6 +30,11 @@ public class Justificacion  implements java.io.Serializable {
        this.articulo = articulo;
        this.motivo = motivo;
     }
+    
+    @Override
+    public String toString() {
+        return motivo;
+    }
    
     public Integer getIdJustificacion() {
         return this.idJustificacion;

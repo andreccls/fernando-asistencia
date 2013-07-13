@@ -707,7 +707,6 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                         if (Drive.OtrosVerificarDisponibilidad(per,fecha_inicio, ini, fi, fecha_fin,control,idd)) {
                                             AgendaId ida = new AgendaId(per.getIdPersonal(), tarr.getIdTarea());
                                             Agenda age = new Agenda();
-                                            age.setAnolectivo(Drive.getAnoLectivo());
                                             age.setId(ida);
                                             age.setPersonal(per);
                                             age.setTarea(tarr);
@@ -940,7 +939,6 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                             Agenda age = tar.ObtenerAgenda(per.getIdPersonal());
                                             if (age.getId() == null) {
                                                 AgendaId ida = new AgendaId(per.getIdPersonal(), tar.getIdTarea());
-                                                age.setAnolectivo(Drive.getAnoLectivo());
                                                 age.setId(ida);
                                                 age.setPersonal(per);
                                                 age.setTarea(tar);
@@ -1242,10 +1240,10 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                 dateChooserCombo2.setSelectedDate(cal);
                 jFormattedTextField2.setText("00:00");
             }
-            inicio.setHours(fech.getDate());
+            inicio.setHours(fech.getHours());
             inicio.setMinutes(fech.getMinutes());
-            inicio.setSeconds(fech.getSeconds());
-            if(inicio.compareTo(fech)<=0){
+            inicio.setSeconds(fech.getSeconds()+1);
+            if(inicio.compareTo(fech)<0){
                 JOptionPane.showMessageDialog(null,"La fecha no puede ser menor a hoy","Registrar Tarea",JOptionPane.ERROR_MESSAGE);
                 Calendar cal = Calendar.getInstance();
                 dateChooserCombo1.setSelectedDate(cal);

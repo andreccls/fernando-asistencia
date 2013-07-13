@@ -181,16 +181,6 @@ public class Controlador {
         return cole;
     }
 
-    public void crearEstablecimiento(String nombre, String calle, Integer altura, String piso, String depto, byte[] imagen, String leyenda, Set<Auditoria> auditorias, Set<Tarea> tareas, Set<Departamento> departamentos, Set<Circular> circulars, Set<Personal> personals, Set<Anolectivo> anolectivos, Set<DetalleEstablecimiento> detalleEstablecimientos) {
-        if (!existeColegio()) {
-            Establecimiento unEstablecimiento = new Establecimiento(nombre, calle, altura, piso, depto,imagen,leyenda,auditorias, tareas, departamentos, circulars, personals,anolectivos,detalleEstablecimientos);
-            unEstablecimiento.guardarEstablecimiento(unEstablecimiento);
-        } else {
-            JOptionPane.showMessageDialog(null, "Ya existe el Colegio");
-            //throw new GTUException("Ya existe la Universidad  :"+getUniversidad()+",  puede crear solo una!" );
-        }
-    }
-
     public void CargarComboPersonaldoc(JComboBox JCombo) {
         try {
             //DefaultComboBoxModel modeloCombo = new DefaultComboBoxModel();
@@ -233,6 +223,7 @@ public class Controlador {
         }
     }
     
+    
     public void CargarComboLugar(JComboBox JCombo) {
         try {
             Iterator<Lugar> rs = Controlador.getPERSISTENCIA().getLugar().iterator();
@@ -256,6 +247,18 @@ public class Controlador {
             JOptionPane.showMessageDialog(null, ex.toString());
         }
     }
+    
+    public void CargarComboCursos(JComboBox JCombo) {
+        try {
+            Iterator<Aula> rs = Controlador.getPERSISTENCIA().getAulas().iterator();
+            while (rs.hasNext()) {
+                Aula au = (Aula) rs.next();
+                JCombo.addItem(au);
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex.toString());
+        }
+    }
 
     public void CargarComboDepartamento(JComboBox JCombo) {
         try {
@@ -264,6 +267,50 @@ public class Controlador {
             while (rs.hasNext()) {
                 Departamento dep = (Departamento) rs.next();
                 JCombo.addItem(dep);
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex.toString());
+        }
+    }
+    
+    public void CargarComboCursos(JComboBox JCombo, int ano) {
+        try {
+            LimpiarCombo(JCombo);
+            //Establecimiento col = getPrimerEstablecimiento();
+            Iterator rs = Controlador.getPERSISTENCIA().getCursos(ano).iterator();
+            while (rs.hasNext()) {
+                Curso dep = (Curso) rs.next();
+                
+                JCombo.addItem(dep);
+                
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex.toString());
+        }
+    }
+    
+    public void CargarComboDivision(JComboBox JCombo, Curso cu) {
+        try {
+            //Establecimiento col = getPrimerEstablecimiento();
+            Iterator rs = Controlador.getPERSISTENCIA().getDivisiones(cu.getIdCurso()).iterator();
+            while (rs.hasNext()) {
+                Division dep = (Division) rs.next();
+                JCombo.addItem(dep);
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex.toString());
+        }
+    }
+    
+    public void CargarComboMaterias(JComboBox JCombo, Division div) {
+        try {
+            //Establecimiento col = getPrimerEstablecimiento();
+            Iterator rs = PERSISTENCIA.getTareas(div.getIdDivision()).iterator();
+            while (rs.hasNext()) {
+                Tarea dep = (Tarea) rs.next();
+                if(dep.getEstado()){
+                    JCombo.addItem(dep);
+                }
             }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, ex.toString());
@@ -357,26 +404,28 @@ public class Controlador {
         }
     }
     
-//    public boolean BackupDB(/*String dbName, String dbUserName, String dbPassword, String path*/) {
-//        
-//        String rut = System.getProperty("user.home") + System.getProperty("file.separator") + "Desktop";
+    public boolean BackupDB(String dbName, String dbUserName, String dbPassword, String path) {
+        String ip="localhost";
+        String port="3306";
+//          String command = "C:\\Program Files (x86)\\MySQL\\MySQL Server 5.1\\bin\\mysqldump -h" + ip +" -port"+ port + " -u" + dbUserName +" -p" + dbPassword+" "+ dbName +" -r"+path;
+        String command = "C:\\Program Files (x86)\\MySQL\\MySQL Server 5.1\\bin\\mysqldump -u " + dbUserName + " -p" + dbPassword + " --add-drop-database -B " + dbName + " -r " + path;
 //        String command = "C:\\Program Files (x86)\\MySQL\\MySQL Server 5.1\\bin\\mysqldump -h localhost  -u root -p root database asistencia -r "+rut+"";
-//        Process runtimeProcess;
-//        try {
-//            runtimeProcess = Runtime.getRuntime().exec(command);
-//            int processComplete = runtimeProcess.waitFor();
-//            
-//            if (processComplete == 0) {
-//                System.out.println("Backup created successfully");
-//                return true;
-//            } else {
-//                System.out.println("Could not create the backup");
-//            }
-//        } catch (Exception ex) {
-//            ex.printStackTrace();
-//        }
-//        return false;
-//    }
+        Process runtimeProcess;
+        try {
+            runtimeProcess = Runtime.getRuntime().exec(command);
+            int processComplete = runtimeProcess.waitFor();
+            
+            if (processComplete == 0) {
+                System.out.println("Backup created successfully");
+                return true;
+            } else {
+                System.out.println("Could not create the backup");
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return false;
+    }
 //    
 //    public void transfer(InputStream input, OutputStream output) throws Exception {
 //        byte[] buf = new byte[1024];
@@ -664,6 +713,20 @@ public class Controlador {
         }
         tabla.setModel(model);
     }
+    
+    public void CargarTablaMaterias(JTable tabla, Division div) {
+        LimpiarTabla(tabla);
+        DefaultTableModel model = (DefaultTableModel) tabla.getModel();
+        Iterator<Tarea> it = PERSISTENCIA.getTareas(div.getIdDivision()).iterator();
+        while (it.hasNext()) {
+            Tarea tar = (Tarea) it.next();
+                Object[] fila = new Object[2];
+                fila[0] = tar.getEstado();
+                fila[1] = tar;
+                model.addRow(fila);
+            }
+        tabla.setModel(model);
+    }
 
     public Asistencia getAsistencia(int nro) {
         Asistencia asis = (Asistencia) Controlador.getPERSISTENCIA().getAsistencia(nro).iterator().next();
@@ -703,46 +766,47 @@ public class Controlador {
         tabla.setModel(model);
     }
 
-    public void CargarTablaFiltroActividades(JTable tabla, String buscarpor, String tipo, String valor) {
+    public void CargarTablaFiltroActividadesClases(JTable tabla, String buscarpor, String tipo, String valor, Division div){
         DefaultTableModel model = (DefaultTableModel) tabla.getModel();
-        Anolectivo ano=getAnoLectivo();
         if (tipo.equals("Clase")) {
-            Iterator<Tareaclase> act = PERSISTENCIA.getTareasClases().iterator();
+            Iterator<Tarea> act = PERSISTENCIA.getTareas(div.getIdDivision()).iterator();
             while (act.hasNext()) {
-                Tareaclase ac = act.next();
-                if (ac.getTarea().getEstado()&&ac.getTarea().getAgendas().size()>0) {
-                    Agenda ag=ac.getTarea().getAgendas().iterator().next();
-                    if(ag.getAnolectivo().getIdAnolectivo()==ano.getIdAnolectivo()){
-                    if (buscarpor.equals("Nombre") && ac.getTarea().getEstado() == true) {
-                        int i = ac.getTarea().getNombre().indexOf(valor);
+                Tarea ac = act.next();
+                if (ac.getEstado()&&ac.getAgendas().size()>0) {
+                    if (buscarpor.equals("Nombre") && ac.getEstado() == true) {
+                        int i = ac.getNombre().indexOf(valor);
                         if (i == 0) {
                             Object[] fila = new Object[3];
-                            fila[0] = ac.getTarea();
-                            fila[1] = ac.getTarea().getLugar();
-                            fila[2] = ac.getTarea().getComentario();
+                            fila[0] = ac;
+                            fila[1] = ac.getLugar();
+                            fila[2] = ac.getComentario();
                             model.addRow(fila);
                         }
-                    } else if (buscarpor.equals("Lugar") && ac.getTarea().getEstado() == true) {
-                        int i = ac.getTarea().getLugar().getNombre().indexOf(valor);
+                    } else if (buscarpor.equals("Lugar") && ac.getEstado() == true) {
+                        int i = ac.getLugar().getNombre().indexOf(valor);
                         if (i == 0) {
                             Object[] fila = new Object[3];
-                            fila[0] = ac.getTarea();
-                            fila[1] = ac.getTarea().getLugar();
-                            fila[2] = ac.getTarea().getComentario();
+                            fila[0] = ac;
+                            fila[1] = ac.getLugar();
+                            fila[2] = ac.getComentario();
                             model.addRow(fila);
                         }
                     }
-                }
-                }
-                
+                }     
             }
-        } else if (tipo.equals("Reunión")) {
+        }
+    }
+    
+    public void CargarTablaFiltroActividades(JTable tabla, String buscarpor, String tipo, String valor) {
+        DefaultTableModel model = (DefaultTableModel) tabla.getModel();
+//        Anolectivo ano=getAnoLectivo();
+         if (tipo.equals("Reunión")) {
             Iterator<Tareareunion> act = PERSISTENCIA.getTareasReuniones().iterator();
             while (act.hasNext()) {
                 Tareareunion ac = act.next();
                 if (ac.getTarea().getEstado()&&ac.getTarea().getAgendas().size()>0) {
                     Agenda ag=ac.getTarea().getAgendas().iterator().next();
-                    if(ag.getAnolectivo().getIdAnolectivo()==ano.getIdAnolectivo()){
+//                    if(ag.getAnolectivo().getIdAnolectivo()==ano.getIdAnolectivo()){
                     if (buscarpor.equals("Nombre") && ac.getTarea().getEstado() == true) {
                         int i = ac.getTarea().getNombre().indexOf(valor);
                         if (i == 0) {
@@ -762,7 +826,7 @@ public class Controlador {
                             model.addRow(fila);
                         }
                     }
-                }
+//                }
                 }
             }
         } else if (tipo.equals("Extracurricular")) {
@@ -772,7 +836,7 @@ public class Controlador {
                 Tarea ac = acc.getTarea();
                 if (ac.getEstado()&&ac.getAgendas().size()>0) {
                     Agenda ag=ac.getAgendas().iterator().next();
-                    if(ag.getAnolectivo().getIdAnolectivo()==ano.getIdAnolectivo()){
+//                    if(ag.getAnolectivo().getIdAnolectivo()==ano.getIdAnolectivo()){
                     if (buscarpor.equals("Nombre") && ac.getEstado() == true) {
                         int i = ac.getNombre().indexOf(valor);
                         if (i == 0) {
@@ -792,7 +856,7 @@ public class Controlador {
                             model.addRow(fila);
                         }
                     }
-                }
+//                }
                 }
             }
         } else if (tipo.equals("Otro")) {
@@ -803,7 +867,7 @@ public class Controlador {
 //                Agenda ag=ac.getAgendas().iterator().next();
                 if (ac.getEstado()&&ac.getAgendas().size()>0) {
                     Agenda ag=ac.getAgendas().iterator().next();
-                    if(ag.getAnolectivo().getIdAnolectivo()==ano.getIdAnolectivo()){
+//                    if(ag.getAnolectivo().getIdAnolectivo()==ano.getIdAnolectivo()){
                     if (buscarpor.equals("Nombre") && ac.getEstado() == true) {
                         int i = ac.getNombre().indexOf(valor);
                         if (i == 0) {
@@ -823,37 +887,9 @@ public class Controlador {
                             model.addRow(fila);
                         }
                     }
-                }
+//                }
                 }
             }
-//            Iterator acto = PERSISTENCIA.getTareasOtro().iterator();
-//            while (acto.hasNext()) {
-//                Tarea ac = (Tarea) acto.next();
-//                if (ac.getEstado()&&ac.getAgendas().size()>0) {
-//                    Agenda ag=ac.getAgendas().iterator().next();
-//                    if(ag.getAnolectivo().getIdAnolectivo()==ano.getIdAnolectivo()){
-//                    if (buscarpor.equals("Nombre") && ac.getEstado() == true) {
-//                        int i = ac.getNombre().indexOf(valor);
-//                        if (i == 0) {
-//                            Object[] fila = new Object[3];
-//                            fila[0] = ac;
-//                            fila[1] = ac.getLugar();
-//                            fila[2] = ac.getComentario();
-//                            model.addRow(fila);
-//                        }
-//                    } else if (buscarpor.equals("Lugar") && ac.getEstado() == true) {
-//                        int i = ac.getLugar().getNombre().indexOf(valor);
-//                        if (i == 0) {
-//                            Object[] fila = new Object[3];
-//                            fila[0] = ac;
-//                            fila[1] = ac.getLugar();
-//                            fila[2] = ac.getComentario();
-//                            model.addRow(fila);
-//                        }
-//                    }
-//                }
-//                }
-//            }
         } else if (tipo.equals("Todos")) {
             Iterator<Tarea> act = PERSISTENCIA.getTareas().iterator();
             while (act.hasNext()) {
@@ -861,7 +897,7 @@ public class Controlador {
 //                Agenda ag=ac.getAgendas().iterator().next();
                 if (ac.getEstado()&&ac.getAgendas().size()>0) {
                     Agenda ag=ac.getAgendas().iterator().next();
-                    if(ag.getAnolectivo().getIdAnolectivo()==ano.getIdAnolectivo()){
+//                    if(ag.getAnolectivo().getIdAnolectivo()==ano.getIdAnolectivo()){
                     if (buscarpor.equals("Nombre") && ac.getEstado() == true) {
                         int i = ac.getNombre().indexOf(valor);
                         if (i == 0) {
@@ -881,7 +917,7 @@ public class Controlador {
                             model.addRow(fila);
                         }
                     }
-                }
+//                }
                 }
             }
         } else if (tipo.equals("Administrativo")) {
@@ -890,7 +926,7 @@ public class Controlador {
                 Tarea ac =(Tarea) act.next();
                 if (ac.getEstado()&&ac.getAgendas().size()>0) {
                     Agenda ag=ac.getAgendas().iterator().next();
-                    if(ag.getAnolectivo().getIdAnolectivo()==ano.getIdAnolectivo()){
+//                    if(ag.getAnolectivo().getIdAnolectivo()==ano.getIdAnolectivo()){
                     if (buscarpor.equals("Nombre") && ac.getEstado() == true) {
                         int i = ac.getNombre().indexOf(valor);
                         if (i == 0) {
@@ -910,7 +946,7 @@ public class Controlador {
                             model.addRow(fila);
                         }
                     }
-                }
+//                }
                 }
             }
         } else if (tipo.equals("Maestranza")) {
@@ -920,7 +956,7 @@ public class Controlador {
 //                Agenda ag=ac.getAgendas().iterator().next();
                 if (ac.getEstado()&&ac.getAgendas().size()>0) {
                     Agenda ag=ac.getAgendas().iterator().next();
-                    if(ag.getAnolectivo().getIdAnolectivo()==ano.getIdAnolectivo()){
+//                    if(ag.getAnolectivo().getIdAnolectivo()==ano.getIdAnolectivo()){
                     if (buscarpor.equals("Nombre") && ac.getEstado() == true) {
                         int i = ac.getNombre().indexOf(valor);
                         if (i == 0) {
@@ -940,7 +976,7 @@ public class Controlador {
                             model.addRow(fila);
                         }
                     }
-                }
+//                }
                 }
             }
         }
@@ -2363,9 +2399,9 @@ public class Controlador {
         while (pe.hasNext()) {
             band = true;
             Personal person = (Personal) pe.next();
-            Iterator<Personal> it = personales.iterator();
+            Iterator it = personales.iterator();
             while (it.hasNext()) {
-                Personal per = it.next();
+                Personal per = (Personal) it.next();
                 if (per.getIdPersonal() == person.getIdPersonal()) {
                     band = false;
                     break;
@@ -2721,207 +2757,829 @@ public class Controlador {
         return band;
     }
 
-    public void CargarTablaInasistencias(JTable Tabla, String m, int ano) {
+    
+    // <editor-fold defaultstate="collapsed" desc="Cargar Tabla Inasistencias"> 
+    public void CargarTablaInasistencias(JTable Tabla,int dia, int m, int ano,String filtro, String ver) {
         try {
             LimpiarTabla(Tabla);
             DefaultTableModel modelo = (DefaultTableModel) Tabla.getModel();
-            Controlador cc=new Controlador();
-            int mes = ObtenerMes(m);
             SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
-            Iterator ita = cc.PERSISTENCIA.ObtenerListaInasistencia(mes, ano).iterator();
-            while (ita.hasNext()) {
-                Asistencia asis =(Asistencia) ita.next();
-                if (asis.getIniciofin().getDia().getMes().getAno().getAgenda().getTarea().getEstado() == true && asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().getEstado() == true) {
-                    Date fecha = new Date();
-                    fecha.setYear(asis.getIniciofin().getDia().getMes().getAno().getAno() - 1900);
-                    fecha.setMonth(asis.getIniciofin().getDia().getMes().getMes());
-                    fecha.setDate(asis.getIniciofin().getDia().getDia());
-                    if (asis.getIniciofin().getDia().getMes().getMes() == mes && asis.getIniciofin().getDia().getMes().getAno().getAno() == ano) {
-                        Object fila[] = new Object[10];
-                        fila[0] = asis.getIdAsistencia();
-                        fila[1] = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getTarea().getNombre();
-                        fila[2] = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().toString();
-                        fila[3] = formateador.format(fecha);
-                        fila[4] = asis.getIniciofin().getInicio();
-                        fila[5] = asis.getIniciofin().getFin();
-                        fila[6] = new Boolean(false);
-                        if (asis.getTardanza() == true) {
-                            fila[7] = new Boolean(true);
-                        } else {
-                            fila[7] = new Boolean(false);
+            if(filtro.equals("DIA")){
+                if(ver.equals("INASISTENCIAS")){
+                    Iterator ita = PERSISTENCIA.ObtenerListaInasistencia(dia,m, ano+1900).iterator();
+                    while (ita.hasNext()) {
+                        Asistencia asis =(Asistencia) ita.next();
+                        if (asis.getIniciofin().getDia().getMes().getAno().getAgenda().getTarea().getEstado() == true && asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().getEstado() == true) {
+                            Date fecha = new Date();
+                            fecha.setYear(asis.getIniciofin().getDia().getMes().getAno().getAno() - 1900);
+                            fecha.setMonth(asis.getIniciofin().getDia().getMes().getMes());
+                            fecha.setDate(asis.getIniciofin().getDia().getDia());
+                            Object fila[] = new Object[9];
+                            fila[0] = asis;
+                            fila[1] = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().toString();
+                            fila[2] = formateador.format(fecha);
+                            fila[3] = asis.getIniciofin().getInicio();
+                            fila[4] = asis.getIniciofin().getFin();
+                            fila[5] = asis.getEstado();
+                            fila[6] = asis.getTardanza();
+                            if (asis.getJustificacions().iterator().hasNext()) {
+                                fila[7] = asis.getJustificacions().iterator().next().getArticulo();
+                                Justificacion ju= asis.getJustificacions().iterator().next();
+                                fila[8] = ju;
+                            }
+                            modelo.addRow(fila);
                         }
-                        if (asis.getJustificacions().iterator().hasNext()) {
-                            fila[8] = asis.getJustificacions().iterator().next().getArticulo();
-                            fila[9] = asis.getJustificacions().iterator().next().getMotivo();
+                    }
+                }else if(ver.equals("TARDANZAS")){
+                    Iterator<Asistencia> itaa = PERSISTENCIA.ObtenerListaTardanza(dia,m, ano+1900).iterator();
+                    while (itaa.hasNext()) {
+                        Asistencia asis = itaa.next();
+                        if (asis.getIniciofin().getDia().getMes().getAno().getAgenda().getTarea().getEstado() == true && asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().getEstado() == true) {
+                            Date fecha = new Date();
+                            fecha.setYear(asis.getIniciofin().getDia().getMes().getAno().getAno() - 1900);
+                            fecha.setMonth(asis.getIniciofin().getDia().getMes().getMes());
+                            fecha.setDate(asis.getIniciofin().getDia().getDia());
+                            Object fila[] = new Object[9];
+                            fila[0] = asis;
+                            fila[1] = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().toString();
+                            fila[2] = formateador.format(fecha);
+                            fila[3] = asis.getIniciofin().getInicio();
+                            fila[4] = asis.getIniciofin().getFin();
+                            fila[5] = asis.getEstado();
+                            fila[6] = asis.getTardanza();
+                            if (asis.getJustificacions().iterator().hasNext()) {
+                                fila[7] = asis.getJustificacions().iterator().next().getArticulo();
+                                Justificacion ju= asis.getJustificacions().iterator().next();
+                                fila[8] = ju;
+                            }
+                            modelo.addRow(fila);
                         }
-                        modelo.addRow(fila);
+                    }
+                }else if(ver.equals("ASISTENCIAS")){
+                    Iterator<Asistencia> itaa = PERSISTENCIA.ObtenerListaAsistencia(dia,m, ano+1900).iterator();
+                    while (itaa.hasNext()) {
+                        Asistencia asis = itaa.next();
+                        if (asis.getIniciofin().getDia().getMes().getAno().getAgenda().getTarea().getEstado() == true && asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().getEstado() == true) {
+                            Date fecha = new Date();
+                            fecha.setYear(asis.getIniciofin().getDia().getMes().getAno().getAno() - 1900);
+                            fecha.setMonth(asis.getIniciofin().getDia().getMes().getMes());
+                            fecha.setDate(asis.getIniciofin().getDia().getDia());
+                            Object fila[] = new Object[9];
+                            fila[0] = asis;
+                            fila[1] = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().toString();
+                            fila[2] = formateador.format(fecha);
+                            fila[3] = asis.getIniciofin().getInicio();
+                            fila[4] = asis.getIniciofin().getFin();
+                            fila[5] = asis.getEstado();
+                            fila[6] = asis.getTardanza();
+                            if (asis.getJustificacions().iterator().hasNext()) {
+                                fila[7] = asis.getJustificacions().iterator().next().getArticulo();
+                                Justificacion ju= asis.getJustificacions().iterator().next();
+                                fila[8] = ju;
+                            }
+                            modelo.addRow(fila);
+                        }
+                    }
+                }else if(ver.equals("TODOS")){
+                    Iterator ita = PERSISTENCIA.ObtenerListaInasistencia(dia,m, ano+1900).iterator();
+                    while (ita.hasNext()) {
+                        Asistencia asis =(Asistencia) ita.next();
+                        if (asis.getIniciofin().getDia().getMes().getAno().getAgenda().getTarea().getEstado() == true && asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().getEstado() == true) {
+                            Date fecha = new Date();
+                            fecha.setYear(asis.getIniciofin().getDia().getMes().getAno().getAno() - 1900);
+                            fecha.setMonth(asis.getIniciofin().getDia().getMes().getMes());
+                            fecha.setDate(asis.getIniciofin().getDia().getDia());
+                            Object fila[] = new Object[9];
+                            fila[0] = asis;
+                            fila[1] = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().toString();
+                            fila[2] = formateador.format(fecha);
+                            fila[3] = asis.getIniciofin().getInicio();
+                            fila[4] = asis.getIniciofin().getFin();
+                            fila[5] = asis.getEstado();
+                            fila[6] = asis.getTardanza();
+                            if (asis.getJustificacions().iterator().hasNext()) {
+                                fila[7] = asis.getJustificacions().iterator().next().getArticulo();
+                                Justificacion ju= asis.getJustificacions().iterator().next();
+                                fila[8] = ju;
+                            }
+                            modelo.addRow(fila);
+                        }
+                    }
+                    Iterator<Asistencia> itaa = PERSISTENCIA.ObtenerListaTardanza(dia,m, ano+1900).iterator();
+                    while (itaa.hasNext()) {
+                        Asistencia asis = itaa.next();
+                        if (asis.getIniciofin().getDia().getMes().getAno().getAgenda().getTarea().getEstado() == true && asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().getEstado() == true) {
+                            Date fecha = new Date();
+                            fecha.setYear(asis.getIniciofin().getDia().getMes().getAno().getAno() - 1900);
+                            fecha.setMonth(asis.getIniciofin().getDia().getMes().getMes());
+                            fecha.setDate(asis.getIniciofin().getDia().getDia());
+                            Object fila[] = new Object[9];
+                            fila[0] = asis;
+                            fila[1] = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().toString();
+                            fila[2] = formateador.format(fecha);
+                            fila[3] = asis.getIniciofin().getInicio();
+                            fila[4] = asis.getIniciofin().getFin();
+                            fila[5] = asis.getEstado();
+                            fila[6] = asis.getTardanza();
+                            if (asis.getJustificacions().iterator().hasNext()) {
+                                fila[7] = asis.getJustificacions().iterator().next().getArticulo();
+                                Justificacion ju= asis.getJustificacions().iterator().next();
+                                fila[8] = ju;
+                            }
+                            modelo.addRow(fila);
+                        }
+                    }
+                }
+            }else if(filtro.equals("MES")){
+                if(ver.equals("TODOS")){
+                    Iterator ita = PERSISTENCIA.ObtenerListaInasistencia(m, ano+1900).iterator();
+                    while (ita.hasNext()) {
+                        Asistencia asis =(Asistencia) ita.next();
+                        if (asis.getIniciofin().getDia().getMes().getAno().getAgenda().getTarea().getEstado() == true && asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().getEstado() == true) {
+                            Date fecha = new Date();
+                            fecha.setYear(asis.getIniciofin().getDia().getMes().getAno().getAno() - 1900);
+                            fecha.setMonth(asis.getIniciofin().getDia().getMes().getMes());
+                            fecha.setDate(asis.getIniciofin().getDia().getDia());
+                            Object fila[] = new Object[9];
+                            fila[0] = asis;
+                            fila[1] = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().toString();
+                            fila[2] = formateador.format(fecha);
+                            fila[3] = asis.getIniciofin().getInicio();
+                            fila[4] = asis.getIniciofin().getFin();
+                            fila[5] = asis.getEstado();
+                            fila[6] = asis.getTardanza();
+                            if (asis.getJustificacions().iterator().hasNext()) {
+                                fila[7] = asis.getJustificacions().iterator().next().getArticulo();
+                                Justificacion ju= asis.getJustificacions().iterator().next();
+                                fila[8] = ju;
+                            }
+                            modelo.addRow(fila);
+                        }
+                    }
+                    Iterator<Asistencia> itaa = PERSISTENCIA.ObtenerListaTardanza(m, ano+1900).iterator();
+                    while (itaa.hasNext()) {
+                        Asistencia asis = itaa.next();
+                        if (asis.getIniciofin().getDia().getMes().getAno().getAgenda().getTarea().getEstado() == true && asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().getEstado() == true) {
+                            Date fecha = new Date();
+                            fecha.setYear(asis.getIniciofin().getDia().getMes().getAno().getAno() - 1900);
+                            fecha.setMonth(asis.getIniciofin().getDia().getMes().getMes());
+                            fecha.setDate(asis.getIniciofin().getDia().getDia());
+                            Object fila[] = new Object[9];
+                            fila[0] = asis;
+                            fila[1] = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().toString();
+                            fila[2] = formateador.format(fecha);
+                            fila[3] = asis.getIniciofin().getInicio();
+                            fila[4] = asis.getIniciofin().getFin();
+                            fila[5] = asis.getEstado();
+                            fila[6] = asis.getTardanza();
+                            if (asis.getJustificacions().iterator().hasNext()) {
+                                fila[7] = asis.getJustificacions().iterator().next().getArticulo();
+                                Justificacion ju= asis.getJustificacions().iterator().next();
+                                fila[8] = ju;
+                            }
+                            modelo.addRow(fila);
+                        }
+                    }
+                }else if(ver.equals("INASISTENCIAS")){
+                    Iterator ita = PERSISTENCIA.ObtenerListaInasistencia(m, ano+1900).iterator();
+                    while (ita.hasNext()) {
+                        Asistencia asis =(Asistencia) ita.next();
+                        if (asis.getIniciofin().getDia().getMes().getAno().getAgenda().getTarea().getEstado() == true && asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().getEstado() == true) {
+                            Date fecha = new Date();
+                            fecha.setYear(asis.getIniciofin().getDia().getMes().getAno().getAno() - 1900);
+                            fecha.setMonth(asis.getIniciofin().getDia().getMes().getMes());
+                            fecha.setDate(asis.getIniciofin().getDia().getDia());
+                            Object fila[] = new Object[9];
+                            fila[0] = asis;
+                            fila[1] = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().toString();
+                            fila[2] = formateador.format(fecha);
+                            fila[3] = asis.getIniciofin().getInicio();
+                            fila[4] = asis.getIniciofin().getFin();
+                            fila[5] = asis.getEstado();
+                            fila[6] = asis.getTardanza();
+                            if (asis.getJustificacions().iterator().hasNext()) {
+                                fila[7] = asis.getJustificacions().iterator().next().getArticulo();
+                                Justificacion ju= asis.getJustificacions().iterator().next();
+                                fila[8] = ju;
+                            }
+                            modelo.addRow(fila);
+                        }
+                    }
+                }else if(ver.equals("TARDANZAS")){
+                    Iterator<Asistencia> itaa = PERSISTENCIA.ObtenerListaTardanza(m, ano+1900).iterator();
+                    while (itaa.hasNext()) {
+                        Asistencia asis = itaa.next();
+                        if (asis.getIniciofin().getDia().getMes().getAno().getAgenda().getTarea().getEstado() == true && asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().getEstado() == true) {
+                            Date fecha = new Date();
+                            fecha.setYear(asis.getIniciofin().getDia().getMes().getAno().getAno() - 1900);
+                            fecha.setMonth(asis.getIniciofin().getDia().getMes().getMes());
+                            fecha.setDate(asis.getIniciofin().getDia().getDia());
+                            Object fila[] = new Object[9];
+                            fila[0] = asis;
+                            fila[1] = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().toString();
+                            fila[2] = formateador.format(fecha);
+                            fila[3] = asis.getIniciofin().getInicio();
+                            fila[4] = asis.getIniciofin().getFin();
+                            fila[5] = asis.getEstado();
+                            fila[6] = asis.getTardanza();
+                            if (asis.getJustificacions().iterator().hasNext()) {
+                                fila[7] = asis.getJustificacions().iterator().next().getArticulo();
+                                Justificacion ju= asis.getJustificacions().iterator().next();
+                                fila[8] = ju;
+                            }
+                            modelo.addRow(fila);
+                        }
+                    }
+                }else if(ver.equals("ASISTENCIAS")){
+                    Iterator<Asistencia> itaa = PERSISTENCIA.ObtenerListaAsistencia(m, ano+1900).iterator();
+                    while (itaa.hasNext()) {
+                        Asistencia asis = itaa.next();
+                        if (asis.getIniciofin().getDia().getMes().getAno().getAgenda().getTarea().getEstado() == true && asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().getEstado() == true) {
+                            Date fecha = new Date();
+                            fecha.setYear(asis.getIniciofin().getDia().getMes().getAno().getAno() - 1900);
+                            fecha.setMonth(asis.getIniciofin().getDia().getMes().getMes());
+                            fecha.setDate(asis.getIniciofin().getDia().getDia());
+                            Object fila[] = new Object[9];
+                            fila[0] = asis;
+                            fila[1] = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().toString();
+                            fila[2] = formateador.format(fecha);
+                            fila[3] = asis.getIniciofin().getInicio();
+                            fila[4] = asis.getIniciofin().getFin();
+                            fila[5] = asis.getEstado();
+                            fila[6] = asis.getTardanza();
+                            if (asis.getJustificacions().iterator().hasNext()) {
+                                fila[7] = asis.getJustificacions().iterator().next().getArticulo();
+                                Justificacion ju= asis.getJustificacions().iterator().next();
+                                fila[8] = ju;
+                            }
+                            modelo.addRow(fila);
+                        }
+                    }
+                }
+            }else if(filtro.equals("AÑO")){
+                if(ver.equals("TODOS")){
+                    Iterator ita = PERSISTENCIA.ObtenerListaInasistencia(ano+1900).iterator();
+                    while (ita.hasNext()) {
+                        Asistencia asis =(Asistencia) ita.next();
+                        if (asis.getIniciofin().getDia().getMes().getAno().getAgenda().getTarea().getEstado() == true && asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().getEstado() == true) {
+                            Date fecha = new Date();
+                            fecha.setYear(asis.getIniciofin().getDia().getMes().getAno().getAno() - 1900);
+                            fecha.setMonth(asis.getIniciofin().getDia().getMes().getMes());
+                            fecha.setDate(asis.getIniciofin().getDia().getDia());
+                            Object fila[] = new Object[9];
+                            fila[0] = asis;
+                            fila[1] = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().toString();
+                            fila[2] = formateador.format(fecha);
+                            fila[3] = asis.getIniciofin().getInicio();
+                            fila[4] = asis.getIniciofin().getFin();
+                            fila[5] = asis.getEstado();
+                            fila[6] = asis.getTardanza();
+                            if (asis.getJustificacions().iterator().hasNext()) {
+                                fila[7] = asis.getJustificacions().iterator().next().getArticulo();
+                                Justificacion ju= asis.getJustificacions().iterator().next();
+                                fila[8] = ju;
+                            }
+                            modelo.addRow(fila);
+                        }
+                    }
+                    Iterator<Asistencia> itaa = PERSISTENCIA.ObtenerListaTardanza(ano+1900).iterator();
+                    while (itaa.hasNext()) {
+                        Asistencia asis = itaa.next();
+                        if (asis.getIniciofin().getDia().getMes().getAno().getAgenda().getTarea().getEstado() == true && asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().getEstado() == true) {
+                            Date fecha = new Date();
+                            fecha.setYear(asis.getIniciofin().getDia().getMes().getAno().getAno() - 1900);
+                            fecha.setMonth(asis.getIniciofin().getDia().getMes().getMes());
+                            fecha.setDate(asis.getIniciofin().getDia().getDia());
+                            Object fila[] = new Object[9];
+                            fila[0] = asis;
+                            fila[1] = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().toString();
+                            fila[2] = formateador.format(fecha);
+                            fila[3] = asis.getIniciofin().getInicio();
+                            fila[4] = asis.getIniciofin().getFin();
+                            fila[5] = asis.getEstado();
+                            fila[6] = asis.getTardanza();
+                            if (asis.getJustificacions().iterator().hasNext()) {
+                                fila[7] = asis.getJustificacions().iterator().next().getArticulo();
+                                Justificacion ju= asis.getJustificacions().iterator().next();
+                                fila[8] = ju;
+                            }
+                            modelo.addRow(fila);
+                        }
+                    }
+                }else if(ver.equals("INASISTENCIAS")){
+                    Iterator ita = PERSISTENCIA.ObtenerListaInasistencia(ano+1900).iterator();
+                    while (ita.hasNext()) {
+                        Asistencia asis =(Asistencia) ita.next();
+                        if (asis.getIniciofin().getDia().getMes().getAno().getAgenda().getTarea().getEstado() == true && asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().getEstado() == true) {
+                            Date fecha = new Date();
+                            fecha.setYear(asis.getIniciofin().getDia().getMes().getAno().getAno() - 1900);
+                            fecha.setMonth(asis.getIniciofin().getDia().getMes().getMes());
+                            fecha.setDate(asis.getIniciofin().getDia().getDia());
+                            Object fila[] = new Object[9];
+                            fila[0] = asis;
+                            fila[1] = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().toString();
+                            fila[2] = formateador.format(fecha);
+                            fila[3] = asis.getIniciofin().getInicio();
+                            fila[4] = asis.getIniciofin().getFin();
+                            fila[5] = asis.getEstado();
+                            fila[6] = asis.getTardanza();
+                            if (asis.getJustificacions().iterator().hasNext()) {
+                                fila[7] = asis.getJustificacions().iterator().next().getArticulo();
+                                Justificacion ju= asis.getJustificacions().iterator().next();
+                                fila[8] = ju;
+                            }
+                            modelo.addRow(fila);
+                        }
+                    }
+                } else if(ver.equals("TARDANZAS")){
+                    Iterator<Asistencia> itaa = PERSISTENCIA.ObtenerListaTardanza(ano+1900).iterator();
+                    while (itaa.hasNext()) {
+                        Asistencia asis = itaa.next();
+                        if (asis.getIniciofin().getDia().getMes().getAno().getAgenda().getTarea().getEstado() == true && asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().getEstado() == true) {
+                            Date fecha = new Date();
+                            fecha.setYear(asis.getIniciofin().getDia().getMes().getAno().getAno() - 1900);
+                            fecha.setMonth(asis.getIniciofin().getDia().getMes().getMes());
+                            fecha.setDate(asis.getIniciofin().getDia().getDia());
+                            Object fila[] = new Object[9];
+                            fila[0] = asis;
+                            fila[1] = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().toString();
+                            fila[2] = formateador.format(fecha);
+                            fila[3] = asis.getIniciofin().getInicio();
+                            fila[4] = asis.getIniciofin().getFin();
+                            fila[5] = asis.getEstado();
+                            fila[6] = asis.getTardanza();
+                            if (asis.getJustificacions().iterator().hasNext()) {
+                                fila[7] = asis.getJustificacions().iterator().next().getArticulo();
+                                Justificacion ju= asis.getJustificacions().iterator().next();
+                                fila[8] = ju;
+                            }
+                            modelo.addRow(fila);
+                        }
+                    }
+                }else if(ver.equals("ASISTENCIAS")){
+                    Iterator<Asistencia> itaa = PERSISTENCIA.ObtenerListaAsistencia(ano+1900).iterator();
+                    while (itaa.hasNext()) {
+                        Asistencia asis = itaa.next();
+                        if (asis.getIniciofin().getDia().getMes().getAno().getAgenda().getTarea().getEstado() == true && asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().getEstado() == true) {
+                            Date fecha = new Date();
+                            fecha.setYear(asis.getIniciofin().getDia().getMes().getAno().getAno() - 1900);
+                            fecha.setMonth(asis.getIniciofin().getDia().getMes().getMes());
+                            fecha.setDate(asis.getIniciofin().getDia().getDia());
+                            Object fila[] = new Object[9];
+                            fila[0] = asis;
+                            fila[1] = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().toString();
+                            fila[2] = formateador.format(fecha);
+                            fila[3] = asis.getIniciofin().getInicio();
+                            fila[4] = asis.getIniciofin().getFin();
+                            fila[5] = asis.getEstado();
+                            fila[6] = asis.getTardanza();
+                            if (asis.getJustificacions().iterator().hasNext()) {
+                                fila[7] = asis.getJustificacions().iterator().next().getArticulo();
+                                Justificacion ju= asis.getJustificacions().iterator().next();
+                                fila[8] = ju;
+                            }
+                            modelo.addRow(fila);
+                        }
                     }
                 }
             }
-            Iterator<Asistencia> itaa = Controlador.getPERSISTENCIA().ObtenerListaTardanza(mes, ano).iterator();
-            while (itaa.hasNext()) {
-                Asistencia asis = itaa.next();
-                if (asis.getIniciofin().getDia().getMes().getAno().getAgenda().getTarea().getEstado() == true && asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().getEstado() == true) {
-                    Date fecha = new Date();
-                    fecha.setYear(asis.getIniciofin().getDia().getMes().getAno().getAno() - 1900);
-                    fecha.setMonth(asis.getIniciofin().getDia().getMes().getMes());
-                    fecha.setDate(asis.getIniciofin().getDia().getDia());
-                    if (asis.getIniciofin().getDia().getMes().getMes() == mes && asis.getIniciofin().getDia().getMes().getAno().getAno() == ano) {
-                        Object fila[] = new Object[10];
-                        fila[0] = asis.getIdAsistencia();
-                        fila[1] = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getTarea().getNombre();
-                        fila[2] = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().toString();
-                        fila[3] = formateador.format(fecha);
-                        fila[4] = asis.getIniciofin().getInicio();
-                        fila[5] = asis.getIniciofin().getFin();
-                        if (asis.getEstado() == true) {
-                            fila[6] = new Boolean(true);
-                        } else {
-                            fila[6] = new Boolean(false);
-                        }
-                        if (asis.getTardanza() == true) {
-                            fila[7] = new Boolean(true);
-                        } else {
-                            fila[7] = new Boolean(false);
-                        }
-                        if (asis.getJustificacions().iterator().hasNext()) {
-                            fila[8] = asis.getJustificacions().iterator().next().getArticulo();
-                            fila[9] = asis.getJustificacions().iterator().next().getMotivo();
-                        }
-                        modelo.addRow(fila);
-                    }
-                }
-            }
-
             Tabla.setModel(modelo);
             Tabla.getColumnModel().getColumn(0).setWidth(30);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, ex.toString());
         }
     }
+    // </editor-fold>
     
-    public void CargarTablaInasistencias(JTable Tabla, String m, int ano, Personal per) {
+    public void CargarTablaInasistencias(JTable Tabla,int dia, int m, int ano, Personal per,String filtro,String ver) {
         try {
             LimpiarTabla(Tabla);
             DefaultTableModel modelo = (DefaultTableModel) Tabla.getModel();
-            Controlador cc = new Controlador();
-            int mes = ObtenerMes(m);
             SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
-            Iterator ita = cc.PERSISTENCIA.ObtenerListaInasistencia(mes, ano).iterator();
-            while (ita.hasNext()) {
-                Asistencia asis = (Asistencia) ita.next();
-                if (asis.getIniciofin().getDia().getMes().getAno().getAgenda().getTarea().getEstado() == true && asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().getEstado() == true) {
-                    Date fecha = new Date();
-                    fecha.setYear(asis.getIniciofin().getDia().getMes().getAno().getAno() - 1900);
-                    fecha.setMonth(asis.getIniciofin().getDia().getMes().getMes());
-                    fecha.setDate(asis.getIniciofin().getDia().getDia());
-                    if (asis.getIniciofin().getDia().getMes().getMes() == mes && asis.getIniciofin().getDia().getMes().getAno().getAno() == ano) {
-                        int person = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().getIdPersonal();
-                        if (person == per.getIdPersonal()) {
-                            Object fila[] = new Object[10];
-                            fila[0] = asis.getIdAsistencia();
-                            fila[1] = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getTarea().getNombre();
-                            fila[2] = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().toString();
-                            fila[3] = formateador.format(fecha);
-                            fila[4] = asis.getIniciofin().getInicio();
-                            fila[5] = asis.getIniciofin().getFin();
-                            fila[6] = new Boolean(false);
-                            if (asis.getTardanza() == true) {
-                                fila[7] = new Boolean(true);
-                            } else {
-                                fila[7] = new Boolean(false);
+            if(filtro.equals("DIA")){
+                if(ver.equals("TODOS")){
+                    Iterator ita = PERSISTENCIA.ObtenerListaInasistencia(dia,m, ano+1900).iterator();
+                    while (ita.hasNext()) {
+                        Asistencia asis = (Asistencia) ita.next();
+                        if (asis.getIniciofin().getDia().getMes().getAno().getAgenda().getTarea().getEstado() == true && asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().getEstado() == true) {
+                            Date fecha = new Date();
+                            fecha.setYear(asis.getIniciofin().getDia().getMes().getAno().getAno() - 1900);
+                            fecha.setMonth(asis.getIniciofin().getDia().getMes().getMes());
+                            fecha.setDate(asis.getIniciofin().getDia().getDia());
+                            int person = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().getIdPersonal();
+                            if (person == per.getIdPersonal()) {
+                                Object fila[] = new Object[9];
+                                fila[0] = asis;
+                                fila[1] = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().toString();
+                                fila[2] = formateador.format(fecha);
+                                fila[3] = asis.getIniciofin().getInicio();
+                                fila[4] = asis.getIniciofin().getFin();
+                                fila[5] = asis.getEstado();
+                                fila[6] = asis.getTardanza();
+                                if (asis.getJustificacions().iterator().hasNext()) {
+                                    fila[7] = asis.getJustificacions().iterator().next().getArticulo();
+                                    Justificacion ju= asis.getJustificacions().iterator().next();
+                                    fila[8] = ju;
+                                }
+                                modelo.addRow(fila);
                             }
-                            if (asis.getJustificacions().iterator().hasNext()) {
-                                fila[8] = asis.getJustificacions().iterator().next().getArticulo();
-                                fila[9] = asis.getJustificacions().iterator().next().getMotivo();
+                        }
+                    }
+                    Iterator<Asistencia> itaa = PERSISTENCIA.ObtenerListaTardanza(dia,m, ano+1900).iterator();
+                    while (itaa.hasNext()) {
+                        Asistencia asis = itaa.next();
+                        if (asis.getIniciofin().getDia().getMes().getAno().getAgenda().getTarea().getEstado() == true && asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().getEstado() == true) {
+                            Date fecha = new Date();
+                            fecha.setYear(asis.getIniciofin().getDia().getMes().getAno().getAno() - 1900);
+                            fecha.setMonth(asis.getIniciofin().getDia().getMes().getMes());
+                            fecha.setDate(asis.getIniciofin().getDia().getDia());
+                            Personal person = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal();
+                            if (person.getIdPersonal() == per.getIdPersonal()) {
+                                Object fila[] = new Object[9];
+                                fila[0] = asis;
+                                fila[1] = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().toString();
+                                fila[2] = formateador.format(fecha);
+                                fila[3] = asis.getIniciofin().getInicio();
+                                fila[4] = asis.getIniciofin().getFin();
+                                fila[5] = asis.getEstado();
+                                fila[6] = asis.getTardanza();
+                                if (asis.getJustificacions().iterator().hasNext()) {
+                                    fila[7] = asis.getJustificacions().iterator().next().getArticulo();
+                                    Justificacion ju= asis.getJustificacions().iterator().next();
+                                    fila[8] = ju;
+                                }
+                                modelo.addRow(fila);
                             }
-                            modelo.addRow(fila);
-                        } 
-//                        else {
-//                            Object fila[] = new Object[10];
-//                            fila[0] = asis.getIdAsistencia();
-//                            fila[1] = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getTarea().getNombre();
-//                            fila[2] = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().toString();
-//                            fila[3] = formateador.format(fecha);
-//                            fila[4] = asis.getIniciofin().getInicio();
-//                            fila[5] = asis.getIniciofin().getFin();
-//                            fila[6] = new Boolean(false);
-//                            if (asis.getTardanza() == true) {
-//                                fila[7] = new Boolean(true);
-//                            } else {
-//                                fila[7] = new Boolean(false);
-//                            }
-//                            if (asis.getJustificacions().iterator().hasNext()) {
-//                                fila[8] = asis.getJustificacions().iterator().next().getArticulo();
-//                                fila[9] = asis.getJustificacions().iterator().next().getMotivo();
-//                            }
-//                            modelo.addRow(fila);
-//                        }
+                        }
+                    }
+                } else if(ver.equals("INASISTENCIAS")){
+                    Iterator ita = PERSISTENCIA.ObtenerListaInasistencia(dia,m, ano+1900).iterator();
+                    while (ita.hasNext()) {
+                        Asistencia asis = (Asistencia) ita.next();
+                        if (asis.getIniciofin().getDia().getMes().getAno().getAgenda().getTarea().getEstado() == true && asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().getEstado() == true) {
+                            Date fecha = new Date();
+                            fecha.setYear(asis.getIniciofin().getDia().getMes().getAno().getAno() - 1900);
+                            fecha.setMonth(asis.getIniciofin().getDia().getMes().getMes());
+                            fecha.setDate(asis.getIniciofin().getDia().getDia());
+                            int person = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().getIdPersonal();
+                            if (person == per.getIdPersonal()) {
+                                Object fila[] = new Object[9];
+                                fila[0] = asis;
+                                fila[1] = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().toString();
+                                fila[2] = formateador.format(fecha);
+                                fila[3] = asis.getIniciofin().getInicio();
+                                fila[4] = asis.getIniciofin().getFin();
+                                fila[5] = asis.getEstado();
+                                fila[6] = asis.getTardanza();
+                                if (asis.getJustificacions().iterator().hasNext()) {
+                                    fila[7] = asis.getJustificacions().iterator().next().getArticulo();
+                                    Justificacion ju= asis.getJustificacions().iterator().next();
+                                    fila[8] = ju;
+                                }
+                                modelo.addRow(fila);
+                            }
+                        }
+                    }
+                }else if(ver.equals("TARDANZAS")){
+                    Iterator<Asistencia> itaa = PERSISTENCIA.ObtenerListaTardanza(dia,m, ano+1900).iterator();
+                    while (itaa.hasNext()) {
+                        Asistencia asis = itaa.next();
+                        if (asis.getIniciofin().getDia().getMes().getAno().getAgenda().getTarea().getEstado() == true && asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().getEstado() == true) {
+                            Date fecha = new Date();
+                            fecha.setYear(asis.getIniciofin().getDia().getMes().getAno().getAno() - 1900);
+                            fecha.setMonth(asis.getIniciofin().getDia().getMes().getMes());
+                            fecha.setDate(asis.getIniciofin().getDia().getDia());
+                            Personal person = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal();
+                            if (person.getIdPersonal() == per.getIdPersonal()) {
+                                Object fila[] = new Object[9];
+                                fila[0] = asis;
+                                fila[1] = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().toString();
+                                fila[2] = formateador.format(fecha);
+                                fila[3] = asis.getIniciofin().getInicio();
+                                fila[4] = asis.getIniciofin().getFin();
+                                fila[5] = asis.getEstado();
+                                fila[6] = asis.getTardanza();
+                                if (asis.getJustificacions().iterator().hasNext()) {
+                                    fila[7] = asis.getJustificacions().iterator().next().getArticulo();
+                                    Justificacion ju= asis.getJustificacions().iterator().next();
+                                    fila[8] = ju;
+                                }
+                                modelo.addRow(fila);
+                            }
+                        }
+                    }
+                } else if(ver.equals("ASISTENCIAS")){
+                    Iterator ita = PERSISTENCIA.ObtenerListaAsistencia(dia,m, ano+1900).iterator();
+                    while (ita.hasNext()) {
+                        Asistencia asis = (Asistencia) ita.next();
+                        if (asis.getIniciofin().getDia().getMes().getAno().getAgenda().getTarea().getEstado() == true && asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().getEstado() == true) {
+                            Date fecha = new Date();
+                            fecha.setYear(asis.getIniciofin().getDia().getMes().getAno().getAno() - 1900);
+                            fecha.setMonth(asis.getIniciofin().getDia().getMes().getMes());
+                            fecha.setDate(asis.getIniciofin().getDia().getDia());
+                            int person = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().getIdPersonal();
+                            if (person == per.getIdPersonal()) {
+                                Object fila[] = new Object[9];
+                                fila[0] = asis;
+                                fila[1] = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().toString();
+                                fila[2] = formateador.format(fecha);
+                                fila[3] = asis.getIniciofin().getInicio();
+                                fila[4] = asis.getIniciofin().getFin();
+                                fila[5] = asis.getEstado();
+                                fila[6] = asis.getTardanza();
+                                if (asis.getJustificacions().iterator().hasNext()) {
+                                    fila[7] = asis.getJustificacions().iterator().next().getArticulo();
+                                    Justificacion ju= asis.getJustificacions().iterator().next();
+                                    fila[8] = ju;
+                                }
+                                modelo.addRow(fila);
+                            }
+                        }
+                    }
+                }
+            }else if(filtro.equals("MES")){
+                if(ver.equals("TODOS")){
+                    Iterator ita = PERSISTENCIA.ObtenerListaInasistencia(m, ano+1900).iterator();
+                    while (ita.hasNext()) {
+                        Asistencia asis = (Asistencia) ita.next();
+                        if (asis.getIniciofin().getDia().getMes().getAno().getAgenda().getTarea().getEstado() == true && asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().getEstado() == true) {
+                            Date fecha = new Date();
+                            fecha.setYear(asis.getIniciofin().getDia().getMes().getAno().getAno() - 1900);
+                            fecha.setMonth(asis.getIniciofin().getDia().getMes().getMes());
+                            fecha.setDate(asis.getIniciofin().getDia().getDia());
+                            int person = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().getIdPersonal();
+                            if (person == per.getIdPersonal()) {
+                                Object fila[] = new Object[9];
+                                fila[0] = asis;
+                                fila[1] = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().toString();
+                                fila[2] = formateador.format(fecha);
+                                fila[3] = asis.getIniciofin().getInicio();
+                                fila[4] = asis.getIniciofin().getFin();
+                                fila[5] = asis.getEstado();
+                                fila[6] = asis.getTardanza();
+                                if (asis.getJustificacions().iterator().hasNext()) {
+                                    fila[7] = asis.getJustificacions().iterator().next().getArticulo();
+                                    Justificacion ju= asis.getJustificacions().iterator().next();
+                                    fila[8] = ju;
+                                }
+                                modelo.addRow(fila);
+                            }
+                        }
+                    }
+                    Iterator<Asistencia> itaa = PERSISTENCIA.ObtenerListaTardanza(m, ano+1900).iterator();
+                    while (itaa.hasNext()) {
+                        Asistencia asis = itaa.next();
+                        if (asis.getIniciofin().getDia().getMes().getAno().getAgenda().getTarea().getEstado() == true && asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().getEstado() == true) {
+                            Date fecha = new Date();
+                            fecha.setYear(asis.getIniciofin().getDia().getMes().getAno().getAno() - 1900);
+                            fecha.setMonth(asis.getIniciofin().getDia().getMes().getMes());
+                            fecha.setDate(asis.getIniciofin().getDia().getDia());
+                            Personal person = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal();
+                            if (person.getIdPersonal() == per.getIdPersonal()) {
+                                Object fila[] = new Object[9];
+                                fila[0] = asis;
+                                fila[1] = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().toString();
+                                fila[2] = formateador.format(fecha);
+                                fila[3] = asis.getIniciofin().getInicio();
+                                fila[4] = asis.getIniciofin().getFin();
+                                fila[5] = asis.getEstado();
+                                fila[6] = asis.getTardanza();
+                                if (asis.getJustificacions().iterator().hasNext()) {
+                                    fila[7] = asis.getJustificacions().iterator().next().getArticulo();
+                                    Justificacion ju= asis.getJustificacions().iterator().next();
+                                    fila[8] = ju;
+                                }
+                                modelo.addRow(fila);
+                            }
+                        }
+                    }
+                } else if(ver.equals("INASISTENCIAS")){
+                    Iterator ita = PERSISTENCIA.ObtenerListaInasistencia(m, ano+1900).iterator();
+                    while (ita.hasNext()) {
+                        Asistencia asis = (Asistencia) ita.next();
+                        if (asis.getIniciofin().getDia().getMes().getAno().getAgenda().getTarea().getEstado() == true && asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().getEstado() == true) {
+                            Date fecha = new Date();
+                            fecha.setYear(asis.getIniciofin().getDia().getMes().getAno().getAno() - 1900);
+                            fecha.setMonth(asis.getIniciofin().getDia().getMes().getMes());
+                            fecha.setDate(asis.getIniciofin().getDia().getDia());
+                            int person = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().getIdPersonal();
+                            if (person == per.getIdPersonal()) {
+                                Object fila[] = new Object[9];
+                                fila[0] = asis;
+                                fila[1] = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().toString();
+                                fila[2] = formateador.format(fecha);
+                                fila[3] = asis.getIniciofin().getInicio();
+                                fila[4] = asis.getIniciofin().getFin();
+                                fila[5] = asis.getEstado();
+                                fila[6] = asis.getTardanza();
+                                if (asis.getJustificacions().iterator().hasNext()) {
+                                    fila[7] = asis.getJustificacions().iterator().next().getArticulo();
+                                    Justificacion ju= asis.getJustificacions().iterator().next();
+                                    fila[8] = ju;
+                                }
+                                modelo.addRow(fila);
+                            }
+                        }
+                    }
+                } else if(ver.equals("TARDANZAS")){
+                    Iterator<Asistencia> itaa = PERSISTENCIA.ObtenerListaTardanza(m, ano+1900).iterator();
+                    while (itaa.hasNext()) {
+                        Asistencia asis = itaa.next();
+                        if (asis.getIniciofin().getDia().getMes().getAno().getAgenda().getTarea().getEstado() == true && asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().getEstado() == true) {
+                            Date fecha = new Date();
+                            fecha.setYear(asis.getIniciofin().getDia().getMes().getAno().getAno() - 1900);
+                            fecha.setMonth(asis.getIniciofin().getDia().getMes().getMes());
+                            fecha.setDate(asis.getIniciofin().getDia().getDia());
+                            Personal person = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal();
+                            if (person.getIdPersonal() == per.getIdPersonal()) {
+                                Object fila[] = new Object[9];
+                                fila[0] = asis;
+                                fila[1] = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().toString();
+                                fila[2] = formateador.format(fecha);
+                                fila[3] = asis.getIniciofin().getInicio();
+                                fila[4] = asis.getIniciofin().getFin();
+                                fila[5] = asis.getEstado();
+                                fila[6] = asis.getTardanza();
+                                if (asis.getJustificacions().iterator().hasNext()) {
+                                    fila[7] = asis.getJustificacions().iterator().next().getArticulo();
+                                    Justificacion ju= asis.getJustificacions().iterator().next();
+                                    fila[8] = ju;
+                                }
+                                modelo.addRow(fila);
+                            }
+                        }
+                    }
+                } else if(ver.equals("ASISTENCIAS")){
+                    Iterator ita = PERSISTENCIA.ObtenerListaAsistencia(m, ano+1900).iterator();
+                    while (ita.hasNext()) {
+                        Asistencia asis = (Asistencia) ita.next();
+                        if (asis.getIniciofin().getDia().getMes().getAno().getAgenda().getTarea().getEstado() == true && asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().getEstado() == true) {
+                            Date fecha = new Date();
+                            fecha.setYear(asis.getIniciofin().getDia().getMes().getAno().getAno() - 1900);
+                            fecha.setMonth(asis.getIniciofin().getDia().getMes().getMes());
+                            fecha.setDate(asis.getIniciofin().getDia().getDia());
+                            int person = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().getIdPersonal();
+                            if (person == per.getIdPersonal()) {
+                                Object fila[] = new Object[9];
+                                fila[0] = asis;
+                                fila[1] = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().toString();
+                                fila[2] = formateador.format(fecha);
+                                fila[3] = asis.getIniciofin().getInicio();
+                                fila[4] = asis.getIniciofin().getFin();
+                                fila[5] = asis.getEstado();
+                                fila[6] = asis.getTardanza();
+                                if (asis.getJustificacions().iterator().hasNext()) {
+                                    fila[7] = asis.getJustificacions().iterator().next().getArticulo();
+                                    Justificacion ju= asis.getJustificacions().iterator().next();
+                                    fila[8] = ju;
+                                }
+                                modelo.addRow(fila);
+                            }
+                        }
+                    }
+                }
+            } else if(filtro.equals("AÑO")){
+                if(ver.equals("TODOS")){
+                    Iterator ita = PERSISTENCIA.ObtenerListaInasistencia(ano+1900).iterator();
+                    while (ita.hasNext()) {
+                        Asistencia asis = (Asistencia) ita.next();
+                        if (asis.getIniciofin().getDia().getMes().getAno().getAgenda().getTarea().getEstado() == true && asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().getEstado() == true) {
+                            Date fecha = new Date();
+                            fecha.setYear(asis.getIniciofin().getDia().getMes().getAno().getAno() - 1900);
+                            fecha.setMonth(asis.getIniciofin().getDia().getMes().getMes());
+                            fecha.setDate(asis.getIniciofin().getDia().getDia());
+                            int person = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().getIdPersonal();
+                            if (person == per.getIdPersonal()) {
+                                Object fila[] = new Object[9];
+                                fila[0] = asis;
+                                fila[1] = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().toString();
+                                fila[2] = formateador.format(fecha);
+                                fila[3] = asis.getIniciofin().getInicio();
+                                fila[4] = asis.getIniciofin().getFin();
+                                fila[5] = asis.getEstado();
+                                fila[6] = asis.getTardanza();
+                                if (asis.getJustificacions().iterator().hasNext()) {
+                                    fila[7] = asis.getJustificacions().iterator().next().getArticulo();
+                                    Justificacion ju= asis.getJustificacions().iterator().next();
+                                    fila[8] = ju;
+                                }
+                                modelo.addRow(fila);
+                            }
+                        }
+                    }
+                    Iterator<Asistencia> itaa = PERSISTENCIA.ObtenerListaTardanza(ano+1900).iterator();
+                    while (itaa.hasNext()) {
+                        Asistencia asis = itaa.next();
+                        if (asis.getIniciofin().getDia().getMes().getAno().getAgenda().getTarea().getEstado() == true && asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().getEstado() == true) {
+                            Date fecha = new Date();
+                            fecha.setYear(asis.getIniciofin().getDia().getMes().getAno().getAno() - 1900);
+                            fecha.setMonth(asis.getIniciofin().getDia().getMes().getMes());
+                            fecha.setDate(asis.getIniciofin().getDia().getDia());
+                            Personal person = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal();
+                            if (person.getIdPersonal() == per.getIdPersonal()) {
+                                Object fila[] = new Object[9];
+                                fila[0] = asis;
+                                fila[1] = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().toString();
+                                fila[2] = formateador.format(fecha);
+                                fila[3] = asis.getIniciofin().getInicio();
+                                fila[4] = asis.getIniciofin().getFin();
+                                fila[5] = asis.getEstado();
+                                fila[6] = asis.getTardanza();
+                                if (asis.getJustificacions().iterator().hasNext()) {
+                                    fila[7] = asis.getJustificacions().iterator().next().getArticulo();
+                                    Justificacion ju= asis.getJustificacions().iterator().next();
+                                    fila[8] = ju;
+                                }
+                                modelo.addRow(fila);
+                            }
+                        }
+                    }
+                } else if(ver.equals("INASISTENCIAS")){
+                    Iterator ita = PERSISTENCIA.ObtenerListaInasistencia(ano+1900).iterator();
+                    while (ita.hasNext()) {
+                        Asistencia asis = (Asistencia) ita.next();
+                        if (asis.getIniciofin().getDia().getMes().getAno().getAgenda().getTarea().getEstado() == true && asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().getEstado() == true) {
+                            Date fecha = new Date();
+                            fecha.setYear(asis.getIniciofin().getDia().getMes().getAno().getAno() - 1900);
+                            fecha.setMonth(asis.getIniciofin().getDia().getMes().getMes());
+                            fecha.setDate(asis.getIniciofin().getDia().getDia());
+                            int person = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().getIdPersonal();
+                            if (person == per.getIdPersonal()) {
+                                Object fila[] = new Object[9];
+                                fila[0] = asis;
+                                fila[1] = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().toString();
+                                fila[2] = formateador.format(fecha);
+                                fila[3] = asis.getIniciofin().getInicio();
+                                fila[4] = asis.getIniciofin().getFin();
+                                fila[5] = asis.getEstado();
+                                fila[6] = asis.getTardanza();
+                                if (asis.getJustificacions().iterator().hasNext()) {
+                                    fila[7] = asis.getJustificacions().iterator().next().getArticulo();
+                                    Justificacion ju= asis.getJustificacions().iterator().next();
+                                    fila[8] = ju;
+                                }
+                                modelo.addRow(fila);
+                            }
+                        }
+                    }
+                } else if(ver.equals("TARDANZAS")){
+                    Iterator<Asistencia> itaa = PERSISTENCIA.ObtenerListaTardanza(ano+1900).iterator();
+                    while (itaa.hasNext()) {
+                        Asistencia asis = itaa.next();
+                        if (asis.getIniciofin().getDia().getMes().getAno().getAgenda().getTarea().getEstado() == true && asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().getEstado() == true) {
+                            Date fecha = new Date();
+                            fecha.setYear(asis.getIniciofin().getDia().getMes().getAno().getAno() - 1900);
+                            fecha.setMonth(asis.getIniciofin().getDia().getMes().getMes());
+                            fecha.setDate(asis.getIniciofin().getDia().getDia());
+                            Personal person = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal();
+                            if (person.getIdPersonal() == per.getIdPersonal()) {
+                                Object fila[] = new Object[9];
+                                fila[0] = asis;
+                                fila[1] = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().toString();
+                                fila[2] = formateador.format(fecha);
+                                fila[3] = asis.getIniciofin().getInicio();
+                                fila[4] = asis.getIniciofin().getFin();
+                                fila[5] = asis.getEstado();
+                                fila[6] = asis.getTardanza();
+                                if (asis.getJustificacions().iterator().hasNext()) {
+                                    fila[7] = asis.getJustificacions().iterator().next().getArticulo();
+                                    Justificacion ju= asis.getJustificacions().iterator().next();
+                                    fila[8] = ju;
+                                }
+                                modelo.addRow(fila);
+                            }
+                        }
+                    }
+                } else if(ver.equals("ASISTENCIA")){
+                    Iterator ita = PERSISTENCIA.ObtenerListaAsistencia(ano+1900).iterator();
+                    while (ita.hasNext()) {
+                        Asistencia asis = (Asistencia) ita.next();
+                        if (asis.getIniciofin().getDia().getMes().getAno().getAgenda().getTarea().getEstado() == true && asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().getEstado() == true) {
+                            Date fecha = new Date();
+                            fecha.setYear(asis.getIniciofin().getDia().getMes().getAno().getAno() - 1900);
+                            fecha.setMonth(asis.getIniciofin().getDia().getMes().getMes());
+                            fecha.setDate(asis.getIniciofin().getDia().getDia());
+                            int person = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().getIdPersonal();
+                            if (person == per.getIdPersonal()) {
+                                Object fila[] = new Object[9];
+                                fila[0] = asis;
+                                fila[1] = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().toString();
+                                fila[2] = formateador.format(fecha);
+                                fila[3] = asis.getIniciofin().getInicio();
+                                fila[4] = asis.getIniciofin().getFin();
+                                fila[5] = asis.getEstado();
+                                fila[6] = asis.getTardanza();
+                                if (asis.getJustificacions().iterator().hasNext()) {
+                                    fila[7] = asis.getJustificacions().iterator().next().getArticulo();
+                                    Justificacion ju= asis.getJustificacions().iterator().next();
+                                    fila[8] = ju;
+                                }
+                                modelo.addRow(fila);
+                            }
+                        }
                     }
                 }
             }
-            Iterator<Asistencia> itaa = Controlador.getPERSISTENCIA().ObtenerListaTardanza(mes, ano).iterator();
-            while (itaa.hasNext()) {
-                Asistencia asis = itaa.next();
-                if (asis.getIniciofin().getDia().getMes().getAno().getAgenda().getTarea().getEstado() == true && asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().getEstado() == true) {
-                    Date fecha = new Date();
-                    fecha.setYear(asis.getIniciofin().getDia().getMes().getAno().getAno() - 1900);
-                    fecha.setMonth(asis.getIniciofin().getDia().getMes().getMes());
-                    fecha.setDate(asis.getIniciofin().getDia().getDia());
-                    if (asis.getIniciofin().getDia().getMes().getMes() == mes && asis.getIniciofin().getDia().getMes().getAno().getAno() == ano) {
-                        Personal person = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal();
-                        if (person.getIdPersonal() == per.getIdPersonal()) {
-                            Object fila[] = new Object[10];
-                            fila[0] = asis.getIdAsistencia();
-                            fila[1] = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getTarea().getNombre();
-                            fila[2] = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().toString();
-                            fila[3] = formateador.format(fecha);
-                            fila[4] = asis.getIniciofin().getInicio();
-                            fila[5] = asis.getIniciofin().getFin();
-                            if (asis.getEstado() == true) {
-                                fila[6] = new Boolean(true);
-                            } else {
-                                fila[6] = new Boolean(false);
-                            }
-                            if (asis.getTardanza() == true) {
-                                fila[7] = new Boolean(true);
-                            } else {
-                                fila[7] = new Boolean(false);
-                            }
-                            if (asis.getJustificacions().iterator().hasNext()) {
-                                fila[8] = asis.getJustificacions().iterator().next().getArticulo();
-                                fila[9] = asis.getJustificacions().iterator().next().getMotivo();
-                            }
-                            modelo.addRow(fila);
-                        } 
-//                        else {
-//                            Object fila[] = new Object[10];
-//                            fila[0] = asis.getIdAsistencia();
-//                            fila[1] = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getTarea().getNombre();
-//                            fila[2] = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().toString();
-//                            fila[3] = formateador.format(fecha);
-//                            fila[4] = asis.getIniciofin().getInicio();
-//                            fila[5] = asis.getIniciofin().getFin();
-//                            if (asis.getEstado() == true) {
-//                                fila[6] = new Boolean(true);
-//                            } else {
-//                                fila[6] = new Boolean(false);
-//                            }
-//                            if (asis.getTardanza() == true) {
-//                                fila[7] = new Boolean(true);
-//                            } else {
-//                                fila[7] = new Boolean(false);
-//                            }
-//                            if (asis.getJustificacions().iterator().hasNext()) {
-//                                fila[8] = asis.getJustificacions().iterator().next().getArticulo();
-//                                fila[9] = asis.getJustificacions().iterator().next().getMotivo();
-//                            }
-//                            modelo.addRow(fila);
-//                        }
-                    }
-                }
-            }
-
             Tabla.setModel(modelo);
             Tabla.getColumnModel().getColumn(0).setWidth(30);
         } catch (Exception ex) {
@@ -3190,7 +3848,7 @@ public class Controlador {
     public int ObtenerInasistenciaPersonal(Personal per) {
         Date date = new Date();
         int contador = 0;
-        Iterator<Asistencia> ita = Controlador.getPERSISTENCIA().ObtenerListaInasistencia(date.getMonth(), date.getYear() + 1900).iterator();
+        Iterator<Asistencia> ita = PERSISTENCIA.ObtenerListaInasistencia(date.getDate(),date.getMonth(), date.getYear() + 1900).iterator();
         while (ita.hasNext()) {
             Asistencia asis = ita.next();
             int id = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().getIdPersonal();
@@ -3205,7 +3863,7 @@ public class Controlador {
     public int ObtenerTardanzaPersonal(Personal per) {
         Date date = new Date();
         int contador = 0;
-        Iterator<Asistencia> ita = Controlador.getPERSISTENCIA().ObtenerListaTardanza(date.getMonth(), date.getYear() + 1900).iterator();
+        Iterator<Asistencia> ita = PERSISTENCIA.ObtenerListaTardanza(date.getDate(),date.getMonth(), date.getYear() + 1900).iterator();
         while (ita.hasNext()) {
             Asistencia asis = ita.next();
             int id = asis.getIniciofin().getDia().getMes().getAno().getAgenda().getPersonal().getIdPersonal();
@@ -3946,6 +4604,10 @@ public class Controlador {
                                     Iterator itin = PERSISTENCIA.getIniciofin(di.getIdDia()).iterator();
                                     while (itin.hasNext()) {
                                         Iniciofin in = (Iniciofin) itin.next();
+                                        Date y=ini.getInicio();
+                                        Date yy=ini.getFin();
+                                        Date j=in.getInicio();
+                                        Date jj=in.getFin();
                                         if (ini.getInicio().compareTo(in.getInicio()) < 0 && ini.getFin().compareTo(in.getInicio()) > 0) {
                                             a = false;
                                             break;

@@ -28,6 +28,7 @@
     <mapping resource="Mapeo/Feriado.hbm.xml"/>
     <mapping resource="Mapeo/Circular.hbm.xml"/>
     <mapping resource="Mapeo/Asistencia.hbm.xml"/>
+    <mapping resource="Mapeo/Curso.hbm.xml"/>
     <mapping resource="Mapeo/Franco.hbm.xml"/>
     <mapping resource="Mapeo/Tareaextracurricular.hbm.xml"/>
     <mapping resource="Mapeo/Registroacceso.hbm.xml"/>
@@ -35,6 +36,7 @@
     <mapping resource="Mapeo/Ano.hbm.xml"/>
     <mapping resource="Mapeo/Tipocargo.hbm.xml"/>
     <mapping resource="Mapeo/Lugar.hbm.xml"/>
+    <mapping resource="Mapeo/Division.hbm.xml"/>
     <mapping resource="Mapeo/DetalleEstablecimiento.hbm.xml"/>
     <mapping resource="Mapeo/PersonalDepartamento.hbm.xml"/>
     <mapping resource="Mapeo/Agenda.hbm.xml"/>

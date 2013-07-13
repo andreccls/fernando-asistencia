@@ -143,10 +143,10 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
         per.CargarListTelefono(jList1,modeloLista);
         Drive.CargarComboDepartamento(jComboBox3);
         Drive.CargarComboActividad(jComboBox7);
-        Calendar ca = Calendar.getInstance();
-        ca.add(Calendar.YEAR, -19);
-        dateChooserCombo3.setSelectedDate(ca);
-        dateChooserCombo1.setSelectedDate(ca);
+//        Calendar ca = Calendar.getInstance();
+//        ca.add(Calendar.YEAR, -19);
+//        dateChooserCombo3.setSelectedDate(ca);
+//        dateChooserCombo1.setSelectedDate(ca);
         Personaldocente perdoc=per.getPersonaldoc(per.getIdPersonal());
         if(perdoc.getId() != null){
             jRadioButton3.setSelected(true);
@@ -253,7 +253,6 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
         jButton2.setIcon(icono3);
         jButton14.setIcon(icono3);
         jButton15.setIcon(icono3);
-        jButton16.setIcon(icono3);
         jButton17.setIcon(icono3);
         ImageIcon fott5 = new ImageIcon(getClass().getResource("/imagenes/Buscar.png"));
         Icon icono5 = new ImageIcon(fott5.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
@@ -323,7 +322,6 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
             jButton8.setEnabled(false);
             jButton9.setEnabled(false);
             jButton15.setEnabled(false);
-            jButton16.setEnabled(false);
             jButton18.setEnabled(false);
             jButton20.setEnabled(false);
             jButton3.setEnabled(false);
@@ -381,7 +379,21 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
             jButton19.setEnabled(false);
             jButton14.setEnabled(false);
             jButton8.setEnabled(false);
+            jButton11.setEnabled(false);
+            jButton12.setEnabled(false);
             jButton17.setEnabled(false);
+            jButton15.setEnabled(false);
+            jButton9.setEnabled(false);
+            jButton10.setEnabled(false);
+            jButton18.setEnabled(false);
+            jButton20.setEnabled(false);
+            jLabel66.setVisible(false);
+            jLabel56.setVisible(false);
+            jLabel48.setVisible(false);
+            jLabel49.setVisible(false);
+            jLabel55.setVisible(false);
+            jLabel41.setVisible(false);
+            jLabel57.setVisible(false);
         }
         jButton14.setEnabled(false);
     }
@@ -552,7 +564,6 @@ public class JFrameActualizarPersonal extends javax.swing.JFrame {
         jComboBox15 = new javax.swing.JComboBox();
         jLabel66 = new javax.swing.JLabel();
         jButton15 = new javax.swing.JButton();
-        jButton16 = new javax.swing.JButton();
         jButton18 = new javax.swing.JButton();
         jButton20 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
@@ -2187,8 +2198,6 @@ dateChooserCombo10.addSelectionChangedListener(new datechooser.events.SelectionC
             .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
     );
 
-    jButton16.setText("Aceptar");
-
     jButton18.setText("Eliminar");
     jButton18.addActionListener(new java.awt.event.ActionListener() {
         public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -2217,9 +2226,7 @@ dateChooserCombo10.addSelectionChangedListener(new datechooser.events.SelectionC
                     .addGap(0, 0, Short.MAX_VALUE)
                     .addComponent(jButton20)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                    .addComponent(jButton18)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                    .addComponent(jButton16)))
+                    .addComponent(jButton18)))
             .addContainerGap())
     );
     jPanel4Layout.setVerticalGroup(
@@ -2233,7 +2240,6 @@ dateChooserCombo10.addSelectionChangedListener(new datechooser.events.SelectionC
             .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addGap(18, 18, 18)
             .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                .addComponent(jButton16)
                 .addComponent(jButton18)
                 .addComponent(jButton20))
             .addContainerGap(134, Short.MAX_VALUE))
@@ -2865,59 +2871,66 @@ dateChooserCombo10.addSelectionChangedListener(new datechooser.events.SelectionC
     }//GEN-LAST:event_jButton10ActionPerformed
 
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
-        Departamento depto=(Departamento)jComboBox3.getSelectedItem();
-        boolean band=true;
-        boolean band2=true;
-        int c=0;
-        while(modeloLista2.size()!=c){
-            PersonalDepartamento pdepto=(PersonalDepartamento) modeloLista2.getElementAt(c);
-            if(pdepto.getId().getIdDepartamento()==depto.getIdDepartamento()){
-                JOptionPane.showMessageDialog(null, "Ya agregó este departamento","Actualizar Personal", JOptionPane.ERROR_MESSAGE);
-                band2=false;
-                break;
-            }
-            c++;
-        }
-        if(jCheckBox1.isSelected()&&band2==true){
-            Iterator it=Drive.PERSISTENCIA.getPersonalDepto().iterator();
-            while(it.hasNext()){
-                PersonalDepartamento pdepto=(PersonalDepartamento) it.next();
-                if(pdepto.getDepartamento().getIdDepartamento()==depto.getIdDepartamento()&&pdepto.getJefe()){
-                    JOptionPane.showMessageDialog(null, "El jefe de este departamento es "+pdepto.getPersonal().toString(),"Actualizar Personal", JOptionPane.ERROR_MESSAGE);
-                    band=false;
+        try{
+            Departamento depto = (Departamento) jComboBox3.getSelectedItem();
+            boolean band = true;
+            boolean band2 = true;
+            int c = 0;
+            while (modeloLista2.size() != c) {
+                PersonalDepartamento pdepto = (PersonalDepartamento) modeloLista2.getElementAt(c);
+                if (pdepto.getId().getIdDepartamento() == depto.getIdDepartamento()) {
+                    JOptionPane.showMessageDialog(null, "Ya agregó este departamento", "Actualizar Personal", JOptionPane.ERROR_MESSAGE);
+                    band2 = false;
                     break;
                 }
+                c++;
             }
-        }
-        if(band==true && band2==true){
-            PersonalDepartamentoId id=new PersonalDepartamentoId(pe.getIdPersonal(),depto.getIdDepartamento());
-            PersonalDepartamento perdepto=new PersonalDepartamento();
-            perdepto.setId(id);
-            perdepto.setDepartamento(depto);
-            perdepto.setPersonal(pe);
-            perdepto.setJefe(true);
-            perdepto.guardarPersonalDepartamento(perdepto);
-            modeloLista2.addElement(perdepto);  
-        }else if(!jCheckBox1.isSelected() && band2==true){
-            //Personal per=new Personal();
-            PersonalDepartamentoId id=new PersonalDepartamentoId();
-            PersonalDepartamento perdepto=new PersonalDepartamento();
-            id.setIdDepartamento(depto.getIdDepartamento());
-            perdepto.setId(id);
-            perdepto.setDepartamento(depto);
-            perdepto.setPersonal(pe);
-            perdepto.setJefe(false);
-            perdepto.guardarPersonalDepartamento(perdepto);
-            modeloLista2.addElement(perdepto);  
+            if (jCheckBox1.isSelected() && band2 == true) {
+                Iterator it = Drive.PERSISTENCIA.getPersonalDepto().iterator();
+                while (it.hasNext()) {
+                    PersonalDepartamento pdepto = (PersonalDepartamento) it.next();
+                    if (pdepto.getDepartamento().getIdDepartamento() == depto.getIdDepartamento() && pdepto.getJefe()) {
+                        JOptionPane.showMessageDialog(null, "El jefe de este departamento es " + pdepto.getPersonal().toString(), "Actualizar Personal", JOptionPane.ERROR_MESSAGE);
+                        band = false;
+                        break;
+                    }
+                }
+                if (band == true && band2 == true) {
+                    PersonalDepartamentoId id = new PersonalDepartamentoId(pe.getIdPersonal(), depto.getIdDepartamento());
+                    PersonalDepartamento perdepto = new PersonalDepartamento();
+                    perdepto.setId(id);
+                    perdepto.setDepartamento(depto);
+                    perdepto.setPersonal(pe);
+                    perdepto.setJefe(true);
+                    perdepto.guardarPersonalDepartamento(perdepto);
+                    modeloLista2.addElement(perdepto);
+                }
+            } else if (!jCheckBox1.isSelected() && band2 == true) {
+                //Personal per=new Personal();
+                PersonalDepartamentoId id = new PersonalDepartamentoId();
+                PersonalDepartamento perdepto = new PersonalDepartamento();
+                id.setIdDepartamento(depto.getIdDepartamento());
+                id.setIdPersonal(pe.getIdPersonal());
+                perdepto.setId(id);
+                perdepto.setDepartamento(depto);
+                perdepto.setPersonal(pe);
+                perdepto.setJefe(false);
+                perdepto.guardarPersonalDepartamento(perdepto);
+                modeloLista2.addElement(perdepto);
+            }
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, e.toString());
         }
     }//GEN-LAST:event_jButton11ActionPerformed
 
     private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
-        if(jRadioButton3.isSelected()){
-            PersonalDepartamento perdepto=(PersonalDepartamento) modeloLista2.getElementAt(jList2.getSelectedIndex());
-            modeloLista2.removeElementAt(jList2.getSelectedIndex());        // TODO add your handling code here:
+        int o= jList2.getSelectedIndex();
+        if(jRadioButton3.isSelected() && o>=0){
+            PersonalDepartamento perdepto=(PersonalDepartamento) modeloLista2.getElementAt(o);
+            modeloLista2.removeElementAt(jList2.getSelectedIndex());
             perdepto.eliminarPersonalDepartamento(perdepto);
             jList2.setModel(modeloLista2);
+            
         }
     }//GEN-LAST:event_jButton12ActionPerformed
 
@@ -3897,7 +3910,6 @@ dateChooserCombo10.addSelectionChangedListener(new datechooser.events.SelectionC
     private javax.swing.JButton jButton13;
     private javax.swing.JButton jButton14;
     private javax.swing.JButton jButton15;
-    private javax.swing.JButton jButton16;
     private javax.swing.JButton jButton17;
     private javax.swing.JButton jButton18;
     private javax.swing.JButton jButton19;
