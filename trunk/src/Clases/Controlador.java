@@ -183,7 +183,6 @@ public class Controlador {
 
     public void CargarComboPersonaldoc(JComboBox JCombo) {
         try {
-            //DefaultComboBoxModel modeloCombo = new DefaultComboBoxModel();
             Establecimiento col = (Establecimiento) Controlador.getPERSISTENCIA().getEstablecimientos().get(0);
             Personal per = new Personal();
             Iterator rs = per.getPersonaldocentes().iterator();
@@ -276,7 +275,6 @@ public class Controlador {
     public void CargarComboCursos(JComboBox JCombo, int ano) {
         try {
             LimpiarCombo(JCombo);
-            //Establecimiento col = getPrimerEstablecimiento();
             Iterator rs = Controlador.getPERSISTENCIA().getCursos(ano).iterator();
             while (rs.hasNext()) {
                 Curso dep = (Curso) rs.next();
@@ -304,7 +302,6 @@ public class Controlador {
     
     public void CargarComboMaterias(JComboBox JCombo, Division div) {
         try {
-            //Establecimiento col = getPrimerEstablecimiento();
             Iterator rs = PERSISTENCIA.getTareas(div.getIdDivision()).iterator();
             while (rs.hasNext()) {
                 Tarea dep = (Tarea) rs.next();
@@ -799,34 +796,34 @@ public class Controlador {
     
     public void CargarTablaFiltroActividades(JTable tabla, String buscarpor, String tipo, String valor) {
         DefaultTableModel model = (DefaultTableModel) tabla.getModel();
-//        Anolectivo ano=getAnoLectivo();
+        Anolectivo ano=getAnoLectivo();
          if (tipo.equals("Reunión")) {
             Iterator<Tareareunion> act = PERSISTENCIA.getTareasReuniones().iterator();
             while (act.hasNext()) {
                 Tareareunion ac = act.next();
                 if (ac.getTarea().getEstado()&&ac.getTarea().getAgendas().size()>0) {
                     Agenda ag=ac.getTarea().getAgendas().iterator().next();
-//                    if(ag.getAnolectivo().getIdAnolectivo()==ano.getIdAnolectivo()){
-                    if (buscarpor.equals("Nombre") && ac.getTarea().getEstado() == true) {
-                        int i = ac.getTarea().getNombre().indexOf(valor);
-                        if (i == 0) {
-                            Object[] fila = new Object[3];
-                            fila[0] = ac.getTarea();
-                            fila[1] = ac.getTarea().getLugar();
-                            fila[2] = ac.getTarea().getComentario();
-                            model.addRow(fila);
-                        }
-                    } else if (buscarpor.equals("Lugar") && ac.getTarea().getEstado() == true) {
-                        int i = ac.getTarea().getLugar().getNombre().indexOf(valor);
-                        if (i == 0) {
-                            Object[] fila = new Object[3];
-                            fila[0] = ac.getTarea();
-                            fila[1] = ac.getTarea().getLugar();
-                            fila[2] = ac.getTarea().getComentario();
-                            model.addRow(fila);
+                    if(ag.getTarea().getDiaFin().getYear()+1900==ano.getAno()){
+                        if (buscarpor.equals("Nombre") && ac.getTarea().getEstado() == true) {
+                            int i = ac.getTarea().getNombre().indexOf(valor);
+                            if (i == 0) {
+                                Object[] fila = new Object[3];
+                                fila[0] = ac.getTarea();
+                                fila[1] = ac.getTarea().getLugar();
+                                fila[2] = ac.getTarea().getComentario();
+                                model.addRow(fila);
+                            }
+                        } else if (buscarpor.equals("Lugar") && ac.getTarea().getEstado() == true) {
+                            int i = ac.getTarea().getLugar().getNombre().indexOf(valor);
+                            if (i == 0) {
+                                Object[] fila = new Object[3];
+                                fila[0] = ac.getTarea();
+                                fila[1] = ac.getTarea().getLugar();
+                                fila[2] = ac.getTarea().getComentario();
+                                model.addRow(fila);
+                            }
                         }
                     }
-//                }
                 }
             }
         } else if (tipo.equals("Extracurricular")) {
@@ -836,7 +833,7 @@ public class Controlador {
                 Tarea ac = acc.getTarea();
                 if (ac.getEstado()&&ac.getAgendas().size()>0) {
                     Agenda ag=ac.getAgendas().iterator().next();
-//                    if(ag.getAnolectivo().getIdAnolectivo()==ano.getIdAnolectivo()){
+                    if(ag.getTarea().getDiaFin().getYear()+1900==ano.getAno()){
                     if (buscarpor.equals("Nombre") && ac.getEstado() == true) {
                         int i = ac.getNombre().indexOf(valor);
                         if (i == 0) {
@@ -856,7 +853,7 @@ public class Controlador {
                             model.addRow(fila);
                         }
                     }
-//                }
+                }
                 }
             }
         } else if (tipo.equals("Otro")) {
@@ -867,7 +864,7 @@ public class Controlador {
 //                Agenda ag=ac.getAgendas().iterator().next();
                 if (ac.getEstado()&&ac.getAgendas().size()>0) {
                     Agenda ag=ac.getAgendas().iterator().next();
-//                    if(ag.getAnolectivo().getIdAnolectivo()==ano.getIdAnolectivo()){
+                    if(ag.getTarea().getDiaFin().getYear()+1900==ano.getAno()){
                     if (buscarpor.equals("Nombre") && ac.getEstado() == true) {
                         int i = ac.getNombre().indexOf(valor);
                         if (i == 0) {
@@ -887,7 +884,7 @@ public class Controlador {
                             model.addRow(fila);
                         }
                     }
-//                }
+                }
                 }
             }
         } else if (tipo.equals("Todos")) {
@@ -897,7 +894,7 @@ public class Controlador {
 //                Agenda ag=ac.getAgendas().iterator().next();
                 if (ac.getEstado()&&ac.getAgendas().size()>0) {
                     Agenda ag=ac.getAgendas().iterator().next();
-//                    if(ag.getAnolectivo().getIdAnolectivo()==ano.getIdAnolectivo()){
+                    if(ag.getTarea().getDiaFin().getYear()+1900==ano.getAno()){
                     if (buscarpor.equals("Nombre") && ac.getEstado() == true) {
                         int i = ac.getNombre().indexOf(valor);
                         if (i == 0) {
@@ -917,7 +914,7 @@ public class Controlador {
                             model.addRow(fila);
                         }
                     }
-//                }
+                }
                 }
             }
         } else if (tipo.equals("Administrativo")) {
@@ -926,7 +923,7 @@ public class Controlador {
                 Tarea ac =(Tarea) act.next();
                 if (ac.getEstado()&&ac.getAgendas().size()>0) {
                     Agenda ag=ac.getAgendas().iterator().next();
-//                    if(ag.getAnolectivo().getIdAnolectivo()==ano.getIdAnolectivo()){
+                    if(ag.getTarea().getDiaFin().getYear()+1900==ano.getAno()){
                     if (buscarpor.equals("Nombre") && ac.getEstado() == true) {
                         int i = ac.getNombre().indexOf(valor);
                         if (i == 0) {
@@ -946,7 +943,7 @@ public class Controlador {
                             model.addRow(fila);
                         }
                     }
-//                }
+                }
                 }
             }
         } else if (tipo.equals("Maestranza")) {
@@ -956,7 +953,7 @@ public class Controlador {
 //                Agenda ag=ac.getAgendas().iterator().next();
                 if (ac.getEstado()&&ac.getAgendas().size()>0) {
                     Agenda ag=ac.getAgendas().iterator().next();
-//                    if(ag.getAnolectivo().getIdAnolectivo()==ano.getIdAnolectivo()){
+                    if(ag.getTarea().getDiaFin().getYear()+1900==ano.getAno()){
                     if (buscarpor.equals("Nombre") && ac.getEstado() == true) {
                         int i = ac.getNombre().indexOf(valor);
                         if (i == 0) {
@@ -976,7 +973,7 @@ public class Controlador {
                             model.addRow(fila);
                         }
                     }
-//                }
+                }
                 }
             }
         }
@@ -1846,7 +1843,6 @@ public class Controlador {
                     while (aux.compareTo(dia)<=0) {
                         if (reg.getFecha().getYear() == aux.getYear() && reg.getFecha().getMonth() == aux.getMonth() && reg.getFecha().getDate() == aux.getDate()) {
                             Object fila[] = new Object[3];
-//                            SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
                             SimpleDateFormat formateador2 = new SimpleDateFormat("HH:mm");
                             fila[0] = reg;
                             if (reg.getInicio() != null) {
@@ -1862,7 +1858,6 @@ public class Controlador {
                 }else if (buscar.equals("MES")) {
                     if (reg.getFecha().getYear() == dia.getYear() && reg.getFecha().getMonth() == dia.getMonth()) {
                         Object fila[] = new Object[3];
-//                        SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
                         SimpleDateFormat formateador2 = new SimpleDateFormat("HH:mm");
                         fila[0] = reg;
                         if (reg.getInicio() != null) {
@@ -1876,7 +1871,6 @@ public class Controlador {
                 }else if (buscar.equals("AÑO")) {
                     if (reg.getFecha().getYear() == dia.getYear()) {
                         Object fila[] = new Object[3];
-//                        SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
                         SimpleDateFormat formateador2 = new SimpleDateFormat("HH:mm");
                         fila[0] = reg;
                         if (reg.getInicio() != null) {
@@ -1913,13 +1907,8 @@ public class Controlador {
                     long tiempoInicial=inicio.getTime();
                     long tiempoFinal=fin.getTime(); 
                     long tiempo= tiempoFinal - tiempoInicial;
-//                    int seconds = (int) (tiempo / 1000) % 60 ;
                     int minutos = (int) ((tiempo / (1000*60)) % 60);
                     int horas   = (int) ((tiempo / (1000*60*60)) % 24);
-//                    long horas = (tiempo/3600000);
-//                    
-//                    //el metodo getTime te devuelve en mili segundos para saberlo en mins debes hacer
-//                    resta=resta /(1000*60);
                     hora=hora+horas;
                     minuto=minuto+minutos;
                     if(minuto>=60){
@@ -2641,10 +2630,6 @@ public class Controlador {
                         fila[6] = formateador2.format(tar.getDiaFin());
                         modelo.addRow(fila);
                     }
-//                               }
-//                           }
-//                        }
-//                    }
                 }
             } else if (!tar.getTareaotros().isEmpty()) {
                 if (tar.getEstado() == true) {
@@ -2684,7 +2669,6 @@ public class Controlador {
                                     Iterator itini = di.getIniciofins().iterator();
                                     while (itini.hasNext()) {
                                         Iniciofin ini = (Iniciofin) itini.next();
-//                                        Tareaclase tarcla = tar.getTareaclases().iterator().next();
                                         Date fecha = new Date();
                                         fecha.setYear(an.getAno() - 1900);
                                         fecha.setMonth(me.getMes());
@@ -2705,24 +2689,6 @@ public class Controlador {
                         }
                     }
                 }
-//                if (tar.getEstado() == true) {
-//                    Object fila[] = new Object[7];
-//                    Iterator it = tar.getAgendas().iterator();
-//                    while (it.hasNext()) {
-//                        Agenda age = (Agenda) it.next();
-//                        //Date fecha = new Date();
-//                        fila[0] = age.getPersonal();
-//                        fila[1] = tar.getLugar();
-//                        fila[2] = tar.getComentario();
-//                        SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
-//                        SimpleDateFormat formateador2 = new SimpleDateFormat("HH:mm");
-//                        fila[3] = formateador.format(tar.getDiaFin());
-//                        fila[4] = formateador.format(tar.getDiaInicio());
-//                        fila[5] = formateador2.format(tar.getDiaInicio());
-//                        fila[6] = formateador2.format(tar.getDiaFin());
-//                        modelo.addRow(fila);
-//                    }
-//                }
             }
             Tabla.setModel(modelo);
         } catch (Exception ex) {
@@ -3149,7 +3115,7 @@ public class Controlador {
             JOptionPane.showMessageDialog(null, ex.toString());
         }
     }
-    // </editor-fold>
+    
     
     public void CargarTablaInasistencias(JTable Tabla,int dia, int m, int ano, Personal per,String filtro,String ver) {
         try {
@@ -3586,6 +3552,7 @@ public class Controlador {
             JOptionPane.showMessageDialog(null, ex.toString());
         }
     }
+    // </editor-fold>
 
     public void CargarTablaAsisteciaTarea(JTable Tabla,Tarea tar) {
         try {
@@ -3902,6 +3869,7 @@ public class Controlador {
         return band;
     }
   
+    // <editor-fold defaultstate="collapsed" desc="REPORTES">
     public static void mostrarReporte(String report, List consulta, String titulo,int total) throws FileNotFoundException, JRException {
         String path = System.getProperty("user.dir") + "\\Reportes\\";
         String templateName = path + report + ".jrxml";
@@ -3954,6 +3922,8 @@ public class Controlador {
         }
         
     }
+    //     </editor-fold>
+    
     public void VerificarCircular(Personal per, Date hoy) {
         boolean band=false;
         Iterator it = per.getCircularpersonals().iterator();
@@ -3967,18 +3937,6 @@ public class Controlador {
         if(band==true){
             JOptionPane.showMessageDialog(null, "Usted tiene circulares que aún no ha leido","Leer Circulares",JOptionPane.INFORMATION_MESSAGE);
         }
-    }
-    public Circular VerificarCircular2(Personal per, Date hoy) {
-        Circular circ = new Circular();
-        Iterator it = per.getCircularpersonals().iterator();
-        while (it.hasNext()) {
-            Circularpersonal cirper = (Circularpersonal) it.next();
-            Circular cir = cirper.getCircular();
-            if(!cirper.getEstado()){
-                
-            }
-        }
-        return circ;
     }
     
     public void BorrarCircularpersonales(Circular cir){

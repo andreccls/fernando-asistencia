@@ -11,6 +11,7 @@
 package Presentacion;
 
 import Clases.Agenda;
+import Clases.Anolectivo;
 import Clases.Circular;
 import Clases.Controlador;
 import Clases.Declaracionjurada;
@@ -59,6 +60,7 @@ public class JFramePrincipal extends javax.swing.JFrame {
      Tarea tar=new Tarea();
      Circular cir=new Circular();
      Establecimiento es;
+     Anolectivo lectivo=new Anolectivo();
      
     public JFramePrincipal(Controlador unDrive, Personal admin) {
         this.Drive=unDrive;
@@ -124,6 +126,7 @@ public class JFramePrincipal extends javax.swing.JFrame {
         }
         
         es=Drive.getPrimerEstablecimiento();
+        lectivo=Drive.getAnoLectivo();
         if(es.getImagen()!=null){
             ImageIcon fott = new ImageIcon(es.getImagen());
 
@@ -528,15 +531,24 @@ public class JFramePrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
-        JFrameClase vent2 = new JFrameClase(Drive,adm,tar);
-        this.hide();
-        vent2.show();
+        if(lectivo.getIdAnolectivo()!=null){
+            JFrameClase vent2 = new JFrameClase(Drive,adm,tar);
+            this.hide();
+            vent2.show();
+        }else{
+            JOptionPane.showMessageDialog(null,"Para poder ingresar clases debe ingresar un año lectivo", "AÑO LECTIVO",JOptionPane.ERROR_MESSAGE);
+        }
+        
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
-        JFrameReunion vent2 = new JFrameReunion(Drive,adm,tar);
-        this.hide();
-        vent2.show();
+        if(lectivo.getIdAnolectivo()!=null){
+            JFrameReunion vent2 = new JFrameReunion(Drive,adm,tar);
+            this.hide();
+            vent2.show();
+        }else{
+            JOptionPane.showMessageDialog(null,"Para poder ingresar reuniones debe ingresar un año lectivo", "AÑO LECTIVO",JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
@@ -552,15 +564,23 @@ public class JFramePrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        JFrameExtracurricular vent2 = new JFrameExtracurricular(Drive,adm,tar);
-        this.hide();
-        vent2.show();
+        if(lectivo.getIdAnolectivo()!=null){
+            JFrameExtracurricular vent2 = new JFrameExtracurricular(Drive,adm,tar);
+            this.hide();
+            vent2.show();
+        }else{
+            JOptionPane.showMessageDialog(null,"Para poder ingresar tareas extracurriculares debe ingresar un año lectivo", "AÑO LECTIVO",JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
-        JFrameotro vent2 = new JFrameotro(Drive,adm,tar);
-        this.hide();
-        vent2.show();
+        if(lectivo.getIdAnolectivo()!=null){
+            JFrameotro vent2 = new JFrameotro(Drive,adm,tar);
+            this.hide();
+            vent2.show();
+        }else{
+            JOptionPane.showMessageDialog(null,"Para poder ingresar tareas debe ingresar un año lectivo", "AÑO LECTIVO",JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jMenuItem7ActionPerformed
 
     private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
@@ -571,9 +591,13 @@ public class JFramePrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem8ActionPerformed
 
     private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
-        JFrameConsultaActividades vent2 = new JFrameConsultaActividades(Drive,adm);
-        this.hide();
-        vent2.show();
+        if(lectivo.getIdAnolectivo()!=null){
+            JFrameConsultaActividades vent2 = new JFrameConsultaActividades(Drive,adm);
+            this.hide();
+            vent2.show();
+        }else{
+            JOptionPane.showMessageDialog(null,"Para poder consular actividades debe ingresar un año lectivo", "AÑO LECTIVO",JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jMenuItem9ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -581,15 +605,6 @@ public class JFramePrincipal extends javax.swing.JFrame {
             int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea salir?", "Cerrar sesión", JOptionPane.OK_CANCEL_OPTION);
             if (JOptionPane.OK_OPTION == confirmado) {
                 JFrameInicio vp = new JFrameInicio();
-//                Registroacceso reg = adm.getRegistroacceso(idsesion);//Drive.getRegistroacceso(adm, vp.idsesion);
-//                if (reg.getIdRegistroacceso() != null) {
-//                    Date hoy = new Date();
-//                    String s = new SimpleDateFormat("HH:mm").format(hoy.getTime());
-//                    SimpleDateFormat fo = new SimpleDateFormat("HH:mm");
-//                    Date fin = fo.parse(s);
-//                    reg.setFin(fin);
-//                    reg.actualizarRegistroAcceso(reg);
-//                }
                 this.dispose();
                 vp.show();
             }
@@ -603,15 +618,6 @@ public class JFramePrincipal extends javax.swing.JFrame {
             int confirmado = JOptionPane.showConfirmDialog(null, "¿Desea salir?", "Cerrar sesión", JOptionPane.OK_CANCEL_OPTION);
             if (JOptionPane.OK_OPTION == confirmado) {
                 JFrameInicio vp = new JFrameInicio();
-//                Registroacceso reg = adm.getRegistroacceso(idsesion);//Drive.getRegistroacceso(adm, vp.idsesion);
-//                if (reg.getIdRegistroacceso() != null) {
-//                    Date hoy = new Date();
-//                    String s = new SimpleDateFormat("HH:mm").format(hoy.getTime());
-//                    SimpleDateFormat fo = new SimpleDateFormat("HH:mm");
-//                    Date fin = fo.parse(s);
-//                    reg.setFin(fin);
-//                    reg.actualizarRegistroAcceso(reg);
-//                }
                 this.dispose();
                 vp.show();
             }
@@ -621,15 +627,23 @@ public class JFramePrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosing
 
     private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed
-        JFrameCircular vent2 = new JFrameCircular(Drive,adm,cir);
-        this.hide();
-        vent2.show();
+        if(lectivo.getIdAnolectivo()!=null){
+            JFrameCircular vent2 = new JFrameCircular(Drive,adm,cir);
+            this.hide();
+            vent2.show();
+        }else{
+            JOptionPane.showMessageDialog(null,"Para poder ingresar circulares debe ingresar un año lectivo", "AÑO LECTIVO",JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jMenuItem11ActionPerformed
 
     private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem12ActionPerformed
-        JFrameConsultaCircular vent2 = new JFrameConsultaCircular(Drive,adm);
-        this.hide();
-        vent2.show();
+        if(lectivo.getIdAnolectivo()!=null){
+            JFrameConsultaCircular vent2 = new JFrameConsultaCircular(Drive,adm);
+            this.hide();
+            vent2.show();
+        }else{
+            JOptionPane.showMessageDialog(null,"Para poder consular circulares debe ingresar un año lectivo", "AÑO LECTIVO",JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jMenuItem12ActionPerformed
 
     private void jMenuItem13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem13ActionPerformed
@@ -639,9 +653,13 @@ public class JFramePrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem13ActionPerformed
 
     private void jMenuItem14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem14ActionPerformed
-        JFrameFeriados vent2 = new JFrameFeriados(Drive,adm);
-        this.hide();
-        vent2.show();
+        if(lectivo.getIdAnolectivo()!=null){
+            JFrameFeriados vent2 = new JFrameFeriados(Drive,adm);
+            this.hide();
+            vent2.show();
+        }else{
+            JOptionPane.showMessageDialog(null,"Para poder ingresar feriados debe ingresar un año lectivo", "AÑO LECTIVO",JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jMenuItem14ActionPerformed
 
     private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
@@ -669,15 +687,23 @@ public class JFramePrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem17ActionPerformed
 
     private void jMenuItem18ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem18ActionPerformed
-        JFrameAdministrativo vent2 = new JFrameAdministrativo(Drive,adm,tar);
-        this.hide();
-        vent2.show();
+        if(lectivo.getIdAnolectivo()!=null){
+            JFrameAdministrativo vent2 = new JFrameAdministrativo(Drive,adm,tar);
+            this.hide();
+            vent2.show();
+        }else{
+            JOptionPane.showMessageDialog(null,"Para poder ingresar tareas administrativas debe ingresar un año lectivo", "AÑO LECTIVO",JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jMenuItem18ActionPerformed
 
     private void jMenuItem19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem19ActionPerformed
-        JFrameAltaClases vent2 = new JFrameAltaClases(Drive,adm);
-        this.hide();
-        vent2.show();
+        if(lectivo.getIdAnolectivo()!=null){
+            JFrameAltaClases vent2 = new JFrameAltaClases(Drive,adm);
+            this.hide();
+            vent2.show();
+        }else{
+            JOptionPane.showMessageDialog(null,"Para poder dar de alta clases debe ingresar un año lectivo", "AÑO LECTIVO",JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jMenuItem19ActionPerformed
 
     /**

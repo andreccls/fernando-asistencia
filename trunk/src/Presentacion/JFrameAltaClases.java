@@ -35,20 +35,31 @@ public class JFrameAltaClases extends javax.swing.JFrame {
     Controlador Drive;
     Personal adm=new Personal();
     Anolectivo lectivo;
-//    Tarea ta=new Tarea();
-            
+
     public JFrameAltaClases(Controlador unDrive,Personal admin) {
         this.adm=admin;
         this.Drive=unDrive;
         initComponents();
         lectivo=Drive.getAnoLectivo();
-        jComboBox3.addItem(lectivo);
-        Calendar cal=Calendar.getInstance();
-        cal.setTime(lectivo.getFin());
-        dateChooserCombo2.setSelectedDate(cal);
-        cal.setTime(lectivo.getInicio());
-        dateChooserCombo1.setSelectedDate(cal);
-        Drive.CargarComboCursos(jComboBox2, lectivo.getAno());
+        if(lectivo.getIdAnolectivo()!=null){
+            jComboBox3.addItem(lectivo);
+            Calendar cal=Calendar.getInstance();
+            cal.setTime(lectivo.getFin());
+            dateChooserCombo2.setSelectedDate(cal);
+            cal.setTime(lectivo.getInicio());
+            dateChooserCombo1.setSelectedDate(cal);
+            Drive.CargarComboCursos(jComboBox2, lectivo.getAno());
+        }else{
+            jLabel31.setEnabled(false);
+            jLabel32.setEnabled(false);
+            jLabel33.setEnabled(false);
+            jLabel34.setEnabled(false);
+            jLabel35.setEnabled(false);
+            jLabel36.setEnabled(false);
+            jButton1.setEnabled(false);
+            jButton3.setEnabled(false);
+            jButton4.setEnabled(false);
+        }
         ImageIcon fott1 = new ImageIcon(getClass().getResource("/imagenes/no.png"));
         Icon icono1 = new ImageIcon(fott1.getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
         jButton3.setIcon(icono1);
@@ -729,7 +740,6 @@ public class JFrameAltaClases extends javax.swing.JFrame {
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         try {
-//            int i=jTable1.rowAtPoint(evt.getPoint());
             int ii=jTable1.columnAtPoint(evt.getPoint());
             if(ii==0){
             boolean est = (Boolean) jTable1.getValueAt(jTable1.rowAtPoint(evt.getPoint()), 0);

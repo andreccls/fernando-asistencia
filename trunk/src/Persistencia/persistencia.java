@@ -1244,17 +1244,6 @@ public class persistencia {
         tx.commit();
         return items;
     }
-    
-    
-//    public List getAgendastar(int idtar) throws ArrayStoreException {
-//        String hql = "from Agenda where id_tarea="+idtar;
-//        List items = new ArrayList();
-//        Transaction tx = session.beginTransaction();
-//        Query q = session.createQuery(hql);
-//        items = q.list();
-//        tx.commit();
-//        return items;
-//    }
 
     public List getDepartamentos() throws ArrayStoreException {
         String hql = "from Departamento";

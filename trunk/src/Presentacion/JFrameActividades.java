@@ -880,7 +880,21 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
     }//GEN-LAST:event_jTable3MouseEntered
 
     private void jTable3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable3MouseClicked
-        // TODO add your handling code here:
+        try {
+            if (jTable3.getRowCount() != 0) {
+                int ii = jTable3.columnAtPoint(evt.getPoint());
+                if (ii == 3) {
+                    boolean est = (Boolean) jTable3.getValueAt(jTable3.rowAtPoint(evt.getPoint()), 3);
+                    Circularpersonal cirper = (Circularpersonal) jTable3.getValueAt(jTable3.rowAtPoint(evt.getPoint()), 0);
+                    if (cirper.getEstado() != est) {
+                        cirper.setEstado(est);
+                        cirper.ActualizarCircularpersonal(cirper);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.toString());
+        }
     }//GEN-LAST:event_jTable3MouseClicked
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -900,11 +914,6 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                         cirper.setDescripcion(desc);
                         cirper.ActualizarCircularpersonal(cirper);
                     }
-                }
-                boolean check=(Boolean) modelo.getValueAt(e, 3);
-                if(cirper.getEstado()!=check){
-                    cirper.setEstado(check);
-                    cirper.ActualizarCircularpersonal(cirper);
                 }
                 e++;
             }

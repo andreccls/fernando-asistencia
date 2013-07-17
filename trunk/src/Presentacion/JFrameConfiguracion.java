@@ -80,6 +80,9 @@ public class JFrameConfiguracion extends javax.swing.JFrame {
                     cal.setTime(lectivo.getFin());
                     dateChooserCombo2.setSelectedDate(cal);
                 }
+            }else{
+                Date fecha=new Date();
+                jTextField6.setText(String.valueOf(fecha.getYear()+1900));
             }
             
         }else{
@@ -755,7 +758,7 @@ jPanel4Layout.setHorizontalGroup(
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         try {
-            int ano = Integer.parseInt(jTextField6.getText());
+//            int ano = Integer.parseInt(jTextField6.getText());
             byte[] imagen=null;
             String im=jTextField8.getText();
             im=im.replace(".JPG", ".jpg");
@@ -886,55 +889,75 @@ jPanel4Layout.setHorizontalGroup(
                     est.setLeyenda(ley);
                     est.ActualizarEstablecimiento(est);
                 }
+                
                 Date inicio = dateChooserCombo1.getSelectedDate().getTime();
                 Date fin = dateChooserCombo2.getSelectedDate().getTime();
-                if (inicio.compareTo(fin) < 0) {
-//                    Anolectivo a=Drive.getAnoLectivo();
-//                    if(lectivo.getIdAnolectivo()!=null){
-                    if ((inicio.getYear() + 1900) == ano && (fin.getYear() + 1900) == ano) {
-                        if (lectivo.getInicio() != null && lectivo.getFin() != null) {
-                            if(lectivo.ControlarAnolectivo(inicio,fin)){
-                                boolean band = false;
-                                if (lectivo.getInicio().getDate() != inicio.getDate() || lectivo.getInicio().getMonth() != inicio.getMonth() || lectivo.getInicio().getYear() != inicio.getYear()) {
-                                    lectivo.setInicio(inicio);
-                                    lectivo.actualizarAnolectivo(lectivo);
-                                    band = true;
+                if(lectivo.getIdAnolectivo()!=null){
+                    if (inicio.compareTo(fin) < 0) {
+                        if ((inicio.getYear() + 1900) == lectivo.getAno() && (fin.getYear() + 1900) == lectivo.getAno()) {
+                            if (lectivo.getInicio() != null && lectivo.getFin() != null) {
+                                if(lectivo.ControlarAnolectivo(inicio,fin)){
+                                    boolean band = false;
+                                    if (lectivo.getInicio().getDate() != inicio.getDate() || lectivo.getInicio().getMonth() != inicio.getMonth() || lectivo.getInicio().getYear() != inicio.getYear()) {
+                                        lectivo.setInicio(inicio);
+                                        lectivo.actualizarAnolectivo(lectivo);
+                                        band = true;
+                                    }
+                                    if (lectivo.getFin().getDate() != fin.getDate() || lectivo.getFin().getMonth() != fin.getMonth() || lectivo.getFin().getYear() != fin.getYear()) {
+                                        lectivo.setInicio(fin);
+                                        lectivo.actualizarAnolectivo(lectivo);
+                                        band = true;
+                                    }
+                                    if (band == true) {
+                                        JOptionPane.showMessageDialog(null, "El Año lectvo se actualizó correctamente", "Actualizar Año lectivo", JOptionPane.INFORMATION_MESSAGE);
+                                    }
+                                }else{
+                                    JOptionPane.showMessageDialog(null, "El Año lectvo no se puede actualizar porque tiene actividades", "Actualizar Año lectivo", JOptionPane.ERROR_MESSAGE);
+                                    Calendar cal= Calendar.getInstance();
+                                    cal.setTime(lectivo.getInicio());
+                                    dateChooserCombo1.setSelectedDate(cal);
+                                    cal.setTime(lectivo.getFin());
+                                    dateChooserCombo2.setSelectedDate(cal);
                                 }
-                                if (lectivo.getFin().getDate() != fin.getDate() || lectivo.getFin().getMonth() != fin.getMonth() || lectivo.getFin().getYear() != fin.getYear()) {
-                                    lectivo.setInicio(fin);
-                                    lectivo.actualizarAnolectivo(lectivo);
-                                    band = true;
-                                }
-                                if (band == true) {
-                                    JOptionPane.showMessageDialog(null, "El Año lectvo se actualizó correctamente", "Actualizar Año lectivo", JOptionPane.INFORMATION_MESSAGE);
-                                }
-                            }else{
-                                JOptionPane.showMessageDialog(null, "El Año lectvo no se puede actualizar porque tiene actividades", "Actualizar Año lectivo", JOptionPane.ERROR_MESSAGE);
-                                Calendar cal= Calendar.getInstance();
-                                cal.setTime(lectivo.getInicio());
-                                dateChooserCombo1.setSelectedDate(cal);
-                                cal.setTime(lectivo.getFin());
-                                dateChooserCombo2.setSelectedDate(cal);
+                            } else {
+                                lectivo.setInicio(inicio);
+                                lectivo.setFin(fin);
+                                lectivo.actualizarAnolectivo(lectivo);
+                                JOptionPane.showMessageDialog(null, "El Año lectvo se actualizó correctamente", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
                             }
                         } else {
-                            lectivo.setInicio(inicio);
-                            lectivo.setFin(fin);
-                            lectivo.actualizarAnolectivo(lectivo);
-                            JOptionPane.showMessageDialog(null, "El Año lectvo se actualizó correctamente", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+                            JOptionPane.showMessageDialog(null, "La fecha de inicio y fin debe ser dentro del año lectivo", "Actualizar Año lectivo", JOptionPane.ERROR_MESSAGE);
+
                         }
                     } else {
-                        JOptionPane.showMessageDialog(null, "La fecha de inicio y fin debe ser dentro del año lectivo", "Actualizar Año lectivo", JOptionPane.ERROR_MESSAGE);
-
+                        JOptionPane.showMessageDialog(null, "La fecha de inicio debe ser menor a la fecha de fin", "Actualizar Año lectivo", JOptionPane.ERROR_MESSAGE);
+                        if (lectivo.getInicio() != null && lectivo.getFin() != null) {
+                            Calendar cal = Calendar.getInstance();
+                            cal.setTime(lectivo.getInicio());
+                            dateChooserCombo1.setSelectedDate(cal);
+                            cal.setTime(lectivo.getFin());
+                            dateChooserCombo2.setSelectedDate(cal);
+                        }
                     }
-//                }
-                } else {
-                    JOptionPane.showMessageDialog(null, "La fecha de inicio debe ser menor a la fecha de fin", "Actualizar Año lectivo", JOptionPane.ERROR_MESSAGE);
-                    if (lectivo.getInicio() != null && lectivo.getFin() != null) {
-                        Calendar cal = Calendar.getInstance();
-                        cal.setTime(lectivo.getInicio());
-                        dateChooserCombo1.setSelectedDate(cal);
-                        cal.setTime(lectivo.getFin());
-                        dateChooserCombo2.setSelectedDate(cal);
+                }else{
+                    if (!jTextField1.getText().isEmpty() && !jTextField2.getText().isEmpty() && !jTextField3.getText().isEmpty()) {
+                        if (inicio.compareTo(fin) < 0) {
+                            int r=Integer.parseInt(jTextField6.getText());
+                            if ((inicio.getYear() + 1900) == r && (fin.getYear() + 1900) == r) {
+                                lectivo.setEstablecimiento(est);
+                                lectivo.setAno(r);
+                                lectivo.setInicio(inicio);
+                                lectivo.setFin(fin);
+                                lectivo.guardarAnolectivo(lectivo);
+                                JOptionPane.showMessageDialog(null, "El Año lectvo se guardó correctamente", "Registrar año lectivo", JOptionPane.INFORMATION_MESSAGE); 
+                            } else {
+                                JOptionPane.showMessageDialog(null, "La fecha de inicio y fin debe ser dentro del año lectivo", "Guardar Colegio", JOptionPane.ERROR_MESSAGE);
+                            }
+                        } else {
+                            JOptionPane.showMessageDialog(null, "La fecha de inicio debe ser menor a la fecha de fin", "Guardar Colegio", JOptionPane.ERROR_MESSAGE);
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Todos los campos con * son obligatorios", "Guardar Colegio", JOptionPane.ERROR_MESSAGE);
                     }
                 }
                 jTextField1.setEnabled(false);
@@ -946,7 +969,7 @@ jPanel4Layout.setHorizontalGroup(
                 Date fin = dateChooserCombo2.getSelectedDate().getTime();
                 if (!jTextField1.getText().isEmpty() && !jTextField2.getText().isEmpty() && !jTextField3.getText().isEmpty()) {
                     if (inicio.compareTo(fin) < 0) {
-                        if ((inicio.getYear() + 1900) == ano && (fin.getYear() + 1900) == ano) {
+                        if ((inicio.getYear() + 1900) == lectivo.getAno() && (fin.getYear() + 1900) == lectivo.getAno()) {
                             est.setNombre(jTextField1.getText().toUpperCase());
                             est.setCalle(jTextField2.getText().toUpperCase());
                             est.setAltura(Integer.parseInt(jTextField3.getText()));
@@ -956,7 +979,7 @@ jPanel4Layout.setHorizontalGroup(
                             est.setLeyenda(jTextArea1.getText());
                             est.guardarEstablecimiento(est);
                             lectivo.setEstablecimiento(est);
-                            lectivo.setAno(ano);
+                            lectivo.setAno(Calendar.getInstance().getTime().getYear()+1900);
                             lectivo.setInicio(inicio);
                             lectivo.setFin(fin);
                             lectivo.guardarAnolectivo(lectivo);
