@@ -98,12 +98,16 @@ public class JFrameAsistencia extends javax.swing.JFrame {
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, ex.toString(),"Error de Inicio",JOptionPane.ERROR_MESSAGE);
         }
-        ImageIcon fott = new ImageIcon(es.getImagen());
-        Icon icono4 = new ImageIcon(fott.getImage().getScaledInstance(jLabel1.getWidth(), jLabel1.getHeight(), Image.SCALE_DEFAULT));
-        jLabel1.setIcon(icono4);
-        jLabel1.repaint();
-        jLabel4.setText(es.getLeyenda());
-        jLabel2.setText("INSTITUTO "+es.getNombre());
+        if(es.getIdEstablecimiento()!=null){
+            if(es.getImagen()!=null){
+                ImageIcon fott = new ImageIcon(es.getImagen());
+                Icon icono4 = new ImageIcon(fott.getImage().getScaledInstance(jLabel1.getWidth(), jLabel1.getHeight(), Image.SCALE_DEFAULT));
+                jLabel1.setIcon(icono4);
+                jLabel1.repaint();
+            }
+            jLabel4.setText(es.getLeyenda());
+            jLabel2.setText("INSTITUTO "+es.getNombre());
+        }
         ImageIcon fot = new ImageIcon(getClass().getResource("/imagenes/Lector1.gif"));
         Icon icono5 = new ImageIcon(fot.getImage().getScaledInstance(jLabel5.getWidth(), jLabel5.getHeight(), Image.SCALE_DEFAULT));
         jLabel5.setIcon(icono5);
