@@ -965,11 +965,12 @@ jPanel4Layout.setHorizontalGroup(
                     JOptionPane.showMessageDialog(null,"El Establecimiento se actualizó correctamente","Actualizar establecimiento",JOptionPane.INFORMATION_MESSAGE);
                 }
             } else {
+                Date ho=new Date();
                 Date inicio = dateChooserCombo1.getSelectedDate().getTime();
                 Date fin = dateChooserCombo2.getSelectedDate().getTime();
                 if (!jTextField1.getText().isEmpty() && !jTextField2.getText().isEmpty() && !jTextField3.getText().isEmpty()) {
                     if (inicio.compareTo(fin) < 0) {
-                        if ((inicio.getYear() + 1900) == lectivo.getAno() && (fin.getYear() + 1900) == lectivo.getAno()) {
+                        if ((inicio.getYear() + 1900) == (ho.getYear()+1900) && (fin.getYear() + 1900) == (ho.getYear()+1900)) {
                             est.setNombre(jTextField1.getText().toUpperCase());
                             est.setCalle(jTextField2.getText().toUpperCase());
                             est.setAltura(Integer.parseInt(jTextField3.getText()));
