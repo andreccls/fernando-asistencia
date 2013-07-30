@@ -435,7 +435,7 @@ public class JFrameInasistencia extends javax.swing.JFrame {
             DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
             int e = 0;
             while (modelo.getRowCount() != e) {
-                Asistencia asis = Drive.getAsistencia(Integer.parseInt(modelo.getValueAt(e, 0).toString()));
+                Asistencia asis =(Asistencia) modelo.getValueAt(e, 0);
 //                boolean ban=false;
 //                if(asis.getJustificacions().iterator().hasNext()){
 //                    if(!asis.getJustificacions().iterator().next().getMotivo().equals(modelo.getValueAt(e, 9))||!asis.getJustificacions().iterator().next().getArticulo().equals(modelo.getValueAt(e, 8))){
@@ -445,11 +445,11 @@ public class JFrameInasistencia extends javax.swing.JFrame {
 //                if(!modelo.getValueAt(e, 6).equals(asis.getEstado())||!modelo.getValueAt(e, 7).equals(asis.getTardanza())/*||ban*/){
                 //Object combo= modelo.get;
                 //if(!modelo.getValueAt(e, 6).equals(asis.getEstado()) || !modelo.getValueAt(e, 7).equals(asis.getTardanza())){
-                if (modelo.getValueAt(e, 6).equals(true) && modelo.getValueAt(e, 7).equals(false)) {
-                    Object a = modelo.getValueAt(e, 8);
-                    Object m = modelo.getValueAt(e, 9);
-                    boolean res = modelo.getValueAt(e, 6).equals(true);
-                    boolean res2 = modelo.getValueAt(e, 7).equals(true);
+                if (modelo.getValueAt(e, 5).equals(true) && modelo.getValueAt(e, 6).equals(false)) {
+                    Object a = modelo.getValueAt(e, 7);
+                    Object m = modelo.getValueAt(e, 8);
+                    boolean res = modelo.getValueAt(e, 5).equals(true);
+                    boolean res2 = modelo.getValueAt(e, 6).equals(true);
                     if (asis.getEstado() != res) {
                         //Cambia una inasistencia o una tardanza por una asistencia
                         if (a != null && m != null) {
@@ -459,8 +459,8 @@ public class JFrameInasistencia extends javax.swing.JFrame {
                                 asis.guardarAsistencia(asis);
                                 Justificacion jus = asis.getJustificacion(asis);
                                 jus.setAsistencia(asis);
-                                jus.setMotivo("Inasistencia por asistencia: " + modelo.getValueAt(e, 9).toString());
-                                Articulo art = (Articulo) modelo.getValueAt(e, 8);
+                                jus.setMotivo("Inasistencia por asistencia: " + modelo.getValueAt(e, 8).toString());
+                                Articulo art = (Articulo) modelo.getValueAt(e, 7);
                                 jus.setArticulo(art);
                                 if (jus.getIdJustificacion() != null) {
                                     jus.actualizarJustificacion(jus);
@@ -482,8 +482,8 @@ public class JFrameInasistencia extends javax.swing.JFrame {
                                 asis.guardarAsistencia(asis);
                                 Justificacion jus = asis.getJustificacion(asis);
                                 jus.setAsistencia(asis);
-                                jus.setMotivo("Tardanza por asistencia: " + modelo.getValueAt(e, 9).toString());
-                                Articulo art = (Articulo) modelo.getValueAt(e, 8);
+                                jus.setMotivo("Tardanza por asistencia: " + modelo.getValueAt(e, 8).toString());
+                                Articulo art = (Articulo) modelo.getValueAt(e, 7);
                                 jus.setArticulo(art);
                                 if (jus.getIdJustificacion() != null) {
                                     jus.actualizarJustificacion(jus);
@@ -497,20 +497,20 @@ public class JFrameInasistencia extends javax.swing.JFrame {
                             JOptionPane.showMessageDialog(null, "Para cambiar una tardanza por una asistencia, necesita un artículo y un motivo", "Registrar Inasistencia", JOptionPane.ERROR_MESSAGE);
                         }
                     }
-                } else if (modelo.getValueAt(e, 6).equals(false) && modelo.getValueAt(e, 7).equals(true)) {
+                } else if (modelo.getValueAt(e, 5).equals(false) && modelo.getValueAt(e, 6).equals(true)) {
                     JOptionPane.showMessageDialog(null, "Esta operacion no esta permitida para la asistencia numero: " + asis.getIdAsistencia(), "Registrar Inasistencia", JOptionPane.ERROR_MESSAGE);
-                } else if (modelo.getValueAt(e, 6).equals(false) && modelo.getValueAt(e, 7).equals(false)) {
-                    Object a = modelo.getValueAt(e, 8);
-                    Object m = modelo.getValueAt(e, 9);
-                    boolean res = modelo.getValueAt(e, 6).equals(true);
-                    boolean res2 = modelo.getValueAt(e, 7).equals(true);
+                } else if (modelo.getValueAt(e, 5).equals(false) && modelo.getValueAt(e, 6).equals(false)) {
+                    Object a = modelo.getValueAt(e, 7);
+                    Object m = modelo.getValueAt(e, 8);
+                    boolean res = modelo.getValueAt(e, 5).equals(true);
+                    boolean res2 = modelo.getValueAt(e, 6).equals(true);
                     if (asis.getEstado() == res && asis.getTardanza() == res2) {
                         if (a != null && m != null) {
                             if(asis.getJustificacions().iterator().hasNext()){
                                 if(!asis.getJustificacions().iterator().next().getMotivo().equals(m)||!asis.getJustificacions().iterator().next().getArticulo().equals(a)){
                                     if (m.toString().length() <= 45) {
-                                        asis.getJustificacions().iterator().next().setMotivo(modelo.getValueAt(e, 9).toString());
-                                        asis.getJustificacions().iterator().next().setArticulo((Articulo) modelo.getValueAt(e, 8));
+                                        asis.getJustificacions().iterator().next().setMotivo(modelo.getValueAt(e, 8).toString());
+                                        asis.getJustificacions().iterator().next().setArticulo((Articulo) modelo.getValueAt(e, 7));
                                         asis.getJustificacions().iterator().next().actualizarJustificacion(asis.getJustificacions().iterator().next());
                                     } else {
                                         JOptionPane.showMessageDialog(null, "El motivo es muy largo, por favor reduzcalo", "Registrar Inasistencia", JOptionPane.ERROR_MESSAGE);
@@ -523,8 +523,8 @@ public class JFrameInasistencia extends javax.swing.JFrame {
 //                                    asis.ActualizarAsistencia(asis);
                                     Justificacion jus = asis.getJustificacion(asis);
                                     jus.setAsistencia(asis);
-                                    jus.setMotivo(modelo.getValueAt(e, 9).toString());
-                                    Articulo art = (Articulo) modelo.getValueAt(e, 8);
+                                    jus.setMotivo(modelo.getValueAt(e, 8).toString());
+                                    Articulo art = (Articulo) modelo.getValueAt(e, 7);
                                     jus.setArticulo(art);
 //                                    if (jus.getIdJustificacion() != null) {
 //                                        jus.actualizarJustificacion(jus);
@@ -539,10 +539,10 @@ public class JFrameInasistencia extends javax.swing.JFrame {
                     } else {
                         JOptionPane.showMessageDialog(null, "No se puede cambiar una tardanza por una inasistencia", "Registrar Inasistencia", JOptionPane.ERROR_MESSAGE);
                     }
-                } else if (modelo.getValueAt(e, 6).equals(true) && modelo.getValueAt(e, 7).equals(true)) {
-                        Object a = modelo.getValueAt(e, 8);
-                        Object m = modelo.getValueAt(e, 9);
-                        if (asis.getEstado() != modelo.getValueAt(e, 6).equals(true)) {
+                } else if (modelo.getValueAt(e, 5).equals(true) && modelo.getValueAt(e, 6).equals(true)) {
+                        Object a = modelo.getValueAt(e, 7);
+                        Object m = modelo.getValueAt(e, 8);
+                        if (asis.getEstado() != modelo.getValueAt(e, 5).equals(true)) {
                             if (a != null && m != null) {
                                 if (m.toString().length() <= 18) {
                                     asis.setEstado(true);
@@ -550,8 +550,8 @@ public class JFrameInasistencia extends javax.swing.JFrame {
                                     asis.guardarAsistencia(asis);
                                     Justificacion jus = asis.getJustificacion(asis);
                                     jus.setAsistencia(asis);
-                                    jus.setMotivo("Inasistencia por tardanza: " + modelo.getValueAt(e, 9).toString());
-                                    Articulo art = (Articulo) modelo.getValueAt(e, 8);
+                                    jus.setMotivo("Inasistencia por tardanza: " + modelo.getValueAt(e, 8).toString());
+                                    Articulo art = (Articulo) modelo.getValueAt(e, 7);
                                     jus.setArticulo(art);
                                     if (jus.getIdJustificacion() != null) {
                                         jus.actualizarJustificacion(jus);
@@ -574,8 +574,8 @@ public class JFrameInasistencia extends javax.swing.JFrame {
                                 if (m.toString().length() <= 45) {
                                     Justificacion jus=new Justificacion();
                                     jus.setAsistencia(asis);
-                                    jus.setMotivo(modelo.getValueAt(e, 9).toString());
-                                    Articulo art=(Articulo) modelo.getValueAt(e, 8);
+                                    jus.setMotivo(modelo.getValueAt(e, 8).toString());
+                                    Articulo art=(Articulo) modelo.getValueAt(e, 7);
                                     jus.setArticulo(art);
                                     jus.guardarJustificacion(jus);
                                 } else {

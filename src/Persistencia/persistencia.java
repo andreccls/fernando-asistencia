@@ -46,16 +46,6 @@ public class persistencia {
         return session.connection();
     }
     
-//    public void AlterCodigo (){
-//        String hql = "ALTER TABLE Personal ALTER COLUMN Codigo BLOB";
-////        List items = new ArrayList();
-//        Transaction tx = session.beginTransaction();
-//        Query q = session.createQuery(hql);
-////        items = q.list();
-//        tx.commit();
-////        return items;
-//    }
-    
     public void insert(Object unObjeto) {
         Transaction tr = session.beginTransaction();
         session.save(unObjeto);
@@ -177,25 +167,6 @@ public class persistencia {
         tx.commit();
         return items;
     }
-//    public List getAuditoriaPerActivos(int idper) throws ArrayStoreException {
-//        String hql = "from Auditoria where personalByIdPersonal="+idper+" and operacion='Insertar'";
-//        List items = new ArrayList();
-//        Transaction tx = session.beginTransaction();
-//        Query q = session.createQuery(hql);
-//        items = q.list();
-//        tx.commit();
-//        return items;
-//    }
-//    
-//    public List getAuditoriaPerInactivos(int idper) throws ArrayStoreException {
-//        String hql = "from Auditoria where personalByIdPersonal="+idper+" and operacion='Eliminar'";
-//        List items = new ArrayList();
-//        Transaction tx = session.beginTransaction();
-//        Query q = session.createQuery(hql);
-//        items = q.list();
-//        tx.commit();
-//        return items;
-//    }
     
     public List getAuditoriaPerAno(int ano) throws ArrayStoreException {
         String hql = "from Auditoria where personalByIdPersonal!=null and year(fecha)="+ano;
@@ -237,15 +208,15 @@ public class persistencia {
         return items;
     }
     
-//    public List getLicencias(int idlic) throws ArrayStoreException {
-//        String hql = "from Licencia where id_licencia="+idlic;
-//        List items = new ArrayList();
-//        Transaction tx = session.beginTransaction();
-//        Query q = session.createQuery(hql);
-//        items = q.list();
-//        tx.commit();
-//        return items;
-//    }
+    public List getJustificacion(int idasistencia) throws ArrayStoreException {
+        String hql = "from Justificacion where asistencia="+idasistencia;
+        List items = new ArrayList();
+        Transaction tx = session.beginTransaction();
+        Query q = session.createQuery(hql);
+        items = q.list();
+        tx.commit();
+        return items;
+    }
     
     public List getAuditoriaTareaTodos(int idtar) throws ArrayStoreException {
         String hql = "from Auditoria where tarea="+idtar;

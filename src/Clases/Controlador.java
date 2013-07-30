@@ -2748,9 +2748,9 @@ public class Controlador {
                             fila[4] = asis.getIniciofin().getFin();
                             fila[5] = asis.getEstado();
                             fila[6] = asis.getTardanza();
-                            if (asis.getJustificacions().iterator().hasNext()) {
-                                fila[7] = asis.getJustificacions().iterator().next().getArticulo();
-                                Justificacion ju= asis.getJustificacions().iterator().next();
+                            Justificacion ju=ObtenerJustificacion(asis);
+                            if (ju.getIdJustificacion()!=null) {
+                                fila[7] = ju.getArticulo();
                                 fila[8] = ju;
                             }
                             modelo.addRow(fila);
@@ -2773,9 +2773,9 @@ public class Controlador {
                             fila[4] = asis.getIniciofin().getFin();
                             fila[5] = asis.getEstado();
                             fila[6] = asis.getTardanza();
-                            if (asis.getJustificacions().iterator().hasNext()) {
-                                fila[7] = asis.getJustificacions().iterator().next().getArticulo();
-                                Justificacion ju= asis.getJustificacions().iterator().next();
+                            Justificacion ju=ObtenerJustificacion(asis);
+                            if (ju.getIdJustificacion()!=null) {
+                                fila[7] = ju.getArticulo();
                                 fila[8] = ju;
                             }
                             modelo.addRow(fila);
@@ -2798,9 +2798,9 @@ public class Controlador {
                             fila[4] = asis.getIniciofin().getFin();
                             fila[5] = asis.getEstado();
                             fila[6] = asis.getTardanza();
-                            if (asis.getJustificacions().iterator().hasNext()) {
-                                fila[7] = asis.getJustificacions().iterator().next().getArticulo();
-                                Justificacion ju= asis.getJustificacions().iterator().next();
+                            Justificacion ju=ObtenerJustificacion(asis);
+                            if (ju.getIdJustificacion()!=null) {
+                                fila[7] = ju.getArticulo();
                                 fila[8] = ju;
                             }
                             modelo.addRow(fila);
@@ -2823,9 +2823,9 @@ public class Controlador {
                             fila[4] = asis.getIniciofin().getFin();
                             fila[5] = asis.getEstado();
                             fila[6] = asis.getTardanza();
-                            if (asis.getJustificacions().iterator().hasNext()) {
-                                fila[7] = asis.getJustificacions().iterator().next().getArticulo();
-                                Justificacion ju= asis.getJustificacions().iterator().next();
+                            Justificacion ju=ObtenerJustificacion(asis);
+                            if (ju.getIdJustificacion()!=null) {
+                                fila[7] = ju.getArticulo();
                                 fila[8] = ju;
                             }
                             modelo.addRow(fila);
@@ -2847,9 +2847,9 @@ public class Controlador {
                             fila[4] = asis.getIniciofin().getFin();
                             fila[5] = asis.getEstado();
                             fila[6] = asis.getTardanza();
-                            if (asis.getJustificacions().iterator().hasNext()) {
-                                fila[7] = asis.getJustificacions().iterator().next().getArticulo();
-                                Justificacion ju= asis.getJustificacions().iterator().next();
+                            Justificacion ju=ObtenerJustificacion(asis);
+                            if (ju.getIdJustificacion()!=null) {
+                                fila[7] = ju.getArticulo();
                                 fila[8] = ju;
                             }
                             modelo.addRow(fila);
@@ -2874,9 +2874,9 @@ public class Controlador {
                             fila[4] = asis.getIniciofin().getFin();
                             fila[5] = asis.getEstado();
                             fila[6] = asis.getTardanza();
-                            if (asis.getJustificacions().iterator().hasNext()) {
-                                fila[7] = asis.getJustificacions().iterator().next().getArticulo();
-                                Justificacion ju= asis.getJustificacions().iterator().next();
+                            Justificacion ju=ObtenerJustificacion(asis);
+                            if (ju.getIdJustificacion()!=null) {
+                                fila[7] = ju.getArticulo();
                                 fila[8] = ju;
                             }
                             modelo.addRow(fila);
@@ -2898,9 +2898,9 @@ public class Controlador {
                             fila[4] = asis.getIniciofin().getFin();
                             fila[5] = asis.getEstado();
                             fila[6] = asis.getTardanza();
-                            if (asis.getJustificacions().iterator().hasNext()) {
-                                fila[7] = asis.getJustificacions().iterator().next().getArticulo();
-                                Justificacion ju= asis.getJustificacions().iterator().next();
+                            Justificacion ju=ObtenerJustificacion(asis);
+                            if (ju.getIdJustificacion()!=null) {
+                                fila[7] = ju.getArticulo();
                                 fila[8] = ju;
                             }
                             modelo.addRow(fila);
@@ -2922,10 +2922,9 @@ public class Controlador {
                             fila[3] = asis.getIniciofin().getInicio();
                             fila[4] = asis.getIniciofin().getFin();
                             fila[5] = asis.getEstado();
-                            fila[6] = asis.getTardanza();
-                            if (asis.getJustificacions().iterator().hasNext()) {
-                                fila[7] = asis.getJustificacions().iterator().next().getArticulo();
-                                Justificacion ju= asis.getJustificacions().iterator().next();
+                            Justificacion ju=ObtenerJustificacion(asis);
+                            if (ju.getIdJustificacion()!=null) {
+                                fila[7] = ju.getArticulo();
                                 fila[8] = ju;
                             }
                             modelo.addRow(fila);
@@ -2948,9 +2947,9 @@ public class Controlador {
                             fila[4] = asis.getIniciofin().getFin();
                             fila[5] = asis.getEstado();
                             fila[6] = asis.getTardanza();
-                            if (asis.getJustificacions().iterator().hasNext()) {
-                                fila[7] = asis.getJustificacions().iterator().next().getArticulo();
-                                Justificacion ju= asis.getJustificacions().iterator().next();
+                            Justificacion ju=ObtenerJustificacion(asis);
+                            if (ju.getIdJustificacion()!=null) {
+                                fila[7] = ju.getArticulo();
                                 fila[8] = ju;
                             }
                             modelo.addRow(fila);
@@ -2973,9 +2972,9 @@ public class Controlador {
                             fila[4] = asis.getIniciofin().getFin();
                             fila[5] = asis.getEstado();
                             fila[6] = asis.getTardanza();
-                            if (asis.getJustificacions().iterator().hasNext()) {
-                                fila[7] = asis.getJustificacions().iterator().next().getArticulo();
-                                Justificacion ju= asis.getJustificacions().iterator().next();
+                            Justificacion ju=ObtenerJustificacion(asis);
+                            if (ju.getIdJustificacion()!=null) {
+                                fila[7] = ju.getArticulo();
                                 fila[8] = ju;
                             }
                             modelo.addRow(fila);
@@ -3000,9 +2999,9 @@ public class Controlador {
                             fila[4] = asis.getIniciofin().getFin();
                             fila[5] = asis.getEstado();
                             fila[6] = asis.getTardanza();
-                            if (asis.getJustificacions().iterator().hasNext()) {
-                                fila[7] = asis.getJustificacions().iterator().next().getArticulo();
-                                Justificacion ju= asis.getJustificacions().iterator().next();
+                            Justificacion ju=ObtenerJustificacion(asis);
+                            if (ju.getIdJustificacion()!=null) {
+                                fila[7] = ju.getArticulo();
                                 fila[8] = ju;
                             }
                             modelo.addRow(fila);
@@ -3024,9 +3023,9 @@ public class Controlador {
                             fila[4] = asis.getIniciofin().getFin();
                             fila[5] = asis.getEstado();
                             fila[6] = asis.getTardanza();
-                            if (asis.getJustificacions().iterator().hasNext()) {
-                                fila[7] = asis.getJustificacions().iterator().next().getArticulo();
-                                Justificacion ju= asis.getJustificacions().iterator().next();
+                            Justificacion ju=ObtenerJustificacion(asis);
+                            if (ju.getIdJustificacion()!=null) {
+                                fila[7] = ju.getArticulo();
                                 fila[8] = ju;
                             }
                             modelo.addRow(fila);
@@ -3049,9 +3048,9 @@ public class Controlador {
                             fila[4] = asis.getIniciofin().getFin();
                             fila[5] = asis.getEstado();
                             fila[6] = asis.getTardanza();
-                            if (asis.getJustificacions().iterator().hasNext()) {
-                                fila[7] = asis.getJustificacions().iterator().next().getArticulo();
-                                Justificacion ju= asis.getJustificacions().iterator().next();
+                            Justificacion ju=ObtenerJustificacion(asis);
+                            if (ju.getIdJustificacion()!=null) {
+                                fila[7] = ju.getArticulo();
                                 fila[8] = ju;
                             }
                             modelo.addRow(fila);
@@ -3074,9 +3073,9 @@ public class Controlador {
                             fila[4] = asis.getIniciofin().getFin();
                             fila[5] = asis.getEstado();
                             fila[6] = asis.getTardanza();
-                            if (asis.getJustificacions().iterator().hasNext()) {
-                                fila[7] = asis.getJustificacions().iterator().next().getArticulo();
-                                Justificacion ju= asis.getJustificacions().iterator().next();
+                            Justificacion ju=ObtenerJustificacion(asis);
+                            if (ju.getIdJustificacion()!=null) {
+                                fila[7] = ju.getArticulo();
                                 fila[8] = ju;
                             }
                             modelo.addRow(fila);
@@ -3099,9 +3098,9 @@ public class Controlador {
                             fila[4] = asis.getIniciofin().getFin();
                             fila[5] = asis.getEstado();
                             fila[6] = asis.getTardanza();
-                            if (asis.getJustificacions().iterator().hasNext()) {
-                                fila[7] = asis.getJustificacions().iterator().next().getArticulo();
-                                Justificacion ju= asis.getJustificacions().iterator().next();
+                            Justificacion ju=ObtenerJustificacion(asis);
+                            if (ju.getIdJustificacion()!=null) {
+                                fila[7] = ju.getArticulo();
                                 fila[8] = ju;
                             }
                             modelo.addRow(fila);
@@ -3142,9 +3141,9 @@ public class Controlador {
                                 fila[4] = asis.getIniciofin().getFin();
                                 fila[5] = asis.getEstado();
                                 fila[6] = asis.getTardanza();
-                                if (asis.getJustificacions().iterator().hasNext()) {
-                                    fila[7] = asis.getJustificacions().iterator().next().getArticulo();
-                                    Justificacion ju= asis.getJustificacions().iterator().next();
+                                Justificacion ju=ObtenerJustificacion(asis);
+                                if (ju.getIdJustificacion()!=null) {
+                                    fila[7] = ju.getArticulo();
                                     fila[8] = ju;
                                 }
                                 modelo.addRow(fila);
@@ -3169,9 +3168,9 @@ public class Controlador {
                                 fila[4] = asis.getIniciofin().getFin();
                                 fila[5] = asis.getEstado();
                                 fila[6] = asis.getTardanza();
-                                if (asis.getJustificacions().iterator().hasNext()) {
-                                    fila[7] = asis.getJustificacions().iterator().next().getArticulo();
-                                    Justificacion ju= asis.getJustificacions().iterator().next();
+                                Justificacion ju=ObtenerJustificacion(asis);
+                                if (ju.getIdJustificacion()!=null) {
+                                    fila[7] = ju.getArticulo();
                                     fila[8] = ju;
                                 }
                                 modelo.addRow(fila);
@@ -3197,9 +3196,9 @@ public class Controlador {
                                 fila[4] = asis.getIniciofin().getFin();
                                 fila[5] = asis.getEstado();
                                 fila[6] = asis.getTardanza();
-                                if (asis.getJustificacions().iterator().hasNext()) {
-                                    fila[7] = asis.getJustificacions().iterator().next().getArticulo();
-                                    Justificacion ju= asis.getJustificacions().iterator().next();
+                                Justificacion ju=ObtenerJustificacion(asis);
+                                if (ju.getIdJustificacion()!=null) {
+                                    fila[7] = ju.getArticulo();
                                     fila[8] = ju;
                                 }
                                 modelo.addRow(fila);
@@ -3225,9 +3224,9 @@ public class Controlador {
                                 fila[4] = asis.getIniciofin().getFin();
                                 fila[5] = asis.getEstado();
                                 fila[6] = asis.getTardanza();
-                                if (asis.getJustificacions().iterator().hasNext()) {
-                                    fila[7] = asis.getJustificacions().iterator().next().getArticulo();
-                                    Justificacion ju= asis.getJustificacions().iterator().next();
+                                Justificacion ju=ObtenerJustificacion(asis);
+                                if (ju.getIdJustificacion()!=null) {
+                                    fila[7] = ju.getArticulo();
                                     fila[8] = ju;
                                 }
                                 modelo.addRow(fila);
@@ -3253,9 +3252,9 @@ public class Controlador {
                                 fila[4] = asis.getIniciofin().getFin();
                                 fila[5] = asis.getEstado();
                                 fila[6] = asis.getTardanza();
-                                if (asis.getJustificacions().iterator().hasNext()) {
-                                    fila[7] = asis.getJustificacions().iterator().next().getArticulo();
-                                    Justificacion ju= asis.getJustificacions().iterator().next();
+                                Justificacion ju=ObtenerJustificacion(asis);
+                                if (ju.getIdJustificacion()!=null) {
+                                    fila[7] = ju.getArticulo();
                                     fila[8] = ju;
                                 }
                                 modelo.addRow(fila);
@@ -3283,9 +3282,9 @@ public class Controlador {
                                 fila[4] = asis.getIniciofin().getFin();
                                 fila[5] = asis.getEstado();
                                 fila[6] = asis.getTardanza();
-                                if (asis.getJustificacions().iterator().hasNext()) {
-                                    fila[7] = asis.getJustificacions().iterator().next().getArticulo();
-                                    Justificacion ju= asis.getJustificacions().iterator().next();
+                                Justificacion ju=ObtenerJustificacion(asis);
+                                if (ju.getIdJustificacion()!=null) {
+                                    fila[7] = ju.getArticulo();
                                     fila[8] = ju;
                                 }
                                 modelo.addRow(fila);
@@ -3310,9 +3309,9 @@ public class Controlador {
                                 fila[4] = asis.getIniciofin().getFin();
                                 fila[5] = asis.getEstado();
                                 fila[6] = asis.getTardanza();
-                                if (asis.getJustificacions().iterator().hasNext()) {
-                                    fila[7] = asis.getJustificacions().iterator().next().getArticulo();
-                                    Justificacion ju= asis.getJustificacions().iterator().next();
+                                Justificacion ju=ObtenerJustificacion(asis);
+                                if (ju.getIdJustificacion()!=null) {
+                                    fila[7] = ju.getArticulo();
                                     fila[8] = ju;
                                 }
                                 modelo.addRow(fila);
@@ -3338,9 +3337,9 @@ public class Controlador {
                                 fila[4] = asis.getIniciofin().getFin();
                                 fila[5] = asis.getEstado();
                                 fila[6] = asis.getTardanza();
-                                if (asis.getJustificacions().iterator().hasNext()) {
-                                    fila[7] = asis.getJustificacions().iterator().next().getArticulo();
-                                    Justificacion ju= asis.getJustificacions().iterator().next();
+                                Justificacion ju=ObtenerJustificacion(asis);
+                                if (ju.getIdJustificacion()!=null) {
+                                    fila[7] = ju.getArticulo();
                                     fila[8] = ju;
                                 }
                                 modelo.addRow(fila);
@@ -3366,9 +3365,9 @@ public class Controlador {
                                 fila[4] = asis.getIniciofin().getFin();
                                 fila[5] = asis.getEstado();
                                 fila[6] = asis.getTardanza();
-                                if (asis.getJustificacions().iterator().hasNext()) {
-                                    fila[7] = asis.getJustificacions().iterator().next().getArticulo();
-                                    Justificacion ju= asis.getJustificacions().iterator().next();
+                                Justificacion ju=ObtenerJustificacion(asis);
+                                if (ju.getIdJustificacion()!=null) {
+                                    fila[7] = ju.getArticulo();
                                     fila[8] = ju;
                                 }
                                 modelo.addRow(fila);
@@ -3394,9 +3393,9 @@ public class Controlador {
                                 fila[4] = asis.getIniciofin().getFin();
                                 fila[5] = asis.getEstado();
                                 fila[6] = asis.getTardanza();
-                                if (asis.getJustificacions().iterator().hasNext()) {
-                                    fila[7] = asis.getJustificacions().iterator().next().getArticulo();
-                                    Justificacion ju= asis.getJustificacions().iterator().next();
+                                Justificacion ju=ObtenerJustificacion(asis);
+                                if (ju.getIdJustificacion()!=null) {
+                                    fila[7] = ju.getArticulo();
                                     fila[8] = ju;
                                 }
                                 modelo.addRow(fila);
@@ -3424,9 +3423,9 @@ public class Controlador {
                                 fila[4] = asis.getIniciofin().getFin();
                                 fila[5] = asis.getEstado();
                                 fila[6] = asis.getTardanza();
-                                if (asis.getJustificacions().iterator().hasNext()) {
-                                    fila[7] = asis.getJustificacions().iterator().next().getArticulo();
-                                    Justificacion ju= asis.getJustificacions().iterator().next();
+                                Justificacion ju=ObtenerJustificacion(asis);
+                                if (ju.getIdJustificacion()!=null) {
+                                    fila[7] = ju.getArticulo();
                                     fila[8] = ju;
                                 }
                                 modelo.addRow(fila);
@@ -3451,9 +3450,9 @@ public class Controlador {
                                 fila[4] = asis.getIniciofin().getFin();
                                 fila[5] = asis.getEstado();
                                 fila[6] = asis.getTardanza();
-                                if (asis.getJustificacions().iterator().hasNext()) {
-                                    fila[7] = asis.getJustificacions().iterator().next().getArticulo();
-                                    Justificacion ju= asis.getJustificacions().iterator().next();
+                                Justificacion ju=ObtenerJustificacion(asis);
+                                if (ju.getIdJustificacion()!=null) {
+                                    fila[7] = ju.getArticulo();
                                     fila[8] = ju;
                                 }
                                 modelo.addRow(fila);
@@ -3479,9 +3478,9 @@ public class Controlador {
                                 fila[4] = asis.getIniciofin().getFin();
                                 fila[5] = asis.getEstado();
                                 fila[6] = asis.getTardanza();
-                                if (asis.getJustificacions().iterator().hasNext()) {
-                                    fila[7] = asis.getJustificacions().iterator().next().getArticulo();
-                                    Justificacion ju= asis.getJustificacions().iterator().next();
+                                Justificacion ju=ObtenerJustificacion(asis);
+                                if (ju.getIdJustificacion()!=null) {
+                                    fila[7] = ju.getArticulo();
                                     fila[8] = ju;
                                 }
                                 modelo.addRow(fila);
@@ -3507,9 +3506,9 @@ public class Controlador {
                                 fila[4] = asis.getIniciofin().getFin();
                                 fila[5] = asis.getEstado();
                                 fila[6] = asis.getTardanza();
-                                if (asis.getJustificacions().iterator().hasNext()) {
-                                    fila[7] = asis.getJustificacions().iterator().next().getArticulo();
-                                    Justificacion ju= asis.getJustificacions().iterator().next();
+                                Justificacion ju=ObtenerJustificacion(asis);
+                                if (ju.getIdJustificacion()!=null) {
+                                    fila[7] = ju.getArticulo();
                                     fila[8] = ju;
                                 }
                                 modelo.addRow(fila);
@@ -3535,9 +3534,9 @@ public class Controlador {
                                 fila[4] = asis.getIniciofin().getFin();
                                 fila[5] = asis.getEstado();
                                 fila[6] = asis.getTardanza();
-                                if (asis.getJustificacions().iterator().hasNext()) {
-                                    fila[7] = asis.getJustificacions().iterator().next().getArticulo();
-                                    Justificacion ju= asis.getJustificacions().iterator().next();
+                                Justificacion ju=ObtenerJustificacion(asis);
+                                if (ju.getIdJustificacion()!=null) {
+                                    fila[7] = ju.getArticulo();
                                     fila[8] = ju;
                                 }
                                 modelo.addRow(fila);
@@ -3945,6 +3944,15 @@ public class Controlador {
             Circularpersonal cirper=(Circularpersonal) it.next();
             cirper.eliminarCircularpersonal(cirper);
         }
+    }
+    
+    public Justificacion ObtenerJustificacion(Asistencia asi){
+        Justificacion jus=new Justificacion();
+        Iterator it=PERSISTENCIA.getJustificacion(asi.getIdAsistencia()).iterator();
+        while(it.hasNext()){
+            jus=(Justificacion)it.next();
+        }
+        return jus;
     }
     
     public boolean DisponibilidadAula(Date inici, Date finn, HashMap inic, HashMap dsem, int id, Aula au) {
