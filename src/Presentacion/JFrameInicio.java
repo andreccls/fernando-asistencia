@@ -12,6 +12,7 @@ import Clases.Iniciofin;
 import Clases.Perfil;
 import Clases.Personal;
 import Clases.Registroacceso;
+import Clases.Tipodoc;
 import Persistencia.ConexionJDBC;
 import TareasProgramadas.Programacion;
 import com.digitalpersona.onetouch.DPFPDataPurpose;
@@ -103,6 +104,20 @@ public class JFrameInicio extends javax.swing.JFrame {
         new Programacion().iniciarTarea();
         Iniciar();
         start();
+//        Personal pe=es.getPersonal(6);
+//        if(pe.getDni().equals("34450667")){
+//            adm=pe;
+//            Date hoy=new Date();
+//            String ss = new SimpleDateFormat("dd/MM/yyyy HH:mm").format(hoy.getTime());
+//            String tex="BIENVENIDO " + pe.toString()+ "\nHora: "+ ss;
+//            JOptionPane.showMessageDialog(null, tex, "Verificacion de Huella", JOptionPane.INFORMATION_MESSAGE);
+//            JFramePrincipal vp= new JFramePrincipal(Drive, adm);
+//            this.dispose();
+//            vp.show();
+//            setTemplate(null);
+//            stop();
+//            return;
+//        }
     }
 
     /**

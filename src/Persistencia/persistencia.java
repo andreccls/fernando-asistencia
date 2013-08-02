@@ -670,7 +670,7 @@ public class persistencia {
     }
     
     public List getPersonal(String dni) throws ArrayStoreException {
-        String hql = "from Personal where dni='"+dni+"'";
+        String hql = "from Personal where dni='"+dni+"' and estado=1";
         List items = new ArrayList();
         Transaction tx = session.beginTransaction();
         Query q = session.createQuery(hql);
