@@ -1206,9 +1206,10 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
             Anolectivo an=Drive.getPrimerEstablecimiento().getAnoLectivo(fecha.getYear()+1900);
             if(inicio.compareTo(fin)>0 || an.getInicio().compareTo(inicio)>0 || an.getFin().compareTo(fin)<0){
                 JOptionPane.showMessageDialog(null,"La fecha de inicio debe ser menor que la fecha de fin y estar contemplado dentro del año lectivo","Registrar Tarea",JOptionPane.ERROR_MESSAGE);
-                Calendar cal = Calendar.getInstance();
-                dateChooserCombo1.setSelectedDate(cal);
-                dateChooserCombo2.setSelectedDate(cal);
+//                Calendar cal = Calendar.getInstance();
+//                dateChooserCombo1.setSelectedDate(cal);
+//                dateChooserCombo2.setSelectedDate(cal);
+                dateChooserCombo1.setSelectedDate(dateChooserCombo2.getSelectedDate());
                 jFormattedTextField2.setText("00:00");
             }
         if(tar.getIdTarea()!=null){
@@ -1235,9 +1236,10 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
             Anolectivo an=Drive.getPrimerEstablecimiento().getAnoLectivo(fech.getYear()+1900);
             if(inicio.compareTo(fin)>0 || an.getInicio().compareTo(inicio)>0 || an.getFin().compareTo(fin)<0){
                 JOptionPane.showMessageDialog(null,"La fecha de inicio debe ser menor que la fecha de fin y estar contemplado dentro del año lectivo","Registrar Tarea",JOptionPane.ERROR_MESSAGE);
-                Calendar cal = Calendar.getInstance();
-                dateChooserCombo1.setSelectedDate(cal);
-                dateChooserCombo2.setSelectedDate(cal);
+//                Calendar cal = Calendar.getInstance();
+//                dateChooserCombo1.setSelectedDate(cal);
+//                dateChooserCombo2.setSelectedDate(cal);
+                dateChooserCombo1.setSelectedDate(dateChooserCombo2.getSelectedDate());
                 jFormattedTextField2.setText("00:00");
             }
             inicio.setHours(fech.getHours());
