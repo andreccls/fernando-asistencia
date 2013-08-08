@@ -118,7 +118,7 @@ public class JFrameExtracurricular extends javax.swing.JFrame {
                 Calendar ffechaini = Calendar.getInstance();
                 ffechaini.setTime(tar.getDiaInicio());
                 dateChooserCombo1.setSelectedDate(ffechaini);
-                fecha = tar.ObtenerFechaMayor(new Date().getYear());
+                fecha = Drive.ObtenerFechaMayor(new Date().getYear(), tar);
                 SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
                 jFormattedTextField1.setValue(formateador.format(menor));
                 jFormattedTextField2.setValue(formateador.format(mayor));

@@ -526,7 +526,7 @@ public class JFrameActualizarActividades extends javax.swing.JFrame {
                 } catch (Exception e) {
                 }
             } else if (tar.getComentario().equals("CLASE")) {
-                Date mayor=tar.ObtenerFechaMayor(new Date().getYear());
+                Date mayor=Drive.ObtenerFechaMayor(new Date().getYear(), tar);
                 Date hoy=new Date();
                 if(mayor!=null){
                     if(mayor.compareTo(hoy)>=0){
