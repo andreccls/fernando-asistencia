@@ -1089,13 +1089,14 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                 Tareaclase tarcla = tar.getTareaclases().iterator().next();
                 jComboBox1.setSelectedItem(tarcla.getAula());
                 jComboBox3.setSelectedItem(tar.getLugar());
-                this.mayor = tar.ObtenerFechaMayor(new Date().getYear());
+                Date hoy=new Date();
+                this.mayor = Drive.ObtenerFechaMayor(hoy.getYear(), tar);
                 if (mayor != null) {
                     Calendar mmayor = Calendar.getInstance();
                     mmayor.setTime(mayor);
                     dateChooserCombo2.setSelectedDate(mmayor);
                 }
-                this.menor = tar.ObtenerFechaMenor(new Date().getYear());
+                this.menor = Drive.ObtenerFechaMenor(hoy.getYear(), tar);
                 if (menor != null) {
                     Calendar mmenor = Calendar.getInstance();
                     mmenor.setTime(menor);

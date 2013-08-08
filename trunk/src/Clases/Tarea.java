@@ -282,73 +282,72 @@ public class Tarea  implements java.io.Serializable {
 //        return lista;
     }
     
-    public Date ObtenerFechaMayor(int anio){
-        Date mayor = new Date();
-        mayor.setYear(anio-20);
-        Date aux=new Date();
-        aux.setYear(anio);
-        Iterator it=agendas.iterator();
-        while(it.hasNext()){
-            Agenda age=(Agenda) it.next();
-            Iterator ita=age.getAnos().iterator();
-            while(ita.hasNext()){
-                Ano an=(Ano) ita.next();
-                if(an.getAno()==anio+1900){
-                    Iterator itm=an.getMeses().iterator();
-                    while(itm.hasNext()){
-                        Mes me=(Mes) itm.next();
-                        aux.setMonth(me.getMes());
-                        Iterator itd=me.getDias().iterator();
-                        while(itd.hasNext()){
-                            Dia di=(Dia) itd.next();
-                            aux.setDate(di.getDia());
-                            if(aux.compareTo(mayor)>0){
-                                mayor.setDate(aux.getDate());
-                                mayor.setMonth(aux.getMonth());
-                                mayor.setYear(aux.getYear());
-                            }
-                        }
-                    }
-                }
-            }
-//            break;
-        } 
-        return mayor;
-    }
+//    public Date ObtenerFechaMayor(int anio, Tarea tar){
+//        Date mayor = new Date();
+//        mayor.setYear(anio-20);
+//        Date aux=new Date();
+//        aux.setYear(anio);
+//        Iterator it=agendas.iterator();
+//        while(it.hasNext()){
+//            Agenda age=(Agenda) it.next();
+//            Iterator ita=age.getAnos().iterator();
+//            while(ita.hasNext()){
+//                Ano an=(Ano) ita.next();
+//                if(an.getAno()==anio+1900){
+//                    Iterator itm=an.getMeses().iterator();
+//                    while(itm.hasNext()){
+//                        Mes me=(Mes) itm.next();
+//                        aux.setMonth(me.getMes());
+//                        Iterator itd=me.getDias().iterator();
+//                        while(itd.hasNext()){
+//                            Dia di=(Dia) itd.next();
+//                            aux.setDate(di.getDia());
+//                            if(aux.compareTo(mayor)>0){
+//                                mayor.setDate(aux.getDate());
+//                                mayor.setMonth(aux.getMonth());
+//                                mayor.setYear(aux.getYear());
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//        return mayor;
+//    }
     
-    public Date ObtenerFechaMenor(int anio){
-        Date menor = new Date();
-        menor.setYear(anio+20);
-        Date aux=new Date();
-        aux.setYear(anio);
-        Iterator it=agendas.iterator();
-        while(it.hasNext()){
-            Agenda age=(Agenda) it.next();
-            Iterator ita=age.getAnos().iterator();
-            while(ita.hasNext()){
-                Ano an=(Ano) ita.next();
-                if(an.getAno()==anio+1900){
-                    Iterator itm=an.getMeses().iterator();
-                    while(itm.hasNext()){
-                        Mes me=(Mes) itm.next();
-                        aux.setMonth(me.getMes());
-                        Iterator itd=me.getDias().iterator();
-                        while(itd.hasNext()){
-                            Dia di=(Dia) itd.next();
-                            aux.setDate(di.getDia());
-                            if(aux.compareTo(menor)<0){
-                                menor.setDate(aux.getDate());
-                                menor.setMonth(aux.getMonth());
-                                menor.setYear(aux.getYear());
-                            }
-                        }
-                    }
-                }
-            }
-//            break;
-        } 
-        return menor;
-    }
+//    public Date ObtenerFechaMenor(int anio){
+//        Date menor = new Date();
+//        menor.setYear(anio+20);
+//        Date aux=new Date();
+//        aux.setYear(anio);
+//        Iterator it=agendas.iterator();
+//        while(it.hasNext()){
+//            Agenda age=(Agenda) it.next();
+//            Iterator ita=age.getAnos().iterator();
+//            while(ita.hasNext()){
+//                Ano an=(Ano) ita.next();
+//                if(an.getAno()==anio+1900){
+//                    Iterator itm=an.getMeses().iterator();
+//                    while(itm.hasNext()){
+//                        Mes me=(Mes) itm.next();
+//                        aux.setMonth(me.getMes());
+//                        Iterator itd=me.getDias().iterator();
+//                        while(itd.hasNext()){
+//                            Dia di=(Dia) itd.next();
+//                            aux.setDate(di.getDia());
+//                            if(aux.compareTo(menor)<0){
+//                                menor.setDate(aux.getDate());
+//                                menor.setMonth(aux.getMonth());
+//                                menor.setYear(aux.getYear());
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+////            break;
+//        } 
+//        return menor;
+//    }
     
     public void BorrarTodo() {
         Iterator it = agendas.iterator();

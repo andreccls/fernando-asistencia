@@ -3730,6 +3730,78 @@ public class Controlador {
             }
         }
     }
+    
+    public Date ObtenerFechaMayor(int anio, Tarea tar){
+        Date mayor = new Date();
+        mayor.setYear(anio-20);
+        Date aux=new Date();
+        aux.setYear(anio);
+        Iterator it=PERSISTENCIA.getAgendasTar(tar.getIdTarea()).iterator();
+        while(it.hasNext()){
+            Agenda age=(Agenda) it.next();
+            Iterator ita=age.getAnos().iterator();
+            while(ita.hasNext()){
+                Ano an=(Ano) ita.next();
+                if(an.getAno()==anio+1900){
+                    Iterator itm=an.getMeses().iterator();
+                    while(itm.hasNext()){
+                        Mes me=(Mes) itm.next();
+                        aux.setMonth(me.getMes());
+                        Iterator itd=me.getDias().iterator();
+                        while(itd.hasNext()){
+                            Dia di=(Dia) itd.next();
+                            aux.setDate(di.getDia());
+                            if(aux.compareTo(mayor)>0){
+                                mayor.setDate(aux.getDate());
+                                mayor.setMonth(aux.getMonth());
+                                mayor.setYear(aux.getYear());
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if(mayor.getYear()<anio){
+            mayor.setYear(anio);
+        }
+        return mayor;
+    }
+    
+    public Date ObtenerFechaMenor(int anio, Tarea tar){
+        Date menor = new Date();
+        menor.setYear(anio+20);
+        Date aux=new Date();
+        aux.setYear(anio);
+        Iterator it=PERSISTENCIA.getAgendasTar(tar.getIdTarea()).iterator();
+        while(it.hasNext()){
+            Agenda age=(Agenda) it.next();
+            Iterator ita=age.getAnos().iterator();
+            while(ita.hasNext()){
+                Ano an=(Ano) ita.next();
+                if(an.getAno()==anio+1900){
+                    Iterator itm=an.getMeses().iterator();
+                    while(itm.hasNext()){
+                        Mes me=(Mes) itm.next();
+                        aux.setMonth(me.getMes());
+                        Iterator itd=me.getDias().iterator();
+                        while(itd.hasNext()){
+                            Dia di=(Dia) itd.next();
+                            aux.setDate(di.getDia());
+                            if(aux.compareTo(menor)<0){
+                                menor.setDate(aux.getDate());
+                                menor.setMonth(aux.getMonth());
+                                menor.setYear(aux.getYear());
+                            }
+                        }
+                    }
+                }
+            }
+        } 
+        if(menor.getYear()>anio){
+            menor.setYear(anio);
+        }
+        return menor;
+    }
 
     public String ObtenerDia(int i) {
         String dia = null;

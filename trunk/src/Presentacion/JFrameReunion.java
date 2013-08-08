@@ -104,7 +104,7 @@ public class JFrameReunion extends javax.swing.JFrame {
                 Tareareunion tareu = tar.getTareareunions().iterator().next();
                 jTextField1.setText(tareu.getMotivo());
                 jComboBox2.setSelectedItem(tareu.getCaracter());
-                fecha = tar.ObtenerFechaMayor(new Date().getYear());
+                fecha = Drive.ObtenerFechaMayor(new Date().getYear(), tar);
                 if (fecha != null) {
                     Calendar ffecha = Calendar.getInstance();
                     ffecha.setTime(fecha);
