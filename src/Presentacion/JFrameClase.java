@@ -2177,6 +2177,13 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
             }
             Date inicio = dateChooserCombo1.getSelectedDate().getTime();
             Date fin = dateChooserCombo2.getSelectedDate().getTime();
+            if (inicio.compareTo(fin)>0) {
+                JOptionPane.showMessageDialog(null, "La fecha de inicio debe ser menor que la fecha de fin y estar contemplado dentro del año lectivo", "Registrar clase", JOptionPane.ERROR_MESSAGE);
+//                dateChooserCombo1.setSelectedDate(dateChooserCombo2.getSelectedDate());
+//                dateChooserCombo2.setSelectedDate(cal);
+//                dateChooserCombo1.setSelectedDate(cal);
+                return;
+            }
             if(o!=null){
                 SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
                 // <editor-fold defaultstate="collapsed" desc="verificar">
@@ -2426,13 +2433,13 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
             fin.setMinutes(0);
             fin.setSeconds(0);
             Date fecha = new Date();
-            Anolectivo an = Drive.getPrimerEstablecimiento().getAnoLectivo(fecha.getYear() + 1900);
-            if (inicio.compareTo(fin)>0 || an.getInicio().compareTo(inicio) > 0 || an.getFin().compareTo(fin) < 0) {
-                JOptionPane.showMessageDialog(null, "La fecha de inicio debe ser menor que la fecha de fin y estar contemplado dentro del año lectivo", "Registrar clase", JOptionPane.ERROR_MESSAGE);
-                dateChooserCombo1.setSelectedDate(dateChooserCombo2.getSelectedDate());
-//                dateChooserCombo2.setSelectedDate(cal);
-//                dateChooserCombo1.setSelectedDate(cal);
-            }
+//            Anolectivo an = Drive.getPrimerEstablecimiento().getAnoLectivo(fecha.getYear() + 1900);
+//            if (inicio.compareTo(fin)>0 || an.getInicio().compareTo(inicio) > 0 || an.getFin().compareTo(fin) < 0) {
+//                JOptionPane.showMessageDialog(null, "La fecha de inicio debe ser menor que la fecha de fin y estar contemplado dentro del año lectivo", "Registrar clase", JOptionPane.ERROR_MESSAGE);
+//                dateChooserCombo1.setSelectedDate(dateChooserCombo2.getSelectedDate());
+////                dateChooserCombo2.setSelectedDate(cal);
+////                dateChooserCombo1.setSelectedDate(cal);
+//            }
             if (tar.getAgendas().iterator().hasNext()) {
                 SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
                 Date aux1=formateador.parse(formateador.format(inicio));
@@ -2468,13 +2475,13 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
         fin.setHours(0);
         fin.setMinutes(0);
         fin.setSeconds(0);
-        Date fecha=new Date();
-        Anolectivo an=Drive.getPrimerEstablecimiento().getAnoLectivo(fecha.getYear()+1900);
-        if(inicio.compareTo(fin)>0 || an.getInicio().compareTo(inicio)>0 || an.getFin().compareTo(fin)<0){
-            JOptionPane.showMessageDialog(null,"La fecha de inicio debe ser menor que la fecha de fin y estar contemplado dentro del año lectivo","Registrar clase",JOptionPane.ERROR_MESSAGE);
-            dateChooserCombo1.setSelectedDate(dateChooserCombo2.getSelectedDate());
-//            dateChooserCombo2.setSelectedDate(cal);
-        }
+//        Date fecha=new Date();
+//        Anolectivo an=Drive.getPrimerEstablecimiento().getAnoLectivo(fecha.getYear()+1900);
+//        if(inicio.compareTo(fin)>0 || an.getInicio().compareTo(inicio)>0 || an.getFin().compareTo(fin)<0){
+//            JOptionPane.showMessageDialog(null,"La fecha de inicio debe ser menor que la fecha de fin y estar contemplado dentro del año lectivo","Registrar clase",JOptionPane.ERROR_MESSAGE);
+//            dateChooserCombo1.setSelectedDate(dateChooserCombo2.getSelectedDate());
+////            dateChooserCombo2.setSelectedDate(cal);
+//        }
         if (tar.getAgendas().iterator().hasNext()) {
             SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
             formateador.setLenient(false);
@@ -2626,11 +2633,13 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
             if (tar.getAgendas().iterator().hasNext()) {
                 Agenda age=tar.getAgendas().iterator().next();
                 Dia d=age.getDia2(mayor);
-                Iniciofin ini = d.getIniciofins().iterator().next();
-                String est=formateador.format(ini.getFin());
-                Date aux=formateador.parse(est);
-                if(!fin.equals(aux)){
-                    cambio=true;
+                if(d.getIniciofins().iterator().hasNext()){
+                    Iniciofin ini = d.getIniciofins().iterator().next();
+                    String est=formateador.format(ini.getFin());
+                    Date aux=formateador.parse(est);
+                    if(!fin.equals(aux)){
+                        cambio=true;
+                    }
                 }
             }
         }catch(Exception e){
@@ -2687,12 +2696,14 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
             if (tar.getAgendas().iterator().hasNext()) {
                 Agenda age = tar.getAgendas().iterator().next();
                 Dia d = age.getDia2(mayor);
-                Iniciofin ini = d.getIniciofins().iterator().next();
-                SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
-                Date inicio = formateador.parse(jFormattedTextField1.getText());
-                Date aux = formateador.parse(formateador.format(ini.getInicio()));
-                if (!inicio.equals(aux)) {
-                    cambio = true;
+                if(d.getIniciofins().iterator().hasNext()){
+                    Iniciofin ini = d.getIniciofins().iterator().next();
+                    SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
+                    Date inicio = formateador.parse(jFormattedTextField1.getText());
+                    Date aux = formateador.parse(formateador.format(ini.getInicio()));
+                    if (!inicio.equals(aux)) {
+                        cambio = true;
+                    }
                 }
             }
         } catch (Exception e) {
@@ -2752,12 +2763,14 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
             if (tar.getAgendas().iterator().hasNext()) {
                 Agenda age = tar.getAgendas().iterator().next();
                 Dia d = age.getDia2(mayor);
-                Iniciofin ini = d.getIniciofins().iterator().next();
-                SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
-                Date inicio = formateador.parse(jFormattedTextField3.getText());
-                Date aux = formateador.parse(formateador.format(ini.getInicio()));
-                if (!inicio.equals(aux)) {
-                    cambio = true;
+                if(d.getIniciofins().iterator().hasNext()){
+                    Iniciofin ini = d.getIniciofins().iterator().next();
+                    SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
+                    Date inicio = formateador.parse(jFormattedTextField3.getText());
+                    Date aux = formateador.parse(formateador.format(ini.getInicio()));
+                    if (!inicio.equals(aux)) {
+                        cambio = true;
+                    }
                 }
             }
         } catch (Exception e) {
@@ -2795,11 +2808,13 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
             if (tar.getAgendas().iterator().hasNext()) {
                 Agenda age=tar.getAgendas().iterator().next();
                 Dia d=age.getDia2(mayor);
-                Iniciofin ini = d.getIniciofins().iterator().next();
-                String est=formateador.format(ini.getFin());
-                Date aux=formateador.parse(est);
-                if(!fin.equals(aux)){
-                    cambio=true;
+                if(d.getIniciofins().iterator().hasNext()){
+                    Iniciofin ini = d.getIniciofins().iterator().next();
+                    String est=formateador.format(ini.getFin());
+                    Date aux=formateador.parse(est);
+                    if(!fin.equals(aux)){
+                        cambio=true;
+                    }
                 }
             }
         }catch(Exception e){
@@ -2859,12 +2874,14 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
             if (tar.getAgendas().iterator().hasNext()) {
                 Agenda age = tar.getAgendas().iterator().next();
                 Dia d = age.getDia2(mayor);
-                Iniciofin ini = d.getIniciofins().iterator().next();
-                SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
-                Date inicio = formateador.parse(jFormattedTextField5.getText());
-                Date aux = formateador.parse(formateador.format(ini.getInicio()));
-                if (!inicio.equals(aux)) {
-                    cambio = true;
+                if(d.getIniciofins().iterator().hasNext()){
+                    Iniciofin ini = d.getIniciofins().iterator().next();
+                    SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
+                    Date inicio = formateador.parse(jFormattedTextField5.getText());
+                    Date aux = formateador.parse(formateador.format(ini.getInicio()));
+                    if (!inicio.equals(aux)) {
+                        cambio = true;
+                    }
                 }
             }
         } catch (Exception e) {
@@ -2902,11 +2919,13 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
             if (tar.getAgendas().iterator().hasNext()) {
                 Agenda age=tar.getAgendas().iterator().next();
                 Dia d=age.getDia2(mayor);
-                Iniciofin ini = d.getIniciofins().iterator().next();
-                String est=formateador.format(ini.getFin());
-                Date aux=formateador.parse(est);
-                if(!fin.equals(aux)){
-                    cambio=true;
+                if(d.getIniciofins().iterator().hasNext()){
+                    Iniciofin ini = d.getIniciofins().iterator().next();
+                    String est=formateador.format(ini.getFin());
+                    Date aux=formateador.parse(est);
+                    if(!fin.equals(aux)){
+                        cambio=true;
+                    }
                 }
             }
         }catch(Exception e){
@@ -2944,11 +2963,13 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
             if (tar.getAgendas().iterator().hasNext()) {
                 Agenda age=tar.getAgendas().iterator().next();
                 Dia d=age.getDia2(mayor);
-                Iniciofin ini = d.getIniciofins().iterator().next();
-                String est=formateador.format(ini.getFin());
-                Date aux=formateador.parse(est);
-                if(!fin.equals(aux)){
-                    cambio=true;
+                if(d.getIniciofins().iterator().hasNext()){
+                    Iniciofin ini = d.getIniciofins().iterator().next();
+                    String est=formateador.format(ini.getFin());
+                    Date aux=formateador.parse(est);
+                    if(!fin.equals(aux)){
+                        cambio=true;
+                    }
                 }
             }
         }catch(Exception e){
@@ -3008,12 +3029,14 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
             if (tar.getAgendas().iterator().hasNext()) {
                 Agenda age = tar.getAgendas().iterator().next();
                 Dia d = age.getDia2(mayor);
-                Iniciofin ini = d.getIniciofins().iterator().next();
-                SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
-                Date inicio = formateador.parse(jFormattedTextField8.getText());
-                Date aux = formateador.parse(formateador.format(ini.getInicio()));
-                if (!inicio.equals(aux)) {
-                    cambio = true;
+                if(d.getIniciofins().iterator().hasNext()){
+                    Iniciofin ini = d.getIniciofins().iterator().next();
+                    SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
+                    Date inicio = formateador.parse(jFormattedTextField8.getText());
+                    Date aux = formateador.parse(formateador.format(ini.getInicio()));
+                    if (!inicio.equals(aux)) {
+                        cambio = true;
+                    }
                 }
             }
         } catch (Exception e) {
@@ -3073,12 +3096,14 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
             if (tar.getAgendas().iterator().hasNext()) {
                 Agenda age = tar.getAgendas().iterator().next();
                 Dia d = age.getDia2(mayor);
-                Iniciofin ini = d.getIniciofins().iterator().next();
-                SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
-                Date inicio = formateador.parse(jFormattedTextField9.getText());
-                Date aux = formateador.parse(formateador.format(ini.getInicio()));
-                if (!inicio.equals(aux)) {
-                    cambio = true;
+                if(d.getIniciofins().iterator().hasNext()){
+                    Iniciofin ini = d.getIniciofins().iterator().next();
+                    SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
+                    Date inicio = formateador.parse(jFormattedTextField9.getText());
+                    Date aux = formateador.parse(formateador.format(ini.getInicio()));
+                    if (!inicio.equals(aux)) {
+                        cambio = true;
+                    }
                 }
             }
         } catch (Exception e) {
@@ -3116,11 +3141,13 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
             if (tar.getAgendas().iterator().hasNext()) {
                 Agenda age=tar.getAgendas().iterator().next();
                 Dia d=age.getDia2(mayor);
-                Iniciofin ini = d.getIniciofins().iterator().next();
-                String est=formateador.format(ini.getFin());
-                Date aux=formateador.parse(est);
-                if(!fin.equals(aux)){
-                    cambio=true;
+                if(d.getIniciofins().iterator().hasNext()){
+                    Iniciofin ini = d.getIniciofins().iterator().next();
+                    String est=formateador.format(ini.getFin());
+                    Date aux=formateador.parse(est);
+                    if(!fin.equals(aux)){
+                        cambio=true;
+                    }
                 }
             }
         }catch(Exception e){
@@ -3180,12 +3207,14 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
             if (tar.getAgendas().iterator().hasNext()) {
                 Agenda age = tar.getAgendas().iterator().next();
                 Dia d = age.getDia2(mayor);
-                Iniciofin ini = d.getIniciofins().iterator().next();
-                SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
-                Date inicio = formateador.parse(jFormattedTextField11.getText());
-                Date aux = formateador.parse(formateador.format(ini.getInicio()));
-                if (!inicio.equals(aux)) {
-                    cambio = true;
+                if(d.getIniciofins().iterator().hasNext()){
+                    Iniciofin ini = d.getIniciofins().iterator().next();
+                    SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
+                    Date inicio = formateador.parse(jFormattedTextField11.getText());
+                    Date aux = formateador.parse(formateador.format(ini.getInicio()));
+                    if (!inicio.equals(aux)) {
+                        cambio = true;
+                    }
                 }
             }
         } catch (Exception e) {
@@ -3223,11 +3252,13 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
             if (tar.getAgendas().iterator().hasNext()) {
                 Agenda age=tar.getAgendas().iterator().next();
                 Dia d=age.getDia2(mayor);
-                Iniciofin ini = d.getIniciofins().iterator().next();
-                String est=formateador.format(ini.getFin());
-                Date aux=formateador.parse(est);
-                if(!fin.equals(aux)){
-                    cambio=true;
+                if(d.getIniciofins().iterator().hasNext()){
+                    Iniciofin ini = d.getIniciofins().iterator().next();
+                    String est=formateador.format(ini.getFin());
+                    Date aux=formateador.parse(est);
+                    if(!fin.equals(aux)){
+                        cambio=true;
+                    }
                 }
             }
         }catch(Exception e){

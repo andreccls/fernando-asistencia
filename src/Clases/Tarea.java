@@ -172,15 +172,14 @@ public class Tarea  implements java.io.Serializable {
 //// GENERADO POR GONZALEZ FERNANDO
        
     public int guardarTarea(Tarea unaTarea){
-    Controlador.getPERSISTENCIA().insert(this);
-    int id=unaTarea.getIdTarea();
-    JOptionPane.showMessageDialog(null,"La tarea se guardó correctamente","Registrar tarea",JOptionPane.INFORMATION_MESSAGE);
-    return id;
+        Controlador.getPERSISTENCIA().insert(this);
+        int id=unaTarea.getIdTarea();
+        JOptionPane.showMessageDialog(null,"La tarea se guardó correctamente","Registrar tarea",JOptionPane.INFORMATION_MESSAGE);
+        return id;
     }
     
     public void ActualizarTarea(Tarea unaTarea){
-    Controlador.getPERSISTENCIA().update(this);
-    
+        Controlador.getPERSISTENCIA().update(this);
     }
     
 //    public void EliminarTarea(Tarea unaTarea){
