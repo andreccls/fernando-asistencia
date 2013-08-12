@@ -4,6 +4,7 @@
  */
 package Presentacion;
 
+import Clases.Auditoria;
 import Clases.Controlador;
 import Clases.Establecimiento;
 import Clases.Personal;
@@ -35,6 +36,7 @@ import java.awt.event.KeyEvent;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -732,9 +734,19 @@ public class jDigitalPersona extends javax.swing.JFrame {
          if(!identificarHuella()){
             if(per.getIdPersonal()!=null){
                 byte[] bit=read(datosHuella);
+                // <editor-fold defaultstate="collapsed" desc="Auditoria"> 
+                Auditoria audi = new Auditoria();
+                audi.setPersonalByIdAuditor(adm);
+                audi.setOperacion("Actualizar");
+                audi.setFecha(new Date());
+                audi.setPersonalByIdPersonal(per);
+                audi.setCampo("Huella");
+                audi.guardarAuditoria(audi);
+                // </editor-fold>
                 per.setCodigo(bit);
                 per.actualizarPersonal(per);
                 JOptionPane.showMessageDialog(null,"Huella Guardada Correctamente","Registrar Huella",JOptionPane.INFORMATION_MESSAGE);
+                
             }else{
                 JOptionPane.showMessageDialog(null,"Debe que seleccionar un personal","Registrar Huella", JOptionPane.ERROR_MESSAGE);
             }

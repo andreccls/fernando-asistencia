@@ -9,6 +9,7 @@ import Clases.Auditoria;
 import Clases.Controlador;
 import Clases.Curso;
 import Clases.Division;
+import Clases.Establecimiento;
 import Clases.Personal;
 import Clases.Tarea;
 import java.awt.Frame;
@@ -637,7 +638,8 @@ public class JFrameAltaClases extends javax.swing.JFrame {
                 if (adm.getIdPersonal() != null) {
                     Tarea tar=new Tarea();
                     tar.setNombre(cadSalida);
-                    tar.setEstablecimiento(Drive.getPrimerEstablecimiento());
+                    Establecimiento es=Drive.getPrimerEstablecimiento();
+                    tar.setEstablecimiento(es);
                     tar.setDivision(div);
                     tar.setEstado(true);
                     tar.setComentario("CLASE");

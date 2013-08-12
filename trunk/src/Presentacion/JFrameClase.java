@@ -1066,7 +1066,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
         .addGroup(layout.createSequentialGroup()
             .addContainerGap()
             .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addContainerGap(41, Short.MAX_VALUE))
     );
     layout.setVerticalGroup(
         layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2418,7 +2418,13 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
     private void dateChooserCombo1OnSelectionChange(datechooser.events.SelectionChangedEvent evt) {//GEN-FIRST:event_dateChooserCombo1OnSelectionChange
         try {
             Date inicio = dateChooserCombo1.getSelectedDate().getTime();
+            inicio.setHours(0);
+            inicio.setMinutes(0);
+            inicio.setSeconds(0);
             Date fin = dateChooserCombo2.getSelectedDate().getTime();
+            fin.setHours(0);
+            fin.setMinutes(0);
+            fin.setSeconds(0);
             Date fecha = new Date();
             Anolectivo an = Drive.getPrimerEstablecimiento().getAnoLectivo(fecha.getYear() + 1900);
             if (inicio.compareTo(fin)>0 || an.getInicio().compareTo(inicio) > 0 || an.getFin().compareTo(fin) < 0) {
@@ -2433,7 +2439,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                 Date aux2=formateador.parse(formateador.format(menor));
                 Date aux3=formateador.parse(formateador.format(fecha));
                     if (aux1.compareTo(aux2) < 0  && aux1.compareTo(aux3)<0) {
-                        JOptionPane.showMessageDialog(null, "La fecha no puede ser menor a la fecha de inicio de la clase", "Actualizar clase", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "La fecha no puede ser menor a la fecha de inicio de clases", "Actualizar clase", JOptionPane.ERROR_MESSAGE);
                         Calendar cal = Calendar.getInstance();
                         cal.setTime(menor);
                         dateChooserCombo1.setSelectedDate(cal);
@@ -2455,7 +2461,13 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
     private void dateChooserCombo2OnSelectionChange(datechooser.events.SelectionChangedEvent evt) {//GEN-FIRST:event_dateChooserCombo2OnSelectionChange
         try{
         Date inicio=dateChooserCombo1.getSelectedDate().getTime();
+        inicio.setHours(0);
+        inicio.setMinutes(0);
+        inicio.setSeconds(0);
         Date fin=dateChooserCombo2.getSelectedDate().getTime();
+        fin.setHours(0);
+        fin.setMinutes(0);
+        fin.setSeconds(0);
         Date fecha=new Date();
         Anolectivo an=Drive.getPrimerEstablecimiento().getAnoLectivo(fecha.getYear()+1900);
         if(inicio.compareTo(fin)>0 || an.getInicio().compareTo(inicio)>0 || an.getFin().compareTo(fin)<0){

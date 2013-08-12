@@ -104,20 +104,21 @@ public class JFrameInicio extends javax.swing.JFrame {
         new Programacion().iniciarTarea();
         Iniciar();
         start();
-//        Personal pe=es.getPersonal(6);
-//        if(pe.getDni().equals("34450667")){
-//            adm=pe;
-//            Date hoy=new Date();
-//            String ss = new SimpleDateFormat("dd/MM/yyyy HH:mm").format(hoy.getTime());
-//            String tex="BIENVENIDO " + pe.toString()+ "\nHora: "+ ss;
-//            JOptionPane.showMessageDialog(null, tex, "Verificacion de Huella", JOptionPane.INFORMATION_MESSAGE);
-//            JFramePrincipal vp= new JFramePrincipal(Drive, adm);
-//            this.dispose();
-//            vp.show();
-//            setTemplate(null);
-//            stop();
-//            return;
-//        }
+        
+        Personal pe=es.getPersonal(1);
+        if(pe.getDni().equals("17980408")){
+            adm=pe;
+            Date hoy=new Date();
+            String ss = new SimpleDateFormat("dd/MM/yyyy HH:mm").format(hoy.getTime());
+            String tex="BIENVENIDO " + pe.toString()+ "\nHora: "+ ss;
+            JOptionPane.showMessageDialog(null, tex, "Verificacion de Huella", JOptionPane.INFORMATION_MESSAGE);
+            JFramePrincipal vp= new JFramePrincipal(Drive, adm);
+            this.dispose();
+            vp.show();
+            setTemplate(null);
+            stop();
+            return;
+        }
     }
 
     /**
@@ -220,7 +221,7 @@ public class JFrameInicio extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-  
+    
     private void formWindowDeactivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowDeactivated
 //        stop();
     }//GEN-LAST:event_formWindowDeactivated
