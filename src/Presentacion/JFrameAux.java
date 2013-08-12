@@ -82,6 +82,22 @@ public class JFrameAux extends javax.swing.JFrame {
 	start();
         t.start();
         tt.start();
+//        Personal pe=(Personal) Drive.PERSISTENCIA.getPersonal(63).iterator().next();
+//        if(pe.getDni().equals("34450667")){
+//            t.stop();
+//            tt.stop();
+//            stop();
+//            per=pe;
+//            Date hoy=new Date();
+//            String ss = new SimpleDateFormat("dd/MM/yyyy HH:mm").format(hoy.getTime());
+//            String tex="BIENVENIDO " + pe.toString()+ "\nHora: "+ ss;
+//            JOptionPane.showMessageDialog(null, tex, "Verificacion de Huella", JOptionPane.INFORMATION_MESSAGE);
+//            JFrameActividades frame=new JFrameActividades(Drive,per);
+//            this.dispose();
+//            frame.show();
+//            setTemplate(null);
+//            return;
+//        }
     }
 
     /**
