@@ -633,7 +633,7 @@ public class JFrameAltaClases extends javax.swing.JFrame {
             salida.setSize(25, 25);
 
             JOptionPane.showMessageDialog(null,salida, "Ingrese una nueva Clase", JOptionPane.INFORMATION_MESSAGE);
-            if (!salida.getText().isEmpty()&&salida.getText().length() <= 45) {
+            if (!salida.getText().isEmpty()&&salida.getText().length() <= 20) {
                 cadSalida = salida.getText().toUpperCase();
                 if (adm.getIdPersonal() != null) {
                     Tarea tar=new Tarea();
@@ -659,7 +659,7 @@ public class JFrameAltaClases extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(null, "Todavia no puede dar de alta una Clase", "Registrar Clase", JOptionPane.ERROR_MESSAGE);
                 }
             }else {
-                JOptionPane.showMessageDialog(null, "La Clase no puede estar vacio y puede contener hasta 45 caracteres", "Registrar Clase", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "La Clase no puede estar vacio y puede contener hasta 20 caracteres", "Registrar Clase", JOptionPane.ERROR_MESSAGE);
             }
         } else{
             JOptionPane.showMessageDialog(null, "Debe existir una división para poder registrar una Clase", "Registrar Clase", JOptionPane.ERROR_MESSAGE);
