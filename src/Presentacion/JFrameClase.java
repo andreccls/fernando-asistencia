@@ -2169,97 +2169,104 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
             jButton2.setEnabled(false);
             jButton3.setEnabled(false);
             jButton4.setEnabled(false);
-            boolean ba=true;
-            Object o=jComboBox1.getSelectedItem();
-            if(!Drive.ControlarAnoLectivo(mayor, menor)){
+            boolean ba = true;
+            Object o = jComboBox1.getSelectedItem();
+            if (!Drive.ControlarAnoLectivo(mayor, menor)) {
                 JOptionPane.showMessageDialog(null, "El la fecha de inicio y fin debe estar contemplado dentro del año lectivo", "Verificar Año lectivo", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             Date inicio = dateChooserCombo1.getSelectedDate().getTime();
             Date fin = dateChooserCombo2.getSelectedDate().getTime();
-            if (inicio.compareTo(fin)>0) {
+            if (inicio.compareTo(fin) > 0) {
                 JOptionPane.showMessageDialog(null, "La fecha de inicio debe ser menor que la fecha de fin y estar contemplado dentro del año lectivo", "Registrar clase", JOptionPane.ERROR_MESSAGE);
 //                dateChooserCombo1.setSelectedDate(dateChooserCombo2.getSelectedDate());
 //                dateChooserCombo2.setSelectedDate(cal);
 //                dateChooserCombo1.setSelectedDate(cal);
                 return;
             }
-            if(o!=null){
-                SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
-                // <editor-fold defaultstate="collapsed" desc="verificar">
-                Date inn = new Date();
-                Date fii = new Date();
-                if (jCheckBox1.isSelected()) {
-                    items.put(1, "LUNES");
-                    inn = formateador.parse(jFormattedTextField1.getText());
-                    fii = formateador.parse(jFormattedTextField2.getText());
-                    Iniciofin aux = new Iniciofin();
-                    aux.setInicio(inn);
-                    aux.setFin(fii);
-                    listini.put(1, aux);
-                }
-                if (jCheckBox2.isSelected()) {
-                    items.put(2, "MARTES");
-                    inn = formateador.parse(jFormattedTextField3.getText());
-                    fii = formateador.parse(jFormattedTextField4.getText());
-                    Iniciofin aux = new Iniciofin();
-                    aux.setInicio(inn);
-                    aux.setFin(fii);
-                    listini.put(2, aux);
-                }
-                if (jCheckBox3.isSelected()) {
-                    items.put(3, "MIERCOLES");
-                    inn = formateador.parse(jFormattedTextField5.getText());
-                    fii = formateador.parse(jFormattedTextField6.getText());
-                    Iniciofin aux = new Iniciofin();
-                    aux.setInicio(inn);
-                    aux.setFin(fii);
-                    listini.put(3, aux);
-                }
-                if (jCheckBox4.isSelected()) {
-                    items.put(4, "JUEVES");
-                    inn = formateador.parse(jFormattedTextField8.getText());
-                    fii = formateador.parse(jFormattedTextField7.getText());
-                    Iniciofin aux = new Iniciofin();
-                    aux.setInicio(inn);
-                    aux.setFin(fii);
-                    listini.put(4, aux);
-                }
-                if (jCheckBox5.isSelected()) {
-                    items.put(5, "VIERNES");
-                    inn = formateador.parse(jFormattedTextField9.getText());
-                    fii = formateador.parse(jFormattedTextField10.getText());
-                    Iniciofin aux = new Iniciofin();
-                    aux.setInicio(inn);
-                    aux.setFin(fii);
-                    listini.put(5, aux);
-                }
-                if (jCheckBox6.isSelected()) {
-                    items.put(6, "SABADO");
-                    inn = formateador.parse(jFormattedTextField11.getText());
-                    fii = formateador.parse(jFormattedTextField12.getText());
-                    Iniciofin aux = new Iniciofin();
-                    aux.setInicio(inn);
-                    aux.setFin(fii);
-                    listini.put(6, aux);
-                }
-//                            Date inicioo = dateChooserCombo1.getSelectedDate().getTime();
-//                            Date finn = dateChooserCombo2.getSelectedDate().getTime();
-                // </editor-fold>
-                Aula au=(Aula) o;
-                if (tar.getAgendas().iterator().hasNext()) {
-                    ba=Drive.DisponibilidadAula(inicio, fin, listini, items,tar.getIdTarea(), au);
-                }else{
-                    ba=Drive.DisponibilidadAula(inicio, fin, listini, items,0, au);
-                }
-                listini= new HashMap();
-                items= new HashMap();
-            }else{
+            
+            // <editor-fold defaultstate="collapsed" desc="verificar">
+//            if (o != null) {
+//                SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
+//                
+//                Date inn = new Date();
+//                Date fii = new Date();
+//                if (jCheckBox1.isSelected()) {
+//                    items.put(1, "LUNES");
+//                    inn = formateador.parse(jFormattedTextField1.getText());
+//                    fii = formateador.parse(jFormattedTextField2.getText());
+//                    Iniciofin aux = new Iniciofin();
+//                    aux.setInicio(inn);
+//                    aux.setFin(fii);
+//                    listini.put(1, aux);
+//                }
+//                if (jCheckBox2.isSelected()) {
+//                    items.put(2, "MARTES");
+//                    inn = formateador.parse(jFormattedTextField3.getText());
+//                    fii = formateador.parse(jFormattedTextField4.getText());
+//                    Iniciofin aux = new Iniciofin();
+//                    aux.setInicio(inn);
+//                    aux.setFin(fii);
+//                    listini.put(2, aux);
+//                }
+//                if (jCheckBox3.isSelected()) {
+//                    items.put(3, "MIERCOLES");
+//                    inn = formateador.parse(jFormattedTextField5.getText());
+//                    fii = formateador.parse(jFormattedTextField6.getText());
+//                    Iniciofin aux = new Iniciofin();
+//                    aux.setInicio(inn);
+//                    aux.setFin(fii);
+//                    listini.put(3, aux);
+//                }
+//                if (jCheckBox4.isSelected()) {
+//                    items.put(4, "JUEVES");
+//                    inn = formateador.parse(jFormattedTextField8.getText());
+//                    fii = formateador.parse(jFormattedTextField7.getText());
+//                    Iniciofin aux = new Iniciofin();
+//                    aux.setInicio(inn);
+//                    aux.setFin(fii);
+//                    listini.put(4, aux);
+//                }
+//                if (jCheckBox5.isSelected()) {
+//                    items.put(5, "VIERNES");
+//                    inn = formateador.parse(jFormattedTextField9.getText());
+//                    fii = formateador.parse(jFormattedTextField10.getText());
+//                    Iniciofin aux = new Iniciofin();
+//                    aux.setInicio(inn);
+//                    aux.setFin(fii);
+//                    listini.put(5, aux);
+//                }
+//                if (jCheckBox6.isSelected()) {
+//                    items.put(6, "SABADO");
+//                    inn = formateador.parse(jFormattedTextField11.getText());
+//                    fii = formateador.parse(jFormattedTextField12.getText());
+//                    Iniciofin aux = new Iniciofin();
+//                    aux.setInicio(inn);
+//                    aux.setFin(fii);
+//                    listini.put(6, aux);
+//                }
+////                            Date inicioo = dateChooserCombo1.getSelectedDate().getTime();
+////                            Date finn = dateChooserCombo2.getSelectedDate().getTime();
+//                Aula au = (Aula) o;
+//                if (tar.getAgendas().iterator().hasNext()) {
+//                    ba=Drive.DisponibilidadAula(inicio, fin, listini, items,tar.getIdTarea(), au);
+//                }else{
+//                    ba=Drive.DisponibilidadAula(inicio, fin, listini, items,0, au);
+//                }
+//                listini = new HashMap();
+//                items = new HashMap();
+//            } else {
+//                JOptionPane.showMessageDialog(null, "Debe seleccionar un aula", "Verificar Aula", JOptionPane.ERROR_MESSAGE);
+//                return;
+//            }
+            // </editor-fold>
+            
+            if(o==null) {
                 JOptionPane.showMessageDialog(null, "Debe seleccionar un aula", "Verificar Aula", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            
-            if(!Drive.VerificarLicencia(per, inicio, fin)){
+
+            if (!Drive.VerificarLicencia(per, inicio, fin)) {
                 int confirmado = JOptionPane.showConfirmDialog(null, "El personal esta de licencia entre esas fechas.¿Desea guardarlo?", "Verificar licencia", JOptionPane.YES_NO_OPTION);
                 if (JOptionPane.OK_OPTION != confirmado) {
                     jButton1.setEnabled(true);
@@ -2269,57 +2276,51 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                     return;
                 }
             }
-                if (ba == true) {
-//                    if (!jTextField1.getText().isEmpty()) {
-                        if (per.getIdPersonal() != null) {
-                            DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
-                            Revista rev = (Revista) jComboBox2.getSelectedItem();
-                            if (rev != null) {
-                                int c = 0;
-                                boolean bandera = true;
-                                while (jTable1.getRowCount() != c) {
-                                    Revista revista = (Revista) modelo.getValueAt(c, 1);
-                                    if (revista.getIdRevista() == rev.getIdRevista()) {
-                                        bandera = false;
-                                    }
-                                    c++;
-                                }
-                                if (bandera == true) {
-                                    DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-                                    Object[] fila = new Object[4];
-                                    fila[0] = per;
-                                    fila[1] = rev;
-                                    model.addRow(fila);
-                                    jTable1.setModel(model);
-                                    Drive.LimpiarTabla(jTable2);
-                                    jTextField5.setText(buffer.toString());
-                                    per = new Personal();
-                                    String buscar = (String) jComboBox4.getSelectedItem();
-                                    Drive.CargarpersonalSimple(jTable2, buscar, buffer.toString().toUpperCase(), lista);
-                                } else {
-                                    JOptionPane.showMessageDialog(null, "La situación de revista es unica por personal", "Registrar Clase", JOptionPane.ERROR_MESSAGE);
-                                }
-                            } else {
-                                JOptionPane.showMessageDialog(null, "Seleccione una situación de revista para el personal", "Registrar Clase", JOptionPane.ERROR_MESSAGE);
+            if (ba == true) {
+                if (per.getIdPersonal() != null) {
+                    DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+                    Revista rev = (Revista) jComboBox2.getSelectedItem();
+                    if (rev != null) {
+                        int c = 0;
+                        boolean bandera = true;
+                        while (jTable1.getRowCount() != c) {
+                            Revista revista = (Revista) modelo.getValueAt(c, 1);
+                            if (revista.getIdRevista() == rev.getIdRevista()) {
+                                bandera = false;
                             }
-                        } else {
-                            JOptionPane.showMessageDialog(null, "Debe seleccionar un personal", "Registrar Clase", JOptionPane.ERROR_MESSAGE);
+                            c++;
                         }
-//                    } else {
-//                        JOptionPane.showMessageDialog(null, "Los campos con '*' son obligatorios y no puede contener espacios en blanco en los horarios", "Registrar Clase", JOptionPane.ERROR_MESSAGE);
-//                    }
+                        if (bandera == true) {
+                            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+                            Object[] fila = new Object[4];
+                            fila[0] = per;
+                            fila[1] = rev;
+                            model.addRow(fila);
+                            jTable1.setModel(model);
+                            Drive.LimpiarTabla(jTable2);
+                            jTextField5.setText(buffer.toString());
+                            per = new Personal();
+                            String buscar = (String) jComboBox4.getSelectedItem();
+                            Drive.CargarpersonalSimple(jTable2, buscar, buffer.toString().toUpperCase(), lista);
+                        } else {
+                            JOptionPane.showMessageDialog(null, "La situación de revista es unica por personal", "Registrar Clase", JOptionPane.ERROR_MESSAGE);
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Seleccione una situación de revista para el personal", "Registrar Clase", JOptionPane.ERROR_MESSAGE);
+                    }
                 } else {
-                    JOptionPane.showMessageDialog(null, "El aula esta ocupada en ese horario", "Registrar Clase", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Debe seleccionar un personal", "Registrar Clase", JOptionPane.ERROR_MESSAGE);
                 }
-            
-            
+            } else {
+                JOptionPane.showMessageDialog(null, "El aula esta ocupada en ese horario", "Registrar Clase", JOptionPane.ERROR_MESSAGE);
+            }
             jButton1.setEnabled(true);
             jButton2.setEnabled(true);
             jButton3.setEnabled(true);
             jButton4.setEnabled(true);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "Seleccione una situación de revista para el personal", "Verificar Aula", JOptionPane.ERROR_MESSAGE);
-        }        // TODO add your handling code here:
+        }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
