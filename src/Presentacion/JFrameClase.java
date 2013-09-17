@@ -2434,7 +2434,10 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
             fin.setMinutes(0);
             fin.setSeconds(0);
             Date fecha = new Date();
-//            Anolectivo an = Drive.getPrimerEstablecimiento().getAnoLectivo(fecha.getYear() + 1900);
+            Anolectivo an = Drive.getPrimerEstablecimiento().getAnoLectivo(fecha.getYear() + 1900);
+            if(an.getInicio().compareTo(inicio)>0 || an.getFin().compareTo(fin)<0){
+                JOptionPane.showMessageDialog(null,"La fecha debe estar contemplado dentro del año lectivo","Registrar Clase",JOptionPane.ERROR_MESSAGE);
+            }
 //            if (inicio.compareTo(fin)>0 || an.getInicio().compareTo(inicio) > 0 || an.getFin().compareTo(fin) < 0) {
 //                JOptionPane.showMessageDialog(null, "La fecha de inicio debe ser menor que la fecha de fin y estar contemplado dentro del año lectivo", "Registrar clase", JOptionPane.ERROR_MESSAGE);
 //                dateChooserCombo1.setSelectedDate(dateChooserCombo2.getSelectedDate());
@@ -2476,8 +2479,11 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
         fin.setHours(0);
         fin.setMinutes(0);
         fin.setSeconds(0);
-//        Date fecha=new Date();
-//        Anolectivo an=Drive.getPrimerEstablecimiento().getAnoLectivo(fecha.getYear()+1900);
+        Date fecha=new Date();
+        Anolectivo an=Drive.getPrimerEstablecimiento().getAnoLectivo(fecha.getYear()+1900);
+        if(an.getInicio().compareTo(inicio)>0 || an.getFin().compareTo(fin)<0){
+            JOptionPane.showMessageDialog(null,"La fecha debe estar contemplado dentro del año lectivo","Registrar Clase",JOptionPane.ERROR_MESSAGE);
+        }
 //        if(inicio.compareTo(fin)>0 || an.getInicio().compareTo(inicio)>0 || an.getFin().compareTo(fin)<0){
 //            JOptionPane.showMessageDialog(null,"La fecha de inicio debe ser menor que la fecha de fin y estar contemplado dentro del año lectivo","Registrar clase",JOptionPane.ERROR_MESSAGE);
 //            dateChooserCombo1.setSelectedDate(dateChooserCombo2.getSelectedDate());
