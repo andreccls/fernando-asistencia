@@ -3764,11 +3764,18 @@ dateChooserCombo10.addSelectionChangedListener(new datechooser.events.SelectionC
             Date fin=dateChooserCombo10.getSelectedDate().getTime();
             Date fecha=new Date();
             Anolectivo an=Drive.getPrimerEstablecimiento().getAnoLectivo(fecha.getYear()+1900);
-            if(inicio.compareTo(fin)>0 || an.getInicio().compareTo(inicio)>0 || an.getFin().compareTo(fin)<0){
-                JOptionPane.showMessageDialog(null,"La fecha de inicio debe ser menor que la fecha de fin y estar contemplado dentro del año lectivo","Registrar Licencia",JOptionPane.ERROR_MESSAGE);
+            if(an.getInicio().compareTo(inicio)>0 || an.getFin().compareTo(inicio)<0){
+                JOptionPane.showMessageDialog(null,"La fecha debe estar contemplado dentro del año lectivo","Registrar Tarea Extracurricular",JOptionPane.ERROR_MESSAGE);
+            }
+            
+            inicio.setHours(fecha.getHours());
+            inicio.setMinutes(fecha.getMinutes());
+            inicio.setSeconds(fecha.getSeconds()+1);
+            if(inicio.compareTo(fecha)<0){
+                JOptionPane.showMessageDialog(null,"La fecha no puede ser menor a hoy","Registrar Tarea extracurricular",JOptionPane.ERROR_MESSAGE);
                 Calendar cal = Calendar.getInstance();
-                dateChooserCombo9.setSelectedDate(cal);
-                dateChooserCombo10.setSelectedDate(cal);
+                dateChooserCombo1.setSelectedDate(cal);
+                return;
             }
         }catch(Exception e){
             
@@ -3781,14 +3788,19 @@ dateChooserCombo10.addSelectionChangedListener(new datechooser.events.SelectionC
             Date fin=dateChooserCombo10.getSelectedDate().getTime();
             Date fecha=new Date();
             Anolectivo an=Drive.getPrimerEstablecimiento().getAnoLectivo(fecha.getYear()+1900);
-            if(inicio.compareTo(fin)>0 || an.getInicio().compareTo(inicio)>0 || an.getFin().compareTo(fin)<0){
-                JOptionPane.showMessageDialog(null,"La fecha de inicio debe ser menor que la fecha de fin y estar contemplado dentro del año lectivo","Registrar Licencia",JOptionPane.ERROR_MESSAGE);
-                Calendar cal = Calendar.getInstance();
-                //dateChooserCombo1.setSelectedDate(cal);
-                dateChooserCombo10.setSelectedDate(cal);
+            if(an.getInicio().compareTo(inicio)>0 || an.getFin().compareTo(fin)<0){
+                JOptionPane.showMessageDialog(null,"La fecha debe estar contemplado dentro del año lectivo","Registrar Licencia",JOptionPane.ERROR_MESSAGE);
             }
+//            if(inicio.compareTo(fin)>0 || an.getInicio().compareTo(inicio)>0 || an.getFin().compareTo(fin)<0){
+//                JOptionPane.showMessageDialog(null,"La fecha de inicio debe ser menor que la fecha de fin y estar contemplado dentro del año lectivo","Registrar Licencia",JOptionPane.ERROR_MESSAGE);
+//                Calendar cal = Calendar.getInstance();
+//                //dateChooserCombo1.setSelectedDate(cal);
+//                dateChooserCombo10.setSelectedDate(cal);
+//            }
 
-        }catch(Exception e){}
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null,e.toString(),"Registrar Licencia", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_dateChooserCombo10OnSelectionChange
 
     private void jTable3ComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jTable3ComponentResized

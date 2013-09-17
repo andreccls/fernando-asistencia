@@ -4375,6 +4375,10 @@ public class Controlador {
                                     Iterator itin = PERSISTENCIA.getIniciofin(di.getIdDia()).iterator();
                                     while (itin.hasNext()) {
                                         Iniciofin in = (Iniciofin) itin.next();
+//                                        Date inicio1=ini.getInicio();
+//                                        Date inicio2=in.getInicio();
+//                                        Date fin1=ini.getFin();
+//                                        Date fin2=in.getFin();
                                         if (ini.getInicio().compareTo(in.getInicio()) < 0 && ini.getFin().compareTo(in.getInicio()) > 0) {
                                             a = false;
                                             break;

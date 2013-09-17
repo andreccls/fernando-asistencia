@@ -448,38 +448,21 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
     jPanel1.setLayout(jPanel1Layout);
     jPanel1Layout.setHorizontalGroup(
         jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGroup(jPanel1Layout.createSequentialGroup()
+            .addContainerGap()
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jLabel12)
+                .addComponent(jLabel4))
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jTextField2))
+            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
         .addGroup(jPanel1Layout.createSequentialGroup()
-            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                    .addGap(79, 79, 79)
-                    .addComponent(jTextField1))
-                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(jLabel12)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(18, 18, 18)
-                    .addComponent(jLabel4)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                    .addComponent(jTextField2))
-                .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(jLabel26)
-                    .addGap(4, 4, 4)
-                    .addComponent(jLabel25)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton1)
-                    .addGap(18, 18, 18)
-                    .addComponent(jButton2))
-                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addComponent(jCheckBox1)
-                            .addGap(0, 0, Short.MAX_VALUE))
-                        .addComponent(jScrollPane1)))
-                .addGroup(jPanel1Layout.createSequentialGroup()
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addGap(10, 10, 10)
@@ -488,7 +471,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                 .addComponent(jLabel7)
                                 .addComponent(jLabel3)
                                 .addComponent(jLabel11))
-                            .addGap(208, 208, 208)
+                            .addGap(203, 203, 203)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jLabel6)
                                 .addComponent(jLabel1)
@@ -500,14 +483,14 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                                     .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addComponent(jLabel14))
-                                .addComponent(dateChooserCombo1, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(dateChooserCombo1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGroup(jPanel1Layout.createSequentialGroup()
                                     .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addComponent(jLabel15))
                                 .addComponent(jLabel8))))
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jLabel9)
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addComponent(jFormattedTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -519,8 +502,28 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                             .addComponent(jLabel36, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(dateChooserCombo2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-            .addContainerGap())
+                        .addComponent(dateChooserCombo2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(jCheckBox1)
+                            .addGap(0, 0, Short.MAX_VALUE))
+                        .addComponent(jScrollPane1)))
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(jLabel26)
+                    .addGap(4, 4, 4)
+                    .addComponent(jLabel25)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton1)
+                    .addGap(18, 18, 18)
+                    .addComponent(jButton2))
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGap(79, 79, 79)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
+            .addGap(10, 10, 10))
     );
 
     jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jButton1, jButton2});
@@ -568,11 +571,13 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
             .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addComponent(jLabel12)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addComponent(jLabel4))
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addComponent(jCheckBox1)
@@ -594,7 +599,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
         .addGroup(layout.createSequentialGroup()
             .addContainerGap()
             .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addContainerGap(12, Short.MAX_VALUE))
     );
     layout.setVerticalGroup(
         layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1204,25 +1209,26 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
             Date fin=dateChooserCombo2.getSelectedDate().getTime();
             Date fecha=new Date();
             Anolectivo an=Drive.getPrimerEstablecimiento().getAnoLectivo(fecha.getYear()+1900);
-            if(inicio.compareTo(fin)>0 || an.getInicio().compareTo(inicio)>0 || an.getFin().compareTo(fin)<0){
-                JOptionPane.showMessageDialog(null,"La fecha de inicio debe ser menor que la fecha de fin y estar contemplado dentro del año lectivo","Registrar Tarea",JOptionPane.ERROR_MESSAGE);
-//                Calendar cal = Calendar.getInstance();
-//                dateChooserCombo1.setSelectedDate(cal);
-//                dateChooserCombo2.setSelectedDate(cal);
+            if(an.getInicio().compareTo(fin)>0 || an.getFin().compareTo(fin)<0){
+                JOptionPane.showMessageDialog(null,"La fecha debe estar contemplado dentro del año lectivo","Registrar Tarea",JOptionPane.ERROR_MESSAGE);
+            }
+            
+            if(inicio.compareTo(fin)>0){
+                JOptionPane.showMessageDialog(null,"La fecha de inicio debe ser menor que la fecha de fin","Registrar Tarea",JOptionPane.ERROR_MESSAGE);
                 dateChooserCombo1.setSelectedDate(dateChooserCombo2.getSelectedDate());
-                jFormattedTextField2.setText("00:00");
             }
-        if(tar.getIdTarea()!=null){
-            SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
-            formateador.setLenient(false);
-            String i=formateador.format(mayor);
-            Date mmayor=formateador.parse(i);
-            String e=formateador.format(fin);
-            Date ffin=formateador.parse(e);
-            if(!mmayor.equals(ffin)){
-                cambio=true;
+
+            if(tar.getIdTarea()!=null){
+                SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+                formateador.setLenient(false);
+                String i=formateador.format(mayor);
+                Date mmayor=formateador.parse(i);
+                String e=formateador.format(fin);
+                Date ffin=formateador.parse(e);
+                if(!mmayor.equals(ffin)){
+                    cambio=true;
+                }
             }
-        }
         }catch(Exception e){
             JOptionPane.showMessageDialog(null,"Error","Registrar Tarea",JOptionPane.ERROR_MESSAGE);
         }
@@ -1231,17 +1237,12 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
     private void dateChooserCombo1OnSelectionChange(datechooser.events.SelectionChangedEvent evt) {//GEN-FIRST:event_dateChooserCombo1OnSelectionChange
         try{
             Date inicio=dateChooserCombo1.getSelectedDate().getTime();
-            Date fin=dateChooserCombo2.getSelectedDate().getTime();
             Date fech=new Date();
             Anolectivo an=Drive.getPrimerEstablecimiento().getAnoLectivo(fech.getYear()+1900);
-            if(inicio.compareTo(fin)>0 || an.getInicio().compareTo(inicio)>0 || an.getFin().compareTo(fin)<0){
-                JOptionPane.showMessageDialog(null,"La fecha de inicio debe ser menor que la fecha de fin y estar contemplado dentro del año lectivo","Registrar Tarea",JOptionPane.ERROR_MESSAGE);
-//                Calendar cal = Calendar.getInstance();
-//                dateChooserCombo1.setSelectedDate(cal);
-//                dateChooserCombo2.setSelectedDate(cal);
-                dateChooserCombo1.setSelectedDate(dateChooserCombo2.getSelectedDate());
-                jFormattedTextField2.setText("00:00");
+            if(an.getInicio().compareTo(inicio)>0 || an.getFin().compareTo(inicio)<0){
+                JOptionPane.showMessageDialog(null,"La fecha debe estar contemplado dentro del año lectivo","Registrar Tarea",JOptionPane.ERROR_MESSAGE);
             }
+            
             inicio.setHours(fech.getHours());
             inicio.setMinutes(fech.getMinutes());
             inicio.setSeconds(fech.getSeconds()+1);
@@ -1251,17 +1252,17 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                 dateChooserCombo1.setSelectedDate(cal);
                 return;
             }
-        if(tar.getIdTarea()!=null){
-            SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
-            formateador.setLenient(false);
-            String i=formateador.format(menor);
-            Date mmenor=formateador.parse(i);
-            String e=formateador.format(inicio);
-            Date iinicio=formateador.parse(e);
-            if(!mmenor.equals(iinicio)){
-                cambio=true;
+            if(tar.getIdTarea()!=null){
+                SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+                formateador.setLenient(false);
+                String i=formateador.format(menor);
+                Date mmenor=formateador.parse(i);
+                String e=formateador.format(inicio);
+                Date iinicio=formateador.parse(e);
+                if(!mmenor.equals(iinicio)){
+                    cambio=true;
+                }
             }
-        }
         }catch(Exception e){
             JOptionPane.showMessageDialog(null,"Error","Registrar Tarea",JOptionPane.ERROR_MESSAGE);
         }
