@@ -483,6 +483,7 @@ dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionCh
                             jTextField1.setText("");
                             jTextField2.setText("");
                             jTextArea1.setText("");
+                            jCheckBox1.setSelected(false);
                             Drive.LimpiarTabla(jTable2);
                             lista.removeAll(lista);
                             String buscar = (String) jComboBox1.getSelectedItem();
